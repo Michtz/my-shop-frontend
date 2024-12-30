@@ -1,0 +1,7 @@
+.container{
+  display: flex;
+
+  &[data-flow='column']{
+    flex-direction: column;
+  }
+}
