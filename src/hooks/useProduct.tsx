@@ -2,8 +2,7 @@
 
 import useSWR from 'swr';
 import axios from 'axios';
-import { deepFreeze } from 'next/dist/shared/lib/deep-freeze';
-import { FC } from 'react';
+import { useParams } from 'next/navigation';
 
 interface Product {
   _id: string;
@@ -13,18 +12,15 @@ interface Product {
   description?: string;
 }
 
-interface UseProductProps {
-  id: string;
-}
-
 interface UseProductResponse {
   product: Product | undefined;
   isLoading: boolean;
   error: Error | null;
 }
 
-export const useProduct = ({ id }: UseProductProps): UseProductResponse => {
-  console.log(id);
+export const useProduct = (): UseProductResponse => {
+  const params = useParams();
+  const id = params.id as string;
   const { data, error, isLoading } = useSWR<Product>(
     '/api/products',
     async (url: string) => {

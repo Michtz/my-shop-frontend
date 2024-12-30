@@ -1,20 +1,6 @@
-import ProductOverview from '@/app/components/ProductOverview';
+import ProductOverview from '@/app/components/section/ProductOverview';
+import { FC } from 'react';
 
-interface ProductPageProps {
-  params: {
-    id: string;
-  };
-}
+const App: FC = () => <ProductOverview />;
 
-async function getProduct(id: string) {
-  // Hier kommt deine Logik zum Abrufen der Produktdaten
-  // z.B. API-Call oder Datenbankabfrage
-}
-
-export default async function ProductPage({ params }: ProductPageProps) {
-  return (
-    <>
-      <ProductOverview id={params.id} />
-    </>
-  );
-}
+export default App;

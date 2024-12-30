@@ -11,14 +11,15 @@ interface Product {
   description?: string;
 }
 
-const useProducts = () => {
+const useCart = () => {
   const { data, error, isLoading } = useSWR<Product[]>(
-    '/api/products',
+    '/api/cart/test-user-123',
     async (url: string) => {
       const response = await axios.get(`http://localhost:4200${url}`);
       return response.data.data;
     },
   );
+
   console.log(data);
   return {
     products: data,
@@ -26,4 +27,5 @@ const useProducts = () => {
     error: error?.message,
   };
 };
-export default useProducts;
+
+export default useCart;

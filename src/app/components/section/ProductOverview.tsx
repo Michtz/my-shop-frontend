@@ -1,17 +1,15 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useProduct } from '@/hooks/useProduct';
 
-interface ProductOverviewProps {
-  id: string;
-}
+const ProductOverview: FC = () => {
+  const { product, isLoading } = useProduct();
 
-const ProductOverview: FC<ProductOverviewProps> = ({ id }) => {
-  const { product, isLoading, error } = useProduct({ id });
+  const handleClick = () => {};
 
   return (
-    <main>
+    <>
       <h1>{product?.name}</h1>
       <div>
         {/*  <img src={product?.imageUrl} alt={product?.name} />*/}
@@ -19,7 +17,8 @@ const ProductOverview: FC<ProductOverviewProps> = ({ id }) => {
         <p>Preis: €{product?.price}</p>
         <p>Verfügbar: {product?.stockQuantity}</p>
       </div>
-    </main>
+      <button onClick={handleClick}>Add to cart</button>
+    </>
   );
 };
 

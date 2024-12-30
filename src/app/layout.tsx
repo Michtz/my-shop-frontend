@@ -8,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="de">
+    <html lang="de" suppressHydrationWarning>
       <body>
         <ThemeRegistry>
           <SWRProvider>{children}</SWRProvider>
