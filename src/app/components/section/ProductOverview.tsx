@@ -1,12 +1,43 @@
 'use client';
 
-import { FC, useState } from 'react';
-import { useProduct } from '@/hooks/useProduct';
+import { FC, FormEvent } from 'react';
+import { Product, useProduct } from '@/hooks/useProduct';
+import { useCreateCart, UseCreateCartProps } from '@/hooks/useCreateCart';
+import { useUpdateProduct } from '@/hooks/useUpdateProduct';
 
 const ProductOverview: FC = () => {
   const { product, isLoading } = useProduct();
+  const { cartItems, createCartItem } = useCreateCart();
+  const { updateProduct, isUpdating, error } = useUpdateProduct();
 
-  const handleClick = () => {};
+  const handleClick = async () => {
+    console.log(product?._id);
+    const newItem: UseCreateCartProps = {
+      quantity: 1,
+      id: product?._id,
+    };
+
+    try {
+      const result = await createCartItem(newItem);
+      console.log(result);
+    } catch (error) {
+      console.error('Error creating cart item:', error);
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!product?._id) return;
+
+    try {
+      const updatedProduct: Product = await updateProduct({
+        id: product._id,
+        data: { stockQuantity: 23, name: 'neuer name' },
+      });
+      console.log(updatedProduct);
+    } catch {}
+  };
 
   return (
     <>
@@ -17,7 +48,7 @@ const ProductOverview: FC = () => {
         <p>Preis: €{product?.price}</p>
         <p>Verfügbar: {product?.stockQuantity}</p>
       </div>
-      <button onClick={handleClick}>Add to cart</button>
+      <button onClick={handleSubmit}>Add to cart</button>
     </>
   );
 };

@@ -3,8 +3,9 @@
 import useSWR from 'swr';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
+import { Params } from 'next/dist/server/request/params';
 
-interface Product {
+export interface Product {
   _id: string;
   name: string;
   price: number;
@@ -19,7 +20,7 @@ interface UseProductResponse {
 }
 
 export const useProduct = (): UseProductResponse => {
-  const params = useParams();
+  const params: Params = useParams();
   const id = params.id as string;
   const { data, error, isLoading } = useSWR<Product>(
     '/api/products',

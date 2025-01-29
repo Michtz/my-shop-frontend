@@ -19,7 +19,7 @@ const useProducts = () => {
       return response.data.data;
     },
   );
-  console.log(data);
+
   return {
     products: data,
     isLoading,

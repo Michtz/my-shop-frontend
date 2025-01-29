@@ -8,8 +8,8 @@ import {
   Typography,
   CircularProgress,
 } from '@mui/material';
-import { useProducts } from '@/hooks/useProducts';
 import { useRouter } from 'next/navigation';
+import useProducts from '@/hooks/useProducts';
 
 const ProductList = () => {
   const { products, isLoading, error } = useProducts();
