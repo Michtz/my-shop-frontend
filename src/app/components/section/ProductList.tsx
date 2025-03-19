@@ -10,10 +10,18 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import useProducts from '@/hooks/useProducts';
+import { useEffect, useState } from 'react';
+import { UseCreateCartProps } from '@/hooks/useCreateCart';
+import { Product } from '@/hooks/useProduct';
 
 const ProductList = () => {
   const { products, isLoading, error } = useProducts();
   const router = useRouter();
+  const [articles, setArticles] = useState<Product[]>([]);
+
+  useEffect(() => {
+    setArticles(products);
+  }, [products]);
 
   if (isLoading) {
     return (
@@ -39,7 +47,7 @@ const ProductList = () => {
   return (
     <Container>
       <Grid container spacing={3}>
-        {products?.map((product) => {
+        {articles?.map((product) => {
           return (
             <Grid
               item

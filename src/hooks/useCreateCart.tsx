@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import useSWRImmutable, { SWRResponse } from 'swr';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
+import useSWR from 'swr';
 
 export interface CartItem {
   productId: string;
@@ -24,14 +25,14 @@ interface CartResponse {
   };
 }
 
-interface UseCartResponse {
+export interface UseCartResponse {
   cartItems: CartResponse | undefined;
   error: Error | undefined;
 }
 
-interface UseCreateCartProps {
+export interface UseCreateCartProps {
   quantity: number;
-  id: string;
+  id: string | undefined;
 }
 
 const fetcher = async (url: string, id: string, quantity: number) => {
@@ -50,7 +51,7 @@ export const useCreateCart = ({
 
   console.log(quantity, id);
 
-  const page: SWRResponse<CartResponse, Error> = useSWRImmutable(
+  const page: SWRResponse<CartResponse, Error> = useSWR(
     '/api/cart/test-user-123/items',
     async () => {
       try {

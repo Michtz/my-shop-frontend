@@ -1,13 +1,12 @@
 'use client';
 
 import { FC, FormEvent } from 'react';
-import { Product, useProduct } from '@/hooks/useProduct';
+import useProduct, { Product } from '@/hooks/useProduct';
 import { useCreateCart, UseCreateCartProps } from '@/hooks/useCreateCart';
 import { useUpdateProduct } from '@/hooks/useUpdateProduct';
 
 const ProductOverview: FC = () => {
   const { product, isLoading } = useProduct();
-  const { cartItems, createCartItem } = useCreateCart();
   const { updateProduct, isUpdating, error } = useUpdateProduct();
 
   const handleClick = async () => {
@@ -29,7 +28,6 @@ const ProductOverview: FC = () => {
     e.preventDefault();
 
     if (!product?._id) return;
-
     try {
       const updatedProduct: Product = await updateProduct({
         id: product._id,

@@ -10,8 +10,12 @@ interface Product {
   stockQuantity: number;
   description?: string;
 }
-
-const useProducts = () => {
+interface ProductsResponse {
+  products: Product[] | [];
+  isLoading: boolean;
+  error: string | null;
+}
+const useProducts = (): ProductsResponse => {
   const { data, error, isLoading } = useSWR<Product[]>(
     '/api/products',
     async (url: string) => {
@@ -20,10 +24,11 @@ const useProducts = () => {
     },
   );
 
+  const safeProducts: Product[] = data || [];
   return {
-    products: data,
+    products: safeProducts,
     isLoading,
-    error: error?.message,
+    error: error?.message ? error.message : null,
   };
 };
 export default useProducts;

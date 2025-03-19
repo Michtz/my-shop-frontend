@@ -32,6 +32,7 @@ const CartList = () => {
 
   return (
     <Container>
+      test
       {products?.map((product) => (
         <div key={product._id}>
           <h2>{product.name}</h2>

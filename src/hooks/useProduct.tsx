@@ -1,5 +1,4 @@
 'use client';
-
 import useSWR from 'swr';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
@@ -14,25 +13,30 @@ export interface Product {
 }
 
 interface UseProductResponse {
-  product: Product | undefined;
+  product: Product | null;
   isLoading: boolean;
   error: Error | null;
 }
 
-export const useProduct = (): UseProductResponse => {
+const useProduct = (): UseProductResponse => {
   const params: Params = useParams();
   const id = params.id as string;
+
   const { data, error, isLoading } = useSWR<Product>(
-    '/api/products',
+    `/api/products/${id}`,
     async (url: string) => {
-      const response = await axios.get(`http://localhost:4200${url}/${id}`);
+      const response = await axios.get(`http://localhost:4200${url}`);
       return response.data.data;
     },
   );
 
+  const safeProduct: Product | null = data || null;
+
   return {
-    product: data,
+    product: safeProduct,
     isLoading,
     error: error?.message,
   };
 };
+
+export default useProduct;
