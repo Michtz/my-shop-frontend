@@ -4,11 +4,15 @@ import { FC, FormEvent } from 'react';
 import useProduct, { Product } from '@/hooks/useProduct';
 import { useCreateCart, UseCreateCartProps } from '@/hooks/useCreateCart';
 import { useUpdateProduct } from '@/hooks/useUpdateProduct';
+import useCart from '@/hooks/useCart';
+
+export const sessionTestId: string =
+  '293d40383b00197d1d14e921e731668a2682eef6c9955d08bcc359ff2d15c045';
 
 const ProductOverview: FC = () => {
-  const { product, isLoading } = useProduct();
-  const { updateProduct, isUpdating, error } = useUpdateProduct();
-
+  const { product } = useProduct();
+  const cart = useCart(sessionTestId);
+  console.log(cart);
   const handleClick = async () => {
     console.log(product?._id);
     const newItem: UseCreateCartProps = {

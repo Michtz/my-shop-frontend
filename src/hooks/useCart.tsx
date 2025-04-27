@@ -2,6 +2,7 @@
 
 import useSWR from 'swr';
 import axios from 'axios';
+import { getCart } from '@/requests/cart';
 
 interface Product {
   _id: string;
@@ -11,21 +12,13 @@ interface Product {
   description?: string;
 }
 
-const useCart = () => {
-  const { data, error, isLoading } = useSWR<Product[]>(
-    '/api/cart/test-user-123',
-    async (url: string) => {
-      const response = await axios.get(`http://localhost:4200${url}`);
-      return response.data.data;
-    },
-  );
+const useCart = async (sessionId: string) => {
+  try {
+    const cart = await getCart(sessionId);
+    console.log(cart);
 
-  console.log(data);
-  return {
-    products: data,
-    isLoading,
-    error: error?.message,
-  };
+    return cart;
+  } catch (error) {}
 };
 
 export default useCart;

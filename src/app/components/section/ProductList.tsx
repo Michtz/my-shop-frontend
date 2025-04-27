@@ -12,18 +12,22 @@ import { useRouter } from 'next/navigation';
 import useProducts from '@/hooks/useProducts';
 import { useEffect, useState } from 'react';
 import { UseCreateCartProps } from '@/hooks/useCreateCart';
+import useCart from '@/hooks/useCart';
 import { Product } from '@/hooks/useProduct';
 
 const ProductList = () => {
   const { products, isLoading, error } = useProducts();
   const router = useRouter();
-  const [articles, setArticles] = useState<Product[]>([]);
+  const [articles, setArticles] = useState<Product[]>(products);
 
-  useEffect(() => {
-    setArticles(products);
-  }, [products]);
-
+  console.log(products, isLoading);
+  // useEffect(() => {
+  //   if (products) {
+  //     setArticles(products);
+  //   }
+  // }, [products]);
   if (isLoading) {
+    console.log('tst');
     return (
       <Container>
         <CircularProgress />
@@ -43,7 +47,6 @@ const ProductList = () => {
     console.log(id);
     router.push(`/products/${id}`);
   };
-
   return (
     <Container>
       <Grid container spacing={3}>

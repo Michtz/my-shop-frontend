@@ -1,8 +1,9 @@
 'use client';
-import useSWR from 'swr';
-import axios from 'axios';
-import { useParams } from 'next/navigation';
-import { Params } from 'next/dist/server/request/params';
+
+import useSWR, { SWRResponse } from 'swr';
+import { getProduct, getProducts } from '@/requests/products.request';
+import { RequestError } from '@/types/request.types';
+import { NextRouter, useRouter } from 'next/router';
 
 export interface Product {
   _id: string;
@@ -12,31 +13,37 @@ export interface Product {
   description?: string;
 }
 
-interface UseProductResponse {
-  product: Product | null;
-  isLoading: boolean;
-  error: Error | null;
+interface ProductsAPIResponse {
+  success: boolean;
+  data: Product;
 }
 
-const useProduct = (): UseProductResponse => {
-  const params: Params = useParams();
-  const id = params.id as string;
+interface ProductResponse {
+  products: Product | '';
+  isLoading: boolean;
+  error: string | null;
+}
 
-  const { data, error, isLoading } = useSWR<Product>(
-    `/api/products/${id}`,
-    async (url: string) => {
-      const response = await axios.get(`http://localhost:4200${url}`);
-      return response.data.data;
-    },
-  );
-
-  const safeProduct: Product | null = data || null;
+const useProducts = (): ProductResponse => {
+  const router = useRouter();
+  console.log(router);
+  // const {
+  //   data,
+  //   error,
+  //   isLoading,
+  // }: SWRResponse<ProductsAPIResponse, RequestError> = useSWR(
+  //   'products',
+  //   getProduct(uuid),
+  //   {
+  //     suspense: false,
+  //   },
+  // );
 
   return {
-    product: safeProduct,
+    products: data?.data || [],
     isLoading,
-    error: error?.message,
+    error: error?.message ? error.message : null,
   };
 };
 
-export default useProduct;
+export default useProducts;

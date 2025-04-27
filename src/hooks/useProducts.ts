@@ -1,7 +1,8 @@
 'use client';
 
-import useSWR from 'swr';
-import axios from 'axios';
+import useSWR, { SWRResponse } from 'swr';
+import { getProducts } from '@/requests/products.request';
+import { RequestError } from '@/types/request.types';
 
 interface Product {
   _id: string;
@@ -10,25 +11,36 @@ interface Product {
   stockQuantity: number;
   description?: string;
 }
+
+interface ProductsAPIResponse {
+  success: boolean;
+  data: Product[];
+}
+
 interface ProductsResponse {
   products: Product[] | [];
   isLoading: boolean;
   error: string | null;
 }
+
 const useProducts = (): ProductsResponse => {
-  const { data, error, isLoading } = useSWR<Product[]>(
-    '/api/products',
-    async (url: string) => {
-      const response = await axios.get(`http://localhost:4200${url}`);
-      return response.data.data;
+  const {
+    data,
+    error,
+    isLoading,
+  }: SWRResponse<ProductsAPIResponse, RequestError> = useSWR(
+    'products',
+    getProducts,
+    {
+      suspense: false,
     },
   );
 
-  const safeProducts: Product[] = data || [];
   return {
-    products: safeProducts,
+    products: data?.data || [],
     isLoading,
     error: error?.message ? error.message : null,
   };
 };
+
 export default useProducts;
