@@ -12,3 +12,6 @@ export const Container: FC<ContainerProps> = ({ children, flow = 'row' }) => (
     {children}
   </div>
 );
+export const CardContainer: FC<ContainerProps> = ({ children }) => (
+  <div className={style.cartContainer}>{children}</div>
+);
