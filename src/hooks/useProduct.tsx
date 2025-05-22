@@ -1,9 +1,11 @@
 'use client';
 
 import useSWR, { SWRResponse } from 'swr';
-import { getProduct, getProducts } from '@/requests/products.request';
+import { getProduct } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
-import { NextRouter, useRouter } from 'next/router';
+import { useParams, useRouter } from 'next/navigation';
+import { Params } from 'next/dist/server/request/params';
+import { getCart } from '@/requests/cart';
 
 export interface Product {
   _id: string;
@@ -13,37 +15,33 @@ export interface Product {
   description?: string;
 }
 
-interface ProductsAPIResponse {
+interface ProductAPIResponse {
   success: boolean;
   data: Product;
 }
 
 interface ProductResponse {
-  products: Product | '';
+  product: Product | null;
   isLoading: boolean;
   error: string | null;
 }
 
-const useProducts = (): ProductResponse => {
-  const router = useRouter();
-  console.log(router);
-  // const {
-  //   data,
-  //   error,
-  //   isLoading,
-  // }: SWRResponse<ProductsAPIResponse, RequestError> = useSWR(
-  //   'products',
-  //   getProduct(uuid),
-  //   {
-  //     suspense: false,
-  //   },
-  // );
+const useProduct = (): ProductResponse => {
+  const params: Params = useParams();
+  const uuid = params?.id as string;
+
+  const { data, error, isLoading } = useSWR<ProductAPIResponse, RequestError>(
+    uuid,
+    getProduct,
+    {
+      suspense: false,
+    },
+  );
 
   return {
-    products: data?.data || [],
+    product: data?.data || null,
     isLoading,
     error: error?.message ? error.message : null,
   };
 };
-
-export default useProducts;
+export default useProduct;

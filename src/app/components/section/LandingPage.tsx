@@ -15,9 +15,11 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import { CardContainer } from '@/app/components/system/Container';
 import useProducts from '@/hooks/useProducts';
 import { Product } from '@/hooks/useProduct';
+import { useRouter } from 'next/navigation';
 
 const LandingPage = () => {
   const { products, isLoading, error } = useProducts();
+  const router = useRouter();
   console.log(products);
   const carouselContentStyle: CSSProperties = {
     height: '400px',
@@ -91,6 +93,7 @@ const LandingPage = () => {
   };
 
   const handleCardClick = (product: Product) => {
+    router.push(`/products/${product._id}`);
     console.log('Card clicked for product:', product.name);
   };
 

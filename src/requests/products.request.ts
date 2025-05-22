@@ -12,7 +12,7 @@ export const getProducts = async (): Promise<any> => {
 };
 export const getProduct = async (uuid: string): Promise<any> => {
   try {
-    return await axiosInstance.get(`${productsApiUrl}/{uuid}`);
+    return await axiosInstance.get(`${productsApiUrl}/${uuid}`);
   } catch (e) {
     Logger.error('Unable to get product');
     throw e;
