@@ -1,0 +1,14 @@
+.overviewContainer {
+  display: flex;
+  gap: 20px; // Optional: Abstand zwischen Bild und Text
+
+  .imageContainer {
+    flex: 0 0 50%; // oder width: 50%;
+  }
+
+  .textContainer {
+    flex: 1; // nimmt den restlichen Platz (50%)
+    display: flex;
+    flex-direction: column;
+  }
+}

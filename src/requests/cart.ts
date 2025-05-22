@@ -18,3 +18,27 @@ export const updateCart = async (sessionId: string): Promise<any> => {
     throw e;
   }
 };
+
+export const updateCartItem = async (
+  sessionId: string,
+  productId: string,
+  quantity: number,
+): Promise<any> => {
+  try {
+    const requestBody = {
+      items: [
+        {
+          quantity: quantity,
+        },
+      ],
+    };
+
+    return await axiosInstance.put(
+      `${cartApiUrl}/${sessionId}/product/${productId}`,
+      requestBody,
+    );
+  } catch (e) {
+    Logger.error('Unable to update the cart item');
+    throw e;
+  }
+};
