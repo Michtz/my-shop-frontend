@@ -1,13 +1,11 @@
-import Image, { StaticImageData } from 'next/image';
 import React from 'react';
 import style from '@/styles/system/AssetIcon.module.scss';
-
-import cleanigToolIcon from '@/assets/cleanig_tool_icon.svg';
-import coffeeCupIcon from '@/assets/coffee_cup_icon.svg';
-import milkJugIcon from '@/assets/milk_jug.svg';
-import scaleIcon from '@/assets/scale_icon.svg';
-import tamperIcon from '@/assets/tamper_icon.svg';
-import toolIcon from '@/assets/tool_icon.svg';
+import { CleaningToolIcon } from '@/app/components/icons/CleaningToolIcon';
+import { CoffeeCupIcon } from '@/app/components/icons/CoffeeCupIcon';
+import { MilkJugIcon } from '@/app/components/icons/MilkJugIcon';
+import { ScaleIcon } from '@/app/components/icons/ScaleIcon';
+import { TamperIcon } from '@/app/components/icons/TamperIcon';
+import { ToolIcon } from '@/app/components/icons/ToolIcon';
 
 export type IconType =
   | 'cleaning-tool'
@@ -22,12 +20,14 @@ export type ComponentSize = 'extra-small' | 'small' | 'normal' | 'big' | 'huge';
 interface AssetIconProps {
   icon: IconType;
   size?: ComponentSize;
+  color?: string;
   placeholder?: boolean;
 }
 
 const AssetIcon: React.FC<AssetIconProps> = ({
   icon,
   size = 'huge',
+  color = '#4C4B4B',
   placeholder = false,
 }): React.ReactElement => {
   let effSize: number;
@@ -62,29 +62,18 @@ const AssetIcon: React.FC<AssetIconProps> = ({
     );
   }
 
-  let source: StaticImageData;
-  switch (icon) {
-    case 'cleaning-tool':
-      source = cleanigToolIcon;
-      break;
-    case 'coffee-cup':
-      source = coffeeCupIcon;
-      break;
-    case 'milk-jug':
-      source = milkJugIcon;
-      break;
-    case 'scale':
-      source = scaleIcon;
-      break;
-    case 'tamper':
-      source = tamperIcon;
-      break;
-    case 'tool':
-      source = toolIcon;
-      break;
-    default:
-      source = toolIcon;
-  }
+  const iconComponents = {
+    'cleaning-tool': CleaningToolIcon,
+    'coffee-cup': CoffeeCupIcon,
+    'milk-jug': MilkJugIcon,
+    scale: ScaleIcon,
+    tamper: TamperIcon,
+    tool: ToolIcon,
+  };
+
+  const IconComponent = iconComponents[icon];
+
+  if (!IconComponent) return <></>;
 
   return (
     <span
@@ -93,12 +82,11 @@ const AssetIcon: React.FC<AssetIconProps> = ({
       data-size={size}
       className={style['asset-icon-container']}
     >
-      <Image
+      <IconComponent
         width={effSize}
         height={effSize}
+        color={color}
         className={style.assetIcon}
-        src={source}
-        alt={`Icon: ${icon}`}
       />
     </span>
   );

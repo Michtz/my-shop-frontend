@@ -15,7 +15,7 @@ const CategoryNavigation: React.FC<
     { icon: 'tool', label: 'Tools' },
     { icon: 'coffee-cup', label: 'Kaffeetassen' },
     { icon: 'cleaning-tool', label: 'Filter Zubereitung' },
-    { icon: 'scale', label: 'Trinkflaschen' },
+    { icon: 'scale', label: 'Waage' },
   ];
 
   const handleItemClick = (iconName: string) => {
@@ -32,7 +32,11 @@ const CategoryNavigation: React.FC<
           }`}
           onClick={() => handleItemClick(icon)}
         >
-          <AssetIcon icon={icon as IconType} size="big" />
+          <AssetIcon
+            icon={icon as IconType}
+            size="big"
+            color={activeItem === icon ? 'white' : '#4C4B4B'}
+          />
           <span className={style.categoryLabel}>{label}</span>
         </div>
       ))}
