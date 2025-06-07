@@ -5,14 +5,18 @@ import { getProduct } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
 import { useParams, useRouter } from 'next/navigation';
 import { Params } from 'next/dist/server/request/params';
-import { getCart } from '@/requests/cart';
+import { getCart } from '@/requests/cart.request';
 
 export interface Product {
   _id: string;
-  name: string;
+  name?: string;
   price: number;
-  stockQuantity: number;
+  stockQuantity?: number;
   description?: string;
+
+  quantity?: number;
+  productInfo?: any;
+  productId?: string;
 }
 
 interface ProductAPIResponse {

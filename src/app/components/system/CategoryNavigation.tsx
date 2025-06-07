@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import style from '@/styles/system/CategoryNavigation.module.scss';
-import AssetIcon, { IconType } from '@/app/components/system/AssetIocn';
+import AssetIcon, { IconType } from '@/app/components/system/AssetIcon';
 
 interface CategoryNavigationProps {}
 

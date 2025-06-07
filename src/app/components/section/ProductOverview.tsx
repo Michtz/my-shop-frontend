@@ -1,47 +1,49 @@
 'use client';
 
 import { FC, FormEvent, useEffect } from 'react';
-import useProduct, { Product } from '@/hooks/useProduct';
-import { useCreateCart, UseCreateCartProps } from '@/hooks/useCreateCart';
-import { useUpdateProduct } from '@/hooks/useUpdateProduct';
+import useProduct from '@/hooks/useProduct';
 import useCart from '@/hooks/useCart';
-import { getCart, updateCartItem } from '@/requests/cart';
+import { replaceCartItems } from '@/requests/cart.request';
 import { useParams } from 'next/navigation';
 import { Params } from 'next/dist/server/request/params';
 import style from '@/styles/OverviewProduct.module.scss';
 
-export const sessionTestId: string = 'sess_c6elmrk0aau1gtktvzzt55';
+export const sessionTestId: string = 'sess_nrls9zo5e9076bl9vuw8zt';
 
 const ProductOverview: FC = () => {
   const { product, isLoading } = useProduct();
-  const { cart } = useCart(sessionTestId);
+  const { cart, items, mutate } = useCart(sessionTestId);
   const params: Params = useParams();
+
   console.log(params);
+
   useEffect(() => {
-    console.log(cart);
+    console.log(cart, items);
   }, [cart]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    console.log(items);
 
-    // Aktuelle Menge im Warenkorb oder 0 falls nicht vorhanden
-    const currentQuantity = cart?.stockQuantity ?? 0;
-    const newQuantity = currentQuantity + 1;
-
-    console.log(
-      `Aktuelle Menge: ${currentQuantity}, Neue Menge: ${newQuantity}`,
+    const updatedItems = items.map((item: any) =>
+      item.productId === params.id
+        ? { ...item, quantity: item.quantity + 1 }
+        : item,
     );
 
-    const test = await updateCartItem(
-      sessionTestId,
-      params.id as string,
-      newQuantity,
-    );
+    try {
+      const test = await replaceCartItems(sessionTestId, updatedItems);
+      console.log(test);
 
-    console.log(test);
+      mutate();
+    } catch (error) {
+      console.error('Failed to update cart:', error);
+      mutate();
+    }
   };
 
   if (isLoading) return <>is loading</>;
+
   return (
     <div className={style.overviewContainer}>
       <span className={style.imageContainer}>
@@ -58,7 +60,6 @@ const ProductOverview: FC = () => {
         <h1>{product?.name}</h1>
 
         <div>
-          {/*  <img src={product?.imageUrl} alt={product?.name} />*/}
           <p>{product?.description}</p>
           <p>Preis: €{product?.price}</p>
           <p>Verfügbar: {product?.stockQuantity}</p>

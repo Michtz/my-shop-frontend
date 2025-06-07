@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import style from '@/styles/ProductCard.module.scss';
-import CartList from '@/app/components/section/CartList';
+import CartList from '@/app/components/section/cart/CartList';
 
 interface ProductCardProps {}
 const ProductCard: FC<ProductCardProps> = ({}) => {

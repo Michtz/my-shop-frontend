@@ -42,3 +42,25 @@ export const updateCartItem = async (
     throw e;
   }
 };
+
+export const replaceCartItems = async (
+  sessionId: string,
+  items: Array<{ productId: string; quantity: number }>,
+): Promise<any> => {
+  try {
+    const requestBody = {
+      items: items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+    };
+
+    return await axiosInstance.put(
+      `${cartApiUrl}/${sessionId}/items`,
+      requestBody,
+    );
+  } catch (e) {
+    Logger.error('Unable to replace cart items');
+    throw e;
+  }
+};

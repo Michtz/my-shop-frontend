@@ -16,7 +16,7 @@ import { CardContainer } from '@/app/components/system/Container';
 import useProducts from '@/hooks/useProducts';
 import { Product } from '@/hooks/useProduct';
 import { useRouter } from 'next/navigation';
-import AssetIcon from '@/app/components/system/AssetIocn';
+import AssetIcon from '@/app/components/system/AssetIcon';
 import CategoryNavigation from '@/app/components/system/CategoryNavigation';
 
 const LandingPage = () => {

@@ -1,13 +1,17 @@
 'use client';
 
-import { Typography, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { Container } from '@/app/components/system/Container';
 import useCart from '@/hooks/useCart';
+import CartListItem from '@/app/components/section/cart/CartListItem';
 
 const CartList = () => {
   const router = useRouter();
-  console.log(router);
+
+  const sessionTestId: string = 'sess_nrls9zo5e9076bl9vuw8zt';
+
+  const { cart, items, mutate } = useCart(sessionTestId);
+  // console.log(cart, items);
   // if (isLoading) {
   //   return (
   //     <Container>
@@ -30,14 +34,11 @@ const CartList = () => {
   };
 
   return (
-    <Container>
-      test
-      {/*{products?.map((product) => (*/}
-      {/*  <div key={product._id}>*/}
-      {/*    <h2>{product.name}</h2>*/}
-      {/*    <span>{product.description}</span>*/}
-      {/*  </div>*/}
-      {/*))}*/}
+    <Container flow={'column'}>
+      {items?.map((item: any) => (
+        <CartListItem key={item.productId} item={item} />
+      ))}
+      {cart?.total}
     </Container>
   );
 };
