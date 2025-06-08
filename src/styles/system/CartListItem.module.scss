@@ -1,7 +1,11 @@
 .cartItemContainer {
   background-color: transparent;
+  width: 100%;
   color: #5b5e64;
   margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
 }
 
 .productInfo {

@@ -8,7 +8,6 @@ import Accordion, {
   AccordionHeaderContainer,
   AccordionHeaderContent,
   AccordionHeaderExpandableIcon,
-  AccordionHeaderIcon,
   AccordionItemContainer,
 } from '@/app/components/system/Accordion';
 import MaterialIcon from '@/app/components/system/MaterialIcon';
@@ -81,28 +80,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
       setIsLoading(false);
     }
   };
-  //
-  // const handleQuantityChange = async (
-  //   productId: string,
-  //   newQuantity: number,
-  // ) => {
-  //   setIsLoading(true);
-  //   const updatedItems = items.map((cartItem: any) =>
-  //     cartItem.productId === productId
-  //       ? { ...cartItem, quantity: newQuantity }
-  //       : cartItem,
-  //   );
-  //
-  //   try {
-  //     await replaceCartItems(sessionTestId, updatedItems);
-  //     mutate();
-  //   } catch (error) {
-  //     console.error('Failed to update quantity:', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-  //
+
   const handleQuantityChange = async (
     productId: string,
     newQuantity: number,
@@ -146,7 +124,9 @@ const CartListItem: React.FC<CartListItemProp> = ({
             <div className={style.productDetails}>
               <div className={style.brand}>{item.product.brand || 'BRAND'}</div>
               <h3 className={style.productName}>{item.product.name}</h3>
-              <div className={style.unitPrice}>CHF {item.price.toFixed(2)}</div>
+              <div className={style.unitPrice}>
+                CHF {item.price.toFixed(2)}.-
+              </div>
             </div>
           </div>
           <AccordionHeaderButtonsContainer flexDirection={'row'}>
@@ -161,7 +141,9 @@ const CartListItem: React.FC<CartListItemProp> = ({
                 min={1}
                 max={99}
               />
-              <div className={style.totalPrice}>CHF {itemTotal.toFixed(2)}</div>
+              <div className={style.totalPrice}>
+                CHF {itemTotal.toFixed(2)}.-
+              </div>
             </div>
           </AccordionHeaderButtonsContainer>
         </AccordionHeaderContent>

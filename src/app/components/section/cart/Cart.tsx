@@ -8,7 +8,6 @@ interface ProductCardProps {}
 const ProductCard: FC<ProductCardProps> = ({}) => {
   return (
     <>
-      <h2>Warenkorb</h2>
       <CartList />
       <Footer />
     </>

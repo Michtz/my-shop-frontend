@@ -43,6 +43,7 @@ const Accordion: React.FC<AccordionProps> = ({
   expanded: propExpanded = false,
   onAccordionChange,
   children,
+  className,
   ...restProps
 }): React.ReactElement => {
   const [expanded, setExpanded] = React.useState<boolean>(propExpanded);
@@ -64,7 +65,11 @@ const Accordion: React.FC<AccordionProps> = ({
 
   return (
     <AccordionContext.Provider value={contextValue}>
-      <motion.div animate={expanded ? 'open' : 'closed'} initial={false}>
+      <motion.div
+        animate={expanded ? 'open' : 'closed'}
+        initial={false}
+        className={className}
+      >
         <div {...restProps} children={children} />
       </motion.div>
     </AccordionContext.Provider>
@@ -157,12 +162,12 @@ export const AccordionHeaderButtonsContainer: React.FC<
       arrow
       leaveDelay={200}
     >
-      <div
+      <span
         // style={{ display: 'flex', flexDirection: flexDirection }}
         onClick={handleClick}
       >
         {children}
-      </div>
+      </span>
     </Tooltip>
   );
 };

@@ -16,22 +16,8 @@ interface ContainerProps extends PropsWithChildren {
     | 'space-evenly';
 }
 
-export const Container: FC<ContainerProps> = ({
-  children,
-  flow = 'row',
-  alignItems = 'flex-start',
-  justifyContent = 'flex-start',
-}) => (
+export const Hr: FC<ContainerProps> = ({}) => (
   <div
-    data-flow={flow}
-    data-align-items={alignItems}
-    data-justify-content={justifyContent}
-    className={style.container}
-  >
-    {children}
-  </div>
-);
-
-export const CardContainer: FC<ContainerProps> = ({ children }) => (
-  <div className={style.cartContainer}>{children}</div>
+    style={{ height: '1px', backgroundColor: '#c3c3c3', width: '95%' }}
+  ></div>
 );
