@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Button from '@/app/components/system/Button';
 import style from '@/styles/checkout/CheckoutStep.module.scss';
 import { useCheckout } from '@/providers/checkout/CheckoutContextProvider';
+import { useRouter } from 'next/navigation';
 
 const ConfirmationStep: React.FC = () => {
+  const router = useRouter();
   const { checkoutData, prevStep, resetCheckout } = useCheckout();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderCompleted, setOrderCompleted] = useState(false);
@@ -27,6 +29,10 @@ const ConfirmationStep: React.FC = () => {
     }
   };
 
+  const handleHome = () => {
+    router.push('/');
+  };
+
   if (orderCompleted) {
     return (
       <div className={style.successContainer}>
@@ -36,7 +42,7 @@ const ConfirmationStep: React.FC = () => {
           Vielen Dank für Ihre Bestellung. Sie erhalten in Kürze eine
           Bestätigungs-E-Mail.
         </p>
-        <Button onClick={resetCheckout} variant="primary">
+        <Button onClick={handleHome} variant="primary">
           Neue Bestellung
         </Button>
       </div>

@@ -1,6 +1,8 @@
 import React from 'react';
 import style from '@/styles/CartSummaryContainer.module.scss';
 import Button from '@/app/components/system/Button';
+import { router } from 'next/client';
+import { useRouter } from 'next/navigation';
 
 interface CartSummaryProps {
   subtotal: number;
@@ -15,12 +17,15 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
   total,
   vatRate = 8.1,
 }) => {
+  const router = useRouter();
   // Calculate net total and VAT
   const netTotal = total / (1 + vatRate / 100);
   const vatAmount = total - netTotal;
 
   const handleStartCheckout = () => {
     console.log('start checkout ');
+
+    router.push(`/checkout`);
   };
 
   return (

@@ -49,12 +49,12 @@ const CheckoutContent: React.FC = () => {
         <div className={style.checkoutSteps}>{renderCurrentStep()}</div>
 
         <div className={style.checkoutSidebar}>
-          <CartSummary
-            subtotal={subtotal}
-            shipping={shipping}
-            total={total}
-            vatRate={8.1}
-          />
+          {/*<CartSummary*/}
+          {/*  subtotal={subtotal}*/}
+          {/*  shipping={shipping}*/}
+          {/*  total={total}*/}
+          {/*  vatRate={8.1}*/}
+          {/*/>*/}
         </div>
       </div>
     </div>
