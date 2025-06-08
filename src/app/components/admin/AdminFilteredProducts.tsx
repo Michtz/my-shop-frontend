@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAdminProducts } from '@/hooks/AdminContentProductProvider';
 import MaterialIcon from '@/app/components/system/MaterialIcon';
-import style from '@/styles/AdminProductFilters.module.scss';
+import style from '@/styles/admin/AdminProductFilters.module.scss';
 
 const AdminProductFilters: React.FC = () => {
   const { filters, setFilters, getCategories, getFilteredProducts, products } =

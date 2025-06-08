@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import MaterialIcon from '@/app/components/system/MaterialIcon';
-import style from '@/styles/Modal.module.scss';
+import style from '@/styles/system/Modal.module.scss';
 
 interface ModalProps {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Button, { ButtonContainer } from '@/app/components/system/Button';
 import MaterialIcon from '@/app/components/system/MaterialIcon';
-import style from '@/styles/ConfirmModal.module.scss';
+import style from '@/styles/modals/ConfirmModal.module.scss';
 import { useModalContent } from '@/hooks/ModalProvide';
 
 interface ConfirmModalProps {

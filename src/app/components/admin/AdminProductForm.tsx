@@ -7,7 +7,7 @@ import {
 } from '@/hooks/AdminContentProductProvider';
 import Button from '@/app/components/system/Button';
 import MaterialIcon from '@/app/components/system/MaterialIcon';
-import style from '@/styles/AdminProductForm.module.scss';
+import style from '@/styles/admin/AdminProductForm.module.scss';
 
 interface ProductFormProps {
   product?: Product | null;

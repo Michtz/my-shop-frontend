@@ -8,7 +8,7 @@ import {
 } from '@/hooks/AdminContentProductProvider';
 
 import Button from '@/app/components/system/Button';
-import style from '@/styles/AdminProducts.module.scss';
+import style from '@/styles/admin/AdminProduct.module.scss';
 import AdminProductForm from '@/app/components/admin/AdminProductForm';
 import AdminProductFilters from '@/app/components/admin/AdminFilteredProducts';
 import AdminProductList from '@/app/components/admin/AdminProductList';

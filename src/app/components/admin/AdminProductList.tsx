@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAdminProducts, Product } from '@/hooks/AdminContentProductProvider';
 import Button from '@/app/components/system/Button';
 import MaterialIcon from '@/app/components/system/MaterialIcon';
-import style from '@/styles/AdminProductList.module.scss';
+import style from '@/styles/admin/AdminProductList.module.scss';
 import { useModal } from '@/hooks/ModalProvide';
 import { createConfirmModal } from '@/app/components/modals/ConfirmModal';
 
