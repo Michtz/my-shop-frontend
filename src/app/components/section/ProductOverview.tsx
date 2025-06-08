@@ -7,6 +7,7 @@ import { replaceCartItems } from '@/requests/cart.request';
 import { useParams } from 'next/navigation';
 import { Params } from 'next/dist/server/request/params';
 import style from '@/styles/OverviewProduct.module.scss';
+import { log } from 'node:util';
 
 export const sessionTestId: string = 'sess_nrls9zo5e9076bl9vuw8zt';
 
@@ -23,18 +24,36 @@ const ProductOverview: FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(items);
 
-    const updatedItems = items.map((item: any) =>
-      item.productId === params.id
-        ? { ...item, quantity: item.quantity + 1 }
-        : item,
+    // Check if item already exists in cart
+    const existingItem = items.find(
+      (item: any) => item.productId === params.id,
     );
 
-    try {
-      const test = await replaceCartItems(sessionTestId, updatedItems);
-      console.log(test);
+    let updatedItems;
 
+    if (existingItem) {
+      // Item exists - update quantity
+      updatedItems = items.map((item: any) =>
+        item.productId === params.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      );
+    } else {
+      // Item doesn't exist - add new item
+      const newItem = {
+        productId: params.id,
+        quantity: 1,
+        // Add other required fields if needed
+        product: product, // or just the necessary product data
+      };
+
+      updatedItems = [...items, newItem];
+    }
+
+    try {
+      const result = await replaceCartItems(sessionTestId, updatedItems);
+      console.log('Cart updated:', result);
       mutate();
     } catch (error) {
       console.error('Failed to update cart:', error);

@@ -135,11 +135,17 @@ export const AccordionHeaderExpandableIcon: React.FC<PropsWithChildren> = ({
 interface AccordionHeaderButtonsContainerProps extends PropsWithChildren {
   tooltip?: string;
   tooltipPlacement?: 'top' | 'bottom' | 'left' | 'right';
+  flexDirection?: 'row' | 'column';
 }
 
 export const AccordionHeaderButtonsContainer: React.FC<
   AccordionHeaderButtonsContainerProps
-> = ({ children, tooltip, tooltipPlacement = 'left' }) => {
+> = ({
+  children,
+  tooltip,
+  tooltipPlacement = 'left',
+  flexDirection = 'column',
+}) => {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.stopPropagation(); // Prevent the click from bubbling up to the header
   };
@@ -151,7 +157,12 @@ export const AccordionHeaderButtonsContainer: React.FC<
       arrow
       leaveDelay={200}
     >
-      <div onClick={handleClick}>{children}</div>
+      <div
+        // style={{ display: 'flex', flexDirection: flexDirection }}
+        onClick={handleClick}
+      >
+        {children}
+      </div>
     </Tooltip>
   );
 };

@@ -36,7 +36,13 @@ const CartList = () => {
   return (
     <Container flow={'column'}>
       {items?.map((item: any) => (
-        <CartListItem key={item.productId} item={item} />
+        <CartListItem
+          key={item.productId}
+          item={item}
+          items={items}
+          sessionTestId={sessionTestId}
+          mutate={mutate}
+        />
       ))}
       {cart?.total}
     </Container>

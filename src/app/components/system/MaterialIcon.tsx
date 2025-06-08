@@ -14,7 +14,7 @@ interface MaterialIconProps extends HTMLProps<HTMLSpanElement> {
 }
 
 const MaterialIcon: React.FC<MaterialIconProps> = ({
-  outlined = false,
+  outlined = true,
   clickable = false,
   href,
   icon,
