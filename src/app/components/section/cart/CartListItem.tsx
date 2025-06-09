@@ -114,11 +114,11 @@ const CartListItem: React.FC<CartListItemProp> = ({
         <AccordionHeaderContent>
           <div className={style.productInfo}>
             <div className={style.productImage}>
-              {/*<img*/}
-              {/*  src={item.product.image || '/placeholder-image.jpg'}*/}
-              {/*  alt={item.product.name}*/}
-              {/*/>*/}
-              <div style={{ backgroundColor: 'green', height: '80px' }} />
+              <img
+                src={item.product.imageUrl || '/placeholder-image.jpg'}
+                alt={item.product.name}
+              />
+              {/*<div style={{ backgroundColor: 'green', height: '80px' }} />*/}
             </div>
 
             <div className={style.productDetails}>
