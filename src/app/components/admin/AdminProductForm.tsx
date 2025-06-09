@@ -15,7 +15,8 @@ interface ProductFormProps {
   onSuccess: () => void;
 }
 
-const CATEGORIES = ['Kaffee', 'Maschinen', 'Getränke', 'Zubehör', 'Süßwaren'];
+// todo add missing
+const CATEGORIES = ['Tamper', 'Milchkannen', 'Tools', 'Kaffee Tassen', 'Waage'];
 
 const AdminProductForm: React.FC<ProductFormProps> = ({
   product,

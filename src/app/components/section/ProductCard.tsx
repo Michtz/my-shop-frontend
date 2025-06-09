@@ -9,6 +9,7 @@ interface ProductCardProps {
 }
 const ProductCard: FC<ProductCardProps> = ({ image, description, title }) => (
   <div className={style.cardContainer}>
+    <img src={image} />
     <h1>{title}</h1>
     <div>{description}</div>
     <hr />

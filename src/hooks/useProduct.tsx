@@ -1,51 +1,45 @@
 'use client';
 
-import useSWR, { SWRResponse } from 'swr';
+import useSWR, { mutate } from 'swr';
 import { getProduct } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
-import { useParams, useRouter } from 'next/navigation';
-import { Params } from 'next/dist/server/request/params';
-import { getCart } from '@/requests/cart.request';
+import { useParams } from 'next/navigation';
+import { IProduct, ProductResponse } from '@/types/product.types';
 
-export interface Product {
-  _id: string;
-  name?: string;
-  price: number;
-  stockQuantity?: number;
-  description?: string;
-
-  quantity?: number;
-  productInfo?: any;
-  productId?: string;
-}
-
-interface ProductAPIResponse {
-  success: boolean;
-  data: Product;
-}
-
-interface ProductResponse {
-  product: Product | null;
+export interface SingleProductResponse {
+  product: IProduct | null;
   isLoading: boolean;
   error: string | null;
+  refreshProduct: () => void;
 }
 
-const useProduct = (): ProductResponse => {
-  const params: Params = useParams();
+const useProduct = (): SingleProductResponse => {
+  const params = useParams();
   const uuid = params?.id as string;
 
-  const { data, error, isLoading } = useSWR<ProductAPIResponse, RequestError>(
+  const { data, error, isLoading } = useSWR<ProductResponse, RequestError>(
     uuid,
-    getProduct,
-    {
-      suspense: false,
-    },
+    () => getProduct(uuid),
+    { suspense: false },
   );
 
+  const refreshProduct = () => {
+    mutate(uuid);
+  };
+
+  const extractProduct = (): IProduct | null => {
+    if (!data || !data.success || !data.data) return null;
+    return Array.isArray(data.data) ? data.data[0] : data.data;
+  };
+
   return {
-    product: data?.data || null,
+    product: extractProduct(),
     isLoading,
-    error: error?.message ? error.message : null,
+    error:
+      error?.message ||
+      (data && !data.success ? data.error || 'Unknown error' : null),
+    refreshProduct,
   };
 };
+
 export default useProduct;

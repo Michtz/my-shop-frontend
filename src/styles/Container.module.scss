@@ -1,7 +1,10 @@
 .container {
   display: flex;
   width: 100%;
-  padding: 2rem;
+
+  &[data-padding='true'] {
+    padding: 2rem;
+  }
 
   &[data-flow='column'] {
     flex-direction: column;

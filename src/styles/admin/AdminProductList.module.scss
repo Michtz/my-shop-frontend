@@ -66,9 +66,12 @@
 .sortableHeader {
   cursor: pointer;
   user-select: none;
-  display: flex;
   align-items: center;
   gap: 4px;
+
+  .span {
+    display: flex;
+  }
 
   &:hover {
     color: #3b82f6;

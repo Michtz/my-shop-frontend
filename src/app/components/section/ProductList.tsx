@@ -13,21 +13,19 @@ import useProducts from '@/hooks/useProducts';
 import { useEffect, useState } from 'react';
 import { UseCreateCartProps } from '@/hooks/useCreateCart';
 import useCart from '@/hooks/useCart';
-import { Product } from '@/hooks/useProduct';
+import { IProduct } from '@/types/product.types';
 
 const ProductList = () => {
   const { products, isLoading, error } = useProducts();
   const router = useRouter();
-  const [articles, setArticles] = useState<Product[]>(products);
+  const [articles, setArticles] = useState<IProduct[]>(products);
 
-  console.log(products, isLoading);
   // useEffect(() => {
   //   if (products) {
   //     setArticles(products);
   //   }
   // }, [products]);
   if (isLoading) {
-    console.log('tst');
     return (
       <Container>
         <CircularProgress />
@@ -51,6 +49,7 @@ const ProductList = () => {
     <Container>
       <Grid container spacing={3}>
         {articles?.map((product) => {
+          console.log(product?.imageUrl);
           return (
             <Grid
               item

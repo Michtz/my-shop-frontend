@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAdminProducts, Product } from '@/hooks/AdminContentProductProvider';
 import Button from '@/app/components/system/Button';
 import MaterialIcon from '@/app/components/system/MaterialIcon';
 import style from '@/styles/admin/AdminProductList.module.scss';
 import { useModal } from '@/hooks/ModalProvide';
 import { createConfirmModal } from '@/app/components/modals/ConfirmModal';
+import useProducts from '@/hooks/useProducts';
+import { Container } from '@/app/components/system/Container';
 
 interface ProductListProps {
   onEditProduct: (product: Product) => void;
@@ -17,23 +19,29 @@ const AdminProductList: React.FC<ProductListProps> = ({
 }) => {
   const {
     getFilteredProducts,
-    selectedProducts,
-    setSelectedProducts,
+
     deleteProduct,
     bulkDelete,
-    isLoading,
+    // isLoading,
     filters,
     setFilters,
   } = useAdminProducts();
-
+  const { products, isLoading, error } = useProducts();
   const { awaitModalResult } = useModal();
-  const [sortColumn, setSortColumn] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [sortProducts, setSortProducts] = useState<Product[]>(products);
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
-  const products = getFilteredProducts();
+  useEffect(() => {
+    setSortProducts(products);
+  }, [products]);
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedProducts(products.map((p) => p._id));
+      const allProductIds: string[] = products.map((product) => product._id);
+
+      console.log(allProductIds);
+      setSelectedProducts(allProductIds);
     } else {
       setSelectedProducts([]);
     }
@@ -41,6 +49,7 @@ const AdminProductList: React.FC<ProductListProps> = ({
 
   const handleSelectProduct = (productId: string, checked: boolean) => {
     if (checked) {
+      console.log(selectedProducts);
       setSelectedProducts((prev: string[]) => [...prev, productId]);
     } else {
       setSelectedProducts((prev: string[]) =>
@@ -64,26 +73,33 @@ const AdminProductList: React.FC<ProductListProps> = ({
       await deleteProduct(product._id);
     }
   };
-
-  const handleBulkDelete = async () => {
-    const confirmed = await awaitModalResult(
-      createConfirmModal(
-        'Produkte löschen',
-        `Möchten Sie ${selectedProducts.length} Produkte wirklich löschen?`,
-        { variant: 'error', confirmText: 'Alle löschen' },
-      ),
-    );
-
-    if (confirmed) {
-      await bulkDelete(selectedProducts);
-    }
-  };
+  //
+  // const handleBulkDelete = async () => {
+  //   const confirmed = await awaitModalResult(
+  //     createConfirmModal(
+  //       'Produkte löschen',
+  //       `Möchten Sie ${selectedProducts.length} Produkte wirklich löschen?`,
+  //       { variant: 'error', confirmText: 'Alle löschen' },
+  //     ),
+  //   );
+  //
+  //   if (confirmed) {
+  //     await bulkDelete(selectedProducts);
+  //   }
+  // };
 
   const handleSort = (column: string) => {
-    const newOrder =
-      filters.sortBy === column && filters.sortOrder === 'asc' ? 'desc' : 'asc';
-    setFilters({ sortBy: column as any, sortOrder: newOrder });
-    setSortColumn(column);
+    const sorted: Product[] = [...products].sort((a, b) => {
+      const aVal = (a as Record<string, any>)[column];
+      const bVal = (b as Record<string, any>)[column];
+
+      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    setSortProducts(sorted);
+    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
   };
 
   const getSortIcon = (column: string) => {
@@ -105,19 +121,22 @@ const AdminProductList: React.FC<ProductListProps> = ({
         <div className={style.headerActions}>
           <h2>Produkte ({products.length})</h2>
           <div className={style.actionButtons}>
-            {selectedProducts.length > 0 && (
-              <Button
-                variant="error"
-                icon="delete"
-                onClick={handleBulkDelete}
-                disabled={isLoading}
-              >
-                {selectedProducts.length} löschen
-              </Button>
-            )}
-            <Button variant="primary" icon="add" onClick={onCreateProduct}>
-              Neues Produkt
-            </Button>
+            {/*{selectedProducts.length > 0 && (*/}
+            {/*  <Button*/}
+            {/*    variant="error"*/}
+            {/*    icon="delete"*/}
+            {/*    onClick={handleBulkDelete}*/}
+            {/*    disabled={isLoading}*/}
+            {/*  >*/}
+            {/*    {selectedProducts.length} löschen*/}
+            {/*  </Button>*/}
+            {/*)}*/}
+            <Button
+              variant="primary"
+              icon="add"
+              appearance={'icon'}
+              onClick={onCreateProduct}
+            ></Button>
           </div>
         </div>
       </div>
@@ -136,50 +155,59 @@ const AdminProductList: React.FC<ProductListProps> = ({
                   onChange={(e) => handleSelectAll(e.target.checked)}
                 />
               </th>
-              <th>Bild</th>
+              <th>
+                <span>Bild</span>
+              </th>
               <th
                 className={style.sortableHeader}
                 onClick={() => handleSort('name')}
               >
-                Name
-                <MaterialIcon icon={getSortIcon('name')} iconSize="small" />
+                <Container padding={false}>
+                  Name
+                  <MaterialIcon icon={getSortIcon('name')} iconSize="small" />
+                </Container>
               </th>
               <th>Kategorie</th>
               <th
                 className={style.sortableHeader}
                 onClick={() => handleSort('price')}
               >
-                Preis
-                <MaterialIcon icon={getSortIcon('price')} iconSize="small" />
+                <Container padding={false}>
+                  Preis
+                  <MaterialIcon icon={getSortIcon('price')} iconSize="small" />
+                </Container>
               </th>
               <th
                 className={style.sortableHeader}
                 onClick={() => handleSort('stockQuantity')}
               >
-                Lager
-                <MaterialIcon
-                  icon={getSortIcon('stockQuantity')}
-                  iconSize="small"
-                />
+                <Container padding={false}>
+                  Lager
+                  <MaterialIcon
+                    icon={getSortIcon('stockQuantity')}
+                    iconSize="small"
+                  />
+                </Container>
               </th>
               <th>Status</th>
               <th
                 className={style.sortableHeader}
                 onClick={() => handleSort('lastUpdated')}
               >
-                Zuletzt aktualisiert
-                <MaterialIcon
-                  icon={getSortIcon('lastUpdated')}
-                  iconSize="small"
-                />
+                <Container padding={false}>
+                  Zuletzt aktualisiert
+                  <MaterialIcon
+                    icon={getSortIcon('lastUpdated')}
+                    iconSize="small"
+                  />
+                </Container>
               </th>
               <th>Aktionen</th>
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => {
+            {sortProducts.map((product) => {
               const stockStatus = getStockStatus(product.stockQuantity);
-
               return (
                 <tr key={product._id} className={style.productRow}>
                   <td className={style.checkboxCell}>
@@ -192,56 +220,71 @@ const AdminProductList: React.FC<ProductListProps> = ({
                     />
                   </td>
                   <td className={style.imageCell}>
-                    <div className={style.productImage}>
-                      {product.image ? (
-                        <img src={product.image} alt={product.name} />
-                      ) : (
-                        <div className={style.imagePlaceholder}>
-                          <MaterialIcon icon="image" />
+                    {/*<div className={style.productImage}>*/}
+                    {/*  {product?.image ? (*/}
+                    {/*    <img src={product.image} alt={product.name} />*/}
+                    {/*  ) : (*/}
+                    {/*    <div className={style.imagePlaceholder}>*/}
+                    {/*      <MaterialIcon icon="image" />*/}
+                    {/*    </div>*/}
+                    {/*  )}*/}
+                    {/*</div>*/}
+                  </td>
+                  {product.name && (
+                    <td className={style.nameCell}>
+                      <div>
+                        <div className={style.productName}>{product.name}</div>
+                        <div className={style.productDescription}>
+                          {product.description &&
+                          product?.description.length > 60
+                            ? `${product.description.substring(0, 60)}...`
+                            : product.description}
                         </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className={style.nameCell}>
-                    <div>
-                      <div className={style.productName}>{product.name}</div>
-                      <div className={style.productDescription}>
-                        {product.description.length > 60
-                          ? `${product.description.substring(0, 60)}...`
-                          : product.description}
                       </div>
-                    </div>
-                  </td>
-                  <td>
-                    <span className={style.categoryBadge}>
-                      {product.category}
-                    </span>
-                  </td>
-                  <td className={style.priceCell}>
-                    CHF {product.price.toFixed(2)}
-                  </td>
-                  <td className={style.stockCell}>
-                    <div className={style.stockInfo}>
-                      <span className={style.stockNumber}>
-                        {product.stockQuantity}
+                    </td>
+                  )}
+                  {product.category && (
+                    <td>
+                      <span className={style.categoryBadge}>
+                        {product.category}
                       </span>
+                    </td>
+                  )}
+                  {product.price && (
+                    <td className={style.priceCell}>
+                      CHF {product.price.toFixed(2)}
+                    </td>
+                  )}
+                  {product.stockQuantity && (
+                    <td className={style.stockCell}>
+                      <div className={style.stockInfo}>
+                        <span className={style.stockNumber}>
+                          {product.stockQuantity}
+                        </span>
+                        <span
+                          className={`${style.stockStatus} ${style[stockStatus.class]}`}
+                        >
+                          {stockStatus.text}
+                        </span>
+                      </div>
+                    </td>
+                  )}
+                  {product.isActive && (
+                    <td>
                       <span
-                        className={`${style.stockStatus} ${style[stockStatus.class]}`}
+                        className={`${style.statusBadge} ${product.isActive ? style.active : style.inactive}`}
                       >
-                        {stockStatus.text}
+                        {product.isActive ? 'Aktiv' : 'Inaktiv'}
                       </span>
-                    </div>
-                  </td>
-                  <td>
-                    <span
-                      className={`${style.statusBadge} ${product.isActive ? style.active : style.inactive}`}
-                    >
-                      {product.isActive ? 'Aktiv' : 'Inaktiv'}
-                    </span>
-                  </td>
-                  <td className={style.dateCell}>
-                    {new Date(product.lastUpdated).toLocaleDateString('de-CH')}
-                  </td>
+                    </td>
+                  )}
+                  {product.lastUpdated && (
+                    <td className={style.dateCell}>
+                      {new Date(product.lastUpdated).toLocaleDateString(
+                        'de-CH',
+                      )}
+                    </td>
+                  )}
                   <td className={style.actionsCell}>
                     <div className={style.actionButtons}>
                       <Button

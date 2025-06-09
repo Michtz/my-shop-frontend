@@ -1,45 +1,44 @@
 'use client';
 
-import useSWR, { SWRResponse } from 'swr';
+import useSWR, { mutate } from 'swr';
 import { getProducts } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
-
-interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  stockQuantity: number;
-  description?: string;
-}
-
-interface ProductsAPIResponse {
-  success: boolean;
-  data: Product[];
-}
+import {
+  IProduct,
+  ProductResponse,
+  ProductFilters,
+} from '@/types/product.types';
 
 interface ProductsResponse {
-  products: Product[] | [];
+  products: IProduct[];
   isLoading: boolean;
   error: string | null;
+  refreshProducts: () => void;
 }
 
-const useProducts = (): ProductsResponse => {
-  const {
-    data,
-    error,
-    isLoading,
-  }: SWRResponse<ProductsAPIResponse, RequestError> = useSWR(
-    'products',
-    getProducts,
-    {
-      suspense: false,
-    },
+const useProducts = (filters?: ProductFilters): ProductsResponse => {
+  const { data, error, isLoading } = useSWR<ProductResponse, RequestError>(
+    filters ? ['products', filters] : 'products',
+    () => getProducts(filters),
+    { suspense: false },
   );
 
+  const refreshProducts = () => {
+    mutate(filters ? ['products', filters] : 'products');
+  };
+
+  const extractProducts = (): IProduct[] => {
+    if (!data || !data.success || !data.data) return [];
+    return Array.isArray(data.data) ? data.data : [data.data];
+  };
+
   return {
-    products: data?.data || [],
+    products: extractProducts(),
     isLoading,
-    error: error?.message ? error.message : null,
+    error:
+      error?.message ||
+      (data && !data.success ? data.error || 'Unknown error' : null),
+    refreshProducts,
   };
 };
 

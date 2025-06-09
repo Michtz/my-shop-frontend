@@ -14,10 +14,10 @@ import {
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import { CardContainer } from '@/app/components/system/Container';
 import useProducts from '@/hooks/useProducts';
-import { Product } from '@/hooks/useProduct';
 import { useRouter } from 'next/navigation';
-import AssetIcon from '@/app/components/system/AssetIcon';
 import CategoryNavigation from '@/app/components/system/CategoryNavigation';
+import { getProducts } from '@/requests/products.request';
+import { IProduct } from '@/types/product.types';
 
 const LandingPage = () => {
   const { products, isLoading, error } = useProducts();
@@ -27,6 +27,10 @@ const LandingPage = () => {
     height: '400px',
   };
 
+  const handletest = async () => {
+    const test = getProducts();
+    console.log(test);
+  };
   const imageStyle: CSSProperties = {
     height: '400px',
     objectFit: 'cover',
@@ -85,7 +89,7 @@ const LandingPage = () => {
     label: `nav ${key}`,
   }));
 
-  const handleAddToCart = (e: any, product: Product) => {
+  const handleAddToCart = (e: any, product: IProduct) => {
     e.stopPropagation();
     console.log('handleAddToCart', product.name);
   };
@@ -94,9 +98,8 @@ const LandingPage = () => {
     console.log('handleAddToCart');
   };
 
-  const handleCardClick = (product: Product) => {
+  const handleCardClick = (product: IProduct) => {
     router.push(`/products/${product._id}`);
-    console.log('Card clicked for product:', product.name);
   };
 
   return (
@@ -120,7 +123,7 @@ const LandingPage = () => {
         </IconButton>
       </Header>
       <Carousel autoplay autoplaySpeed={5000} dots>
-        {products.map((product: Product) => (
+        {products.map((product: IProduct) => (
           <div key={product._id}>
             <div style={carouselContentStyle}>
               <Image
@@ -138,7 +141,7 @@ const LandingPage = () => {
       </Carousel>
       <CategoryNavigation />
       <CardContainer>
-        {products.map((product) => {
+        {products.map((product: IProduct) => {
           return (
             <div
               key={product._id}
@@ -148,7 +151,7 @@ const LandingPage = () => {
               <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
                   sx={{ height: 140 }}
-                  image="/static/images/cards/contemplative-reptile.jpg"
+                  image={product.imageUrl}
                   title={product.name}
                 />
                 <CardContent>

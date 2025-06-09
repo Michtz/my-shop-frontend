@@ -62,20 +62,18 @@ const AdminProductsContent: React.FC = () => {
 
   return (
     <div className={style.adminContainer}>
-      <div className={style.pageHeader}>
-        <div className={style.headerContent}>
-          <div>
-            <h1>Produktverwaltung</h1>
-            <p>Verwalten Sie Ihr Produktsortiment</p>
-          </div>
-          <Button variant="primary" icon="add" onClick={handleCreateProduct}>
-            Neues Produkt
-          </Button>
-        </div>
-      </div>
-
-      <AdminProductFilters />
-
+      {/*<div className={style.pageHeader}>*/}
+      {/*  <div className={style.headerContent}>*/}
+      {/*    <div>*/}
+      {/*      <h1>Produktverwaltung</h1>*/}
+      {/*      <p>Verwalten Sie Ihr Produktsortiment</p>*/}
+      {/*    </div>*/}
+      {/*    <Button variant="primary" icon="add" onClick={handleCreateProduct}>*/}
+      {/*      Neues Produkt*/}
+      {/*    </Button>*/}
+      {/*  </div>*/}
+      {/*</div>*/}
+      {/*<AdminProductFilters />*/}
       <AdminProductList
         onEditProduct={handleEditProduct}
         onCreateProduct={handleCreateProduct}

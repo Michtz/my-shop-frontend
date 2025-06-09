@@ -2,6 +2,7 @@
 
 import { FC, PropsWithChildren, ReactNode } from 'react';
 import style from '@/styles/Container.module.scss';
+import { padding } from '@mui/system';
 
 interface ContainerProps extends PropsWithChildren {
   children?: ReactNode;
@@ -14,6 +15,7 @@ interface ContainerProps extends PropsWithChildren {
     | 'space-between'
     | 'space-around'
     | 'space-evenly';
+  padding?: boolean;
 }
 
 export const Container: FC<ContainerProps> = ({
@@ -21,11 +23,13 @@ export const Container: FC<ContainerProps> = ({
   flow = 'row',
   alignItems = 'flex-start',
   justifyContent = 'flex-start',
+  padding = true,
 }) => (
   <div
     data-flow={flow}
     data-align-items={alignItems}
     data-justify-content={justifyContent}
+    data-padding={padding}
     className={style.container}
   >
     {children}

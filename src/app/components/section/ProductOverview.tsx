@@ -16,7 +16,7 @@ const ProductOverview: FC = () => {
   const { cart, items, mutate } = useCart(sessionTestId);
   const params: Params = useParams();
 
-  console.log(params);
+  console.log(product);
 
   useEffect(() => {
     console.log(cart, items);
@@ -72,7 +72,7 @@ const ProductOverview: FC = () => {
           width="300"
           height={'auto'}
           loading="lazy"
-          src="https://www.espresso-factory.ch/WebRoot/Store/Shops/168527/623C/4066/C453/842C/FF53/0A01/080E/9E68/BiancaV3_ml.png"
+          src={product?.imageUrl}
         />
       </span>
       <span className={style.textContainer}>
