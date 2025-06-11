@@ -14,6 +14,8 @@ import AdminProductFilters from '@/app/components/admin/AdminFilteredProducts';
 import AdminProductList from '@/app/components/admin/AdminProductList';
 import { Container } from '@/app/components/system/Container';
 import { ModalProvider } from '@/hooks/ModalProvide';
+import ProductForm from '@/app/components/admin/ProductFormComponent';
+import Feedback from '@/app/components/system/Feedback';
 
 const AdminProductsContent: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
@@ -78,6 +80,8 @@ const AdminProductsContent: React.FC = () => {
         onEditProduct={handleEditProduct}
         onCreateProduct={handleCreateProduct}
       />
+      <ProductForm />
+      <Feedback />
     </div>
   );
 };

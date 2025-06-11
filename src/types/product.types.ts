@@ -12,6 +12,14 @@ export interface IProduct {
   updatedAt: string;
 }
 
+// export interface UpdateProductRequest extends Partial<CreateProductRequest> {}
+//
+// export interface ProductResponse {
+//   success: boolean;
+//   data?: IProduct | IProduct[];
+//   error?: string;
+// }
+
 export interface ProductResponse {
   success: boolean;
   data?: IProduct[] | null;

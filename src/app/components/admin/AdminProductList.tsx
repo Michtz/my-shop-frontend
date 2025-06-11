@@ -7,6 +7,7 @@ import { useModal } from '@/hooks/ModalProvide';
 import { createConfirmModal } from '@/app/components/modals/ConfirmModal';
 import useProducts from '@/hooks/useProducts';
 import { Container } from '@/app/components/system/Container';
+import { IProduct } from '@/types/product.types';
 
 interface ProductListProps {
   onEditProduct: (product: Product) => void;
@@ -29,7 +30,7 @@ const AdminProductList: React.FC<ProductListProps> = ({
   const { products, isLoading, error } = useProducts();
   const { awaitModalResult } = useModal();
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-  const [sortProducts, setSortProducts] = useState<Product[]>(products);
+  const [sortProducts, setSortProducts] = useState<IProduct[]>(products);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
   useEffect(() => {

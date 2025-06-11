@@ -1,5 +1,8 @@
+import Button from '@/app/components/system/Button';
+import useProducts from '@/hooks/useProducts';
+import { createProduct } from '@/requests/products.request';
+
 const CreateProductForm = () => {
-  const { createProduct, isCreating } = useProducts();
   const {
     imageState,
     selectImage,
@@ -122,7 +125,6 @@ const CreateProductForm = () => {
           )}
         </div>
 
-        {/* Hidden File Input */}
         <input
           ref={fileInputRef}
           type="file"
@@ -131,16 +133,14 @@ const CreateProductForm = () => {
           style={{ display: 'none' }}
         />
 
-        {/* Error Display */}
         {imageState.error && (
           <div className="error-message">{imageState.error}</div>
         )}
       </div>
 
-      {/* Submit Button */}
-      <button type="submit" disabled={isCreating || !imageState.isValid}>
+      <Button type="submit" disabled={isCreating || !imageState.isValid}>
         {isCreating ? 'Creating Product...' : 'Create Product'}
-      </button>
+      </Button>
     </form>
   );
 };
