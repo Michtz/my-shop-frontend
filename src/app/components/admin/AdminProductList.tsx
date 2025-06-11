@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAdminProducts, Product } from '@/hooks/AdminContentProductProvider';
-import Button from '@/app/components/system/Button';
+import Button, { ButtonContainer } from '@/app/components/system/Button';
 import MaterialIcon from '@/app/components/system/MaterialIcon';
 import style from '@/styles/admin/AdminProductList.module.scss';
 import { useModal } from '@/hooks/ModalProvide';
@@ -8,6 +8,8 @@ import { createConfirmModal } from '@/app/components/modals/ConfirmModal';
 import useProducts from '@/hooks/useProducts';
 import { Container } from '@/app/components/system/Container';
 import { IProduct } from '@/types/product.types';
+import { deleteProduct } from '@/requests/products.request';
+import { useFeedback } from '@/hooks/FeedbackHook';
 
 interface ProductListProps {
   onEditProduct: (product: Product) => void;
@@ -20,8 +22,6 @@ const AdminProductList: React.FC<ProductListProps> = ({
 }) => {
   const {
     getFilteredProducts,
-
-    deleteProduct,
     bulkDelete,
     // isLoading,
     filters,
@@ -29,6 +29,7 @@ const AdminProductList: React.FC<ProductListProps> = ({
   } = useAdminProducts();
   const { products, isLoading, error } = useProducts();
   const { awaitModalResult } = useModal();
+  const { showFeedback } = useFeedback();
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [sortProducts, setSortProducts] = useState<IProduct[]>(products);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
@@ -60,37 +61,28 @@ const AdminProductList: React.FC<ProductListProps> = ({
   };
 
   const handleDeleteProduct = async (product: Product) => {
-    const confirmed = await awaitModalResult(
-      createConfirmModal(
-        'Produkt löschen',
-        <>
-          Möchten Sie <strong>{product.name}</strong> wirklich löschen?
-        </>,
-        { variant: 'error', confirmText: 'Löschen' },
-      ),
-    );
+    try {
+      const confirmed = await awaitModalResult(
+        createConfirmModal(
+          'Produkt löschen',
+          <>
+            Möchten Sie <strong>{product.name}</strong> wirklich löschen?
+          </>,
+          { confirmText: 'Löschen' },
+        ),
+      );
 
-    if (confirmed) {
+      if (!confirmed) return;
       await deleteProduct(product._id);
+
+      showFeedback('feedback.data-saved-success', 'success');
+    } catch (e) {
+      showFeedback('feedback.data-saved-error', 'error');
     }
   };
-  //
-  // const handleBulkDelete = async () => {
-  //   const confirmed = await awaitModalResult(
-  //     createConfirmModal(
-  //       'Produkte löschen',
-  //       `Möchten Sie ${selectedProducts.length} Produkte wirklich löschen?`,
-  //       { variant: 'error', confirmText: 'Alle löschen' },
-  //     ),
-  //   );
-  //
-  //   if (confirmed) {
-  //     await bulkDelete(selectedProducts);
-  //   }
-  // };
 
   const handleSort = (column: string) => {
-    const sorted: Product[] = [...products].sort((a, b) => {
+    const sorted: IProduct[] = [...products].sort((a, b) => {
       const aVal = (a as Record<string, any>)[column];
       const bVal = (b as Record<string, any>)[column];
 
@@ -121,24 +113,14 @@ const AdminProductList: React.FC<ProductListProps> = ({
       <div className={style.listHeader}>
         <div className={style.headerActions}>
           <h2>Produkte ({products.length})</h2>
-          <div className={style.actionButtons}>
-            {/*{selectedProducts.length > 0 && (*/}
-            {/*  <Button*/}
-            {/*    variant="error"*/}
-            {/*    icon="delete"*/}
-            {/*    onClick={handleBulkDelete}*/}
-            {/*    disabled={isLoading}*/}
-            {/*  >*/}
-            {/*    {selectedProducts.length} löschen*/}
-            {/*  </Button>*/}
-            {/*)}*/}
+          <ButtonContainer>
             <Button
               variant="primary"
               icon="add"
               appearance={'icon'}
               onClick={onCreateProduct}
-            ></Button>
-          </div>
+            />
+          </ButtonContainer>
         </div>
       </div>
 
@@ -221,15 +203,15 @@ const AdminProductList: React.FC<ProductListProps> = ({
                     />
                   </td>
                   <td className={style.imageCell}>
-                    {/*<div className={style.productImage}>*/}
-                    {/*  {product?.image ? (*/}
-                    {/*    <img src={product.image} alt={product.name} />*/}
-                    {/*  ) : (*/}
-                    {/*    <div className={style.imagePlaceholder}>*/}
-                    {/*      <MaterialIcon icon="image" />*/}
-                    {/*    </div>*/}
-                    {/*  )}*/}
-                    {/*</div>*/}
+                    <div className={style.productImage}>
+                      {product?.imageUrl ? (
+                        <img src={product.imageUrl} alt={product.name} />
+                      ) : (
+                        <div className={style.imagePlaceholder}>
+                          <MaterialIcon icon="image" />
+                        </div>
+                      )}
+                    </div>
                   </td>
                   {product.name && (
                     <td className={style.nameCell}>

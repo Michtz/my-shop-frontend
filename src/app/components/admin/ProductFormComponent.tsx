@@ -140,7 +140,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSuccess, onCancel }) => {
       const response = await createProduct(productData, imageFile || undefined);
       console.log(response);
 
-      reset();
+      //   reset();
       setImageFile(null);
       setImagePreview(null);
       showFeedback('feedback.data-saved-success', 'success');

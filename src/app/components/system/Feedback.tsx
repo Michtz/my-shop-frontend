@@ -10,7 +10,7 @@ const Feedback: React.FC = React.memo(() => {
 
   return (
     <section className={styles.feedbackContainer} data-variant={variant}>
-      <MaterialIcon icon={'check'} />
+      <MaterialIcon icon={'check'} color={'white'} />
       <div className={styles.feedbackContent}>{label}</div>
     </section>
   );
