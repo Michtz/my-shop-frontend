@@ -1,48 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import { useAdminProducts, Product } from '@/hooks/AdminContentProductProvider';
-import Button, { ButtonContainer } from '@/app/components/system/Button';
-import MaterialIcon from '@/app/components/system/MaterialIcon';
-import style from '@/styles/admin/AdminProductList.module.scss';
+import React, { useState, useMemo } from 'react';
 import { useModal } from '@/hooks/ModalProvide';
 import { createConfirmModal } from '@/app/components/modals/ConfirmModal';
 import useProducts from '@/hooks/useProducts';
-import { Container } from '@/app/components/system/Container';
-import { IProduct } from '@/types/product.types';
 import { deleteProduct } from '@/requests/products.request';
 import { useFeedback } from '@/hooks/FeedbackHook';
+import { IProduct } from '@/types/product.types';
+import style from '@/styles/admin/AdminProductList.module.scss';
+import { ProductListHeader } from './ProductListHeader';
+import { ProductTable } from './ProductTable';
+import { EmptyState } from './EmptyState';
 
-interface ProductListProps {
-  onEditProduct: (product: Product) => void;
+interface AdminProductListProps {
+  onEditProduct: (product: IProduct) => void;
   onCreateProduct: () => void;
 }
 
-const AdminProductList: React.FC<ProductListProps> = ({
+const AdminProductList: React.FC<AdminProductListProps> = ({
   onEditProduct,
   onCreateProduct,
 }) => {
-  const {
-    getFilteredProducts,
-    bulkDelete,
-    // isLoading,
-    filters,
-    setFilters,
-  } = useAdminProducts();
-  const { products, isLoading, error } = useProducts();
+  const { products, isLoading, error, refreshProducts } = useProducts();
   const { awaitModalResult } = useModal();
   const { showFeedback } = useFeedback();
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-  const [sortProducts, setSortProducts] = useState<IProduct[]>(products);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof IProduct | null;
+    direction: 'asc' | 'desc';
+  }>({
+    key: null,
+    direction: 'asc',
+  });
 
-  useEffect(() => {
-    setSortProducts(products);
-  }, [products]);
+  const sortedProducts = useMemo(() => {
+    let sortableItems = [...products];
+    if (sortConfig.key !== null) {
+      sortableItems.sort((a, b) => {
+        const aValue = a[sortConfig.key!];
+        const bValue = b[sortConfig.key!];
+
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return sortConfig.direction === 'asc'
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return sortConfig.direction === 'asc'
+            ? aValue - bValue
+            : bValue - aValue;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [products, sortConfig]);
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      const allProductIds: string[] = products.map((product) => product._id);
-
-      console.log(allProductIds);
+      const allProductIds = products.map((product) => product._id);
       setSelectedProducts(allProductIds);
     } else {
       setSelectedProducts([]);
@@ -50,17 +64,12 @@ const AdminProductList: React.FC<ProductListProps> = ({
   };
 
   const handleSelectProduct = (productId: string, checked: boolean) => {
-    if (checked) {
-      console.log(selectedProducts);
-      setSelectedProducts((prev: string[]) => [...prev, productId]);
-    } else {
-      setSelectedProducts((prev: string[]) =>
-        prev.filter((id) => id !== productId),
-      );
-    }
+    setSelectedProducts((prev) =>
+      checked ? [...prev, productId] : prev.filter((id) => id !== productId),
+    );
   };
 
-  const handleDeleteProduct = async (product: Product) => {
+  const handleDeleteProduct = async (product: IProduct) => {
     try {
       const confirmed = await awaitModalResult(
         createConfirmModal(
@@ -73,31 +82,27 @@ const AdminProductList: React.FC<ProductListProps> = ({
       );
 
       if (!confirmed) return;
-      await deleteProduct(product._id);
 
+      await deleteProduct(product._id);
       showFeedback('feedback.data-saved-success', 'success');
+      refreshProducts();
     } catch (e) {
+      console.error('Failed to delete product:', e);
       showFeedback('feedback.data-saved-error', 'error');
     }
   };
 
-  const handleSort = (column: string) => {
-    const sorted: IProduct[] = [...products].sort((a, b) => {
-      const aVal = (a as Record<string, any>)[column];
-      const bVal = (b as Record<string, any>)[column];
-
-      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
-      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
-      return 0;
-    });
-
-    setSortProducts(sorted);
-    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+  const handleSort = (key: keyof IProduct) => {
+    let direction: 'asc' | 'desc' = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
   };
 
-  const getSortIcon = (column: string) => {
-    if (filters.sortBy !== column) return 'unfold_more';
-    return filters.sortOrder === 'asc'
+  const getSortIcon = (key: keyof IProduct) => {
+    if (sortConfig.key !== key) return 'unfold_more';
+    return sortConfig.direction === 'asc'
       ? 'keyboard_arrow_up'
       : 'keyboard_arrow_down';
   };
@@ -108,201 +113,45 @@ const AdminProductList: React.FC<ProductListProps> = ({
     return { text: 'Verfügbar', class: 'available' };
   };
 
+  if (isLoading) {
+    return (
+      <div className={style.productList}>
+        <p>Produkte werden geladen...</p> {/* Or a proper skeleton loader */}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={style.productList}>
+        <p>Fehler beim Laden der Produkte: {error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className={style.productList}>
-      <div className={style.listHeader}>
-        <div className={style.headerActions}>
-          <h2>Produkte ({products.length})</h2>
-          <ButtonContainer>
-            <Button
-              variant="primary"
-              icon="add"
-              appearance={'icon'}
-              onClick={onCreateProduct}
-            />
-          </ButtonContainer>
-        </div>
-      </div>
+      <ProductListHeader
+        productCount={products.length}
+        onCreateProduct={onCreateProduct}
+      />
 
       <div className={style.tableContainer}>
-        <table className={style.productTable}>
-          <thead>
-            <tr>
-              <th className={style.checkboxCell}>
-                <input
-                  type="checkbox"
-                  checked={
-                    selectedProducts.length === products.length &&
-                    products.length > 0
-                  }
-                  onChange={(e) => handleSelectAll(e.target.checked)}
-                />
-              </th>
-              <th>
-                <span>Bild</span>
-              </th>
-              <th
-                className={style.sortableHeader}
-                onClick={() => handleSort('name')}
-              >
-                <Container padding={false}>
-                  Name
-                  <MaterialIcon icon={getSortIcon('name')} iconSize="small" />
-                </Container>
-              </th>
-              <th>Kategorie</th>
-              <th
-                className={style.sortableHeader}
-                onClick={() => handleSort('price')}
-              >
-                <Container padding={false}>
-                  Preis
-                  <MaterialIcon icon={getSortIcon('price')} iconSize="small" />
-                </Container>
-              </th>
-              <th
-                className={style.sortableHeader}
-                onClick={() => handleSort('stockQuantity')}
-              >
-                <Container padding={false}>
-                  Lager
-                  <MaterialIcon
-                    icon={getSortIcon('stockQuantity')}
-                    iconSize="small"
-                  />
-                </Container>
-              </th>
-              <th>Status</th>
-              <th
-                className={style.sortableHeader}
-                onClick={() => handleSort('lastUpdated')}
-              >
-                <Container padding={false}>
-                  Zuletzt aktualisiert
-                  <MaterialIcon
-                    icon={getSortIcon('lastUpdated')}
-                    iconSize="small"
-                  />
-                </Container>
-              </th>
-              <th>Aktionen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortProducts.map((product) => {
-              const stockStatus = getStockStatus(product.stockQuantity);
-              return (
-                <tr key={product._id} className={style.productRow}>
-                  <td className={style.checkboxCell}>
-                    <input
-                      type="checkbox"
-                      checked={selectedProducts.includes(product._id)}
-                      onChange={(e) =>
-                        handleSelectProduct(product._id, e.target.checked)
-                      }
-                    />
-                  </td>
-                  <td className={style.imageCell}>
-                    <div className={style.productImage}>
-                      {product?.imageUrl ? (
-                        <img src={product.imageUrl} alt={product.name} />
-                      ) : (
-                        <div className={style.imagePlaceholder}>
-                          <MaterialIcon icon="image" />
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  {product.name && (
-                    <td className={style.nameCell}>
-                      <div>
-                        <div className={style.productName}>{product.name}</div>
-                        <div className={style.productDescription}>
-                          {product.description &&
-                          product?.description.length > 60
-                            ? `${product.description.substring(0, 60)}...`
-                            : product.description}
-                        </div>
-                      </div>
-                    </td>
-                  )}
-                  {product.category && (
-                    <td>
-                      <span className={style.categoryBadge}>
-                        {product.category}
-                      </span>
-                    </td>
-                  )}
-                  {product.price && (
-                    <td className={style.priceCell}>
-                      CHF {product.price.toFixed(2)}
-                    </td>
-                  )}
-                  {product.stockQuantity && (
-                    <td className={style.stockCell}>
-                      <div className={style.stockInfo}>
-                        <span className={style.stockNumber}>
-                          {product.stockQuantity}
-                        </span>
-                        <span
-                          className={`${style.stockStatus} ${style[stockStatus.class]}`}
-                        >
-                          {stockStatus.text}
-                        </span>
-                      </div>
-                    </td>
-                  )}
-                  {product.isActive && (
-                    <td>
-                      <span
-                        className={`${style.statusBadge} ${product.isActive ? style.active : style.inactive}`}
-                      >
-                        {product.isActive ? 'Aktiv' : 'Inaktiv'}
-                      </span>
-                    </td>
-                  )}
-                  {product.lastUpdated && (
-                    <td className={style.dateCell}>
-                      {new Date(product.lastUpdated).toLocaleDateString(
-                        'de-CH',
-                      )}
-                    </td>
-                  )}
-                  <td className={style.actionsCell}>
-                    <div className={style.actionButtons}>
-                      <Button
-                        appearance="icon"
-                        variant="ghost"
-                        icon="edit"
-                        onClick={() => onEditProduct(product)}
-                        title="Bearbeiten"
-                      />
-                      <Button
-                        appearance="icon"
-                        variant="ghost"
-                        icon="delete"
-                        onClick={() => handleDeleteProduct(product)}
-                        title="Löschen"
-                      />
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
-        {products.length === 0 && (
-          <div className={style.emptyState}>
-            <MaterialIcon icon="inventory_2" iconSize="huge" />
-            <h3>Keine Produkte gefunden</h3>
-            <p>
-              Erstellen Sie Ihr erstes Produkt oder passen Sie die Filter an.
-            </p>
-            <Button variant="primary" icon="add" onClick={onCreateProduct}>
-              Erstes Produkt erstellen
-            </Button>
-          </div>
+        {products.length > 0 ? (
+          <ProductTable
+            products={sortedProducts}
+            selectedProducts={selectedProducts}
+            handleSelectAll={handleSelectAll}
+            handleSelectProduct={handleSelectProduct}
+            handleSort={handleSort}
+            getSortIcon={getSortIcon}
+            onEditProduct={onEditProduct}
+            onDeleteProduct={handleDeleteProduct}
+            getStockStatus={getStockStatus}
+            sortConfig={sortConfig}
+          />
+        ) : (
+          <EmptyState onCreateProduct={onCreateProduct} />
         )}
       </div>
     </div>

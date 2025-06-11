@@ -1,47 +1,32 @@
 'use client';
 
 import React, { useState } from 'react';
-import {
-  AdminProductProvider,
-  useAdminProducts,
-  Product,
-} from '@/hooks/AdminContentProductProvider';
-
 import Button from '@/app/components/system/Button';
 import style from '@/styles/admin/AdminProduct.module.scss';
-import AdminProductForm from '@/app/components/admin/AdminProductForm';
-import AdminProductFilters from '@/app/components/admin/AdminFilteredProducts';
 import AdminProductList from '@/app/components/admin/AdminProductList';
 import { Container } from '@/app/components/system/Container';
 import { ModalProvider } from '@/hooks/ModalProvide';
 import ProductForm from '@/app/components/admin/ProductFormComponent';
 import Feedback from '@/app/components/system/Feedback';
+import { IProduct } from '@/types/product.types';
 
 const AdminProductsContent: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const { loadProducts } = useAdminProducts();
+  const [editingProduct, setEditingProduct] = useState<IProduct>();
 
   const handleCreateProduct = () => {
-    setEditingProduct(null);
+    setEditingProduct(undefined);
     setShowForm(true);
   };
 
-  const handleEditProduct = (product: Product) => {
+  const handleEditProduct = (product: IProduct) => {
     setEditingProduct(product);
     setShowForm(true);
   };
 
   const handleCloseForm = () => {
     setShowForm(false);
-    setEditingProduct(null);
-  };
-
-  const handleFormSuccess = () => {
-    setShowForm(false);
-    setEditingProduct(null);
-    // Optionally reload products
-    // loadProducts();
+    setEditingProduct(undefined);
   };
 
   if (showForm) {
@@ -53,34 +38,22 @@ const AdminProductsContent: React.FC = () => {
           </Button>
         </div>
 
-        <AdminProductForm
-          product={editingProduct}
-          onCancel={handleCloseForm}
-          onSuccess={handleFormSuccess}
-        />
+        <ProductForm product={editingProduct} onClose={handleCloseForm} />
       </div>
     );
   }
 
   return (
     <div className={style.adminContainer}>
-      {/*<div className={style.pageHeader}>*/}
-      {/*  <div className={style.headerContent}>*/}
-      {/*    <div>*/}
-      {/*      <h1>Produktverwaltung</h1>*/}
-      {/*      <p>Verwalten Sie Ihr Produktsortiment</p>*/}
-      {/*    </div>*/}
-      {/*    <Button variant="primary" icon="add" onClick={handleCreateProduct}>*/}
-      {/*      Neues Produkt*/}
-      {/*    </Button>*/}
-      {/*  </div>*/}
-      {/*</div>*/}
-      {/*<AdminProductFilters />*/}
+      <div className={style.pageHeader}>
+        <h1>Produktverwaltung</h1>
+        <p>Verwalten Sie Ihr Produktsortiment</p>
+      </div>
       <AdminProductList
         onEditProduct={handleEditProduct}
         onCreateProduct={handleCreateProduct}
       />
-      <ProductForm />
+
       <Feedback />
     </div>
   );
@@ -89,11 +62,9 @@ const AdminProductsContent: React.FC = () => {
 const AdminProducts: React.FC = () => {
   return (
     <ModalProvider>
-      <AdminProductProvider>
-        <Container flow="column" alignItems="center">
-          <AdminProductsContent />
-        </Container>
-      </AdminProductProvider>
+      <Container flow="column" alignItems="center">
+        <AdminProductsContent />
+      </Container>
     </ModalProvider>
   );
 };

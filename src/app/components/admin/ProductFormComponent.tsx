@@ -4,8 +4,9 @@ import style from '@/styles/admin/ProductForm.module.scss';
 import React, { useState, useCallback } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import MaterialIcon from '@/app/components/system/MaterialIcon';
-import { createProduct } from '@/requests/products.request';
+import { createProduct, updateProduct } from '@/requests/products.request';
 import { useFeedback } from '@/hooks/FeedbackHook';
+import { IProduct } from '@/types/product.types';
 
 // Constants
 const CATEGORIES = [
@@ -15,43 +16,20 @@ const CATEGORIES = [
   'Kaffee Tassen',
   'Waage',
 ] as const;
-type Category = (typeof CATEGORIES)[number];
-
-// Interfaces
-export interface IProduct {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  stockQuantity: number;
-  category: string;
-  isActive: boolean;
-  imageUrl?: string;
-  lastUpdated: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface IProductFormData {
-  name: string;
-  description: string;
-  price: number;
-  stockQuantity: number;
-  category: Category | '';
-  isActive: boolean;
-}
 
 interface ProductFormProps {
-  onSuccess?: (product: any) => void;
-  onCancel?: () => void;
+  onClose: () => void;
+  product?: IProduct;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ onSuccess, onCancel }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
   const { showFeedback } = useFeedback();
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    product?.imageUrl,
+  );
   const [isDragging, setIsDragging] = useState(false);
 
   const {
@@ -59,18 +37,17 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSuccess, onCancel }) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IProductFormData>({
+  } = useForm<IProduct>({
     defaultValues: {
-      name: '',
-      description: '',
-      price: 0,
-      stockQuantity: 0,
-      category: '',
+      name: product?.name || '',
+      description: product?.description || '',
+      price: product?.price || 0,
+      stockQuantity: product?.stockQuantity || 0,
+      category: product?.category || '',
       isActive: true,
     },
   });
 
-  // Handle file selection
   const handleFileSelect = useCallback((file: File) => {
     if (file && file.type.startsWith('image/')) {
       setImageFile(file);
@@ -84,7 +61,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSuccess, onCancel }) => {
     }
   }, []);
 
-  // Handle drag events
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
@@ -120,10 +96,43 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSuccess, onCancel }) => {
 
   const removeImage = useCallback(() => {
     setImageFile(null);
-    setImagePreview(null);
+    setImagePreview(undefined);
   }, []);
+  //
+  // const onSubmit: SubmitHandler<IProduct> = async (data) => {
+  //   setIsLoading(true);
+  //   setSubmitError(null);
+  //
+  //   try {
+  //     const productData = {
+  //       name: data.name.trim(),
+  //       description: data.description.trim(),
+  //       price: data.price,
+  //       stockQuantity: data.stockQuantity,
+  //       category: data.category,
+  //       isActive: data.isActive,
+  //     };
+  //
+  //     const response = await createProduct(productData, imageFile || undefined);
+  //     console.log(response);
+  //
+  //     //   reset(); for better testing
+  //     setImageFile(null);
+  //     setImagePreview(null);
+  //     showFeedback('feedback.data-saved-success', 'success');
+  //   } catch (error) {
+  //     console.error('Failed to create product:', error);
+  //     setSubmitError(
+  //       error instanceof Error
+  //         ? error.message
+  //         : 'Fehler beim Erstellen des Artikels. Bitte versuchen Sie es erneut.',
+  //     );
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  const onSubmit: SubmitHandler<IProductFormData> = async (data) => {
+  const onSubmit: SubmitHandler<IProduct> = async (data) => {
     setIsLoading(true);
     setSubmitError(null);
 
@@ -137,20 +146,25 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSuccess, onCancel }) => {
         isActive: data.isActive,
       };
 
-      const response = await createProduct(productData, imageFile || undefined);
-      console.log(response);
+      if (product && product._id) {
+        // Produkt aktualisieren
+        await updateProduct(product._id, productData, imageFile || undefined);
+        showFeedback('Produkt erfolgreich aktualisiert!', 'success');
+      } else {
+        // Neues Produkt erstellen
+        await createProduct(productData, imageFile || undefined);
+        showFeedback('Produkt erfolgreich erstellt!', 'success');
+      }
 
-      //   reset();
-      setImageFile(null);
-      setImagePreview(null);
-      showFeedback('feedback.data-saved-success', 'success');
-    } catch (error) {
-      console.error('Failed to create product:', error);
+      // Formular schliessen und übergeordnete Komponente benachrichtigen
+      onClose();
+    } catch (error: any) {
+      console.error('Operation failed:', error);
       setSubmitError(
-        error instanceof Error
-          ? error.message
-          : 'Fehler beim Erstellen des Artikels. Bitte versuchen Sie es erneut.',
+        error.message ||
+          'Fehler bei der Operation. Bitte versuchen Sie es erneut.',
       );
+      showFeedback('Fehler bei der Operation!', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -163,7 +177,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSuccess, onCancel }) => {
       </div>
 
       <div className={style.formContent}>
-        {/* Image Upload */}
         <div className={style.formGroup}>
           <label className={style.label}>Produktbild</label>
           <div
@@ -360,7 +373,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSuccess, onCancel }) => {
       <div className={style.formActions}>
         <button
           type="button"
-          onClick={onCancel}
+          onClick={onClose}
           className={style.cancelButton}
           disabled={isLoading}
         >
