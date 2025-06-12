@@ -10,13 +10,9 @@ import {
   IProduct,
 } from '@/types/product.types';
 
-export const getProducts = async (
-  filters?: ProductFilters,
-): Promise<ProductResponse> => {
+export const getProducts = async (): Promise<ProductResponse> => {
   try {
-    const response = await axiosInstance.get(`${productsApiUrl}`, {
-      params: filters,
-    });
+    const response = await axiosInstance.get(`${productsApiUrl}`);
 
     if (
       response.data &&

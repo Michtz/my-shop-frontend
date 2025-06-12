@@ -5,8 +5,8 @@ import { getProducts } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
 import {
   IProduct,
-  ProductResponse,
   ProductFilters,
+  ProductResponse,
 } from '@/types/product.types';
 
 interface ProductsResponse {
@@ -18,26 +18,49 @@ interface ProductsResponse {
 
 const useProducts = (filters?: ProductFilters): ProductsResponse => {
   const { data, error, isLoading } = useSWR<ProductResponse, RequestError>(
-    filters ? ['products', filters] : 'products',
-    () => getProducts(filters),
+    'products',
+    () => getProducts(),
     { suspense: false },
   );
 
-  const refreshProducts = () => {
-    mutate(filters ? ['products', filters] : 'products');
+  const refreshProducts = (): void => {
+    mutate('products');
   };
 
-  const extractProducts = (): IProduct[] => {
-    if (!data || !data.success || !data.data) return [];
-    return Array.isArray(data.data) ? data.data : [data.data];
+  const extractAndFilterProducts = (): IProduct[] => {
+    if (!data?.success || !data.data) {
+      return [];
+    }
+
+    let products: IProduct[] = Array.isArray(data.data)
+      ? data.data
+      : [data.data];
+
+    if (filters?.category) {
+      products = products.filter(
+        (product: IProduct) => product.category === filters.category,
+      );
+    }
+
+    if (filters?.isActive !== undefined) {
+      products = products.filter(
+        (product: IProduct) => product.isActive === filters.isActive,
+      );
+    }
+
+    return products;
   };
+
+  const productsData: IProduct[] = extractAndFilterProducts();
+
+  const errorMessage: string | null =
+    error?.message ||
+    (data && !data.success ? data.error || 'Unbekannter Fehler' : null);
 
   return {
-    products: extractProducts(),
+    products: productsData,
     isLoading,
-    error:
-      error?.message ||
-      (data && !data.success ? data.error || 'Unknown error' : null),
+    error: errorMessage,
     refreshProducts,
   };
 };

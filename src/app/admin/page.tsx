@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import AdminProducts from '@/app/components/admin/MainAdminProductPage';
+import AdminProducts from '@/components/section/admin/MainAdminProductPage';
 
 const AdminProductsPage: FC = () => <AdminProducts />;
 

@@ -1,4 +1,4 @@
-import ProductOverview from '@/app/components/section/ProductOverview';
+import ProductOverview from '@/components/section/ProductOverview';
 import { FC } from 'react';
 
 const App: FC = () => <ProductOverview />;

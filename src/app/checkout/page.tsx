@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Checkout from '@/app/components/section/checkout/CheckoutContent';
+import Checkout from '@/components/section/checkout/CheckoutContent';
 
 const CheckoutPage: FC = () => <Checkout />;
 

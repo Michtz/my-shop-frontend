@@ -4,7 +4,7 @@ export interface IProduct {
   description: string;
   price: number;
   stockQuantity: number;
-  category: string;
+  category: ProductCategoryOptions;
   isActive: boolean;
   imageUrl?: string;
   lastUpdated: string;
@@ -12,13 +12,12 @@ export interface IProduct {
   updatedAt: string;
 }
 
-// export interface UpdateProductRequest extends Partial<CreateProductRequest> {}
-//
-// export interface ProductResponse {
-//   success: boolean;
-//   data?: IProduct | IProduct[];
-//   error?: string;
-// }
+export type ProductCategoryOptions =
+  | 'Tamper'
+  | 'Milk'
+  | 'Tools'
+  | 'Coffee Cups'
+  | 'Scales';
 
 export interface ProductResponse {
   success: boolean;

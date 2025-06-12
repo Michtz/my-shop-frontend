@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import { v4 } from 'uuid';
-import Modal from '@/app/components/system/Modal';
+import Modal from '@/components/system/Modal';
 
 export interface ModalConfig {
   element: React.ReactElement;

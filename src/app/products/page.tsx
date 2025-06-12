@@ -1,6 +1,6 @@
 'use client';
 import '@/styles/globals.scss';
-import ProductList from '@/app/components/section/ProductList';
+import ProductList from '@/components/section/ProductList';
 import SWRProvider from '@/providers/SWRProvider';
 import { FC } from 'react';
 
