@@ -24,6 +24,7 @@
       "@/styles": ["./src/styles/*"],
       "@/icons": ["./src/components/icons/*"],
       "@/components": ["./src/components/*"],
+      "@/locales": ["./src/i18n/locales/*"],
 
     }
   },

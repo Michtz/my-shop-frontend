@@ -4,13 +4,10 @@ import SWRProvider from '@/providers/SWRProvider';
 import 'material-icons/iconfont/material-icons.css';
 import 'material-icons/iconfont/outlined.css';
 import { FeedbackProvider } from '@/hooks/FeedbackHook';
-import TranslationProvider from '@/hooks/TranslationHook';
+import TranslationProvider from '@/providers/TranslationProvider';
+import React from 'react';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="de" suppressHydrationWarning>
       <body>
@@ -24,4 +21,5 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+export default RootLayout;
