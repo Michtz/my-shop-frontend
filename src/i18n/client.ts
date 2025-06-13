@@ -4,7 +4,7 @@ import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
-import { languages } from '@/hooks/useTranslation';
+const languages: string[] = ['de', 'en'];
 
 i18next
   .use(initReactI18next)

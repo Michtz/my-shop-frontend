@@ -2,8 +2,6 @@
 
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
-  // for my  styles
-});
+const theme = createTheme({});
 
 export default theme;

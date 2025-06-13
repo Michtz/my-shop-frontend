@@ -1,5 +1,13 @@
 {
   "products": {
+    "categories": {
+      "tamper": "Tamper",
+      "milchkannen": "Milk Kännchen",
+      "tools": "Accessoires",
+      "kaffeetassen": "Kaffeetassen",
+      "cleaning": "Reinigung",
+      "waage": "Waagen"
+    },
     "loading": "Produkte werden geladen...",
     "loadError": "Fehler beim Laden der Produkte:",
     "delete": {
