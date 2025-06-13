@@ -52,7 +52,7 @@ const useProducts = (filters?: ProductFilters): ProductsResponse => {
   };
 
   const productsData: IProduct[] = extractAndFilterProducts();
-
+  console.log(productsData, data?.data);
   const errorMessage: string | null =
     error?.message ||
     (data && !data.success ? data.error || 'Unbekannter Fehler' : null);

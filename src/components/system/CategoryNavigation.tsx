@@ -12,12 +12,12 @@ const CategoryNavigation: React.FC<
   const [activeItem, setActiveItem] = useState<string>('');
 
   const categories = [
-    { icon: 'tamper', label: 'Tamper' },
-    { icon: 'milk-jug', label: 'Milchkannen' },
-    { icon: 'tool', label: 'Tools' },
-    { icon: 'coffee-cup', label: 'Kaffeetassen' },
-    { icon: 'cleaning-tool', label: 'Filter Zubereitung' },
-    { icon: 'scale', label: 'Waage' },
+    { icon: 'tampers', label: 'Tamper' },
+    { icon: 'milk-jugs', label: 'Milchkannen' },
+    { icon: 'tools', label: 'Tools' },
+    { icon: 'coffee-cups', label: 'Kaffeetassen' },
+    { icon: 'cleaning-tools', label: 'Filter Zubereitung' },
+    { icon: 'scales', label: 'Waage' },
   ];
 
   const handleItemClick = (iconName: string) => {

@@ -8,12 +8,12 @@ import { TamperIcon } from '@/components/icons/TamperIcon';
 import { ToolIcon } from '@/components/icons/ToolIcon';
 
 export type IconType =
-  | 'cleaning-tool'
-  | 'coffee-cup'
-  | 'milk-jug'
-  | 'scale'
-  | 'tamper'
-  | 'tool';
+  | 'cleaning-tools'
+  | 'coffee-cups'
+  | 'milk-jugs'
+  | 'scales'
+  | 'tampers'
+  | 'tools';
 
 export type ComponentSize = 'extra-small' | 'small' | 'normal' | 'big' | 'huge';
 
@@ -63,12 +63,12 @@ const AssetIcon: React.FC<AssetIconProps> = ({
   }
 
   const iconComponents = {
-    'cleaning-tool': CleaningToolIcon,
-    'coffee-cup': CoffeeCupIcon,
-    'milk-jug': MilkJugIcon,
-    scale: ScaleIcon,
-    tamper: TamperIcon,
-    tool: ToolIcon,
+    'cleaning-tools': CleaningToolIcon,
+    'coffee-cups': CoffeeCupIcon,
+    'milk-jugs': MilkJugIcon,
+    scales: ScaleIcon,
+    tampers: TamperIcon,
+    tools: ToolIcon,
   };
 
   const IconComponent = iconComponents[icon];

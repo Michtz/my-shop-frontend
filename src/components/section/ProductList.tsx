@@ -15,13 +15,16 @@ import { UseCreateCartProps } from '@/hooks/useCreateCart';
 import useCart from '@/hooks/useCart';
 import { IProduct } from '@/types/product.types';
 import Carousel from '@/components/system/Carousel';
+import { getCategoryName } from '@/functions/common';
 
 interface ProductListProps {
   category?: string;
 }
 
 const ProductList: React.FC<ProductListProps> = ({ category }) => {
-  const { products, isLoading, error } = useProducts({ category: category });
+  const { products, isLoading, error } = useProducts({
+    category: getCategoryName(category as string),
+  });
   const router = useRouter();
   const [articles, setArticles] = useState<IProduct[]>(products);
 

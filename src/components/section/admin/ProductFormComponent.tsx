@@ -32,11 +32,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
   );
   const [isDragging, setIsDragging] = useState(false);
   const categories: string[] = [
-    'Tamper',
-    'Milk',
+    'Tampers',
+    'Milk Jugs',
     'Tools',
     'Coffee Cups',
     'Scales',
+    'Cleaning Tools',
   ];
 
   const {

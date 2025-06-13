@@ -4,8 +4,7 @@ import { Container, Typography } from '@mui/material';
 import ProductList from '@/components/section/ProductList';
 import { useParams } from 'next/navigation';
 import { Params } from 'next/dist/server/request/params';
-
-interface PageProps {}
+import { getCategoryName } from '@/functions/common';
 
 const CategoryPage = () => {
   const params: Params = useParams();
@@ -18,7 +17,7 @@ const CategoryPage = () => {
         gutterBottom
         sx={{ mt: 4, mb: 3 }}
       >
-        {params.category as string}
+        {getCategoryName(params.category as string)}
       </Typography>
       <ProductList category={params.category as string} />
     </Container>
