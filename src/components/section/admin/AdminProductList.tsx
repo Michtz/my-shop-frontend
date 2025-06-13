@@ -9,6 +9,7 @@ import style from '@/styles/admin/AdminProductList.module.scss';
 import { ProductListHeader } from './ProductListHeader';
 import { ProductTable } from './ProductTable';
 import { EmptyState } from './EmptyState';
+import { useTranslation } from 'react-i18next';
 
 interface AdminProductListProps {
   onEditProduct: (product: IProduct) => void;
@@ -22,6 +23,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   const { products, isLoading, error, refreshProducts } = useProducts();
   const { awaitModalResult } = useModal();
   const { showFeedback } = useFeedback();
+  const { t } = useTranslation(['common']);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [sortConfig, setSortConfig] = useState<{
     key: keyof IProduct | null;
@@ -30,7 +32,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
     key: null,
     direction: 'asc',
   });
-
+  console.log(t('common:products.stock.lowStock'));
   const sortedProducts = useMemo(() => {
     let sortableItems = [...products];
     if (sortConfig.key !== null) {
@@ -108,9 +110,11 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   };
 
   const getStockStatus = (stock: number) => {
-    if (stock === 0) return { text: 'Nicht verfügbar', class: 'out' };
-    if (stock <= 10) return { text: 'Niedrig', class: 'low' };
-    return { text: 'Verfügbar', class: 'available' };
+    if (stock === 0)
+      return { text: t('common:products.stock.outOfStock'), class: 'out' };
+    if (stock <= 10)
+      return { text: t('common:products.stock.lowStock'), class: 'low' };
+    return { text: t('common:products.stock.available'), class: 'available' };
   };
 
   if (isLoading) {

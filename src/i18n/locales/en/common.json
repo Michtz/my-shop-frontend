@@ -1,0 +1,20 @@
+{
+  "products": {
+    "loading": "Loading products...",
+    "loadError": "Error loading products:",
+    "delete": {
+      "title": "Delete Product",
+      "confirmMessage": "Do you really want to delete <1>{{productName}}</1>?",
+      "confirmButton": "Delete"
+    },
+    "stock": {
+      "outOfStock": "Out of stock",
+      "lowStock": "Low",
+      "available": "Available"
+    }
+  },
+  "feedback": {
+    "data-saved-success": "Data saved successfully",
+    "data-saved-error": "Error saving data"
+  }
+}

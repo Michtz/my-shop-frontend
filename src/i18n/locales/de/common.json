@@ -1,0 +1,20 @@
+{
+  "products": {
+    "loading": "Produkte werden geladen...",
+    "loadError": "Fehler beim Laden der Produkte:",
+    "delete": {
+      "title": "Produkt löschen",
+      "confirmMessage": "Möchten Sie <1>{{productName}}</1> wirklich löschen?",
+      "confirmButton": "Löschen"
+    },
+    "stock": {
+      "outOfStock": "Nicht verfügbar",
+      "lowStock": "Niedrig",
+      "available": "Verfügbar"
+    }
+  },
+  "feedback": {
+    "data-saved-success": "Daten erfolgreich gespeichert",
+    "data-saved-error": "Fehler beim Speichern der Daten"
+  }
+}
