@@ -8,7 +8,6 @@ import { getCategoryName } from '@/functions/common';
 
 const CategoryPage = () => {
   const params: Params = useParams();
-
   return (
     <Container>
       <Typography
@@ -17,9 +16,9 @@ const CategoryPage = () => {
         gutterBottom
         sx={{ mt: 4, mb: 3 }}
       >
-        {getCategoryName(params.category as string)}
+        {getCategoryName(params?.category as string)}
       </Typography>
-      <ProductList category={params.category as string} />
+      <ProductList category={params?.category as string} />
     </Container>
   );
 };

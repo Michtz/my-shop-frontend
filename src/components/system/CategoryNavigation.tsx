@@ -14,12 +14,15 @@ const CategoryNavigation: React.FC<
   const [activeItem, setActiveItem] = useState<string>('');
 
   const categories = [
-    { icon: 'tampers', label: t('common:products.category.tamper') },
-    { icon: 'milk-jugs', label: t('common:products.category.milchkannen') },
-    { icon: 'tools', label: t('common:products.category.tools') },
-    { icon: 'coffee-cups', label: t('common:products.category.kaffeetassen') },
-    { icon: 'cleaning-tools', label: t('common:products.category.cleaning') },
-    { icon: 'scales', label: t('common:products.category.waage') },
+    { icon: 'tampers', label: t('common:products.categories.tamper') },
+    { icon: 'milk-jugs', label: t('common:products.categories.milchkannen') },
+    { icon: 'tools', label: t('common:products.categories.tools') },
+    {
+      icon: 'coffee-cups',
+      label: t('common:products.categories.kaffeetassen'),
+    },
+    { icon: 'cleaning-tools', label: t('common:products.categories.cleaning') },
+    { icon: 'scales', label: t('common:products.categories.waage') },
   ];
 
   const handleItemClick = (iconName: string) => {

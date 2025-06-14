@@ -8,6 +8,8 @@ import { useParams } from 'next/navigation';
 import { Params } from 'next/dist/server/request/params';
 import style from '@/styles/OverviewProduct.module.scss';
 import { log } from 'node:util';
+import Carousel from '@/components/system/Carousel';
+import { IProduct } from '@/types/product.types';
 
 export const sessionTestId: string = 'sess_nrls9zo5e9076bl9vuw8zt';
 
@@ -24,28 +26,22 @@ const ProductOverview: FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    // Check if item already exists in cart
     const existingItem = items.find(
       (item: any) => item.productId === params.id,
     );
-
     let updatedItems;
 
     if (existingItem) {
-      // Item exists - update quantity
       updatedItems = items.map((item: any) =>
         item.productId === params.id
           ? { ...item, quantity: item.quantity + 1 }
           : item,
       );
     } else {
-      // Item doesn't exist - add new item
       const newItem = {
         productId: params.id,
         quantity: 1,
-        // Add other required fields if needed
-        product: product, // or just the necessary product data
+        product: product,
       };
 
       updatedItems = [...items, newItem];
@@ -66,14 +62,7 @@ const ProductOverview: FC = () => {
   return (
     <div className={style.overviewContainer}>
       <span className={style.imageContainer}>
-        <img
-          alt={'beschriftung'}
-          title="Klicken zum Vergrössern"
-          width="300"
-          height={'auto'}
-          loading="lazy"
-          src={product?.imageUrl}
-        />
+        <Carousel products={[product as IProduct]} />
       </span>
       <span className={style.textContainer}>
         <h1>{product?.name}</h1>

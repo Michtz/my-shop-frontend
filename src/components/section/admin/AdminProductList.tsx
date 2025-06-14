@@ -32,7 +32,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
     key: null,
     direction: 'asc',
   });
-  console.log(t('common:products.stock.lowStock'));
+
   const sortedProducts = useMemo(() => {
     let sortableItems = [...products];
     if (sortConfig.key !== null) {

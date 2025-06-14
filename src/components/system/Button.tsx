@@ -78,6 +78,7 @@ export const ButtonContainer: React.FC<ButtonContainerProps> = ({
   className = '',
 }) => (
   <div
+    onClick={(e) => e.stopPropagation()}
     className={`${style['button-container-container']} ${className}`}
     data-spread={spread}
   >

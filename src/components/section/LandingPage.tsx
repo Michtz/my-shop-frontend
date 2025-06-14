@@ -16,21 +16,12 @@ import { CardContainer } from '@/components/system/Container';
 import useProducts from '@/hooks/useProducts';
 import { useRouter } from 'next/navigation';
 import CategoryNavigation from '@/components/system/CategoryNavigation';
-import { getProducts } from '@/requests/products.request';
 import { IProduct } from '@/types/product.types';
 import Carousel from '@/components/system/Carousel';
 
 const LandingPage = () => {
   const { products, isLoading, error } = useProducts();
   const router = useRouter();
-  console.log(products);
-
-  const textContainerStyle: CSSProperties = {
-    position: 'relative',
-    top: '-120px',
-
-    marginRight: '30px',
-  };
 
   const headerStyle: CSSProperties = {
     textAlign: 'center',

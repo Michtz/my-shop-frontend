@@ -1,11 +1,8 @@
 'use client';
 
 import useSWR from 'swr';
-import axios from 'axios';
 import { getCart } from '@/requests/cart.request';
-import { getProduct } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
-import { Product } from '@/hooks/useProduct';
 
 interface Cart {
   _id: string;

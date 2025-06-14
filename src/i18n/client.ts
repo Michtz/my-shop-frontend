@@ -4,6 +4,7 @@ import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
+
 const languages: string[] = ['de', 'en'];
 
 i18next
@@ -22,10 +23,26 @@ i18next
     defaultNS: 'common',
     ns: ['common'],
     fallbackNS: 'common',
+
+    // WICHTIG: Server und Client müssen gleiche Sprache verwenden
+    lng: 'de', // Feste Sprache für Server/Client Konsistenz
+
+    // SSR-spezifische Konfiguration
+    react: {
+      useSuspense: false, // Suspense deaktivieren
+    },
+
+    // Detection nur nach Hydration
     detection: {
-      order: ['path', 'localStorage', 'navigator'],
+      order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
     },
+
+    // Sofort laden ohne Verzögerung
+    initImmediate: false,
+
+    // Ressourcen sofort laden
+    load: 'languageOnly',
   });
 
 export default i18next;
