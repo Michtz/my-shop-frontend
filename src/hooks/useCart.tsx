@@ -22,6 +22,7 @@ interface CartResponse {
   cartItems: any | null;
   isLoading: boolean;
   error: string | null;
+  mutate: any;
 }
 
 const useCart = (sessionId: string): CartResponse => {
@@ -37,6 +38,7 @@ const useCart = (sessionId: string): CartResponse => {
     cartItems: data?.data?.items || null,
     isLoading,
     error: error?.message ? error.message : null,
+    mutate: mutate,
   };
 };
 

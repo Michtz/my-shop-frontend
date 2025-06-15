@@ -1,6 +1,7 @@
 .container {
   display: flex;
   width: 100%;
+  background-color: #f5f5f5;
 
   &[data-padding='true'] {
     padding: 2rem;

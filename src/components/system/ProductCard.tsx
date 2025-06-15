@@ -11,8 +11,9 @@ interface ProductCardProps {
   description?: string;
   price?: string | number;
   onCardClick: (id: string) => void;
-  onIconClick?: () => Promise<void>;
+  onIconClick?: (id: string) => Promise<void>;
 }
+
 const ProductCard: FC<ProductCardProps> = ({
   id,
   image,
@@ -38,15 +39,18 @@ const ProductCard: FC<ProductCardProps> = ({
     <h1 className={style.title}>{title}</h1>
     <p className={style.description}>{description}</p>
     <span className={style.priceContainer}>
-      <ButtonContainer>
-        <Button
-          variant={'ghost'}
-          appearance={'icon'}
-          onClick={() => onIconClick}
-        >
-          <MaterialIcon icon={'shopping_basket'} />
-        </Button>
-      </ButtonContainer>
+      {onIconClick && (
+        <ButtonContainer>
+          <Button
+            variant={'ghost'}
+            appearance={'icon'}
+            onClick={() => onIconClick(id)}
+          >
+            <MaterialIcon icon={'shopping_basket'} />
+          </Button>
+        </ButtonContainer>
+      )}
+
       <p className={style.price}>CHF {price} / stk.</p>
     </span>
   </div>

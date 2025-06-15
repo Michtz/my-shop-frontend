@@ -3,22 +3,19 @@
 import React, { FC, FormEvent, JSX, useEffect, useState } from 'react';
 import useProduct from '@/hooks/useProduct';
 import useCart from '@/hooks/useCart';
-import {
-  addToCart,
-  replaceCartItems,
-  updateCartItem,
-} from '@/requests/cart.request';
-import { useParams } from 'next/navigation';
+import { addToCart, replaceCartItems } from '@/requests/cart.request';
+import { useParams, useRouter } from 'next/navigation';
 import { Params } from 'next/dist/server/request/params';
 import style from '@/styles/OverviewProduct.module.scss';
-import { log } from 'node:util';
-import Carousel, { CarouselItem } from '@/components/system/Carousel';
-import { IProduct } from '@/types/product.types';
 import { mutate } from 'swr';
 import Image from 'next/image';
 import NumberStepper from '@/components/system/NumberStepper';
-import { FormContainer } from '@/components/system/Container';
+import { Container, FormContainer } from '@/components/system/Container';
 import { Controller, useForm } from 'react-hook-form';
+import { useFeedback } from '@/hooks/FeedbackHook';
+import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
+import useProducts from '@/hooks/useProducts';
+import { Hr } from '@/components/system/Hr';
 
 export const sessionTestId: string = 'sess_ytsdk6q1axj7fezp3bc7v';
 
@@ -33,17 +30,17 @@ const getDefaultValues = (product = {} as any): any => {
 
 const ProductOverview: FC = () => {
   const { product } = useProduct();
+  const router = useRouter();
+  const { products } = useProducts();
   const { cart, cartItems } = useCart(sessionTestId);
-  const params: Params = useParams();
-  const [quantity, setQuantity] = useState(1);
+  const { showFeedback } = useFeedback();
 
-  const { register, reset, control, formState, handleSubmit } =
-    useForm<FormFields>({
-      mode: 'onChange',
-      defaultValues: getDefaultValues(product),
-    });
+  const { register, reset, control, handleSubmit } = useForm<FormFields>({
+    mode: 'onChange',
+    defaultValues: getDefaultValues(product),
+  });
 
-  if (!product) return null;
+  // if (!product) return null;
   // useEffect(() => {
   //   console.log(cart, items);
   // }, [cart]);
@@ -51,38 +48,50 @@ const ProductOverview: FC = () => {
   const submit = async (data: any) => {
     try {
       console.log(data);
-      // const existingItem = cartItems.find(
-      //   (item: any) => item.productId === params.id,
-      // );
-      // let updatedItems;
-      //
-      // if (existingItem) {
-      //   updatedItems = cartItems.map((item: any) =>
-      //     item.productId === params.id
-      //       ? { ...item, quantity: item.quantity + data.quantity }
-      //       : item,
-      //   );
-      // } else {
-      //   const newItem = {
-      //     productId: params.id,
-      //     quantity: 1,
-      //     product: product,
-      //   };
-      //
-      //   updatedItems = [...cartItems, newItem];
-      // }
-
-      const result = await addToCart(sessionTestId, product._id, data.quantity);
+      const result = await addToCart(
+        sessionTestId,
+        product?._id as string,
+        data.quantity,
+      );
       console.log('Cart updated:', result);
       await mutate('cart', result);
+      showFeedback('feedback.add-to-cart-success', 'success');
     } catch (error) {
+      showFeedback('feedback.data-saved-error', 'error');
       console.error('Failed to update cart:', error);
       await mutate('cart', cart);
     }
   };
 
-  const handleQuantityChange = async (newQuantity: number) => {
-    setQuantity(newQuantity);
+  const handleAddToCart = async (id: string) => {
+    try {
+      const existingItem = cartItems.find((item: any) => item.productId === id);
+      let updatedItems;
+
+      if (existingItem) {
+        updatedItems = cartItems.map((item: any) =>
+          item.productId === id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        );
+      } else {
+        const newItem = {
+          productId: id,
+          quantity: 1,
+          product: products.find((item: any) => item.productId === id),
+        };
+
+        updatedItems = [...cartItems, newItem];
+      }
+      const result = await replaceCartItems(sessionTestId, updatedItems);
+      await mutate('product', result);
+    } catch (error) {
+      await mutate('product', cartItems);
+    }
+  };
+
+  const handleCardClick = (id: string) => {
+    router.push(`/product/${id}`);
   };
 
   const InformationContainer: FC = () => {
@@ -92,7 +101,6 @@ const ProductOverview: FC = () => {
         className={style.textContainer}
       >
         <h1>{product?.name}</h1>
-
         <div>
           <p>{product?.description}</p>
           <p>Preis: €{product?.price}</p>
@@ -129,12 +137,31 @@ const ProductOverview: FC = () => {
   };
 
   return (
-    <div className={style.overviewContainer}>
-      <span className={style.imageContainer}>
-        {product?.imageUrl && <ImageContainer />}
-      </span>
-      <InformationContainer />
-    </div>
+    <Container flow={'column'}>
+      <div className={style.overviewContainer}>
+        <span className={style.imageContainer}>
+          {product?.imageUrl && <ImageContainer />}
+        </span>
+        <InformationContainer />
+      </div>
+      <Hr />
+      <CartsContainer>
+        {products?.map((product) => {
+          return (
+            <ProductCard
+              key={product._id}
+              id={product._id}
+              title={product.name}
+              description={product.description}
+              image={product.imageUrl}
+              price={product.price}
+              onCardClick={() => handleCardClick(product._id)}
+              onIconClick={() => handleAddToCart(product._id)}
+            />
+          );
+        })}
+      </CartsContainer>
+    </Container>
   );
 };
 

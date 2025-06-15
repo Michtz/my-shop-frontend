@@ -5,7 +5,6 @@ import Image from 'next/image';
 import style from '@/styles/system/Carousel.module.scss';
 
 export interface CarouselItem {
-  id: string;
   image: string;
   alt: string;
   title?: string;
@@ -41,7 +40,7 @@ const Carousel: FC<CarouselProps> = ({
       style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}
     >
       {items.map((item) => (
-        <_Carousel.Item key={item.id}>
+        <_Carousel.Item key={item.image}>
           <div style={{ height: '400px', position: 'relative' }}>
             <Image
               src={item.image}

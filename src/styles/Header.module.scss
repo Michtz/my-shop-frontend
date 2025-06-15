@@ -1,0 +1,38 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  height: 65px;
+  padding: 0 2rem;
+  background-color: #6c5b47;
+  color: white;
+
+  .leftNavContainer {
+    display: flex;
+    align-items: center;
+
+    .logo {
+      cursor: pointer;
+    }
+
+    .navItemContainer {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+
+      list-style: none;
+
+      .navItem {
+        padding-right: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+  .rightNavContainer {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    .cartIcon {
+      cursor: pointer;
+    }
+  }
+}

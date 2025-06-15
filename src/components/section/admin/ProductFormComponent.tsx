@@ -156,7 +156,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
       if (product && product._id) {
         // Produkt aktualisieren
         await updateProduct(product._id, productData, imageFile || undefined);
+        console.log('before');
         showFeedback('Produkt erfolgreich aktualisiert!', 'success');
+        console.log('after');
       } else {
         // Neues Produkt erstellen
         await createProduct(productData, imageFile || undefined);

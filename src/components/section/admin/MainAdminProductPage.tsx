@@ -53,8 +53,6 @@ const AdminProductsContent: React.FC = () => {
         onEditProduct={handleEditProduct}
         onCreateProduct={handleCreateProduct}
       />
-
-      <Feedback />
     </div>
   );
 };
