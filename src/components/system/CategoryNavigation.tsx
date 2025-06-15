@@ -1,17 +1,22 @@
+'use client';
+
 import React, { useState } from 'react';
 import style from '@/styles/system/CategoryNavigation.module.scss';
 import AssetIcon, { IconType } from '@/components/system/AssetIcon';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { ProductCategoryOptions } from '@/types/product.types';
 
-interface CategoryNavigationProps {}
+interface CategoryNavigationProps {
+  activeCategory?: string;
+}
 
-const CategoryNavigation: React.FC<
-  CategoryNavigationProps
-> = (): React.ReactElement => {
+const CategoryNavigation: React.FC<CategoryNavigationProps> = ({
+  activeCategory,
+}): React.ReactElement => {
   const router = useRouter();
   const { t } = useTranslation(['common']);
-  const [activeItem, setActiveItem] = useState<string>('');
+  const [activeItem, setActiveItem] = useState<string>(activeCategory || '');
 
   const categories = [
     { icon: 'tampers', label: t('common:products.categories.tamper') },

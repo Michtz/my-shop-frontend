@@ -19,10 +19,9 @@ interface CartAPIResponse {
 
 interface CartResponse {
   cart: any | null;
-  items: any | null;
+  cartItems: any | null;
   isLoading: boolean;
   error: string | null;
-  mutate: () => void;
 }
 
 const useCart = (sessionId: string): CartResponse => {
@@ -35,10 +34,9 @@ const useCart = (sessionId: string): CartResponse => {
 
   return {
     cart: data?.data || null,
-    items: data?.data?.items || null,
+    cartItems: data?.data?.items || null,
     isLoading,
     error: error?.message ? error.message : null,
-    mutate,
   };
 };
 

@@ -1,18 +1,20 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, MouseEventHandler, PropsWithChildren } from 'react';
 import style from '@/styles/ProductCard.module.scss';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import MaterialIcon from '@/components/system/MaterialIcon';
-import { log } from 'node:util';
+import Image from 'next/image';
 
 interface ProductCardProps {
+  id: string;
   image?: string;
   title?: string;
   description?: string;
   price?: string | number;
-  onCardClick?: () => void;
+  onCardClick: (id: string) => void;
   onIconClick?: () => Promise<void>;
 }
 const ProductCard: FC<ProductCardProps> = ({
+  id,
   image,
   description,
   title,
@@ -20,13 +22,28 @@ const ProductCard: FC<ProductCardProps> = ({
   onCardClick,
   onIconClick,
 }) => (
-  <div onClick={onCardClick} className={style.cardContainer}>
-    <img src={image} className={style.productImage} />
-    <h1>{title}</h1>
+  <div onClick={() => onCardClick(id)} className={style.cardContainer}>
+    <div className={style.imageContainer}>
+      {image && (
+        <Image
+          src={image}
+          alt={title || 'Product image'}
+          fill
+          className={style.productImage}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={false}
+        />
+      )}
+    </div>
+    <h1 className={style.title}>{title}</h1>
     <p className={style.description}>{description}</p>
     <span className={style.priceContainer}>
       <ButtonContainer>
-        <Button variant={'ghost'} appearance={'icon'} onClick={onIconClick}>
+        <Button
+          variant={'ghost'}
+          appearance={'icon'}
+          onClick={() => onIconClick}
+        >
           <MaterialIcon icon={'shopping_basket'} />
         </Button>
       </ButtonContainer>

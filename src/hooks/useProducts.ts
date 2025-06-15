@@ -8,12 +8,14 @@ import {
   ProductFilters,
   ProductResponse,
 } from '@/types/product.types';
+import { Params } from 'next/dist/server/request/params';
+import { useParams } from 'next/navigation';
+import { getCategoryName } from '@/functions/common';
 
 interface ProductsResponse {
   products: IProduct[];
   isLoading: boolean;
   error: string | null;
-  refreshProducts: () => void;
 }
 
 const useProducts = (filters?: ProductFilters): ProductsResponse => {
@@ -23,36 +25,7 @@ const useProducts = (filters?: ProductFilters): ProductsResponse => {
     { suspense: false },
   );
 
-  const refreshProducts = (): void => {
-    mutate('products');
-  };
-
-  const extractAndFilterProducts = (): IProduct[] => {
-    if (!data?.success || !data.data) {
-      return [];
-    }
-
-    let products: IProduct[] = Array.isArray(data.data)
-      ? data.data
-      : [data.data];
-
-    if (filters?.category) {
-      products = products.filter(
-        (product: IProduct) => product.category === filters.category,
-      );
-    }
-
-    if (filters?.isActive !== undefined) {
-      products = products.filter(
-        (product: IProduct) => product.isActive === filters.isActive,
-      );
-    }
-
-    return products;
-  };
-
-  const productsData: IProduct[] = extractAndFilterProducts();
-  console.log(productsData, data?.data);
+  const productsData: IProduct[] = data?.data || [];
   const errorMessage: string | null =
     error?.message ||
     (data && !data.success ? data.error || 'Unbekannter Fehler' : null);
@@ -61,7 +34,6 @@ const useProducts = (filters?: ProductFilters): ProductsResponse => {
     products: productsData,
     isLoading,
     error: errorMessage,
-    refreshProducts,
   };
 };
 

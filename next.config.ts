@@ -5,6 +5,17 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/de2rhuwpw/image/upload/**',
+        search: '',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

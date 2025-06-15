@@ -1,48 +1,31 @@
 'use client';
-
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import resourcesToBackend from 'i18next-resources-to-backend';
+import deCommon from './locales/de/common.json';
+import enCommon from './locales/en/common.json';
 
 const languages: string[] = ['de', 'en'];
+const resources = {
+  de: {
+    common: deCommon,
+  },
+  en: {
+    common: enCommon,
+  },
+};
 
-i18next
-  .use(initReactI18next)
-  .use(LanguageDetector)
-  .use(
-    resourcesToBackend(
-      (language: string, namespace: string) =>
-        import(`./locales/${language}/${namespace}.json`),
-    ),
-  )
-  .init({
-    debug: process.env.NODE_ENV === 'development',
-    fallbackLng: 'de',
-    supportedLngs: languages,
-    defaultNS: 'common',
-    ns: ['common'],
-    fallbackNS: 'common',
-
-    // WICHTIG: Server und Client müssen gleiche Sprache verwenden
-    lng: 'de', // Feste Sprache für Server/Client Konsistenz
-
-    // SSR-spezifische Konfiguration
-    react: {
-      useSuspense: false, // Suspense deaktivieren
-    },
-
-    // Detection nur nach Hydration
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
-    },
-
-    // Sofort laden ohne Verzögerung
-    initImmediate: false,
-
-    // Ressourcen sofort laden
-    load: 'languageOnly',
-  });
+i18next.use(initReactI18next).init({
+  debug: false,
+  fallbackLng: 'de',
+  supportedLngs: languages,
+  defaultNS: 'common',
+  ns: ['common'],
+  fallbackNS: 'common',
+  resources,
+  react: {
+    useSuspense: false,
+  },
+  lng: 'de',
+});
 
 export default i18next;

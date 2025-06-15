@@ -4,12 +4,13 @@ import { createConfirmModal } from '@/components/modals/ConfirmModal';
 import useProducts from '@/hooks/useProducts';
 import { deleteProduct } from '@/requests/products.request';
 import { useFeedback } from '@/hooks/FeedbackHook';
-import { IProduct } from '@/types/product.types';
+import { IProduct, ProductResponse } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
 import { ProductListHeader } from './ProductListHeader';
 import { ProductTable } from './ProductTable';
 import { EmptyState } from './EmptyState';
 import { useTranslation } from 'react-i18next';
+import { mutate } from 'swr';
 
 interface AdminProductListProps {
   onEditProduct: (product: IProduct) => void;
@@ -20,7 +21,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   onEditProduct,
   onCreateProduct,
 }) => {
-  const { products, isLoading, error, refreshProducts } = useProducts();
+  const { products, isLoading, error } = useProducts();
   const { awaitModalResult } = useModal();
   const { showFeedback } = useFeedback();
   const { t } = useTranslation(['common']);
@@ -85,9 +86,9 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
 
       if (!confirmed) return;
 
-      await deleteProduct(product._id);
+      const result: ProductResponse = await deleteProduct(product._id);
       showFeedback('feedback.data-saved-success', 'success');
-      refreshProducts();
+      await mutate('product', result);
     } catch (e) {
       console.error('Failed to delete product:', e);
       showFeedback('feedback.data-saved-error', 'error');

@@ -1,4 +1,4 @@
-export const getCategoryName = (category: string): string => {
+export const getCategoryName = (category: string): string | undefined => {
   switch (category) {
     case 'tampers':
       return 'Tampers';
@@ -13,6 +13,6 @@ export const getCategoryName = (category: string): string => {
     case 'scales':
       return 'Scales';
     default:
-      return 'unknown category';
+      return undefined;
   }
 };

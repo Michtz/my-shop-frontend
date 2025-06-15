@@ -17,11 +17,11 @@ import { Container } from '@/components/system/Container';
 const CheckoutContent: React.FC = () => {
   const { currentStep } = useCheckout();
   const sessionTestId = 'sess_nrls9zo5e9076bl9vuw8zt';
-  const { cart, items } = useCart(sessionTestId);
+  const { cart, cartItems } = useCart(sessionTestId);
 
   // Calculate totals for summary
   const subtotal =
-    items?.reduce(
+    cartItems?.reduce(
       (sum: number, item: any) => sum + item.quantity * item.price,
       0,
     ) || 0;

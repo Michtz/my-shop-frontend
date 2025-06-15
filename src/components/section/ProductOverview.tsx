@@ -11,28 +11,28 @@ import { log } from 'node:util';
 import Carousel from '@/components/system/Carousel';
 import { IProduct } from '@/types/product.types';
 
-export const sessionTestId: string = 'sess_nrls9zo5e9076bl9vuw8zt';
+export const sessionTestId: string = 'sess_ytsdk6q1axj7fezp3bc7v';
 
 const ProductOverview: FC = () => {
   const { product, isLoading } = useProduct();
-  const { cart, items, mutate } = useCart(sessionTestId);
+  const { cart, cartItems, mutate } = useCart(sessionTestId);
   const params: Params = useParams();
 
   console.log(product);
 
-  useEffect(() => {
-    console.log(cart, items);
-  }, [cart]);
+  // useEffect(() => {
+  //   console.log(cart, items);
+  // }, [cart]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const existingItem = items.find(
+    const existingItem = cartItems.find(
       (item: any) => item.productId === params.id,
     );
     let updatedItems;
 
     if (existingItem) {
-      updatedItems = items.map((item: any) =>
+      updatedItems = cartItems.map((item: any) =>
         item.productId === params.id
           ? { ...item, quantity: item.quantity + 1 }
           : item,
@@ -44,7 +44,7 @@ const ProductOverview: FC = () => {
         product: product,
       };
 
-      updatedItems = [...items, newItem];
+      updatedItems = [...cartItems, newItem];
     }
 
     try {

@@ -17,7 +17,8 @@ export type ProductCategoryOptions =
   | 'Milk'
   | 'Tools'
   | 'Coffee Cups'
-  | 'Scales';
+  | 'Scales'
+  | '';
 
 export interface ProductResponse {
   success: boolean;

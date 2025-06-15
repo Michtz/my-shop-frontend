@@ -12,11 +12,11 @@ import CartItemSkeleton from '@/components/section/cart/CartListItemSkleton';
 
 const CartList = () => {
   const sessionTestId: string = 'sess_nrls9zo5e9076bl9vuw8zt';
-  const { cart, items, mutate, isLoading } = useCart(sessionTestId);
+  const { cart, cartItems, mutate, isLoading } = useCart(sessionTestId);
 
   // Calculate totals
   const subtotal =
-    items?.reduce(
+    cartItems?.reduce(
       (sum: number, item: any) => sum + item.quantity * item.price,
       0,
     ) || 0;
@@ -41,11 +41,11 @@ const CartList = () => {
 
   const list = (
     <>
-      {items?.map((item: any) => (
+      {cartItems?.map((item: any) => (
         <React.Fragment key={item.productId}>
           <CartListItem
             item={item}
-            items={items}
+            items={cartItems}
             sessionTestId={sessionTestId}
             mutate={mutate}
           />
