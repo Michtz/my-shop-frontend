@@ -11,7 +11,7 @@ import Skeleton from '@/components/system/Skeleton';
 import CartItemSkeleton from '@/components/section/cart/CartListItemSkleton';
 
 const CartList = () => {
-  const sessionTestId: string = 'sess_nrls9zo5e9076bl9vuw8zt';
+  const sessionTestId: string = 'sess_ytsdk6q1axj7fezp3bc7v';
   const { cart, cartItems, mutate, isLoading } = useCart(sessionTestId);
 
   // Calculate totals

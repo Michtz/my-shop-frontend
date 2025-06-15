@@ -9,7 +9,6 @@ const ProductCard: FC<ProductCardProps> = ({}) => {
   return (
     <>
       <CartList />
-      <Footer />
     </>
   );
 };

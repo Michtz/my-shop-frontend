@@ -8,11 +8,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FeedbackProvider } from '@/hooks/FeedbackHook';
 import TranslationProvider from '@/providers/TranslationProvider';
 import React, { CSSProperties } from 'react';
-import { Footer, Header } from 'antd/es/layout/layout';
 import { Menu, MenuProps } from 'antd';
 import { IconButton } from '@mui/material';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import './globals.css';
+import Footer from '@/components/section/Footer';
+import Header from '@/components/section/Header';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const headerStyle: CSSProperties = {
@@ -60,28 +61,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
               <title>myShop</title>
             </head>
             <body>
-              <Header style={headerStyle}>
-                <div className="demo-logo" />
-                <Menu
-                  theme="dark"
-                  mode="horizontal"
-                  defaultSelectedKeys={['2']}
-                  items={items1}
-                  style={{ flex: 1, minWidth: 0 }}
-                />
-                <IconButton
-                  aria-flowto="right"
-                  color="primary"
-                  aria-label="shopping cart"
-                  onClick={(e) => handleOpenCart(e)}
-                >
-                  <ShoppingBasketIcon />
-                </IconButton>
-              </Header>
+              <Header />
               <SWRProvider>{children}</SWRProvider>
-              <Footer style={footerStyle}>
-                this will be the footer at some time soooooon :D
-              </Footer>
+              <Footer />
             </body>
           </html>
         </FeedbackProvider>

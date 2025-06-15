@@ -3,12 +3,19 @@
   gap: 20px; // Optional: Abstand zwischen Bild und Text
 
   .imageContainer {
-    flex: 0 0 50%; // oder width: 50%;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    flex: 0 0 60%;
   }
 
+  .productImage {
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
   .textContainer {
-    flex: 1; // nimmt den restlichen Platz (50%)
     display: flex;
     flex-direction: column;
+    flex: 0 0 40%;
   }
 }

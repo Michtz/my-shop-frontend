@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, PropsWithChildren, ReactNode } from 'react';
+import { FC, FormEvent, PropsWithChildren, ReactNode } from 'react';
 import style from '@/styles/Container.module.scss';
 import { padding } from '@mui/system';
 
@@ -34,6 +34,22 @@ export const Container: FC<ContainerProps> = ({
   >
     {children}
   </div>
+);
+
+interface ContainerFormProps {
+  className: string;
+  children?: ReactNode;
+  onSubmitAction: (data: FormEvent) => Promise<void>;
+}
+
+export const FormContainer: FC<ContainerFormProps> = ({
+  children,
+  className,
+  onSubmitAction,
+}) => (
+  <form onSubmit={onSubmitAction} className={className}>
+    {children}
+  </form>
 );
 
 export const CardContainer: FC<ContainerProps> = ({ children }) => (

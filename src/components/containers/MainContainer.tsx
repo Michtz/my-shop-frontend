@@ -7,7 +7,7 @@ import { getCategoryName } from '@/functions/common';
 import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
 import { Container } from '@/components/system/Container';
 import { replaceCartItems } from '@/requests/cart.request';
-import { sessionTestId } from '@/components/section/ProductOverview';
+import { sessionTestId } from '@/components/containers/ProductContainer';
 import useCart from '@/hooks/useCart';
 import { mutate } from 'swr';
 import { IProduct } from '@/types/product.types';

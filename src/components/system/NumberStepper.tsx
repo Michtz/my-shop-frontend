@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import Button from './Button';
 import style from '@/styles/system/NumberStepper.module.scss';
 
 interface NumberStepperProps {
   quantity: number;
   onQuantityChange: (newQuantity: number) => void;
-  onDelete: () => void;
+  onDelete?: () => void;
   disabled?: boolean;
   min?: number;
   max?: number;
@@ -103,6 +103,7 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
         disabled={isDecrementDisabled}
         onClick={handleDecrement}
         className={style.stepperButton}
+        type="button"
       />
 
       {isEditing ? (
@@ -134,17 +135,20 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
         disabled={isIncrementDisabled}
         onClick={handleIncrement}
         className={style.stepperButton}
+        type="button"
       />
 
-      <Button
-        icon="delete"
-        appearance="icon"
-        variant="error"
-        size="small"
-        onClick={onDelete}
-        disabled={disabled}
-        className={style.deleteButton}
-      />
+      {onDelete && (
+        <Button
+          icon="delete"
+          appearance="icon"
+          variant="error"
+          size="small"
+          onClick={onDelete}
+          disabled={disabled}
+          className={style.deleteButton}
+        />
+      )}
     </div>
   );
 };

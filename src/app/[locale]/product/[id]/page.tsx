@@ -1,6 +1,6 @@
-import ProductOverview from '@/components/section/ProductOverview';
 import { FC } from 'react';
+import ProductContainer from '@/components/containers/ProductContainer';
 
-const App: FC = () => <ProductOverview />;
+const App: FC = () => <ProductContainer />;
 
 export default App;
