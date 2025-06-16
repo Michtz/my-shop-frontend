@@ -47,8 +47,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const isAuthenticated = !!user;
+  const isAuthenticated: boolean = !!user;
 
   useEffect(() => {
     initializeAuth();
@@ -70,17 +69,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return () => clearInterval(interval);
     }
   }, [isAuthenticated]);
-
   const initializeAuth = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const storedSessionId =
-        typeof window !== 'undefined'
-          ? sessionStorage.getItem(SESSION_ID_KEY)
-          : null;
-
+      let storedSessionId = sessionStorage.getItem(SESSION_ID_KEY);
       const isTokenValid = await validateToken();
 
       if (isTokenValid) {
@@ -88,19 +82,41 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(userData.data);
       }
 
-      if (storedSessionId) {
+      if (!storedSessionId) {
+        try {
+          const response = await _createSession();
+          storedSessionId = response.sessionId;
+          sessionStorage.setItem(SESSION_ID_KEY, storedSessionId!);
+          setSessionId(storedSessionId!);
+          setSessionData(response.data || null);
+        } catch (err) {
+          Logger.error('Failed to create new session:', err);
+          setError('Failed to create session');
+          return;
+        }
+      } else {
         try {
           const sessionResponse = await getSession(storedSessionId);
           setSessionId(sessionResponse.sessionId);
           setSessionData(sessionResponse.data);
         } catch {
-          if (typeof window !== 'undefined') {
+          try {
             sessionStorage.removeItem(SESSION_ID_KEY);
+            const response = await _createSession();
+            sessionStorage.setItem(SESSION_ID_KEY, response.sessionId);
+            setSessionId(response.sessionId);
+            setSessionData(response.data || null);
+          } catch (err) {
+            Logger.error(
+              'Failed to create new session after invalid session:',
+              err,
+            );
           }
         }
       }
     } catch (err: any) {
       Logger.error('Auth initialization failed:', err);
+      setError('Authentication initialization failed');
     } finally {
       setIsLoading(false);
     }
@@ -114,8 +130,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await _createSession();
       sessionStorage.setItem(SESSION_ID_KEY, response.sessionId);
 
-      setSessionId(response.data.sessionId);
-      setSessionData(response.data.data);
+      setSessionId(response.sessionId);
+      setSessionData(response.data || null);
     } catch (err: any) {
       setError('Failed to create session');
       Logger.error(err);
@@ -159,21 +175,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const currentSessionId =
-        sessionId || typeof window !== 'undefined'
-          ? localStorage.getItem(SESSION_ID_KEY)
-          : null;
+        sessionId ||
+        (typeof window !== 'undefined'
+          ? sessionStorage.getItem(SESSION_ID_KEY)
+          : null);
 
       if (!currentSessionId) {
         Logger.error('No session available');
+        setError('No session available');
+        return;
       }
 
       const response = await _register(currentSessionId as string);
-
-      // await TokenManager.setAuthTokens(
-      //   response.data.token,
-      //   response.data.refreshToken,
-      // );
-
       setUser(response.data.user);
     } catch (err: any) {
       setError('Registration failed');
@@ -183,17 +196,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // Korrigierte logout Funktion (Rekursion vermeiden)
   const logout = async () => {
     setIsLoading(true);
 
     try {
-      await logout();
+      // Hier sollte ein API-Call stehen, nicht rekursiv logout() aufrufen
+      // await logoutApiCall(); // Ersetzen Sie dies mit Ihrem tatsächlichen API-Call
     } catch (err) {
       Logger.error('Logout request failed:', err);
     }
 
-    // await TokenManager.clearAuthTokens();
+    // Session Storage leeren
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem(SESSION_ID_KEY);
+    }
+
     setUser(null);
+    setSessionId('');
+    setSessionData(null);
     setError(null);
     setIsLoading(false);
   };
