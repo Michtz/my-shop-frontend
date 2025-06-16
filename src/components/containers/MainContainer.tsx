@@ -7,13 +7,13 @@ import { getCategoryName } from '@/functions/common';
 import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
 import { Container } from '@/components/system/Container';
 import { addToCart, replaceCartItems } from '@/requests/cart.request';
-import { sessionTestId } from '@/components/containers/ProductContainer';
 import useCart from '@/hooks/useCart';
 import { mutate } from 'swr';
 import { IProduct } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
 import { Hr } from '@/components/system/Hr';
 import { useFeedback } from '@/hooks/FeedbackHook';
+import { useAuth } from '@/hooks/AuthContext';
 
 interface MainContainerProps {}
 
@@ -29,13 +29,14 @@ const MainContainer: React.FC<MainContainerProps> = () => {
   const { products, isLoading } = useProducts();
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
+  const { sessionId } = useAuth();
+
   const category: string | undefined = getCategoryName(
     params?.category as string,
   );
   const [articles, setArticles] = useState<IProduct[]>(
     filteredProducts(products, category),
   );
-  const { cartItems } = useCart(sessionTestId);
   const router = useRouter();
 
   useEffect(() => {
@@ -77,7 +78,7 @@ const MainContainer: React.FC<MainContainerProps> = () => {
 
   const handleAddToCart = async (id: string) => {
     try {
-      const result = await addToCart(sessionTestId, id, 1);
+      const result = await addToCart(sessionId, id, 1);
       showFeedback('feedback.add-to-cart-success', 'success');
     } catch (error) {
       showFeedback('feedback.data-saved-error', 'error');

@@ -12,7 +12,9 @@ import {
 
 export const getProducts = async (): Promise<ProductResponse> => {
   try {
-    const response = await axiosInstance.get(`${productsApiUrl}`);
+    const response = await axiosInstance.get(`${productsApiUrl}`, {
+      withCredentials: false,
+    });
 
     if (
       response.data &&
@@ -41,7 +43,9 @@ export const getProducts = async (): Promise<ProductResponse> => {
 
 export const getProduct = async (uuid: string): Promise<ProductResponse> => {
   try {
-    const response = await axiosInstance.get(`${productsApiUrl}/${uuid}`);
+    const response = await axiosInstance.get(`${productsApiUrl}/${uuid}`, {
+      withCredentials: false,
+    });
 
     if (
       response.data &&
@@ -87,6 +91,7 @@ export const createProduct = async (
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        withCredentials: false,
       });
       return response.data;
     } else {
@@ -97,6 +102,7 @@ export const createProduct = async (
         {
           headers: {
             'Content-Type': 'application/json',
+            withCredentials: false,
           },
         },
       );
@@ -126,6 +132,7 @@ export const updateProduct = async (
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            withCredentials: false,
           },
         },
       );
@@ -138,6 +145,7 @@ export const updateProduct = async (
         {
           headers: {
             'Content-Type': 'application/json',
+            withCredentials: false,
           },
         },
       );
@@ -160,6 +168,7 @@ export const updateStock = async (
       {
         headers: {
           'Content-Type': 'application/json',
+          withCredentials: false,
         },
       },
     );
@@ -172,38 +181,12 @@ export const updateStock = async (
 
 export const deleteProduct = async (uuid: string): Promise<ProductResponse> => {
   try {
-    const response = await axiosInstance.delete(`${productsApiUrl}/${uuid}`);
+    const response = await axiosInstance.delete(`${productsApiUrl}/${uuid}`, {
+      withCredentials: false,
+    });
     return response.data;
   } catch (e) {
     Logger.error('Unable to delete product');
     throw e;
   }
 };
-
-/*
-import { createProduct, updateProduct, deleteProduct, updateStock } from '@/requests/products.request';
-import { mutate } from 'swr';
-
-// In Component:
-const handleCreate = async () => {
-  const success = await createProduct(productData, imageFile);
-  if (success.success) {
-    mutate('products'); // Refresh products list
-  }
-};
-
-const handleUpdate = async () => {
-  const success = await updateProduct(id, updateData, imageFile);
-  if (success.success) {
-    mutate('products'); // Refresh products list
-    mutate(id);         // Refresh single product
-  }
-};
-
-const handleDelete = async () => {
-  const success = await deleteProduct(id);
-  if (success.success) {
-    mutate('products');
-  }
-};
-*/

@@ -3,15 +3,15 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { mutate } from 'swr';
-import { Product } from '@/hooks/useProduct';
+import { IProduct } from '@/types/product.types';
 
 interface UpdateProductProps {
   id: string;
-  data: Partial<Product>;
+  data: Partial<IProduct>;
 }
 
 interface UseUpdateProductResponse {
-  updateProduct: (props: UpdateProductProps) => Promise<Product>;
+  updateProduct: (props: UpdateProductProps) => Promise<IProduct>;
   isUpdating: boolean;
   error: Error | null;
 }
@@ -23,12 +23,12 @@ export const useUpdateProduct = (): UseUpdateProductResponse => {
   const updateProduct = async ({
     id,
     data,
-  }: UpdateProductProps): Promise<Product> => {
+  }: UpdateProductProps): Promise<IProduct> => {
     setIsUpdating(true);
     setError(null);
 
     try {
-      const response = await axios.put<{ data: Product }>(
+      const response = await axios.put<{ data: IProduct }>(
         `http://localhost:4200/api/products/${id}`,
         data,
       );

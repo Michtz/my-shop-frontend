@@ -34,10 +34,7 @@ const Link: React.FC<LinkProps> = ({
 
   useEffect(() => {
     if (prefetch && href && !external && !prefetched.current) {
-      router
-        .prefetch(href)
-        .then(() => (prefetched.current = true))
-        .catch(() => (prefetched.current = false));
+      router.prefetch(href);
     }
   }, [prefetch, href, external, router]);
 
@@ -51,7 +48,7 @@ const Link: React.FC<LinkProps> = ({
 
     if (href && !external) {
       event.preventDefault();
-      await router.push(href);
+      router.push(href);
     }
   };
 

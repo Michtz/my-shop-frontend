@@ -16,8 +16,8 @@ import { useFeedback } from '@/hooks/FeedbackHook';
 import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
 import useProducts from '@/hooks/useProducts';
 import { Hr } from '@/components/system/Hr';
-
-export const sessionTestId: string = 'sess_ytsdk6q1axj7fezp3bc7v';
+import { useAuth } from '@/hooks/AuthContext';
+import { Logger } from '@/utils/Logger.class';
 
 interface FormFields {
   quantity: number;
@@ -32,7 +32,8 @@ const ProductOverview: FC = () => {
   const { product } = useProduct();
   const router = useRouter();
   const { products } = useProducts();
-  const { cart, cartItems } = useCart(sessionTestId);
+  const { sessionId } = useAuth();
+  const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
 
   const { register, reset, control, handleSubmit } = useForm<FormFields>({
@@ -49,7 +50,7 @@ const ProductOverview: FC = () => {
     try {
       console.log(data);
       const result = await addToCart(
-        sessionTestId,
+        sessionId!,
         product?._id as string,
         data.quantity,
       );
@@ -58,7 +59,7 @@ const ProductOverview: FC = () => {
       showFeedback('feedback.add-to-cart-success', 'success');
     } catch (error) {
       showFeedback('feedback.data-saved-error', 'error');
-      console.error('Failed to update cart:', error);
+      Logger.error('Failed to update cart:', error);
       await mutate('cart', cart);
     }
   };
@@ -83,7 +84,7 @@ const ProductOverview: FC = () => {
 
         updatedItems = [...cartItems, newItem];
       }
-      const result = await replaceCartItems(sessionTestId, updatedItems);
+      const result = await replaceCartItems(sessionId!, updatedItems);
       await mutate('product', result);
     } catch (error) {
       await mutate('product', cartItems);

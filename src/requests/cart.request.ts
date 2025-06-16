@@ -4,20 +4,26 @@ import { Logger } from '@/utils/Logger.class';
 
 export const getCart = async (sessionId: string): Promise<any> => {
   try {
-    return await axiosInstance.get(`${cartApiUrl}/${sessionId}`);
+    return await axiosInstance.get(`${cartApiUrl}/${sessionId}`, {
+      withCredentials: false,
+    });
   } catch (e) {
     Logger.error('Unable to get the cart');
     throw e;
   }
 };
+
 export const updateCart = async (sessionId: string): Promise<any> => {
   try {
-    return await axiosInstance.get(`${cartApiUrl}/${sessionId}`);
+    return await axiosInstance.get(`${cartApiUrl}/${sessionId}`, {
+      withCredentials: false,
+    });
   } catch (e) {
     Logger.error('Unable to get the cart');
     throw e;
   }
 };
+
 export const addToCart = async (
   sessionId: string,
   productId: string,
@@ -32,9 +38,11 @@ export const addToCart = async (
         },
       ],
     };
-    return await axiosInstance.put(`${cartApiUrl}/${sessionId}`, requestBody);
+    return await axiosInstance.put(`${cartApiUrl}/${sessionId}`, requestBody, {
+      withCredentials: false,
+    });
   } catch (e) {
-    Logger.error('Unable to get the cart');
+    Logger.error('Unable to add to cart');
     throw e;
   }
 };
@@ -56,6 +64,7 @@ export const updateCartItem = async (
     return await axiosInstance.put(
       `${cartApiUrl}/${sessionId}/product/${productId}`,
       requestBody,
+      { withCredentials: false },
     );
   } catch (e) {
     Logger.error('Unable to update the cart item');
@@ -78,6 +87,7 @@ export const replaceCartItems = async (
     return await axiosInstance.put(
       `${cartApiUrl}/${sessionId}/items`,
       requestBody,
+      { withCredentials: false },
     );
   } catch (e) {
     Logger.error('Unable to replace cart items');

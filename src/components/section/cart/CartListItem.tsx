@@ -17,53 +17,17 @@ import NumberStepper from '@/components/system/NumberStepper';
 interface CartListItemProp {
   item: any;
   items: any[];
-  sessionTestId: string;
+  sessionId: string;
   mutate: () => void;
 }
 
 const CartListItem: React.FC<CartListItemProp> = ({
   item,
   items,
-  sessionTestId,
+  sessionId,
   mutate,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleAddItem = async (productId: string) => {
-    setIsLoading(true);
-    const updatedItems = items.map((cartItem: any) =>
-      cartItem.productId === productId
-        ? { ...cartItem, quantity: cartItem.quantity + 1 }
-        : cartItem,
-    );
-
-    try {
-      await replaceCartItems(sessionTestId, updatedItems);
-      mutate();
-    } catch (error) {
-      console.error('Failed to add item:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleRemoveItem = async (productId: string) => {
-    setIsLoading(true);
-    const updatedItems = items.map((cartItem: any) =>
-      cartItem.productId === productId && cartItem.quantity > 1
-        ? { ...cartItem, quantity: cartItem.quantity - 1 }
-        : cartItem,
-    );
-
-    try {
-      await replaceCartItems(sessionTestId, updatedItems);
-      mutate();
-    } catch (error) {
-      console.error('Failed to remove item:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleDeleteItem = async (productId: string) => {
     setIsLoading(true);
@@ -72,7 +36,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
     );
 
     try {
-      await replaceCartItems(sessionTestId, updatedItems);
+      await replaceCartItems(sessionId, updatedItems);
       mutate();
     } catch (error) {
       console.error('Failed to delete item:', error);
@@ -94,7 +58,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
     );
 
     try {
-      await replaceCartItems(sessionTestId, updatedItems);
+      await replaceCartItems(sessionId, updatedItems);
       mutate();
     } catch (error) {
       console.error('Failed to update quantity:', error);
@@ -125,7 +89,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
               <div className={style.brand}>{item.product.brand || 'BRAND'}</div>
               <h3 className={style.productName}>{item.product.name}</h3>
               <div className={style.unitPrice}>
-                CHF {item.price.toFixed(2)}.-
+                CHF {item.price?.toFixed(2)}.-
               </div>
             </div>
           </div>
