@@ -10,11 +10,10 @@ export const axiosInstance = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  withCredentials: true, // Enable cookies
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(async (request) => {
-  // Cookie-based auth - no manual token handling needed
   return request;
 });
 
@@ -27,14 +26,21 @@ axiosInstance.interceptors.response.use(
       url: error.config?.url,
     };
 
-    // Handle 401 - redirect to login
     if (error.response?.status === 401) {
-      try {
-        await fetch('/api/auth/clear-cookies', { method: 'POST' });
-      } catch {}
+      const isOnLoginPage =
+        typeof window !== 'undefined' &&
+        (window.location.pathname.includes('/login') ||
+          window.location.pathname.includes('/register'));
 
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
+      if (!isOnLoginPage) {
+        if (typeof window !== 'undefined') {
+          Logger.error('🔄 Redirecting to login due to 401');
+          window.location.href = '/login';
+        }
+      } else {
+        Logger.error(
+          '⚠️ 401 on login page - this is expected for unauthenticated requests',
+        );
       }
     }
 

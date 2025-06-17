@@ -1,17 +1,17 @@
 'use client';
 
+// Achtung ki test nonsins
 import React, { useState } from 'react';
-import { useAuth } from '@/hooks/AuthContext';
 import { Logger } from '@/utils/Logger.class';
+import { useAuth } from '@/hooks/AuthHook';
 
 const AuthManager: React.FC = () => {
   const {
     user,
-    sessionId,
+    sessionData, // ✅ FIX: sessionData statt sessionId
     isLoading,
     isAuthenticated,
     error,
-    createSession,
     login,
     register,
     logout,
@@ -30,18 +30,13 @@ const AuthManager: React.FC = () => {
     lastName: '',
   });
 
-  const handleCreateSession = async () => {
-    try {
-      await createSession();
-    } catch (err) {
-      Logger.error('Session creation failed:', err);
-    }
-  };
+  // ✅ ENTFERNT: handleCreateSession - nicht mehr nötig
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(loginData);
+      // ✅ FIX: Neue API - separate Parameter
+      await login(loginData.email, loginData.password);
     } catch (err) {
       Logger.error('Login failed:', err);
     }
@@ -50,7 +45,13 @@ const AuthManager: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await register(registerData);
+      // ✅ FIX: Neue API - separate Parameter
+      await register(
+        registerData.email,
+        registerData.password,
+        registerData.firstName,
+        registerData.lastName,
+      );
     } catch (err) {
       Logger.error('Registration failed:', err);
     }
@@ -62,7 +63,7 @@ const AuthManager: React.FC = () => {
 
   return (
     <div className="p-6 max-w-md mx-auto bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Authentication</h2>
+      <h2 className="text-2xl font-bold mb-4">Cookie-Based Authentication</h2>
 
       {error && (
         <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded">
@@ -73,26 +74,26 @@ const AuthManager: React.FC = () => {
         </div>
       )}
 
-      {!sessionId && (
-        <div className="mb-4">
-          <button
-            onClick={handleCreateSession}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Create Session
-          </button>
+      {/* ✅ FIX: Session info - zeigt jetzt sessionData statt sessionId */}
+      {sessionData && (
+        <div className="mb-4 p-3 bg-blue-100 border border-blue-300 rounded">
+          <p className="text-sm text-blue-600">
+            Session Theme: {sessionData.preferences?.theme || 'default'}
+          </p>
+          <p className="text-sm text-blue-600">
+            Language: {sessionData.preferences?.language || 'default'}
+          </p>
         </div>
       )}
 
-      {sessionId && !isAuthenticated && (
-        <div className="space-y-6">
-          <div className="p-3 bg-blue-100 border border-blue-300 rounded">
-            <p className="text-sm text-blue-600">Session: {sessionId}</p>
-          </div>
+      {/* ✅ ENTFERNT: Create Session Button - passiert automatisch */}
 
+      {!isAuthenticated && (
+        <div className="space-y-6">
           <form onSubmit={handleLogin} className="space-y-4">
             <h3 className="font-semibold">Login</h3>
             <input
+              type="email"
               placeholder="Email"
               value={loginData.email}
               onChange={(e) =>
@@ -102,6 +103,7 @@ const AuthManager: React.FC = () => {
               required
             />
             <input
+              type="password"
               placeholder="Password"
               value={loginData.password}
               onChange={(e) =>
@@ -178,7 +180,17 @@ const AuthManager: React.FC = () => {
             </h3>
             <p className="text-sm text-green-600">Role: {user.role}</p>
             <p className="text-sm text-green-600">Email: {user.email}</p>
+            <p className="text-sm text-green-600">🍪 Cookie-authenticated</p>
           </div>
+
+          {sessionData && (
+            <div className="p-3 bg-gray-100 border border-gray-300 rounded">
+              <h4 className="font-semibold text-gray-800">Session Data:</h4>
+              <pre className="text-xs text-gray-600 mt-1">
+                {JSON.stringify(sessionData, null, 2)}
+              </pre>
+            </div>
+          )}
 
           <button
             onClick={logout}
@@ -193,3 +205,5 @@ const AuthManager: React.FC = () => {
 };
 
 export default AuthManager;
+
+// only for testing

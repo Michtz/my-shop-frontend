@@ -9,10 +9,9 @@ export interface User {
 export interface AuthResponse {
   success: boolean;
   data: {
-    token: string;
-    refreshToken: string;
     user: User;
   };
+  error?: string;
 }
 
 export interface SessionData {
@@ -21,6 +20,7 @@ export interface SessionData {
     language: string;
   };
   lastActivity: string;
+  [key: string]: any;
 }
 
 export interface SessionResponse {
@@ -30,17 +30,15 @@ export interface SessionResponse {
     isAuthenticated: boolean;
     data: SessionData;
     expires: string;
-    _id: string;
     createdAt: string;
     updatedAt: string;
-    id: string;
   };
+  error?: string;
 }
 
 export interface LoginRequest {
   email: string;
   password: string;
-  sessionId: string;
 }
 
 export interface RegisterRequest {
@@ -48,5 +46,14 @@ export interface RegisterRequest {
   password: string;
   firstName: string;
   lastName: string;
-  sessionId: string;
+}
+
+export interface UpdateSessionRequest {
+  data: Partial<SessionData>;
+}
+
+export interface ApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
 }
