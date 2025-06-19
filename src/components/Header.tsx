@@ -5,9 +5,11 @@ import MaterialIcon from '@/components/system/MaterialIcon';
 import style from '@/styles/Header.module.scss';
 import Link from '@/components/system/Link';
 import Button from '@/components/system/Button';
+import { useAuth } from '@/hooks/AuthHook';
 
 const ResponsiveAppBar = () => {
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
@@ -25,9 +27,17 @@ const ResponsiveAppBar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  const handleUserClick = () => {
+    console.log(JSON.parse(sessionStorage.getItem('user') as string));
+    return;
+    if (isAuthenticated) {
+      console.log(isAuthenticated, ' is auth');
+      router.replace('/profile');
+      return;
+    }
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+    router.replace('/login');
+    console.log(isAuthenticated);
   };
 
   return (
@@ -39,13 +49,13 @@ const ResponsiveAppBar = () => {
           </span>
           <ul className={style.navItemContainer}>
             <li className={style.navItem}>
-              <Link href={'/'}>Über uns</Link>
+              <Link href={'/public'}>Über uns</Link>
             </li>
             <li className={style.navItem}>
-              <Link href={'/'}>Blog</Link>
+              <Link href={'/public'}>Blog</Link>
             </li>
             <li className={style.navItem}>
-              <Link href={'/'}>Wissen</Link>
+              <Link href={'/public'}>Wissen</Link>
             </li>
           </ul>
         </div>
@@ -56,7 +66,14 @@ const ResponsiveAppBar = () => {
             icon={'shopping_cart'}
             onClick={() => router.replace('/cart')}
           />
-          <span>Avatar</span>
+          <span>
+            <Button
+              appearance={'icon'}
+              variant={'ghost'}
+              icon={'shopping_cart'}
+              onClick={handleUserClick}
+            />
+          </span>
         </span>
       </header>
     </>

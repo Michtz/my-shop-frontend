@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { localApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
+import { getToken } from 'next-auth/jwt';
 
 export const axiosInstance = axios.create({
   baseURL: localApiUrl,

@@ -1,7 +1,7 @@
 .container {
   display: flex;
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: #fcfaf7;
 
   &[data-padding='true'] {
     padding: 2rem;
@@ -54,6 +54,14 @@
 
   &[data-justify-content='space-evenly'] {
     justify-content: space-evenly;
+  }
+  &[data-max-width='1150'] {
+    max-width: 1150px !important;
+    margin: auto;
+    overflow: hidden;
+  }
+  &[data-gap='2'] {
+    gap: 2rem;
   }
 }
 

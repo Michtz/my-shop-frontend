@@ -22,9 +22,11 @@ export const createSession = async (preferences?: any): Promise<any> => {
 export const getCurrentSession = async (): Promise<any> => {
   try {
     const response = await axiosInstance.get(`${sessionsApiUrl}/current`);
+    console.log('response', response.data);
+
     return response;
   } catch (e) {
-    Logger.error('Unable to get current session');
+    Logger.error('Unable to get current session', e);
     throw e;
   }
 };
@@ -73,10 +75,19 @@ export const register = async (
     throw e;
   }
 };
-
 export const logout = async (): Promise<any> => {
   try {
-    const response = await axiosInstance.post(`${authApiUrl}/logout`);
+    const response = await axiosInstance.post(
+      `${authApiUrl}/logout`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+
     return response;
   } catch (e) {
     Logger.error('Unable to logout');

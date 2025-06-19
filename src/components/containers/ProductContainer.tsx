@@ -16,7 +16,7 @@ import { useFeedback } from '@/hooks/FeedbackHook';
 import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
 import useProducts from '@/hooks/useProducts';
 import { Hr } from '@/components/system/Hr';
-import { useAuth } from '@/hooks/AuthContext';
+import { useAuth } from '@/hooks/AuthHook';
 import { Logger } from '@/utils/Logger.class';
 
 interface FormFields {

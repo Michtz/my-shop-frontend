@@ -1,0 +1,601 @@
+// UserProfileForm.module.scss
+
+.userProfileForm {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.section {
+  background: #ffffff;
+  border: 1px solid #e1e5e9;
+  border-radius: 12px;
+  padding: 24px;
+
+  &:hover {
+    border-color: #d1d9e0;
+  }
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1d23;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: #2563eb;
+    border-radius: 2px;
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .sectionTitle {
+    margin-bottom: 0;
+  }
+}
+
+.toggleButton {
+  background: #f8fafc;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #2563eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #eff6ff;
+    border-color: #2563eb;
+  }
+}
+
+// Country Select Styling
+.selectContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.selectLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1d23;
+
+  &::after {
+    content: ' *';
+    color: #dc2626;
+  }
+}
+
+.countrySelect {
+  padding: 12px 16px;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 14px;
+  color: #1a1d23;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #d1d9e0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px #eff6ff;
+  }
+
+  option {
+    padding: 8px;
+    background: #ffffff;
+    color: #1a1d23;
+  }
+}
+
+// Payment Methods Styling
+.paymentMethods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.paymentMethod {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #bfdbfe;
+    background: #f8fafc;
+  }
+
+  input[type='radio'] {
+    margin: 0;
+    margin-right: 12px;
+    accent-color: #2563eb;
+  }
+
+  input[type='radio']:checked + .paymentMethodContent {
+    color: #2563eb;
+  }
+
+  &:has(input:checked) {
+    border-color: #2563eb;
+    background: #eff6ff;
+  }
+}
+
+.paymentMethodContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1d23;
+  transition: color 0.2s ease;
+}
+
+// Checkbox Styling
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #1a1d23;
+  cursor: pointer;
+  user-select: none;
+
+  input[type='checkbox'] {
+    margin: 0;
+    accent-color: #2563eb;
+  }
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.checkboxOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f1f5f9;
+    border-color: #d1d9e0;
+  }
+
+  &:has(input:checked) {
+    background: #eff6ff;
+    border-color: #2563eb;
+  }
+
+  input[type='checkbox'] {
+    margin: 2px 0 0 0;
+    accent-color: #2563eb;
+  }
+}
+
+.checkboxContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.checkboxLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1d23;
+}
+
+.checkboxDescription {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+// Submit Buttons
+.cancelButton,
+.submitButton {
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px;
+}
+
+.cancelButton {
+  background: #f8fafc;
+  border: 1px solid #e1e5e9;
+  color: #1a1d23;
+
+  &:hover {
+    background: #f1f5f9;
+    border-color: #d1d9e0;
+  }
+}
+
+.submitButton {
+  background: #2563eb;
+  border: 1px solid #2563eb;
+  color: white;
+
+  &:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+  }
+
+  &:disabled {
+    background: #f1f5f9;
+    border-color: #e1e5e9;
+    color: #94a3b8;
+    cursor: not-allowed;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .userProfileForm {
+    padding: 16px;
+  }
+
+  .section {
+    padding: 16px;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  // UserProfileForm.module.scss
+  @import '@/styles/variables';
+
+  .userProfileForm {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .section {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 24px;
+
+    &:hover {
+      border-color: var(--color-border-hover);
+    }
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: '';
+      width: 4px;
+      height: 18px;
+      background: var(--color-primary);
+      border-radius: 2px;
+    }
+  }
+
+  .sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .sectionTitle {
+      margin-bottom: 0;
+    }
+  }
+
+  .toggleButton {
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: var(--color-primary-light);
+      border-color: var(--color-primary);
+    }
+  }
+
+  // Country Select Styling
+  .selectContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .selectLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+
+    &::after {
+      content: ' *';
+      color: var(--color-error);
+    }
+  }
+
+  .countrySelect {
+    padding: 12px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: var(--color-border-hover);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-primary-light);
+    }
+
+    option {
+      padding: 8px;
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+    }
+  }
+
+  // Payment Methods Styling
+  .paymentMethods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .paymentMethod {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: var(--color-primary-light);
+      background: var(--color-surface-hover);
+    }
+
+    input[type='radio'] {
+      margin: 0;
+      margin-right: 12px;
+      accent-color: var(--color-primary);
+    }
+
+    input[type='radio']:checked + .paymentMethodContent {
+      color: var(--color-primary);
+    }
+
+    &:has(input:checked) {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+  }
+
+  .paymentMethodContent {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    transition: color 0.2s ease;
+  }
+
+  // Checkbox Styling
+  .checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    user-select: none;
+
+    input[type='checkbox'] {
+      margin: 0;
+      accent-color: var(--color-primary);
+    }
+  }
+
+  .checkboxGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .checkboxOption {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: var(--color-surface-hover);
+      border-color: var(--color-border-hover);
+    }
+
+    &:has(input:checked) {
+      background: var(--color-primary-light);
+      border-color: var(--color-primary);
+    }
+
+    input[type='checkbox'] {
+      margin: 2px 0 0 0;
+      accent-color: var(--color-primary);
+    }
+  }
+
+  .checkboxContent {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .checkboxLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .checkboxDescription {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  // Submit Buttons
+  .cancelButton,
+  .submitButton {
+    flex: 1;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+  }
+
+  .cancelButton {
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+
+    &:hover {
+      background: var(--color-surface-hover);
+      border-color: var(--color-border-hover);
+    }
+  }
+
+  .submitButton {
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    color: white;
+
+    &:hover {
+      background: var(--color-primary-dark);
+      border-color: var(--color-primary-dark);
+    }
+
+    &:disabled {
+      background: var(--color-surface-disabled);
+      border-color: var(--color-border);
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+    }
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    .userProfileForm {
+      padding: 16px;
+    }
+
+    .section {
+      padding: 16px;
+    }
+
+    .sectionHeader {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .paymentMethods {
+      grid-template-columns: 1fr;
+    }
+
+    .checkboxOption {
+      padding: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .userProfileForm {
+      padding: 12px;
+    }
+
+    .section {
+      padding: 12px;
+    }
+
+    .sectionTitle {
+      font-size: 16px;
+    }
+  }
+}

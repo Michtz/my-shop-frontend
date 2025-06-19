@@ -5,8 +5,6 @@ import style from '@/styles/system/CategoryNavigation.module.scss';
 import AssetIcon, { IconType } from '@/components/system/AssetIcon';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { ProductCategoryOptions } from '@/types/product.types';
-import { Container } from '@/components/system/Container';
 
 interface CategoryNavigationProps {
   activeCategory?: string;
@@ -19,7 +17,6 @@ const CategoryNavigation: React.FC<CategoryNavigationProps> = ({
   const params = useParams();
   const { t } = useTranslation(['common']);
   const [activeItem, setActiveItem] = useState<string>(activeCategory || '');
-  console.log(params);
 
   const categories = [
     { icon: 'tampers', label: t('common:products.categories.tamper') },

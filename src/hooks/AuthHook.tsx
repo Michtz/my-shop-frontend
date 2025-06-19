@@ -18,6 +18,8 @@ import {
   validateToken,
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';
+import { getToken } from 'next-auth/jwt';
+import { getSession } from 'next-auth/react';
 
 interface AuthContextType {
   user: User | null;
@@ -63,51 +65,47 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     initializeAuth();
+    console.log('initializeAuth');
+    console.log(JSON.stringify(sessionStorage.getItem('data')));
   }, []);
 
   const initializeAuth = async () => {
+    console.log(JSON.stringify(sessionStorage.getItem('data')));
     setIsLoading(true);
     setError(null);
-
     try {
-      if (isOnAuthPage()) {
-        console.log('📱 On auth page - skipping authentication check');
-        setIsLoading(false);
-        return;
-      }
+      // if (!isOnAuthPage()) {
+      //   console.log('📱 On auth page - skipping authentication check');
+      //   setIsLoading(false);
+      //   return;
+      // }
 
       try {
-        const isValid = await validateToken();
-        if (isValid.success) {
-          const userData = await getCurrentUser();
-          if (userData.success) {
-            setUser(userData.data.user);
-          }
+        const session = await getCurrentSession();
+        const auth = await getCurrentSession();
+        console.log(session);
+        const user = JSON.parse(sessionStorage.getItem('user')!);
+        console.log(user);
+        if (session.success === false) {
+          const session = await createSession();
+          console.log('session create', session);
+          setSessionData(session.data);
+        } else {
+          console.log('session get', session);
+          setSessionData(session.data);
+          setUser(user as User);
         }
-      } catch (err) {
-        Logger.error(err);
-      }
 
-      try {
-        const sessionResponse = await getCurrentSession();
-        if (sessionResponse.success) {
-          setSessionData(sessionResponse.data.data);
-        }
+        // if (session.data.sessionId) {
+        //   const userData = await getCurrentUser();
+        //   if (userData.success) {
+        //     setUser(userData.data.user);
+        //   }
+        // }
       } catch (err) {
-        // no session
-        try {
-          const newSession = await createSession();
-          if (newSession.success) {
-            setSessionData(newSession.data.data);
-          }
-        } catch (sessionErr) {
-          Logger.error('Failed to create session:', sessionErr);
-          setError('Failed to initialize session');
-        }
+        Logger.error('Auth initialization failed:', err);
+        setError('Authentication initialization failed');
       }
-    } catch (err: any) {
-      Logger.error('Auth initialization failed:', err);
-      setError('Authentication initialization failed');
     } finally {
       setIsLoading(false);
     }
@@ -119,15 +117,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const response = await _login(email, password);
-
+      console.log(response);
       if (response.success) {
         setUser(response.data.user);
 
         // update session after login
         try {
+          console.log('in hereee2');
           const sessionResponse = await getCurrentSession();
           if (sessionResponse.success) {
-            setSessionData(sessionResponse.data.data);
+            setSessionData(sessionResponse);
+            console.log(response.data);
+            sessionStorage.setItem('user', JSON.stringify(response.data));
           }
         } catch (err) {
           Logger.warn('Failed to update session after login:', err);
@@ -160,6 +161,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         // update session after registration
         try {
+          console.log('in hereee 3');
           const sessionResponse = await getCurrentSession();
           if (sessionResponse.success) {
             setSessionData(sessionResponse.data.data);

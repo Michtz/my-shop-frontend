@@ -20,6 +20,14 @@ export interface SessionData {
     language: string;
   };
   lastActivity: string;
+  data: {
+    sessionId: string;
+    isAuthenticated: boolean;
+    data: SessionData;
+    expires: string;
+    createdAt: string;
+    updatedAt: string;
+  };
   [key: string]: any;
 }
 

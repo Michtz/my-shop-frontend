@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import { getCart } from '@/requests/cart.request';
 import { RequestError } from '@/types/request.types';
-import { useAuth } from '@/hooks/AuthContext';
+import { useAuth } from '@/hooks/AuthHook';
 
 interface Cart {
   _id: string;
@@ -27,17 +27,19 @@ interface CartResponse {
 }
 
 const useCart = (): CartResponse => {
-  const { sessionId, user, isAuthenticated } = useAuth();
+  const { sessionData, user, isAuthenticated } = useAuth();
 
-  // Use user ID if authenticated, otherwise sessionId
-  const cartKey = isAuthenticated && user ? user.id : sessionId;
-  console.log(cartKey);
+  const cartKey = isAuthenticated && user ? user.id : sessionData?.sessionId;
   const { data, error, isLoading, mutate } = useSWR<
     CartAPIResponse,
     RequestError
-  >(cartKey ? `cart-${cartKey}` : null, () => getCart(sessionId as string), {
-    suspense: false,
-  });
+  >(
+    cartKey ? `cart-${cartKey}` : null,
+    () => getCart(sessionData?.sessionId as string),
+    {
+      suspense: false,
+    },
+  );
 
   return {
     cart: data?.data || null,

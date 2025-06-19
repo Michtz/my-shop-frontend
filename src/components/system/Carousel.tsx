@@ -37,18 +37,19 @@ const Carousel: FC<CarouselProps> = ({
       indicators={indicators}
       fade={fade}
       pause={pause}
-      style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}
+      className={style.carousel}
     >
       {items.map((item) => (
-        <_Carousel.Item key={item.image}>
-          <div style={{ height: '400px', position: 'relative' }}>
+        <_Carousel.Item key={item.image} className={style.carouselItem}>
+          <div style={{ height: '500px', position: 'relative' }}>
             <Image
               src={item.image}
               alt={item.alt}
               fill
-              style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'cover', objectPosition: 'center bottom' }}
               sizes="100vw"
               priority={items.indexOf(item) === 0}
+              className={style.image}
             />
           </div>
 

@@ -6,14 +6,11 @@ import Carousel, { CarouselItem } from '@/components/system/Carousel';
 import { getCategoryName } from '@/functions/common';
 import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
 import { Container } from '@/components/system/Container';
-import { addToCart, replaceCartItems } from '@/requests/cart.request';
-import useCart from '@/hooks/useCart';
-import { mutate } from 'swr';
+import { addToCart } from '@/requests/cart.request';
 import { IProduct } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
-import { Hr } from '@/components/system/Hr';
 import { useFeedback } from '@/hooks/FeedbackHook';
-import { useAuth } from '@/hooks/AuthContext';
+import { useAuth } from '@/hooks/AuthHook';
 
 interface MainContainerProps {}
 
@@ -29,8 +26,7 @@ const MainContainer: React.FC<MainContainerProps> = () => {
   const { products, isLoading } = useProducts();
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
-  const { sessionId } = useAuth();
-
+  const { sessionData } = useAuth();
   const category: string | undefined = getCategoryName(
     params?.category as string,
   );
@@ -46,24 +42,10 @@ const MainContainer: React.FC<MainContainerProps> = () => {
   const slides: CarouselItem[] = [
     {
       image:
-        'https://res.cloudinary.com/de2rhuwpw/image/upload/v1749664954/myshop/products/products/84e271a8-f42c-4a62-815c-f146e783a790.webp.jpg',
-      alt: products[0]?.name,
-      title: products[0]?.name,
-      description: products[0]?.description,
-    },
-    {
-      image:
-        'https://res.cloudinary.com/de2rhuwpw/image/upload/v1749664970/myshop/products/products/a0c8e8d1-54b3-46a7-80d9-0415dc0cf5b4.webp.jpg',
-      alt: products[0]?.name,
-      title: products[0]?.name,
-      description: products[0]?.description,
-    },
-    {
-      image:
-        'https://res.cloudinary.com/de2rhuwpw/image/upload/v1749664795/myshop/products/products/066fcfed-c11e-4878-b87c-54f4a7e6bcc5.webp.jpg',
-      alt: products[0]?.name,
-      title: products[0]?.name,
-      description: products[0]?.description,
+        'https://res.cloudinary.com/de2rhuwpw/image/upload/v1750343442/myshop/products/products/03b6c2e0-ad59-4ded-b8b0-d66300a79fe8.png.jpg',
+      alt: products[0]?.name || '',
+      title: '',
+      description: '',
     },
   ];
 
@@ -78,7 +60,8 @@ const MainContainer: React.FC<MainContainerProps> = () => {
 
   const handleAddToCart = async (id: string) => {
     try {
-      const result = await addToCart(sessionId, id, 1);
+      const result = await addToCart(sessionData?.sessionId, id, 1);
+      console.log(result);
       showFeedback('feedback.add-to-cart-success', 'success');
     } catch (error) {
       showFeedback('feedback.data-saved-error', 'error');
@@ -96,8 +79,28 @@ const MainContainer: React.FC<MainContainerProps> = () => {
       alignItems={'center'}
       justifyContent={'flex-end'}
       padding={false}
+      maxWidth={'1150'}
+      gap={'2'}
     >
-      <Carousel items={slides} />
+      <Carousel items={slides} controls={false} />
+      <CartsContainer>
+        {category === undefined &&
+          articles?.map((product, i: number) => {
+            if (i > 4) return;
+            return (
+              <ProductCard
+                key={product._id}
+                id={product._id}
+                title={product.name}
+                description={product.description}
+                image={product.imageUrl}
+                price={product.price}
+                onCardClick={() => handleCardClick(product._id)}
+                onIconClick={() => handleAddToCart(product._id)}
+              />
+            );
+          })}
+      </CartsContainer>
       <CategoryNavigation activeCategory={category} />
       <CartsContainer>
         {articles?.map((product) => {

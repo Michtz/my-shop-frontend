@@ -9,11 +9,11 @@ import React from 'react';
 import { Hr } from '@/components/system/Hr';
 import Skeleton from '@/components/system/Skeleton';
 import CartItemSkeleton from '@/components/section/cart/CartListItemSkleton';
-import { useAuth } from '@/hooks/AuthContext';
+import { useAuth } from '@/hooks/AuthHook';
 
 const CartList = () => {
   const { cart, cartItems, mutate, isLoading } = useCart();
-  const { sessionId } = useAuth();
+  const { sessionData } = useAuth();
   console.log(cartItems);
   // Calculate totals
   const subtotal =
@@ -47,7 +47,7 @@ const CartList = () => {
           <CartListItem
             item={item}
             items={cartItems}
-            sessionId={sessionId}
+            sessionId={sessionData?.sessionId}
             mutate={mutate}
           />
           <Hr />

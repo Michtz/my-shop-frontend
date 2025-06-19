@@ -16,6 +16,8 @@ interface ContainerProps extends PropsWithChildren {
     | 'space-around'
     | 'space-evenly';
   padding?: boolean;
+  maxWidth?: string;
+  gap?: string;
 }
 
 export const Container: FC<ContainerProps> = ({
@@ -24,12 +26,16 @@ export const Container: FC<ContainerProps> = ({
   alignItems = 'flex-start',
   justifyContent = 'flex-start',
   padding = true,
+  maxWidth,
+  gap,
 }) => (
   <div
     data-flow={flow}
     data-align-items={alignItems}
     data-justify-content={justifyContent}
     data-padding={padding}
+    data-max-width={maxWidth}
+    data-gap={gap}
     className={style.container}
   >
     {children}

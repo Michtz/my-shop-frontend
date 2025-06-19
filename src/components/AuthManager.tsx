@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/AuthHook';
 const AuthManager: React.FC = () => {
   const {
     user,
-    sessionData, // ✅ FIX: sessionData statt sessionId
+    sessionData,
     isLoading,
     isAuthenticated,
     error,
@@ -17,7 +17,7 @@ const AuthManager: React.FC = () => {
     logout,
     clearError,
   } = useAuth();
-
+  console.log(sessionData);
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -29,8 +29,6 @@ const AuthManager: React.FC = () => {
     firstName: '',
     lastName: '',
   });
-
-  // ✅ ENTFERNT: handleCreateSession - nicht mehr nötig
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

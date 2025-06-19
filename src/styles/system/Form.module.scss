@@ -1,0 +1,54 @@
+// FormRow.module.scss
+@import '@/styles/variables';
+
+.formRow {
+  display: flex;
+  width: 100%;
+
+  // Direction variants
+  &.direction-column {
+    flex-direction: column;
+  }
+
+  &.direction-row {
+    flex-direction: row;
+  }
+
+  // Gap variants
+  &.gap-small {
+    gap: 8px;
+  }
+
+  &.gap-medium {
+    gap: 16px;
+  }
+
+  &.gap-large {
+    gap: 24px;
+  }
+
+  // Alignment variants
+  &.align-start {
+    align-items: flex-start;
+  }
+
+  &.align-center {
+    align-items: center;
+  }
+
+  &.align-end {
+    align-items: flex-end;
+  }
+
+  &.align-stretch {
+    align-items: stretch;
+  }
+
+  // When direction is row, ensure children take equal space
+  &.direction-row {
+    > * {
+      flex: 1;
+      min-width: 0; // Prevent overflow
+    }
+  }
+}
