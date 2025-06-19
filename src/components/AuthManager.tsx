@@ -33,7 +33,6 @@ const AuthManager: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // ✅ FIX: Neue API - separate Parameter
       await login(loginData.email, loginData.password);
     } catch (err) {
       Logger.error('Login failed:', err);
@@ -43,7 +42,6 @@ const AuthManager: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // ✅ FIX: Neue API - separate Parameter
       await register(
         registerData.email,
         registerData.password,

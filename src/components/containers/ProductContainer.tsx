@@ -1,11 +1,10 @@
 'use client';
 
-import React, { FC, FormEvent, JSX, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import useProduct from '@/hooks/useProduct';
 import useCart from '@/hooks/useCart';
 import { addToCart, replaceCartItems } from '@/requests/cart.request';
-import { useParams, useRouter } from 'next/navigation';
-import { Params } from 'next/dist/server/request/params';
+import { useRouter } from 'next/navigation';
 import style from '@/styles/OverviewProduct.module.scss';
 import { mutate } from 'swr';
 import Image from 'next/image';
@@ -32,7 +31,7 @@ const ProductOverview: FC = () => {
   const { product } = useProduct();
   const router = useRouter();
   const { products } = useProducts();
-  const { sessionId } = useAuth();
+  const { sessionData } = useAuth();
   const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
 
@@ -50,7 +49,7 @@ const ProductOverview: FC = () => {
     try {
       console.log(data);
       const result = await addToCart(
-        sessionId!,
+        sessionData?.data.sessionId!,
         product?._id as string,
         data.quantity,
       );
@@ -84,7 +83,10 @@ const ProductOverview: FC = () => {
 
         updatedItems = [...cartItems, newItem];
       }
-      const result = await replaceCartItems(sessionId!, updatedItems);
+      const result = await replaceCartItems(
+        sessionData?.data.sessionId!,
+        updatedItems,
+      );
       await mutate('product', result);
     } catch (error) {
       await mutate('product', cartItems);
