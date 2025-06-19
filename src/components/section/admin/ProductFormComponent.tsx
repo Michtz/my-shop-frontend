@@ -2,11 +2,16 @@
 
 import style from '@/styles/admin/ProductForm.module.scss';
 import React, { useState, useCallback } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+
+import Input from '@/components/system/Input';
 import MaterialIcon from '@/components/system/MaterialIcon';
 import { createProduct, updateProduct } from '@/requests/products.request';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { IProduct, ProductCategoryOptions } from '@/types/product.types';
+import { useError } from '@/hooks/ErrorHook';
+import { FormContainer } from '@/components/system/Container';
+import { FormRow } from '@/components/system/Form';
 
 interface ProductFormProps {
   onClose: () => void;
@@ -24,6 +29,7 @@ interface FormField {
 
 const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
   const { showFeedback } = useFeedback();
+  const { transformFieldError } = useError();
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -31,6 +37,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
     product?.imageUrl,
   );
   const [isDragging, setIsDragging] = useState(false);
+
   const categories: string[] = [
     'Tampers',
     'Milk Jugs',
@@ -43,6 +50,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     reset,
   } = useForm<FormField>({
@@ -52,7 +60,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
       price: product?.price || 0,
       stockQuantity: product?.stockQuantity || 0,
       category: product?.category || '',
-      isActive: true,
+      isActive: product?.isActive ?? true,
     },
   });
 
@@ -105,39 +113,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
     setImageFile(null);
     setImagePreview(undefined);
   }, []);
-  //
-  // const onSubmit: SubmitHandler<IProduct> = async (data) => {
-  //   setIsLoading(true);
-  //   setSubmitError(null);
-  //
-  //   try {
-  //     const productData = {
-  //       name: data.name.trim(),
-  //       description: data.description.trim(),
-  //       price: data.price,
-  //       stockQuantity: data.stockQuantity,
-  //       category: data.category,
-  //       isActive: data.isActive,
-  //     };
-  //
-  //     const response = await createProduct(productData, imageFile || undefined);
-  //     console.log(response);
-  //
-  //     //   reset(); for better testing
-  //     setImageFile(null);
-  //     setImagePreview(null);
-  //     showFeedback('feedback.data-saved-success', 'success');
-  //   } catch (error) {
-  //     console.error('Failed to create product:', error);
-  //     setSubmitError(
-  //       error instanceof Error
-  //         ? error.message
-  //         : 'Fehler beim Erstellen des Artikels. Bitte versuchen Sie es erneut.',
-  //     );
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+
+  const validatePrice = (price: number | undefined) => {
+    if (!price) return 'Preis ist erforderlich';
+    return price > 0 || 'Preis muss größer als 0 sein';
+  };
+
+  const validateStock = (stock: number | undefined) => {
+    if (stock === undefined) return 'Lagerbestand ist erforderlich';
+    return stock >= 0 || 'Lagerbestand kann nicht negativ sein';
+  };
 
   const onSubmit: SubmitHandler<FormField> = async (data) => {
     setIsLoading(true);
@@ -156,16 +141,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
       if (product && product._id) {
         // Produkt aktualisieren
         await updateProduct(product._id, productData, imageFile || undefined);
-        console.log('before');
         showFeedback('Produkt erfolgreich aktualisiert!', 'success');
-        console.log('after');
       } else {
         // Neues Produkt erstellen
         await createProduct(productData, imageFile || undefined);
         showFeedback('Produkt erfolgreich erstellt!', 'success');
       }
 
-      // Formular schliessen und übergeordnete Komponente benachrichtigen
+      // Formular schließen und übergeordnete Komponente benachrichtigen
       onClose();
     } catch (error: any) {
       console.error('Operation failed:', error);
@@ -180,233 +163,275 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={style.productForm}>
+    <div className={style.productForm}>
       <div className={style.formHeader}>
-        <h2 className={style.formTitle}>Neuen Artikel anlegen</h2>
+        <h2 className={style.formTitle}>
+          {product ? 'Artikel bearbeiten' : 'Neuen Artikel anlegen'}
+        </h2>
+        <button
+          type="button"
+          onClick={onClose}
+          className={style.closeButton}
+          disabled={isLoading}
+        >
+          <MaterialIcon icon="close" iconSize="small" />
+        </button>
       </div>
 
-      <div className={style.formContent}>
-        <div className={style.formGroup}>
-          <label className={style.label}>Produktbild</label>
-          <div
-            className={`${style.dropZone} ${isDragging ? style.dragging : ''} ${imagePreview ? style.hasImage : ''}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            {imagePreview ? (
-              <div className={style.imagePreviewContainer}>
-                <img
-                  src={imagePreview}
-                  alt="Vorschau"
-                  className={style.imagePreview}
-                />
-                <button
-                  type="button"
-                  onClick={removeImage}
-                  className={style.removeImageButton}
-                  aria-label="Bild entfernen"
-                >
-                  <MaterialIcon icon="close" iconSize="small" />
-                </button>
-              </div>
-            ) : (
-              <div className={style.dropZoneContent}>
-                <MaterialIcon icon="cloud_upload" iconSize="big" />
-                <p className={style.dropZoneText}>
-                  Ziehen Sie ein Bild hierher oder klicken Sie zum Auswählen
-                </p>
-                <p className={style.dropZoneHint}>JPG, PNG, WebP • Max. 5MB</p>
-              </div>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileInputChange}
-              className={style.fileInput}
-              disabled={isLoading}
-            />
-          </div>
-        </div>
-
-        {/* Name Field */}
-        <div className={style.formGroup}>
-          <label htmlFor="name" className={style.label}>
-            Artikelname *
-          </label>
-          <input
-            id="name"
-            type="text"
-            className={`${style.input} ${errors.name ? style.inputError : ''}`}
-            {...register('name', {
-              required: 'Artikelname ist erforderlich',
-              minLength: {
-                value: 3,
-                message: 'Artikelname muss mindestens 3 Zeichen lang sein',
-              },
-            })}
-            disabled={isLoading}
-          />
-          {errors.name && (
-            <span className={style.errorMessage}>{errors.name.message}</span>
-          )}
-        </div>
-
-        {/* Description Field */}
-        <div className={style.formGroup}>
-          <label htmlFor="description" className={style.label}>
-            Beschreibung *
-          </label>
-          <textarea
-            id="description"
-            className={`${style.textarea} ${errors.description ? style.inputError : ''}`}
-            rows={4}
-            {...register('description', {
-              required: 'Beschreibung ist erforderlich',
-              minLength: {
-                value: 10,
-                message: 'Beschreibung muss mindestens 10 Zeichen lang sein',
-              },
-            })}
-            disabled={isLoading}
-          />
-          {errors.description && (
-            <span className={style.errorMessage}>
-              {errors.description.message}
-            </span>
-          )}
-        </div>
-
-        {/* Price and Stock Row */}
-        <div className={style.formRow}>
-          <div className={style.formGroup}>
-            <label htmlFor="price" className={style.label}>
-              Preis (CHF) *
-            </label>
-            <input
-              id="price"
-              type="number"
-              step="0.01"
-              className={`${style.input} ${errors.price ? style.inputError : ''}`}
-              {...register('price', {
-                required: 'Preis ist erforderlich',
-                min: {
-                  value: 0.01,
-                  message: 'Preis muss größer als 0 sein',
-                },
-                valueAsNumber: true,
-              })}
-              disabled={isLoading}
-            />
-            {errors.price && (
-              <span className={style.errorMessage}>{errors.price.message}</span>
-            )}
-          </div>
-
-          <div className={style.formGroup}>
-            <label htmlFor="stockQuantity" className={style.label}>
-              Lagerbestand *
-            </label>
-            <input
-              id="stockQuantity"
-              type="number"
-              className={`${style.input} ${errors.stockQuantity ? style.inputError : ''}`}
-              {...register('stockQuantity', {
-                required: 'Lagerbestand ist erforderlich',
-                min: {
-                  value: 0,
-                  message: 'Lagerbestand kann nicht negativ sein',
-                },
-                valueAsNumber: true,
-              })}
-              disabled={isLoading}
-            />
-            {errors.stockQuantity && (
-              <span className={style.errorMessage}>
-                {errors.stockQuantity.message}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Category Field */}
-        <div className={style.formGroup}>
-          <label htmlFor="category" className={style.label}>
-            Kategorie *
-          </label>
-          <select
-            id="category"
-            className={`${style.select} ${errors.category ? style.inputError : ''}`}
-            {...register('category', {
-              required: 'Kategorie ist erforderlich',
-            })}
-            disabled={isLoading}
-          >
-            <option value="">Bitte wählen...</option>
-            {categories.map((category: string) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-          {errors.category && (
-            <span className={style.errorMessage}>
-              {errors.category.message}
-            </span>
-          )}
-        </div>
-
-        {/* Active Checkbox */}
-        <div className={style.formGroup}>
-          <label className={style.checkboxLabel}>
-            <input
-              type="checkbox"
-              className={style.checkbox}
-              {...register('isActive')}
-              disabled={isLoading}
-            />
-            <span>Artikel ist aktiv</span>
-          </label>
-        </div>
-
-        {/* Submit Error */}
+      <FormContainer
+        className={style.formContainer}
+        onSubmitAction={handleSubmit(onSubmit)}
+      >
+        {/* Error Message */}
         {submitError && (
-          <div className={style.submitError}>
+          <div className={style.errorAlert}>
             <MaterialIcon icon="error" iconSize="small" />
             <span>{submitError}</span>
           </div>
         )}
-      </div>
 
-      {/* Form Actions */}
-      <div className={style.formActions}>
-        <button
-          type="button"
-          onClick={onClose}
-          className={style.cancelButton}
-          disabled={isLoading}
-        >
-          Abbrechen
-        </button>
-        <button
-          type="submit"
-          className={style.submitButton}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
-              <MaterialIcon icon="hourglass_empty" iconSize="small" />
-              <span>Wird gespeichert...</span>
-            </>
-          ) : (
-            <>
-              <MaterialIcon icon="save" iconSize="small" />
-              <span>Artikel anlegen</span>
-            </>
-          )}
-        </button>
-      </div>
-    </form>
+        {/* Image Upload Section */}
+        <FormRow>
+          <div className={style.imageUploadSection}>
+            <label className={style.sectionLabel}>Produktbild</label>
+            <div
+              className={`${style.dropZone} ${isDragging ? style.dragging : ''} ${imagePreview ? style.hasImage : ''}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
+              {imagePreview ? (
+                <div className={style.imagePreviewContainer}>
+                  <img
+                    src={imagePreview}
+                    alt="Vorschau"
+                    className={style.imagePreview}
+                  />
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className={style.removeImageButton}
+                    aria-label="Bild entfernen"
+                  >
+                    <MaterialIcon icon="close" iconSize="small" />
+                  </button>
+                </div>
+              ) : (
+                <div className={style.dropZoneContent}>
+                  <MaterialIcon icon="cloud_upload" iconSize="normal" />
+                  <p className={style.dropZoneText}>
+                    Ziehen Sie ein Bild hierher oder klicken Sie zum Auswählen
+                  </p>
+                  <p className={style.dropZoneHint}>
+                    JPG, PNG, WebP • Max. 5MB
+                  </p>
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileInputChange}
+                className={style.fileInput}
+                disabled={isLoading}
+              />
+            </div>
+          </div>
+        </FormRow>
+
+        {/* Product Name */}
+        <FormRow>
+          <Input
+            label="Artikelname"
+            tooltip={{
+              text: 'Geben Sie einen aussagekräftigen Namen für das Produkt ein',
+            }}
+            required
+            fullWidth
+            placeholder="Z.B. Premium Espresso Tamper..."
+            startIcon="inventory"
+            clearable
+            readOnly={isLoading}
+            inputProps={register('name', {
+              required: 'required',
+              minLength: { value: 3, message: 'minLength' },
+            })}
+            {...transformFieldError(errors.name)}
+          />
+        </FormRow>
+
+        {/* Product Description */}
+        <FormRow>
+          <Input
+            label="Beschreibung"
+            tooltip={{
+              text: 'Detaillierte Beschreibung des Produkts für Kunden',
+            }}
+            required
+            fullWidth
+            multiline
+            minRows={4}
+            maxRows={8}
+            placeholder="Beschreiben Sie das Produkt ausführlich..."
+            readOnly={isLoading}
+            inputProps={register('description', {
+              required: 'required',
+              minLength: { value: 10, message: 'minLength' },
+            })}
+            {...transformFieldError(errors.description)}
+          />
+        </FormRow>
+
+        {/* Price and Stock Row */}
+        <FormRow direction="row">
+          <Input
+            type="number"
+            label="Preis (CHF)"
+            tooltip={{ text: 'Verkaufspreis in Schweizer Franken' }}
+            required
+            fullWidth
+            placeholder="0.00"
+            startIcon="payments"
+            readOnly={isLoading}
+            inputProps={register('price', {
+              required: 'required',
+              valueAsNumber: true,
+              validate: validatePrice,
+            })}
+            {...transformFieldError(errors.price)}
+          />
+
+          <Input
+            type="number"
+            label="Lagerbestand"
+            tooltip={{ text: 'Aktuelle Anzahl der verfügbaren Artikel' }}
+            required
+            fullWidth
+            placeholder="0"
+            startIcon="inventory_2"
+            readOnly={isLoading}
+            inputProps={register('stockQuantity', {
+              required: 'required',
+              valueAsNumber: true,
+              validate: validateStock,
+            })}
+            {...transformFieldError(errors.stockQuantity)}
+          />
+        </FormRow>
+
+        {/* Category Selection */}
+        <FormRow>
+          <Controller
+            name="category"
+            control={control}
+            rules={{ required: 'Kategorie ist erforderlich' }}
+            render={({ field }) => (
+              <div className={style.selectContainer}>
+                <label className={style.selectLabel}>
+                  Kategorie *
+                  <div className={style.tooltipContainer}>
+                    <MaterialIcon
+                      icon="help_outline"
+                      iconSize="small"
+                      className={style.tooltipIcon}
+                    />
+                    <div className={style.tooltip}>
+                      <div className={style.tooltipContent}>
+                        Wählen Sie die passende Produktkategorie aus
+                      </div>
+                    </div>
+                  </div>
+                </label>
+                <div className={style.selectWrapper}>
+                  <MaterialIcon icon="category" className={style.selectIcon} />
+                  <select
+                    {...field}
+                    className={`${style.select} ${errors.category ? style.selectError : ''}`}
+                    disabled={isLoading}
+                  >
+                    <option value="">Bitte wählen...</option>
+                    {categories.map((category: string) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                  <MaterialIcon
+                    icon="expand_more"
+                    className={style.selectArrow}
+                  />
+                </div>
+                {errors.category && (
+                  <div className={style.fieldError}>
+                    <MaterialIcon icon="error" iconSize="small" />
+                    <span>{errors.category.message}</span>
+                  </div>
+                )}
+              </div>
+            )}
+          />
+        </FormRow>
+
+        {/* Active Status */}
+        <FormRow>
+          <Controller
+            name="isActive"
+            control={control}
+            render={({ field }) => (
+              <label className={style.checkboxContainer}>
+                <input
+                  type="checkbox"
+                  checked={field.value}
+                  onChange={field.onChange}
+                  disabled={isLoading}
+                  className={style.checkbox}
+                />
+                <div className={style.checkboxContent}>
+                  <div className={style.checkboxLabel}>
+                    <MaterialIcon icon="visibility" iconSize="small" />
+                    Artikel ist aktiv
+                  </div>
+                  <div className={style.checkboxDescription}>
+                    Aktive Artikel sind für Kunden sichtbar und können bestellt
+                    werden
+                  </div>
+                </div>
+              </label>
+            )}
+          />
+        </FormRow>
+
+        {/* Submit Buttons */}
+        <FormRow direction="row" gap="small">
+          <button
+            type="button"
+            onClick={onClose}
+            className={style.cancelButton}
+            disabled={isLoading}
+          >
+            <MaterialIcon icon="close" iconSize="small" />
+            Abbrechen
+          </button>
+
+          <button
+            type="submit"
+            className={style.submitButton}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <div className={style.spinner} />
+                Wird gespeichert...
+              </>
+            ) : (
+              <>
+                <MaterialIcon icon="save" iconSize="small" />
+                {product ? 'Artikel aktualisieren' : 'Artikel anlegen'}
+              </>
+            )}
+          </button>
+        </FormRow>
+      </FormContainer>
+    </div>
   );
 };
 

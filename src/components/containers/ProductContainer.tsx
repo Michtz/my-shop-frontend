@@ -35,7 +35,7 @@ const ProductOverview: FC = () => {
   const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
 
-  const { register, reset, control, handleSubmit } = useForm<FormFields>({
+  const { control, handleSubmit } = useForm<FormFields>({
     mode: 'onChange',
     defaultValues: getDefaultValues(product),
   });
@@ -47,13 +47,11 @@ const ProductOverview: FC = () => {
 
   const submit = async (data: any) => {
     try {
-      console.log(data);
       const result = await addToCart(
         sessionData?.data.sessionId!,
         product?._id as string,
         data.quantity,
       );
-      console.log('Cart updated:', result);
       await mutate('cart', result);
       showFeedback('feedback.add-to-cart-success', 'success');
     } catch (error) {

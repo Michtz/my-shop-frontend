@@ -10,14 +10,12 @@ import { FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
 
 interface UserProfileFormData {
-  // Personal Information (matches IUser)
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber?: string;
   role: string;
 
-  // Addresses (matches IAddress[])
   addresses: {
     street: string;
     city: string;
@@ -27,9 +25,8 @@ interface UserProfileFormData {
     isDefault?: boolean;
   }[];
 
-  // Payment Information (for adding new cards)
   newPaymentInfo?: {
-    cardNumber: string; // Only for form input - backend will store lastFourDigits
+    cardNumber: string;
     cardType: string;
     expiryDate: string;
     cvv: string;
@@ -37,7 +34,6 @@ interface UserProfileFormData {
     isDefault?: boolean;
   };
 
-  // Account Settings
   currentPassword?: string;
   newPassword?: string;
   confirmNewPassword?: string;
@@ -86,12 +82,9 @@ const UserProfileForm: React.FC = () => {
 
   const watchedNewPassword = watch('newPassword');
 
-  // Remove the copy billing address logic since we're using a single addresses array now
-
   const onSubmit: SubmitHandler<UserProfileFormData> = async (data) => {
     console.log('User Profile submitted:', data);
 
-    // Transform the form data to match backend expectations
     const backendData = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -99,7 +92,6 @@ const UserProfileForm: React.FC = () => {
       phoneNumber: data.phoneNumber,
       role: data.role,
       addresses: data.addresses,
-      // If adding new payment info, transform card data
       ...(data.newPaymentInfo?.cardNumber && {
         newPaymentInfo: {
           cardType: data.newPaymentInfo.cardType,
