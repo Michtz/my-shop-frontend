@@ -63,7 +63,7 @@ const CartList = () => {
   );
 
   return (
-    <Container flow={'column'} alignItems={'center'}>
+    <Container flow={'column'} alignItems={'center'} maxWidth={'1150'}>
       <h2>Warenkorb</h2>
       {isLoading ? skeleton : list}
     </Container>

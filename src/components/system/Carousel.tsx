@@ -1,11 +1,11 @@
 'use client';
 import { FC } from 'react';
 import { Carousel as _Carousel } from 'react-bootstrap';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import style from '@/styles/system/Carousel.module.scss';
 
 export interface CarouselItem {
-  image: string;
+  image: string | StaticImageData;
   alt: string;
   title?: string;
   description?: string;
@@ -24,7 +24,7 @@ const Carousel: FC<CarouselProps> = ({
   items,
   interval = null,
   controls = true,
-  indicators = true,
+  indicators = false,
   fade = false,
   pause = 'hover',
 }) => {
@@ -40,13 +40,16 @@ const Carousel: FC<CarouselProps> = ({
       className={style.carousel}
     >
       {items.map((item) => (
-        <_Carousel.Item key={item.image} className={style.carouselItem}>
-          <div style={{ height: '500px', position: 'relative' }}>
+        <_Carousel.Item
+          key={item.image as string}
+          className={style.carouselItem}
+        >
+          <div style={{ height: '280px', position: 'relative' }}>
             <Image
               src={item.image}
               alt={item.alt}
               fill
-              style={{ objectFit: 'cover', objectPosition: 'center bottom' }}
+              style={{ objectFit: 'cover', objectPosition: '50% 55%' }}
               sizes="100vw"
               priority={items.indexOf(item) === 0}
               className={style.image}

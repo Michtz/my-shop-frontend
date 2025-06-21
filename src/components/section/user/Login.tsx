@@ -42,8 +42,8 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'testadmin@example.com',
+      password: 'Password123!',
     },
   });
 

@@ -11,6 +11,7 @@ import { IProduct } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useAuth } from '@/hooks/AuthHook';
+import image from '@/assets/titleImage.png';
 
 interface MainContainerProps {}
 
@@ -41,8 +42,7 @@ const MainContainer: React.FC<MainContainerProps> = () => {
 
   const slides: CarouselItem[] = [
     {
-      image:
-        'https://res.cloudinary.com/de2rhuwpw/image/upload/v1750520484/myshop/products/products/e01d10f7-7fbd-46b9-917e-58cdc073bc08.jpg.jpg',
+      image: image,
       alt: products[0]?.name || '',
       title: '',
       description: '',
