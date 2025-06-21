@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import MaterialIcon from '@/components/system/MaterialIcon';
+import logo from '@/assets/myShopLogo.png';
 
 import style from '@/styles/Header.module.scss';
 import Link from '@/components/system/Link';
 import Button from '@/components/system/Button';
 import { useAuth } from '@/hooks/AuthHook';
+import Image from 'next/image';
 
 const ResponsiveAppBar = () => {
   const router = useRouter();
@@ -28,16 +29,8 @@ const ResponsiveAppBar = () => {
     setAnchorElNav(null);
   };
   const handleUserClick = () => {
-    console.log(JSON.parse(sessionStorage.getItem('user') as string));
-    return;
-    if (isAuthenticated) {
-      console.log(isAuthenticated, ' is auth');
-      router.replace('/profile');
-      return;
-    }
-
-    router.replace('/login');
-    console.log(isAuthenticated);
+    if (isAuthenticated) router.replace('/profile');
+    if (!isAuthenticated) router.replace('/login');
   };
 
   return (
@@ -45,7 +38,7 @@ const ResponsiveAppBar = () => {
       <header className={style.header}>
         <div className={style.leftNavContainer}>
           <span className={style.logo} onClick={() => router.replace('/')}>
-            Logo
+            <Image src={logo} alt={'logo'} height={60} />
           </span>
           <ul className={style.navItemContainer}>
             <li className={style.navItem}>
@@ -62,6 +55,7 @@ const ResponsiveAppBar = () => {
         <span className={style.rightNavContainer}>
           <Button
             appearance={'icon'}
+            size={'big'}
             variant={'ghost'}
             icon={'shopping_cart'}
             onClick={() => router.replace('/cart')}
@@ -69,8 +63,9 @@ const ResponsiveAppBar = () => {
           <span>
             <Button
               appearance={'icon'}
+              size={'big'}
               variant={'ghost'}
-              icon={'shopping_cart'}
+              icon={'account_circle'}
               onClick={handleUserClick}
             />
           </span>

@@ -34,23 +34,11 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
   const { showFeedback } = useFeedback();
   const { transformFieldError } = useError();
   const router = useRouter();
-  const {
-    user,
-    sessionData,
-    isLoading,
-    isAuthenticated,
-    error,
-    login,
-    logout,
-    clearError,
-  } = useAuth();
+  const { sessionData, isLoading, login } = useAuth();
 
   const {
     register,
     handleSubmit,
-    watch,
-    control,
-    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -68,6 +56,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
       await login(data.email, data.password);
+      router.replace('/profile');
       showFeedback('feedback.login-success', 'success');
     } catch (err) {
       showFeedback('feedback.login-error', 'error');

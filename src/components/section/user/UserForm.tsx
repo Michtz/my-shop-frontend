@@ -8,6 +8,9 @@ import { useError } from '@/hooks/ErrorHook';
 import { FormContainer } from '@/components/system/Container';
 import { FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
+import Button, { ButtonContainer } from '@/components/system/Button';
+import { Logout } from '@mui/icons-material';
+import { logout } from '@/requests/session.request';
 
 interface UserProfileFormData {
   firstName: string;
@@ -151,8 +154,15 @@ const UserProfileForm: React.FC = () => {
     return expiry > now || 'Card expired';
   };
 
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
     <div className={style.userProfileForm}>
+      <ButtonContainer>
+        <Button onClick={handleLogout} children={'Logout'} />
+      </ButtonContainer>
       <FormContainer
         className={style.formContainer}
         onSubmitAction={handleSubmit(onSubmit)}

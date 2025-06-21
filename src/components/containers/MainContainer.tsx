@@ -42,7 +42,7 @@ const MainContainer: React.FC<MainContainerProps> = () => {
   const slides: CarouselItem[] = [
     {
       image:
-        'https://res.cloudinary.com/de2rhuwpw/image/upload/v1750343442/myshop/products/products/03b6c2e0-ad59-4ded-b8b0-d66300a79fe8.png.jpg',
+        'https://res.cloudinary.com/de2rhuwpw/image/upload/v1750520484/myshop/products/products/e01d10f7-7fbd-46b9-917e-58cdc073bc08.jpg.jpg',
       alt: products[0]?.name || '',
       title: '',
       description: '',

@@ -1,7 +1,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  height: 65px;
+  height: 75px;
   padding: 0 2rem;
   background-color: rgba(239, 232, 220, 0.53);
   color: black;
@@ -21,6 +21,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 0;
+      padding-left: 20px;
 
       list-style: none;
 

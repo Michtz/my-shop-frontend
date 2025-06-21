@@ -139,7 +139,7 @@ const ProductOverview: FC = () => {
   };
 
   return (
-    <Container flow={'column'} padding={false}>
+    <Container flow={'column'} padding={false} maxWidth={'1150'}>
       <div className={style.overviewContainer}>
         <span className={style.imageContainer}>
           {product?.imageUrl && (

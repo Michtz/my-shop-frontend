@@ -1,25 +1,17 @@
 'use client';
 
-import React, { FC, FormEvent, JSX, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import useProduct from '@/hooks/useProduct';
 import useCart from '@/hooks/useCart';
-import { addToCart, replaceCartItems } from '@/requests/cart.request';
-import { useParams, useRouter } from 'next/navigation';
-import { Params } from 'next/dist/server/request/params';
-import style from '@/styles/OverviewProduct.module.scss';
+import { useRouter } from 'next/navigation';
 import { mutate } from 'swr';
-import Image from 'next/image';
-import NumberStepper from '@/components/system/NumberStepper';
-import { Container, FormContainer } from '@/components/system/Container';
-import { Controller, useForm } from 'react-hook-form';
+import { Container } from '@/components/system/Container';
+import { useForm } from 'react-hook-form';
 import { useFeedback } from '@/hooks/FeedbackHook';
-import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
 import useProducts from '@/hooks/useProducts';
-import { Hr } from '@/components/system/Hr';
 import { useAuth } from '@/hooks/AuthHook';
 import { Logger } from '@/utils/Logger.class';
 import UserProfileForm from '@/components/section/user/UserForm';
-import AuthManager from '@/components/AuthManager';
 import Login from '@/components/section/user/Login';
 import Register from '@/components/section/user/Register';
 
@@ -43,7 +35,6 @@ const ProfileContainer: FC<ProfileContainerProps> = ({ view }) => {
   const { sessionData } = useAuth();
   const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
-
   const { register, reset, control, handleSubmit } = useForm<FormFields>({
     mode: 'onChange',
     defaultValues: getDefaultValues(product),
