@@ -1,4 +1,4 @@
-.button-container {
+.buttonContainer {
   border-radius: 8px;
   font-weight: 500;
   padding: 0.75rem 1.5rem;
@@ -12,7 +12,6 @@
   font-size: 14px;
   text-decoration: none;
 
-  // Sizes
   &[data-size='small'] {
     padding: 0.5rem 1rem;
     font-size: 12px;
@@ -28,7 +27,6 @@
     font-size: 16px;
   }
 
-  // Icon-only buttons
   &[data-appearance='icon'] {
     padding: 0.5rem;
     min-width: 40px;
@@ -53,20 +51,23 @@
     }
   }
 
-  // Variants
   &[data-variant='primary'] {
-    background-color: #3b82f6;
-    color: #ffffff;
-    border-color: #3b82f6;
+    background-color: rgba(239, 229, 211);
+
+    border-bottom: 2px solid #efe8dc;
+    box-shadow: 0 8px 8px #00000005;
+    margin: 1rem;
+
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    color: #333230;
 
     &:hover:not(:disabled) {
-      background-color: #2563eb;
-      border-color: #2563eb;
+      background-color: rgb(201, 189, 167);
     }
 
     &:active:not(:disabled) {
-      background-color: #1d4ed8;
-      border-color: #1d4ed8;
+      background-color: rgb(171, 149, 109);
     }
   }
 
@@ -117,7 +118,6 @@
     }
   }
 
-  // Disabled state
   &:disabled {
     background-color: #f3f4f6;
     color: #9ca3af;
@@ -132,20 +132,22 @@
     }
   }
 
-  // Focus states
   &:focus-visible {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
   }
 
-  // Loading state
   &[data-loading='true'] {
     cursor: wait;
     opacity: 0.7;
   }
+
+  &[data-flex='true'] {
+    flex: 1;
+  }
 }
 
-.button-container-container {
+.buttonContainerContainer {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;

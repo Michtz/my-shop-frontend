@@ -12,6 +12,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   children?: React.ReactNode;
   className?: string;
+  flex?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -27,13 +28,14 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       className = '',
       onClick,
+      flex = false,
       ...props
     },
     ref,
   ) => {
     const buttonContent = (
       <>
-        {children}
+        {!loading && children}
         {icon && !loading && <MaterialIcon icon={icon} iconSize={size} />}
         {loading && <span>Loading...</span>}
       </>
@@ -44,10 +46,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         onClick={onClick}
-        className={`${style['button-container']} ${className}`}
+        className={`${style.buttonContainer} ${className}`}
         data-variant={variant}
         data-size={size}
         data-appearance={appearance}
+        data-flex={flex}
         data-loading={loading}
         {...props}
       >
@@ -79,7 +82,7 @@ export const ButtonContainer: React.FC<ButtonContainerProps> = ({
 }) => (
   <div
     onClick={(e) => e.stopPropagation()}
-    className={`${style['button-container-container']} ${className}`}
+    className={`${style.buttonContainerContainer} ${className}`}
     data-spread={spread}
   >
     {children}

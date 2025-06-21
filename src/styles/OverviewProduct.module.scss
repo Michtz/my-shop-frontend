@@ -1,17 +1,36 @@
 .overviewContainer {
   display: flex;
-  gap: 20px; // Optional: Abstand zwischen Bild und Text
+  gap: 4rem;
+  justify-content: center;
+  margin-bottom: 4rem;
 
   .imageContainer {
     position: relative;
     width: 100%;
     overflow: hidden;
-    flex: 0 0 60%;
+    flex: 0 0 50%;
+    border-radius: 20px;
   }
 
   .productImage {
     object-fit: cover;
     transition: transform 0.3s ease;
+  }
+
+  .descriptionContainer {
+    color: #2d3748;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    margin-right: 1.1rem;
+
+    .descriptionInfo {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
   }
   .textContainer {
     display: flex;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC } from 'react';
+import React, { FC, JSX } from 'react';
 import useProduct from '@/hooks/useProduct';
 import useCart from '@/hooks/useCart';
 import { addToCart, replaceCartItems } from '@/requests/cart.request';
@@ -17,6 +17,7 @@ import useProducts from '@/hooks/useProducts';
 import { Hr } from '@/components/system/Hr';
 import { useAuth } from '@/hooks/AuthHook';
 import { Logger } from '@/utils/Logger.class';
+import Button, { ButtonContainer } from '@/components/system/Button';
 
 interface FormFields {
   quantity: number;
@@ -34,21 +35,21 @@ const ProductOverview: FC = () => {
   const { sessionData } = useAuth();
   const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
-
-  const { control, handleSubmit } = useForm<FormFields>({
+  console.log(sessionData);
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<FormFields>({
     mode: 'onChange',
     defaultValues: getDefaultValues(product),
   });
 
-  // if (!product) return null;
-  // useEffect(() => {
-  //   console.log(cart, items);
-  // }, [cart]);
-
   const submit = async (data: any) => {
     try {
+      console.log(sessionData?.data.sessionId);
       const result = await addToCart(
-        sessionData?.data.sessionId!,
+        sessionData?.data.sessionId as string,
         product?._id as string,
         data.quantity,
       );
@@ -95,57 +96,67 @@ const ProductOverview: FC = () => {
     router.push(`/product/${id}`);
   };
 
+  const DescriptionContainer: FC = () => (
+    <div className={style.descriptionContainer}>
+      <h1>{product?.name}</h1>
+      <div>
+        <p>{product?.description}</p>
+        <span className={style.descriptionInfo}>
+          <p>Verfügbar: {product?.stockQuantity}</p>
+          <p>Preis: €{product?.price}</p>
+        </span>
+      </div>
+    </div>
+  );
+
   const InformationContainer: FC = () => {
     return (
       <FormContainer
         onSubmitAction={handleSubmit(submit)}
         className={style.textContainer}
       >
-        <h1>{product?.name}</h1>
-        <div>
-          <p>{product?.description}</p>
-          <p>Preis: €{product?.price}</p>
-          <p>Verfügbar: {product?.stockQuantity}</p>
-        </div>
-        <Controller
-          name="quantity"
-          control={control}
-          defaultValue={1}
-          render={({ field }) => (
-            <NumberStepper
-              quantity={field.value}
-              onQuantityChange={field.onChange}
-              min={1}
-              max={99}
-            />
-          )}
-        />
-        <button type={'submit'}>Add to cart</button>
+        <DescriptionContainer />
+        <ButtonContainer>
+          <Controller
+            name="quantity"
+            control={control}
+            defaultValue={1}
+            render={({ field }) => (
+              <NumberStepper
+                quantity={field.value}
+                onQuantityChange={field.onChange}
+                min={1}
+                max={99}
+              />
+            )}
+          />
+          <Button loading={isSubmitting} size={'big'} flex type={'submit'}>
+            Add to cart
+          </Button>
+        </ButtonContainer>
       </FormContainer>
-    );
-  };
-  const ImageContainer: FC = () => {
-    return (
-      <Image
-        src={product?.imageUrl as string}
-        alt={product?.name || 'Product image'}
-        fill
-        className={style.productImage}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority={false}
-      />
     );
   };
 
   return (
-    <Container flow={'column'}>
+    <Container flow={'column'} padding={false}>
       <div className={style.overviewContainer}>
         <span className={style.imageContainer}>
-          {product?.imageUrl && <ImageContainer />}
+          {product?.imageUrl && (
+            <Image
+              src={product?.imageUrl as string}
+              alt={product?.name || 'Product image'}
+              fill
+              className={style.productImage}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority={false}
+            />
+          )}
         </span>
         <InformationContainer />
       </div>
       <Hr />
+      <h1>Das kauften andere Kunden</h1>
       <CartsContainer>
         {products?.map((product) => {
           return (

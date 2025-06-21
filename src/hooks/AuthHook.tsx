@@ -10,20 +10,16 @@ import React, {
 import { User, SessionData } from '@/types/auth';
 import {
   createSession,
-  getCurrentUser,
   getCurrentSession,
   login as _login,
   register as _register,
   logout as _logout,
-  validateToken,
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';
-import { getToken } from 'next-auth/jwt';
-import { getSession } from 'next-auth/react';
 
 interface AuthContextType {
   user: User | null;
-  sessionData: SessionData | null;
+  sessionData: SessionData | undefined;
   isLoading: boolean;
   isAuthenticated: boolean;
   error: string | null;
@@ -47,21 +43,22 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [sessionData, setSessionData] = useState<SessionData | null>(null);
+  const [sessionData, setSessionData] = useState<SessionData>();
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const isAuthenticated: boolean = !!user;
 
-  const isOnAuthPage = () => {
-    if (typeof window === 'undefined') return false;
-    const path = window.location.pathname;
-    return (
-      path.includes('/login') ||
-      path.includes('/register') ||
-      path.includes('/unauthorized')
-    );
-  };
+  // const isOnAuthPage = () => {
+  //   if (typeof window === 'undefined') return false;
+  //   const path = window.location.pathname;
+  //   return (
+  //     path.includes('/login') ||
+  //     path.includes('/register') ||
+  //     path.includes('/unauthorized')
+  //   );
+  // };
 
   useEffect(() => {
     initializeAuth();
@@ -82,7 +79,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       try {
         const session = await getCurrentSession();
-        const auth = await getCurrentSession();
+        // const auth = await getCurrentSession();
         console.log(session);
         const user = JSON.parse(sessionStorage.getItem('user')!);
         console.log(user);
@@ -190,7 +187,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     setUser(null);
-    setSessionData(null);
+    setSessionData(undefined);
     setError(null);
     setIsLoading(false);
   };
