@@ -2,10 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/system/Button';
 import style from '@/styles/checkout/CheckoutStep.module.scss';
-import {
-  PaymentData,
-  useCheckout,
-} from '@/providers/checkout/CheckoutContextProvider';
+import { PaymentData, useCheckout } from '@/providers/CheckoutContextProvider';
 
 const PaymentStep: React.FC = () => {
   const { checkoutData, updatePayment, nextStep, prevStep } = useCheckout();

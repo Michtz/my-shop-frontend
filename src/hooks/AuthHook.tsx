@@ -43,12 +43,13 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!user);
   const [sessionData, setSessionData] = useState<SessionData>();
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const isAuthenticated: boolean = !!user;
+  // const isAuthenticated: boolean = !!user;
 
   // const isOnAuthPage = () => {
   //   if (typeof window === 'undefined') return false;
@@ -114,7 +115,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const response = await _login(email, password);
-      console.log(response);
+      console.log(response, response.success);
       if (response.success) {
         setUser(response.data.user);
 
@@ -122,17 +123,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
           console.log('in hereee2');
           const sessionResponse = await getCurrentSession();
+          console.log(sessionResponse);
           if (sessionResponse.success) {
             setSessionData(sessionResponse);
-            console.log(response.data);
-            sessionStorage.setItem('user', JSON.stringify(response.data));
           }
+          console.log(response.data);
+          sessionStorage.setItem('user', JSON.stringify(response.data));
         } catch (err) {
           Logger.warn('Failed to update session after login:', err);
         }
       } else {
         setError(response.error || 'Login failed');
       }
+      setIsAuthenticated(true);
     } catch (err: any) {
       setError('Login failed');
       Logger.error('Login error:', err);
@@ -169,6 +172,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else {
         setError(response.error || 'Registration failed');
       }
+      setIsAuthenticated(true);
     } catch (err: any) {
       setError('Registration failed');
       Logger.error('Registration error:', err);
@@ -179,9 +183,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     setIsLoading(true);
-
     try {
-      await _logout();
+      await _logout(sessionData?.data.sessionId as string);
     } catch (err) {
       Logger.error('Logout request failed:', err);
     }
@@ -190,6 +193,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setSessionData(undefined);
     setError(null);
     setIsLoading(false);
+    setIsAuthenticated(false);
   };
 
   const clearError = () => setError(null);

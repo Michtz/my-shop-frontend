@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/system/Button';
 import style from '@/styles/checkout/CheckoutStep.module.scss';
-import {
-  AddressData,
-  useCheckout,
-} from '@/providers/checkout/CheckoutContextProvider';
+import { AddressData, useCheckout } from '@/providers/CheckoutContextProvider';
 
 interface LoginFormData {
   email: string;

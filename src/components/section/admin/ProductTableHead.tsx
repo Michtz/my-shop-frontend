@@ -1,9 +1,8 @@
-// ProductTableHead.tsx
 import React from 'react';
-import MaterialIcon from '@/components/system/MaterialIcon'; // Adjust import path
-import { Container } from '@/components/system/Container'; // Adjust import path
-import { IProduct } from '@/types/product.types'; // Adjust import path
-import style from '@/styles/admin/AdminProductList.module.scss'; // Use shared style
+import MaterialIcon from '@/components/system/MaterialIcon';
+import { Container } from '@/components/system/Container';
+import { IProduct } from '@/types/product.types';
+import style from '@/styles/admin/AdminProductList.module.scss';
 
 interface ProductTableHeadProps {
   productsLength: number;
@@ -11,7 +10,7 @@ interface ProductTableHeadProps {
   handleSelectAll: (checked: boolean) => void;
   handleSort: (column: keyof IProduct) => void;
   getSortIcon: (column: keyof IProduct) => string;
-  sortConfig: { key: keyof IProduct | null; direction: 'asc' | 'desc' }; // Added for clarity
+  sortConfig: { key: keyof IProduct | null; direction: 'asc' | 'desc' };
 }
 
 export const ProductTableHead: React.FC<ProductTableHeadProps> = ({

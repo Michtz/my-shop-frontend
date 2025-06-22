@@ -11,7 +11,7 @@ export default function SWRProvider({
     <SWRConfig
       value={{
         fetcher: (url: string) => fetch(url).then((res) => res.json()),
-        revalidateOnFocus: false, // Verhindert unerwünschte Re-renders
+        revalidateOnFocus: false,
       }}
     >
       {children}

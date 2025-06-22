@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '@/components/system/Button';
 import style from '@/styles/checkout/CheckoutStep.module.scss';
-import { useCheckout } from '@/providers/checkout/CheckoutContextProvider';
+import { useCheckout } from '@/providers/CheckoutContextProvider';
 import { useRouter } from 'next/navigation';
 
 const ConfirmationStep: React.FC = () => {

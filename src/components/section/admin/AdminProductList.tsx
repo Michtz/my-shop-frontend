@@ -6,11 +6,11 @@ import { deleteProduct } from '@/requests/products.request';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { IProduct, ProductResponse } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
-import { ProductListHeader } from './ProductListHeader';
 import { ProductTable } from './ProductTable';
-import { EmptyState } from './EmptyState';
 import { useTranslation } from 'react-i18next';
 import { mutate } from 'swr';
+import MaterialIcon from '@/components/system/MaterialIcon';
+import Button, { ButtonContainer } from '@/components/system/Button';
 
 interface AdminProductListProps {
   onEditProduct: (product: IProduct) => void;
@@ -121,7 +121,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   if (isLoading) {
     return (
       <div className={style.productList}>
-        <p>Produkte werden geladen...</p> {/* Or a proper skeleton loader */}
+        <p>Produkte werden geladen...</p>
       </div>
     );
   }
@@ -162,5 +162,44 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
     </div>
   );
 };
+
+interface EmptyStateProps {
+  onCreateProduct: () => void;
+}
+
+const EmptyState: React.FC<EmptyStateProps> = ({ onCreateProduct }) => (
+  <div className={style.emptyState}>
+    <MaterialIcon icon="inventory_2" iconSize="huge" />
+    <h3>Keine Produkte gefunden</h3>
+    <p>Erstellen Sie Ihr erstes Produkt oder passen Sie die Filter an.</p>
+    <Button variant="primary" icon="add" onClick={onCreateProduct}>
+      Erstes Produkt erstellen
+    </Button>
+  </div>
+);
+
+interface ProductListHeaderProps {
+  productCount: number;
+  onCreateProduct: () => void;
+}
+
+export const ProductListHeader: React.FC<ProductListHeaderProps> = ({
+  productCount,
+  onCreateProduct,
+}) => (
+  <div className={style.listHeader}>
+    <div className={style.headerActions}>
+      <h2>Produkte ({productCount})</h2>
+      <ButtonContainer>
+        <Button
+          variant="primary"
+          icon="add"
+          appearance={'icon'}
+          onClick={onCreateProduct}
+        />
+      </ButtonContainer>
+    </div>
+  </div>
+);
 
 export default AdminProductList;

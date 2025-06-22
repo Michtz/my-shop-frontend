@@ -15,6 +15,10 @@ export const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(async (request) => {
+  const token: string = JSON.parse(sessionStorage.getItem('user')!)?.token;
+
+  if (token) request.headers.Authorization = `Bearer ${token}`;
+  // console.log('is token', JSON.parse(sessionStorage.getItem('user')!), token);
   return request;
 });
 
@@ -26,24 +30,6 @@ axiosInstance.interceptors.response.use(
       code: error.response?.status || 'UNKNOWN_ERROR',
       url: error.config?.url,
     };
-
-    if (error.response?.status === 401) {
-      const isOnLoginPage =
-        typeof window !== 'undefined' &&
-        (window.location.pathname.includes('/login') ||
-          window.location.pathname.includes('/register'));
-
-      if (!isOnLoginPage) {
-        if (typeof window !== 'undefined') {
-          Logger.error('🔄 Redirecting to login due to 401');
-          window.location.href = '/login';
-        }
-      } else {
-        Logger.error(
-          '⚠️ 401 on login page - this is expected for unauthenticated requests',
-        );
-      }
-    }
 
     Logger.error('API-Error:', returnError);
     return Promise.reject(returnError);

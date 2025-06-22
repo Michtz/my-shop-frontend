@@ -75,16 +75,16 @@ export const register = async (
     throw e;
   }
 };
-export const logout = async (): Promise<any> => {
+export const logout = async (sessionId: string): Promise<any> => {
   try {
-    sessionStorage.removeItem('user');
     const response = await axiosInstance.post(
       `${authApiUrl}/logout`,
-      {},
+      { sessionId: sessionId },
       {
         withCredentials: true,
       },
     );
+    sessionStorage.removeItem('user');
 
     return response;
   } catch (e) {

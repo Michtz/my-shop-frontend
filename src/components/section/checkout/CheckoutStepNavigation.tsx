@@ -1,6 +1,6 @@
 import React from 'react';
 import style from '@/styles/checkout/CheckoutStepNavigation.module.scss';
-import { useCheckout } from '@/providers/checkout/CheckoutContextProvider';
+import { useCheckout } from '@/providers/CheckoutContextProvider';
 
 const CheckoutStepNavigation: React.FC = () => {
   const { currentStep, goToStep } = useCheckout();

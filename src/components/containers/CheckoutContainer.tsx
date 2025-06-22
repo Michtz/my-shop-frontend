@@ -6,26 +6,24 @@ import style from '@/styles/checkout/Checkout.module.scss';
 import {
   CheckoutProvider,
   useCheckout,
-} from '@/providers/checkout/CheckoutContextProvider';
+} from '@/providers/CheckoutContextProvider';
 import AddressStep from '@/components/section/checkout/AddressStep';
-import PaymentStep from './PaymentStep';
+import PaymentStep from '../section/checkout/PaymentStep';
 import ConfirmationStep from '@/components/section/checkout/ConfirmationStep';
 import CheckoutStepNavigation from '@/components/section/checkout/CheckoutStepNavigation';
 import CartSummary from '@/components/section/cart/CartSummaryContainer';
 import { Container } from '@/components/system/Container';
 
-const CheckoutContent: React.FC = () => {
+const CheckoutContainer: React.FC = () => {
   const { currentStep } = useCheckout();
-  const sessionTestId = 'sess_nrls9zo5e9076bl9vuw8zt';
-  const { cart, cartItems } = useCart(sessionTestId);
+  const { cart, cartItems } = useCart();
 
-  // Calculate totals for summary
   const subtotal =
     cartItems?.reduce(
       (sum: number, item: any) => sum + item.quantity * item.price,
       0,
     ) || 0;
-  const shipping = 0; // Will be updated based on selected shipping method
+  const shipping = 0;
   const total = subtotal + shipping;
 
   const renderCurrentStep = () => {
@@ -66,7 +64,7 @@ const Checkout: React.FC = () => {
     <CheckoutProvider>
       <Container flow="column" alignItems="center">
         <h1>Checkout</h1>
-        <CheckoutContent />
+        <CheckoutContainer />
       </Container>
     </CheckoutProvider>
   );
