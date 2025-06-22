@@ -11,6 +11,11 @@ import Input from '@/components/system/Input';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { Logout } from '@mui/icons-material';
 import { logout } from '@/requests/session.request';
+import { useAuth } from '@/hooks/AuthHook';
+import { router } from 'next/client';
+import { useRouter } from 'next/navigation';
+import { useFeedback } from '@/hooks/FeedbackHook';
+import { Logger } from '@/utils/Logger.class';
 
 interface UserProfileFormData {
   firstName: string;
@@ -45,6 +50,9 @@ interface UserProfileFormData {
 const UserProfileForm: React.FC = () => {
   const { t } = useTranslation(['common']);
   const { transformFieldError } = useError();
+  const { sessionData, isLoading, logout } = useAuth();
+  const router = useRouter();
+  const { showFeedback } = useFeedback();
   const [showPasswordFields, setShowPasswordFields] = useState(false);
   const [showAddPaymentForm, setShowAddPaymentForm] = useState(false);
 
@@ -155,7 +163,14 @@ const UserProfileForm: React.FC = () => {
   };
 
   const handleLogout = async () => {
-    await logout();
+    try {
+      await logout();
+      router.replace('/login');
+      showFeedback('feedback.logout-success', 'success');
+    } catch (e) {
+      showFeedback('feedback.logout-error', 'error');
+      Logger.error('error while logout', e);
+    }
   };
 
   return (

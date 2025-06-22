@@ -18,6 +18,8 @@ import { Hr } from '@/components/system/Hr';
 import { Logger } from '@/utils/Logger.class';
 import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
+import Image from 'next/image';
+import logo from '@/assets/myShopLogo.png';
 
 interface LoginFormData {
   email: string;
@@ -42,10 +44,8 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
     sessionData,
     isLoading,
     isAuthenticated,
-    error,
     login,
     logout,
-    clearError,
     register: _register,
   } = useAuth();
 
@@ -65,10 +65,6 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
       lastName: '',
     },
   });
-
-  if (isLoading) {
-    return <div className="p-4">Loading...</div>;
-  }
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
@@ -99,122 +95,113 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
   };
 
   return (
-    <div className={style.loginPage}>
-      <Hr />
-      <FormContainer
-        className={style.loginForm}
-        onSubmitAction={handleSubmit(onSubmit)}
-      >
-        <FormRow>
-          <Input
-            type="text"
-            label="First name"
-            required
-            fullWidth
-            placeholder="Franz"
-            clearable
-            inputProps={register('firstName', {
-              required: 'first name is required',
-            })}
-            {...transformFieldError(errors.firstName)}
-          />
-        </FormRow>{' '}
-        <FormRow>
-          <Input
-            type="text"
-            label="last name"
-            required
-            fullWidth
-            placeholder="mustermann"
-            clearable
-            inputProps={register('lastName', {
-              required: 'last name is required',
-            })}
-            {...transformFieldError(errors.lastName)}
-          />
-        </FormRow>{' '}
-        <FormRow>
-          <Input
-            type="email"
-            label="Email Address"
-            required
-            fullWidth
-            placeholder="Enter your email..."
-            startIcon="email"
-            clearable
-            inputProps={register('email', {
-              required: 'Email is required',
-              validate: validateEmail,
-            })}
-            {...transformFieldError(errors.email)}
-          />
-        </FormRow>
-        <FormRow>
-          <Input
-            type="password"
-            label="Password"
-            required
-            fullWidth
-            placeholder="Enter your password..."
-            startIcon="lock"
-            showPasswordToggle
-            inputProps={register('password', {
-              required: 'Password is required',
-              validate: validatePassword,
-            })}
-            {...transformFieldError(errors.password)}
-          />
-        </FormRow>
-        <FormRow>
-          <Input
-            type="password"
-            label="Password again"
-            required
-            fullWidth
-            placeholder="Enter your password..."
-            startIcon="lock"
-            showPasswordToggle
-            inputProps={register('passwordSec', {
-              required: 'Password is required',
-              validate: validatePassword,
-            })}
-            {...transformFieldError(errors.password)}
-          />
-        </FormRow>
-        <FormRow direction="row">
-          <Link
-            href="/auth/forgot-password"
-            disabled
-            className={style.forgotPassword}
-          >
-            Forgot password? coming soon
-          </Link>
-        </FormRow>
-        <FormRow>
-          <Button
-            type="submit"
-            className={style.loginButton}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <LoadingSpinner />
-            ) : (
-              <>
-                <MaterialIcon icon="login" iconSize="small" />
-                Create profile
-              </>
-            )}
-          </Button>
-        </FormRow>
-      </FormContainer>
+    <>
+      <div className={style.loginContainer}>
+        <span className={style.logo} onClick={() => router.replace('/')}>
+          <Image src={logo} alt={'logo'} height={60} />
+        </span>
+        <div className={style.loginHeader}>
+          <h1 className={style.loginTitle}>Welcome</h1>
+          <p className={style.loginSubtitle}>Create a Account</p>
+        </div>
+        <Hr />
+        <FormContainer
+          className={style.loginForm}
+          onSubmitAction={handleSubmit(onSubmit)}
+        >
+          <FormRow>
+            <Input
+              type="text"
+              label="First name"
+              required
+              fullWidth
+              placeholder="Franz"
+              clearable
+              inputProps={register('firstName', {
+                required: 'first name is required',
+              })}
+              {...transformFieldError(errors.firstName)}
+            />
+          </FormRow>{' '}
+          <FormRow>
+            <Input
+              type="text"
+              label="last name"
+              required
+              fullWidth
+              placeholder="mustermann"
+              clearable
+              inputProps={register('lastName', {
+                required: 'last name is required',
+              })}
+              {...transformFieldError(errors.lastName)}
+            />
+          </FormRow>{' '}
+          <FormRow>
+            <Input
+              type="email"
+              label="Email Address"
+              required
+              fullWidth
+              placeholder="test.test@test.com"
+              clearable
+              inputProps={register('email', {
+                required: 'Email is required',
+                validate: validateEmail,
+              })}
+              {...transformFieldError(errors.email)}
+            />
+          </FormRow>
+          <FormRow>
+            <Input
+              type="password"
+              label="Password"
+              required
+              fullWidth
+              placeholder="**************"
+              showPasswordToggle
+              inputProps={register('password', {
+                required: 'Password is required',
+                validate: validatePassword,
+              })}
+              {...transformFieldError(errors.password)}
+            />
+          </FormRow>
+          <FormRow>
+            <Input
+              type="password"
+              label="Password again"
+              required
+              fullWidth
+              placeholder="**************"
+              showPasswordToggle
+              inputProps={register('passwordSec', {
+                required: 'Password is required',
+                validate: validatePassword,
+              })}
+              {...transformFieldError(errors.password)}
+            />
+          </FormRow>
+          <FormRow direction="row">
+            <Link href="/register" disabled className={style.forgotPassword}>
+              Forgot password? coming soon
+            </Link>
+          </FormRow>
+          <FormRow>
+            <Button type="submit" flex disabled={isLoading}>
+              create Account
+            </Button>
+          </FormRow>
+        </FormContainer>
 
-      <div className={style.signupPrompt}>
-        <span> Already have an account? </span>
-        <Link href="/login" className={style.signupLink}>
-          sign in
-        </Link>
+        <div className={style.signupPrompt}>
+          <span> Already have an account? </span>
+          <Link href="/login" className={style.signupLink}>
+            sign in
+          </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

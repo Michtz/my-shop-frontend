@@ -18,11 +18,10 @@ import {
 import { Logger } from '@/utils/Logger.class';
 
 interface AuthContextType {
-  user: User | null;
+  user: any | null;
   sessionData: SessionData | undefined;
   isLoading: boolean;
   isAuthenticated: boolean;
-  error: string | null;
 
   login: (email: string, password: string) => Promise<void>;
   register: (
@@ -32,7 +31,6 @@ interface AuthContextType {
     lastName: string,
   ) => Promise<void>;
   logout: () => Promise<void>;
-  clearError: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,68 +40,29 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!user);
   const [sessionData, setSessionData] = useState<SessionData>();
-
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // const isAuthenticated: boolean = !!user;
-
-  // const isOnAuthPage = () => {
-  //   if (typeof window === 'undefined') return false;
-  //   const path = window.location.pathname;
-  //   return (
-  //     path.includes('/login') ||
-  //     path.includes('/register') ||
-  //     path.includes('/unauthorized')
-  //   );
-  // };
 
   useEffect(() => {
     initializeAuth();
-    console.log('initializeAuth');
-    console.log(JSON.stringify(sessionStorage.getItem('data')));
   }, []);
 
   const initializeAuth = async () => {
-    console.log(JSON.stringify(sessionStorage.getItem('data')));
-    setIsLoading(true);
-    setError(null);
     try {
-      // if (!isOnAuthPage()) {
-      //   console.log('📱 On auth page - skipping authentication check');
-      //   setIsLoading(false);
-      //   return;
-      // }
-
-      try {
-        const session = await getCurrentSession();
-        // const auth = await getCurrentSession();
-        console.log(session);
-        const user = JSON.parse(sessionStorage.getItem('user')!);
-        console.log(user);
-        if (session.success === false) {
-          const session = await createSession();
-          console.log('session create', session);
-          setSessionData(session.data);
-        } else {
-          console.log('session get', session);
-          setSessionData(session.data);
-          setUser(user as User);
-        }
-
-        // if (session.data.sessionId) {
-        //   const userData = await getCurrentUser();
-        //   if (userData.success) {
-        //     setUser(userData.data.user);
-        //   }
-        // }
-      } catch (err) {
-        Logger.error('Auth initialization failed:', err);
-        setError('Authentication initialization failed');
+      setIsLoading(true);
+      const session = await getCurrentSession();
+      const user = JSON.parse(sessionStorage.getItem('user')!);
+      if (session.success === false) {
+        const session = await createSession();
+        setSessionData(session.data);
+      } else {
+        setSessionData(session.data);
+        setUser(user as User);
       }
+    } catch (err) {
+      Logger.error('Auth initialization failed:', err);
     } finally {
       setIsLoading(false);
     }
@@ -111,34 +70,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
-    setError(null);
 
     try {
       const response = await _login(email, password);
-      console.log(response, response.success);
       if (response.success) {
-        setUser(response.data.user);
-
-        // update session after login
+        setUser(response.data);
+        sessionStorage.setItem('user', JSON.stringify(response.data));
+        setIsAuthenticated(true);
         try {
-          console.log('in hereee2');
           const sessionResponse = await getCurrentSession();
-          console.log(sessionResponse);
-          if (sessionResponse.success) {
-            setSessionData(sessionResponse);
-          }
-          console.log(response.data);
-          sessionStorage.setItem('user', JSON.stringify(response.data));
+          if (sessionResponse.success) setSessionData(sessionResponse.data);
         } catch (err) {
           Logger.warn('Failed to update session after login:', err);
         }
-      } else {
-        setError(response.error || 'Login failed');
       }
-      setIsAuthenticated(true);
     } catch (err: any) {
-      setError('Login failed');
       Logger.error('Login error:', err);
+      setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
     }
@@ -151,31 +99,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     lastName: string,
   ) => {
     setIsLoading(true);
-    setError(null);
 
     try {
       const response = await _register(email, password, firstName, lastName);
 
       if (response.success) {
         setUser(response.data.user);
-
-        // update session after registration
+        sessionStorage.setItem('user', JSON.stringify(response.data));
+        setIsAuthenticated(true);
         try {
-          console.log('in hereee 3');
           const sessionResponse = await getCurrentSession();
-          if (sessionResponse.success) {
-            setSessionData(sessionResponse.data.data);
-          }
+          if (sessionResponse.success) setSessionData(sessionResponse.data);
         } catch (err) {
           Logger.warn('Failed to update session after registration:', err);
         }
-      } else {
-        setError(response.error || 'Registration failed');
       }
       setIsAuthenticated(true);
     } catch (err: any) {
-      setError('Registration failed');
       Logger.error('Registration error:', err);
+      setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
     }
@@ -191,23 +133,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     setUser(null);
     setSessionData(undefined);
-    setError(null);
     setIsLoading(false);
     setIsAuthenticated(false);
   };
-
-  const clearError = () => setError(null);
 
   const value: AuthContextType = {
     user,
     sessionData,
     isLoading,
     isAuthenticated,
-    error,
     login,
     register,
     logout,
-    clearError,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

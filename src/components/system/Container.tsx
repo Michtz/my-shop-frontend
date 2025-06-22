@@ -53,7 +53,11 @@ export const FormContainer: FC<ContainerFormProps> = ({
   className,
   onSubmitAction,
 }) => (
-  <form onSubmit={onSubmitAction} className={className}>
+  <form
+    onSubmit={onSubmitAction}
+    style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}
+    className={className}
+  >
     {children}
   </form>
 );

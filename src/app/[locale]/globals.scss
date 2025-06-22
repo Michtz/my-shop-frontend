@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap');
 :root {
-  --background: #FCFAF7;
+  --background: #fcfaf7;
   --foreground: #171717;
   --font-josefin: 'Josefin Sans', sans-serif;
   --font-lilita: 'Lilita One', cursive;
@@ -18,23 +18,24 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: #FCFAF7;
+  background-color: #fcfaf7;
+  color: #2d3748;
 }
 
 body {
-  color:#171717;
-  background: #FCFAF7;
+  color: #171717;
+  background: #fcfaf7;
   /*font-family: Arial, Helvetica, sans-serif;*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family:'Josefin Sans', sans-serif;
+  font-family: 'Josefin Sans', sans-serif;
 
-  p{
-    font-family: "Josefin Sans", sans-serif;
+  p {
+    font-family: 'Josefin Sans', sans-serif;
     line-height: 23px;
   }
 
-  h1{
+  h1 {
     font-family: 'Josefin Sans', sans-serif;
     line-height: 43px;
     font-size: 38px;

@@ -62,7 +62,7 @@ const ProfileContainer: FC<ProfileContainerProps> = ({ view }) => {
   };
 
   return (
-    <Container flow={'column'}>
+    <Container padding={false} flow={'column'}>
       <ProfileContent view={view} />
     </Container>
   );
@@ -89,7 +89,7 @@ const ProfileContent: React.FC<ProfileContentProps> = ({
         return <></>;
     }
   };
-  return <Container children={getCurrentView()} />;
+  return <Container justifyContent={'center'} children={getCurrentView()} />;
 };
 
 export default ProfileContainer;

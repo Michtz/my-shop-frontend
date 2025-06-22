@@ -246,17 +246,18 @@ export const Input = forwardRef<
                 onClick={handleClear}
               />
             )}
-
             {shouldShowPasswordToggle && (
-              <MaterialIcon
-                icon={showPassword ? 'visibility_off' : 'visibility'}
-                className={style.passwordToggle}
-                iconSize="small"
-                clickable
-                onClick={togglePasswordVisibility}
-              />
+              <>
+                <MaterialIcon
+                  icon={showPassword ? 'visibility_off' : 'visibility'}
+                  color={'gray'}
+                  outlined
+                  iconSize="small"
+                  clickable
+                  onClick={togglePasswordVisibility}
+                />
+              </>
             )}
-
             {endIcon && (
               <MaterialIcon
                 icon={endIcon}

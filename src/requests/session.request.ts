@@ -21,8 +21,9 @@ export const createSession = async (preferences?: any): Promise<any> => {
 
 export const getCurrentSession = async (): Promise<any> => {
   try {
-    const response = await axiosInstance.get(`${sessionsApiUrl}/current`);
-    console.log('response', response.data);
+    const response = await axiosInstance.get(`${sessionsApiUrl}/current`, {
+      withCredentials: true,
+    });
 
     return response;
   } catch (e) {

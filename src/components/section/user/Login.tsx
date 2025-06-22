@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useError } from '@/hooks/ErrorHook';
 import { useRouter } from 'next/navigation';
 import MaterialIcon from '@/components/system/MaterialIcon';
-import { FormContainer } from '@/components/system/Container';
+import { Container, FormContainer } from '@/components/system/Container';
 import { FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Link from '@/components/system/Link';
@@ -18,6 +18,8 @@ import { Hr } from '@/components/system/Hr';
 import { Logger } from '@/utils/Logger.class';
 import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
+import Image from 'next/image';
+import logo from '@/assets/myShopLogo.png';
 
 interface LoginFormData {
   email: string;
@@ -76,12 +78,12 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
   };
 
   return (
-    <div className={style.loginPage}>
+    <>
       <div className={style.loginContainer}>
+        <span className={style.logo} onClick={() => router.replace('/')}>
+          <Image src={logo} alt={'logo'} height={60} />
+        </span>
         <div className={style.loginHeader}>
-          <div className={style.logoContainer}>
-            <MaterialIcon icon="lock" />
-          </div>
           <h1 className={style.loginTitle}>Welcome Back</h1>
           <p className={style.loginSubtitle}>
             Sign in to your account to continue
@@ -94,14 +96,13 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
           className={style.loginForm}
           onSubmitAction={handleSubmit(onSubmit)}
         >
-          <FormRow>
+          <FormRow gap={'large'}>
             <Input
               type="email"
               label="Email Address"
               required
               fullWidth
-              placeholder="Enter your email..."
-              startIcon="email"
+              placeholder="test.test@test.com"
               clearable
               inputProps={register('email', {
                 required: 'Email is required',
@@ -117,8 +118,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
               label="Password"
               required
               fullWidth
-              placeholder="Enter your password..."
-              startIcon="lock"
+              placeholder="**********"
               showPasswordToggle
               inputProps={register('password', {
                 required: 'Password is required',
@@ -129,34 +129,18 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
           </FormRow>
 
           <FormRow direction="row">
-            <Link
-              href="/auth/forgot-password"
-              disabled
-              className={style.forgotPassword}
-            >
+            <Link href="" disabled className={style.forgotPassword}>
               Forgot password? coming soon
             </Link>
           </FormRow>
 
           <FormRow>
-            <Button
-              type="submit"
-              className={style.loginButton}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <LoadingSpinner />
-              ) : (
-                <>
-                  <MaterialIcon icon="login" iconSize="small" />
-                  Sign In
-                </>
-              )}
+            <Button type="submit" flex disabled={isLoading}>
+              einlogen
             </Button>
           </FormRow>
         </FormContainer>
 
-        {/* Sign Up Link */}
         <div className={style.signupPrompt}>
           <span>Don't have an account? </span>
           <Link href="/register" className={style.signupLink}>
@@ -164,7 +148,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

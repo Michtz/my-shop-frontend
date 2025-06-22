@@ -10,8 +10,9 @@
     color: #ffffff;
   }
 
-  &[data-color='darkblue'] {
-    color: #1e3a8a;
+  &[data-color='gray'] {
+    color: #494b4d;
+    z-index: 999;
   }
 
   &[data-color='lightblue'] {
