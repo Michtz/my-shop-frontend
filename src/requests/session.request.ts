@@ -96,7 +96,9 @@ export const logout = async (sessionId: string): Promise<any> => {
 
 export const getCurrentUser = async (): Promise<any> => {
   try {
-    const response = await axiosInstance.get(`${authApiUrl}/me`);
+    const response = await axiosInstance.get(`${authApiUrl}/me`, {
+      withCredentials: true,
+    });
     return response;
   } catch (e) {
     Logger.error('Unable to get current user');

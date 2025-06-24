@@ -40,7 +40,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
   const { transformFieldError } = useError();
   const router = useRouter();
   const {
-    user,
+    userSessionData,
     sessionData,
     isLoading,
     isAuthenticated,

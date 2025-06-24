@@ -1,9 +1,14 @@
-export interface User {
+export interface UserInfo {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
   role: 'admin' | 'customer';
+}
+export interface User {
+  refreshToken: string;
+  token: string;
+  user: UserInfo;
 }
 
 export interface AuthResponse {
@@ -64,4 +69,22 @@ export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   error?: string;
+}
+
+export interface IAddress {
+  type: string;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  isDefault: boolean;
+}
+
+export interface UpdateUserRequest {
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  addresses?: IAddress[];
 }

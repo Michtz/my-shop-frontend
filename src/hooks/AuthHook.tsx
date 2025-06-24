@@ -14,12 +14,14 @@ import {
   login as _login,
   register as _register,
   logout as _logout,
+  getCurrentUser,
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';
 
 interface AuthContextType {
-  user: any | null;
+  userSessionData: User;
   sessionData: SessionData | undefined;
+  userInformation: any;
   isLoading: boolean;
   isAuthenticated: boolean;
 
@@ -40,8 +42,12 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<any | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!user);
+  const [userSessionData, setUserSessionData] = useState<User>(
+    JSON.parse(sessionStorage.getItem('user') as string),
+  );
+  const [userInformation, setUserInformation] = useState<User>();
+  const [isAuthenticated, setIsAuthenticated] =
+    useState<boolean>(!!userSessionData);
   const [sessionData, setSessionData] = useState<SessionData>();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -53,13 +59,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       const session = await getCurrentSession();
-      const user = JSON.parse(sessionStorage.getItem('user')!);
+      const userInformation = await getCurrentUser();
+      setUserInformation(userInformation.data.user);
+
+      console.log(userInformation);
+      const user = JSON.parse(sessionStorage.getItem('user') as any);
       if (session.success === false) {
         const session = await createSession();
         setSessionData(session.data);
       } else {
         setSessionData(session.data);
-        setUser(user as User);
+        setUserSessionData(user);
       }
     } catch (err) {
       Logger.error('Auth initialization failed:', err);
@@ -74,7 +84,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await _login(email, password);
       if (response.success) {
-        setUser(response.data);
+        setUserSessionData(response.data);
         sessionStorage.setItem('user', JSON.stringify(response.data));
         setIsAuthenticated(true);
         try {
@@ -104,7 +114,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await _register(email, password, firstName, lastName);
 
       if (response.success) {
-        setUser(response.data.user);
+        setUserSessionData(response.data.user);
         sessionStorage.setItem('user', JSON.stringify(response.data));
         setIsAuthenticated(true);
         try {
@@ -131,14 +141,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       Logger.error('Logout request failed:', err);
     }
 
-    setUser(null);
     setSessionData(undefined);
     setIsLoading(false);
     setIsAuthenticated(false);
   };
 
   const value: AuthContextType = {
-    user,
+    userInformation,
+    userSessionData,
     sessionData,
     isLoading,
     isAuthenticated,

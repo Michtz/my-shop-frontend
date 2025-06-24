@@ -56,7 +56,7 @@ export const FormContainer: FC<ContainerFormProps> = ({
   <form
     onSubmit={onSubmitAction}
     style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}
-    className={className}
+    className={style.cormContainer}
   >
     {children}
   </form>

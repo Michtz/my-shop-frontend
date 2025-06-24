@@ -57,10 +57,6 @@ const ProfileContainer: FC<ProfileContainerProps> = ({ view }) => {
     }
   };
 
-  const handleCardClick = (id: string) => {
-    router.push(`/product/${id}`);
-  };
-
   return (
     <Container padding={false} flow={'column'}>
       <ProfileContent view={view} />
