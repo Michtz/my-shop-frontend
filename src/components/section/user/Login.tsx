@@ -1,19 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import style from '@/styles/LoginPage.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useError } from '@/hooks/ErrorHook';
 import { useRouter } from 'next/navigation';
-import MaterialIcon from '@/components/system/MaterialIcon';
-import { Container, FormContainer } from '@/components/system/Container';
+import { FormContainer } from '@/components/system/Container';
 import { FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Link from '@/components/system/Link';
-import Button, { ButtonContainer } from '@/components/system/Button';
-import LoadingSpinner from '@/components/system/LoadingSpinner';
+import Button from '@/components/system/Button';
 import { Hr } from '@/components/system/Hr';
 import { Logger } from '@/utils/Logger.class';
 import { useAuth } from '@/hooks/AuthHook';
@@ -36,7 +34,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
   const { showFeedback } = useFeedback();
   const { transformFieldError } = useError();
   const router = useRouter();
-  const { sessionData, isLoading, login } = useAuth();
+  const { isLoading, login } = useAuth();
 
   const {
     register,
@@ -48,12 +46,6 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
       password: 'Password123!!',
     },
   });
-
-  console.log(sessionData);
-
-  if (isLoading) {
-    return <div className="p-4">Loading...</div>;
-  }
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {

@@ -7,13 +7,11 @@ import style from '@/styles/LoginPage.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useError } from '@/hooks/ErrorHook';
 import { useRouter } from 'next/navigation';
-import MaterialIcon from '@/components/system/MaterialIcon';
 import { FormContainer } from '@/components/system/Container';
 import { FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Link from '@/components/system/Link';
 import Button from '@/components/system/Button';
-import LoadingSpinner from '@/components/system/LoadingSpinner';
 import { Hr } from '@/components/system/Hr';
 import { Logger } from '@/utils/Logger.class';
 import { useAuth } from '@/hooks/AuthHook';
@@ -39,15 +37,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
   const { showFeedback } = useFeedback();
   const { transformFieldError } = useError();
   const router = useRouter();
-  const {
-    userSessionData,
-    sessionData,
-    isLoading,
-    isAuthenticated,
-    login,
-    logout,
-    register: _register,
-  } = useAuth();
+  const { isLoading, register: _register } = useAuth();
 
   const {
     register,
@@ -136,7 +126,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
               })}
               {...transformFieldError(errors.lastName)}
             />
-          </FormRow>{' '}
+          </FormRow>
           <FormRow>
             <Input
               type="email"

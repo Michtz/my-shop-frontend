@@ -6,7 +6,6 @@ import Input from '@/components/system/Input';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { useError } from '@/hooks/ErrorHook';
 import { useAuth } from '@/hooks/AuthHook';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { UpdateUserRequest } from '@/types/auth';
 import { updateUserInfo } from '@/requests/user.request';

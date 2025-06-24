@@ -11,7 +11,8 @@ import { useFeedback } from '@/hooks/FeedbackHook';
 import { Logger } from '@/utils/Logger.class';
 import { changePassword } from '@/requests/user.request';
 import { useAuth } from '@/hooks/AuthHook';
-import { useRouter } from 'next/navigation'; // Annahme: du hast diese Function
+import { useRouter } from 'next/navigation';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 interface PasswordChangeData {
   currentPassword: string;
@@ -25,7 +26,7 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
   const { transformFieldError } = useError();
   const { showFeedback } = useFeedback();
   const { logout } = useAuth();
-  const router = useRouter();
+  const router: AppRouterInstance = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const {
@@ -43,15 +44,15 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
   };
 
   const validatePasswordStrength = (password: string) => {
-    if (password.length < 8) {
+    if (password.length < 8)
       return 'Password must be at least 8 characters long';
-    }
-    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password)) {
+
+    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password))
       return 'Password must contain both uppercase and lowercase letters';
-    }
-    if (!/(?=.*\d)/.test(password)) {
+
+    if (!/(?=.*\d)/.test(password))
       return 'Password must contain at least one number';
-    }
+
     return true;
   };
 
