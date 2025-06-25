@@ -10,7 +10,7 @@ import Image from 'next/image';
 
 const ResponsiveAppBar = () => {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { userSessionData } = useAuth();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
@@ -29,8 +29,9 @@ const ResponsiveAppBar = () => {
     setAnchorElNav(null);
   };
   const handleUserClick = () => {
-    if (isAuthenticated) router.replace('/profile');
-    if (!isAuthenticated) router.replace('/login');
+    console.log(userSessionData);
+    if (!!userSessionData) router.replace('/profile');
+    if (!userSessionData) router.replace('/login');
   };
 
   return (

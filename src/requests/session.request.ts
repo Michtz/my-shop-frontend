@@ -44,15 +44,34 @@ export const updateCurrentSession = async (data: any): Promise<any> => {
   }
 };
 
-export const login = async (email: string, password: string): Promise<any> => {
+interface LoginUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
+
+interface LoginSuccessResponse {
+  success: boolean;
+  data?: {
+    token: string;
+    refreshToken: string;
+    user: LoginUser;
+  };
+  error?: string;
+}
+export const login = async (
+  email: string,
+  password: string,
+): Promise<LoginSuccessResponse> => {
   try {
-    const response = await axiosInstance.post(`${authApiUrl}/login`, {
+    return await axiosInstance.post(`${authApiUrl}/login`, {
       email,
       password,
     });
-    return response;
   } catch (e) {
-    Logger.error('Unable to login');
+    Logger.error('Unable to login', e);
     throw e;
   }
 };

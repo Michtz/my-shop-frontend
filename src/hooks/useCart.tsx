@@ -27,12 +27,10 @@ interface CartResponse {
 }
 
 const useCart = (): CartResponse => {
-  const { sessionData, userSessionData, isAuthenticated } = useAuth();
+  const { sessionData } = useAuth();
+  console.log(sessionData);
 
-  const cartKey =
-    isAuthenticated && userSessionData
-      ? userSessionData.id
-      : sessionData?.sessionId;
+  const cartKey = sessionData?.sessionId;
   const { data, error, isLoading, mutate } = useSWR<
     CartAPIResponse,
     RequestError

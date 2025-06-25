@@ -19,11 +19,10 @@ import {
 import { Logger } from '@/utils/Logger.class';
 
 interface AuthContextType {
-  userSessionData: User;
+  userSessionData: User | undefined;
   sessionData: SessionData | undefined;
   userInformation: any;
   isLoading: boolean;
-  isAuthenticated: boolean;
 
   login: (email: string, password: string) => Promise<void>;
   register: (
@@ -42,12 +41,10 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [userSessionData, setUserSessionData] = useState<User>(
-    JSON.parse(sessionStorage.getItem('user') as string),
+  const [userSessionData, setUserSessionData] = useState<User | undefined>(
+    undefined,
   );
   const [userInformation, setUserInformation] = useState<User>();
-  const [isAuthenticated, setIsAuthenticated] =
-    useState<boolean>(!!userSessionData);
   const [sessionData, setSessionData] = useState<SessionData>();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,13 +56,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       const session = await getCurrentSession();
-      const userInformation = await getCurrentUser();
-      setUserInformation(userInformation.data.user);
 
-      console.log(userInformation);
       const user = JSON.parse(sessionStorage.getItem('user') as any);
+      if (user) {
+        const userInformation = await getCurrentUser();
+        setUserInformation(userInformation.data.user);
+      } else {
+      }
+
       if (session.success === false) {
         const session = await createSession();
+        console.log('session', session);
         setSessionData(session.data);
       } else {
         setSessionData(session.data);
@@ -86,7 +87,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (response.success) {
         setUserSessionData(response.data);
         sessionStorage.setItem('user', JSON.stringify(response.data));
-        setIsAuthenticated(true);
         try {
           const sessionResponse = await getCurrentSession();
           if (sessionResponse.success) setSessionData(sessionResponse.data);
@@ -96,7 +96,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     } catch (err: any) {
       Logger.error('Login error:', err);
-      setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
     }
@@ -116,7 +115,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (response.success) {
         setUserSessionData(response.data.user);
         sessionStorage.setItem('user', JSON.stringify(response.data));
-        setIsAuthenticated(true);
         try {
           const sessionResponse = await getCurrentSession();
           if (sessionResponse.success) setSessionData(sessionResponse.data);
@@ -124,10 +122,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           Logger.warn('Failed to update session after registration:', err);
         }
       }
-      setIsAuthenticated(true);
     } catch (err: any) {
       Logger.error('Registration error:', err);
-      setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
     }
@@ -136,14 +132,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async () => {
     setIsLoading(true);
     try {
-      await _logout(sessionData?.data.sessionId as string);
+      await _logout(sessionData?.sessionId as string);
     } catch (err) {
       Logger.error('Logout request failed:', err);
     }
 
-    setSessionData(undefined);
+    // setSessionData(undefined);
+    setUserSessionData(undefined);
     setIsLoading(false);
-    setIsAuthenticated(false);
+    const session = await createSession();
+    console.log('session', session);
+    setSessionData(session.data);
   };
 
   const value: AuthContextType = {
@@ -151,7 +150,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     userSessionData,
     sessionData,
     isLoading,
-    isAuthenticated,
     login,
     register,
     logout,

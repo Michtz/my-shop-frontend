@@ -47,7 +47,7 @@ const CartList = () => {
           <CartListItem
             item={item}
             items={cartItems}
-            sessionId={sessionData?.sessionId}
+            sessionId={sessionData?.sessionId as string}
             mutate={mutate}
           />
           <Hr />

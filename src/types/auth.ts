@@ -3,7 +3,7 @@ export interface UserInfo {
   email: string;
   firstName: string;
   lastName: string;
-  role: 'admin' | 'customer';
+  role: string;
 }
 export interface User {
   refreshToken: string;
@@ -20,20 +20,18 @@ export interface AuthResponse {
 }
 
 export interface SessionData {
-  preferences: {
-    theme: 'dark' | 'light';
-    language: string;
-  };
-  lastActivity: string;
+  _id: string;
+  id: string;
+  sessionId: string;
+  isAuthenticated: boolean;
   data: {
-    sessionId: string;
-    isAuthenticated: boolean;
-    data: SessionData;
-    expires: string;
-    createdAt: string;
-    updatedAt: string;
+    preferences: any;
+    lastActivity: string;
   };
-  [key: string]: any;
+  expires: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 export interface SessionResponse {
