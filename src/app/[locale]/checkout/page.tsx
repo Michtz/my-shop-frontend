@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import Checkout from '@/components/containers/CheckoutContainer';
+import CheckoutContainer from '@/components/containers/CheckoutContainer';
 
-const CheckoutPage: FC = () => <Checkout />;
+const CheckoutPage: FC = () => <CheckoutContainer />;
 
 export default CheckoutPage;

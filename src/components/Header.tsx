@@ -7,6 +7,7 @@ import Link from '@/components/system/Link';
 import Button from '@/components/system/Button';
 import { useAuth } from '@/hooks/AuthHook';
 import Image from 'next/image';
+import { handleGoHome } from '@/functions/common';
 
 const ResponsiveAppBar = () => {
   const router = useRouter();

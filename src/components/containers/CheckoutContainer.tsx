@@ -14,7 +14,7 @@ import CheckoutStepNavigation from '@/components/section/checkout/CheckoutStepNa
 import CartSummary from '@/components/section/cart/CartSummaryContainer';
 import { Container } from '@/components/system/Container';
 
-const CheckoutContainer: React.FC = () => {
+const CheckoutContent: React.FC = () => {
   const { currentStep } = useCheckout();
   const { cart, cartItems } = useCart();
 
@@ -40,34 +40,26 @@ const CheckoutContainer: React.FC = () => {
   };
 
   return (
-    <div className={style.checkoutContainer}>
+    <Container
+      padding={false}
+      justifyContent={'center'}
+      flow="column"
+      alignItems="center"
+      maxWidth={'550'}
+    >
+      <h1>Checkout</h1>
       <CheckoutStepNavigation />
-
-      <div className={style.checkoutContent}>
-        <div className={style.checkoutSteps}>{renderCurrentStep()}</div>
-
-        <div className={style.checkoutSidebar}>
-          {/*<CartSummary*/}
-          {/*  subtotal={subtotal}*/}
-          {/*  shipping={shipping}*/}
-          {/*  total={total}*/}
-          {/*  vatRate={8.1}*/}
-          {/*/>*/}
-        </div>
-      </div>
-    </div>
+      {renderCurrentStep()}
+    </Container>
   );
 };
 
-const Checkout: React.FC = () => {
+const CheckoutContainer: React.FC = () => {
   return (
     <CheckoutProvider>
-      <Container flow="column" alignItems="center">
-        <h1>Checkout</h1>
-        <CheckoutContainer />
-      </Container>
+      <CheckoutContent />
     </CheckoutProvider>
   );
 };
 
-export default Checkout;
+export default CheckoutContainer;

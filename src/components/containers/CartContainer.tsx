@@ -1,15 +1,18 @@
-import { FC } from 'react';
+'use client';
 
-import style from '@/styles/ProductCard.module.scss';
+import React, { FC } from 'react';
 import CartList from '@/components/section/cart/CartList';
-import Footer from '@/components/Footer';
+import useCart from '@/hooks/useCart';
+import { Container } from '@/components/system/Container';
+import EmptyCart from '@/components/section/cart/EmptyCart';
 
-interface ProductCardProps {}
-const ProductCard: FC<ProductCardProps> = ({}) => {
+const CartContainer: FC = () => {
+  const { error } = useCart();
+
   return (
-    <>
-      <CartList />
-    </>
+    <Container padding={false} flow={'column'}>
+      {error ? <EmptyCart /> : <CartList />}
+    </Container>
   );
 };
-export default ProductCard;
+export default CartContainer;

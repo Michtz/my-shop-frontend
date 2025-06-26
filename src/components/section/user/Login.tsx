@@ -25,11 +25,11 @@ interface LoginFormData {
 }
 
 interface LoginPageProps {
-  onLoginSuccess?: (user: any) => void;
-  redirectTo?: string;
+  withHeader?: boolean;
+  withTitle?: boolean;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({}) => {
+const LoginPage: React.FC<LoginPageProps> = ({ withHeader, withTitle }) => {
   const { t } = useTranslation(['common']);
   const { showFeedback } = useFeedback();
   const { transformFieldError } = useError();
@@ -72,17 +72,26 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
   return (
     <>
       <div className={style.loginContainer}>
-        <span className={style.logo} onClick={() => router.replace('/')}>
-          <Image src={logo} alt={'logo'} height={60} />
-        </span>
-        <div className={style.loginHeader}>
-          <h1 className={style.loginTitle}>Welcome Back</h1>
-          <p className={style.loginSubtitle}>
-            Sign in to your account to continue
-          </p>
-        </div>
+        {withHeader && (
+          <>
+            <span className={style.logo} onClick={() => router.replace('/')}>
+              <Image src={logo} alt={'logo'} height={60} />
+            </span>
+            <div className={style.loginHeader}>
+              <h2 className={style.loginTitle}>Welcome Back</h2>
+              <p className={style.loginSubtitle}>
+                Sign in to your account to continue
+              </p>
+            </div>
+            <Hr />
+          </>
+        )}
 
-        <Hr />
+        {withTitle && (
+          <div style={{ marginBottom: '2rem' }}>
+            <h2>Login</h2>
+          </div>
+        )}
 
         <FormContainer
           className={style.loginForm}

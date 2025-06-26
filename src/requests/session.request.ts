@@ -127,7 +127,25 @@ export const getCurrentUser = async (): Promise<any> => {
 
 export const validateToken = async (): Promise<any> => {
   try {
-    const response = await axiosInstance.post(`${authApiUrl}/validate-token`);
+    const response = await axiosInstance.post(`${authApiUrl}/validate-token`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (e) {
+    Logger.error('Unable to validate token');
+    throw e;
+  }
+};
+export const refreshToken = async (): Promise<any> => {
+  try {
+    const user = JSON.parse(sessionStorage.getItem('user') as any);
+    const response = await axiosInstance.post(
+      `${authApiUrl}/refresh-token`,
+      { refreshToken: user?.refreshToken },
+      {
+        withCredentials: true,
+      },
+    );
     return response;
   } catch (e) {
     Logger.error('Unable to validate token');

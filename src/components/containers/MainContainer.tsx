@@ -60,7 +60,7 @@ const MainContainer: React.FC<MainContainerProps> = () => {
 
   const handleAddToCart = async (id: string) => {
     try {
-      const result = await addToCart(sessionData?.sessionId, id, 1);
+      const result = await addToCart(sessionData?.sessionId as string, id, 1);
       console.log(result);
       showFeedback('feedback.add-to-cart-success', 'success');
     } catch (error) {

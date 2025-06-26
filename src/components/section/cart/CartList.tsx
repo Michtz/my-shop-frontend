@@ -12,16 +12,15 @@ import CartItemSkeleton from '@/components/section/cart/CartListItemSkleton';
 import { useAuth } from '@/hooks/AuthHook';
 
 const CartList = () => {
-  const { cart, cartItems, mutate, isLoading } = useCart();
+  const { cartItems, mutate, isLoading } = useCart();
   const { sessionData } = useAuth();
-  console.log(cartItems);
-  // Calculate totals
+
   const subtotal =
     cartItems?.reduce(
       (sum: number, item: any) => sum + item.quantity * item.price,
       0,
     ) || 0;
-  const shipping = 0; // Free shipping
+  const shipping = 0; // jetzt no gratis
   const total = subtotal + shipping;
 
   const skeleton = (
@@ -33,7 +32,6 @@ const CartList = () => {
         </React.Fragment>
       ))}
 
-      {/* Summary Skeleton */}
       <div className={style.summContainerSkeleton}>
         <Skeleton width="100%" height="200px" borderRadius="8px" />
       </div>

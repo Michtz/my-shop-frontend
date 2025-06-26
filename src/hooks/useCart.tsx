@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import { getCart } from '@/requests/cart.request';
 import { RequestError } from '@/types/request.types';
 import { useAuth } from '@/hooks/AuthHook';
+import { Logger } from '@/utils/Logger.class';
 
 interface Cart {
   _id: string;
@@ -28,7 +29,6 @@ interface CartResponse {
 
 const useCart = (): CartResponse => {
   const { sessionData } = useAuth();
-  console.log(sessionData);
 
   const cartKey = sessionData?.sessionId;
   const { data, error, isLoading, mutate } = useSWR<

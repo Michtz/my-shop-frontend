@@ -15,6 +15,8 @@ import {
   register as _register,
   logout as _logout,
   getCurrentUser,
+  validateToken,
+  refreshToken,
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';
 
@@ -59,6 +61,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const user = JSON.parse(sessionStorage.getItem('user') as any);
       if (user) {
+        const test = await refreshToken();
+        sessionStorage.setItem('user', JSON.stringify(test.data));
+        console.log(test);
         const userInformation = await getCurrentUser();
         setUserInformation(userInformation.data.user);
       } else {

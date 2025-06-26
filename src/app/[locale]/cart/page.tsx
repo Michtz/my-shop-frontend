@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import Cart from '@/components/containers/CartContainer';
+import CartContainer from '@/components/containers/CartContainer';
 
-const App: FC = () => <Cart />;
+const App: FC = () => <CartContainer />;
 
 export default App;

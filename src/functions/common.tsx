@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 export const getCategoryName = (category: string): string | undefined => {
   switch (category) {
     case 'tampers':
@@ -15,4 +17,9 @@ export const getCategoryName = (category: string): string | undefined => {
     default:
       return undefined;
   }
+};
+
+export const handleGoHome = () => {
+  const router = useRouter();
+  router.replace('/');
 };

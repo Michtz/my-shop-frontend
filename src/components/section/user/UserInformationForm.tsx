@@ -42,7 +42,11 @@ const getFormDefaultValues = (userInfo: any): UserProfileFormData => {
   };
 };
 
-const UserInformationForm: FC = () => {
+interface UserInformationFormProps {
+  checkout?: boolean;
+}
+
+const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
   const { transformFieldError } = useError();
   const { userInformation } = useAuth();
   const { showFeedback } = useFeedback();
@@ -104,7 +108,11 @@ const UserInformationForm: FC = () => {
       onSubmitAction={handleSubmit(onSubmit)}
     >
       <section className={style.section}>
-        <h2>Nutzer Informationen</h2>
+        {checkout ? (
+          <h2>Bestell Informationen</h2>
+        ) : (
+          <h2>Nutzer Informationen</h2>
+        )}
         <FormRow direction="row">
           <Input
             label="First Name"
