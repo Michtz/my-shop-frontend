@@ -7,14 +7,15 @@ import Button, { ButtonContainer } from '@/components/system/Button';
 import { useError } from '@/hooks/ErrorHook';
 import { useAuth } from '@/hooks/AuthHook';
 import { useForm } from 'react-hook-form';
-import { UpdateUserRequest } from '@/types/auth';
+import { UserInformation } from '@/types/auth';
 import { updateUserInfo } from '@/requests/user.request';
 import { Logger } from '@/utils/Logger.class';
 import { useFeedback } from '@/hooks/FeedbackHook';
 
-interface UserProfileFormData {
+export interface UserProfileFormData {
   type: string;
   street: string;
+  houseNumber: string;
   city: string;
   state: string;
   zipCode: string;
@@ -34,6 +35,7 @@ const getFormDefaultValues = (userInfo: any): UserProfileFormData => {
     phoneNumber: userInfo?.phoneNumber || '',
     type: 'home',
     street: userInfo?.addresses?.[0]?.street || '',
+    houseNumber: userInfo?.addresses?.[0]?.houseNumber || '',
     city: userInfo?.addresses?.[0]?.city || '',
     state: userInfo?.addresses?.[0]?.state || '',
     zipCode: userInfo?.addresses?.[0]?.zipCode || '',
@@ -43,10 +45,10 @@ const getFormDefaultValues = (userInfo: any): UserProfileFormData => {
 };
 
 interface UserInformationFormProps {
-  checkout?: boolean;
+  onCheckout?: (data: UserProfileFormData) => Promise<void>;
 }
 
-const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
+const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
   const { transformFieldError } = useError();
   const { userInformation } = useAuth();
   const { showFeedback } = useFeedback();
@@ -66,7 +68,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
 
   const onSubmit = async (data: UserProfileFormData) => {
     try {
-      const updatedUserData: UpdateUserRequest = {
+      const updatedUserData: UserInformation = {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
@@ -75,6 +77,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
           {
             type: 'home',
             street: data.street,
+            houseNumber: data.houseNumber,
             city: data.city,
             state: data.state,
             zipCode: data.zipCode,
@@ -105,10 +108,10 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
   return (
     <FormContainer
       className={style.formContainer}
-      onSubmitAction={handleSubmit(onSubmit)}
+      onSubmitAction={handleSubmit(onCheckout || onSubmit)}
     >
       <section className={style.section}>
-        {checkout ? (
+        {onCheckout ? (
           <h2>Bestell Informationen</h2>
         ) : (
           <h2>Nutzer Informationen</h2>
@@ -138,7 +141,6 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
             {...transformFieldError(errors.lastName)}
           />
         </FormRow>
-
         <FormRow>
           <Input
             type="email"
@@ -154,7 +156,6 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
             {...transformFieldError(errors.email)}
           />
         </FormRow>
-
         <FormRow>
           <Input
             type="tel"
@@ -168,9 +169,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
             {...transformFieldError(errors.phoneNumber)}
           />
         </FormRow>
-
         <h3>Address Information</h3>
-
         <FormRow>
           <Input
             label="Street Address"
@@ -184,7 +183,18 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
             {...transformFieldError(errors.street)}
           />
         </FormRow>
-
+        <FormRow>
+          <Input
+            label="House Number"
+            required
+            fullWidth
+            placeholder="Enter house number..."
+            inputProps={register('houseNumber', {
+              required: 'required',
+            })}
+            {...transformFieldError(errors.street)}
+          />
+        </FormRow>
         <FormRow direction="row">
           <Input
             label="City"
@@ -206,7 +216,6 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ checkout }) => {
             {...transformFieldError(errors.state)}
           />
         </FormRow>
-
         <FormRow direction="row">
           <Input
             label="ZIP/Postal Code"

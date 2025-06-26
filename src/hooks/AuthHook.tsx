@@ -7,7 +7,7 @@ import React, {
   useState,
   ReactNode,
 } from 'react';
-import { User, SessionData } from '@/types/auth';
+import { User, SessionData, UserInformation } from '@/types/auth';
 import {
   createSession,
   getCurrentSession,
@@ -19,11 +19,12 @@ import {
   refreshToken,
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';
+import { UserProfileFormData } from '@/components/section/user/UserInformationForm';
 
 interface AuthContextType {
   userSessionData: User | undefined;
   sessionData: SessionData | undefined;
-  userInformation: any;
+  userInformation: UserInformation;
   isLoading: boolean;
 
   login: (email: string, password: string) => Promise<void>;
@@ -46,7 +47,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userSessionData, setUserSessionData] = useState<User | undefined>(
     undefined,
   );
-  const [userInformation, setUserInformation] = useState<User>();
+  const [userInformation, setUserInformation] = useState<UserProfileFormData>();
   const [sessionData, setSessionData] = useState<SessionData>();
   const [isLoading, setIsLoading] = useState(true);
 

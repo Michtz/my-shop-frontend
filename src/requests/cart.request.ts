@@ -24,6 +24,31 @@ export const updateCart = async (sessionId: string): Promise<any> => {
   }
 };
 
+export const updateCartUser = async (
+  sessionId: string,
+  userInfo: any,
+  guestInfo: any,
+): Promise<any> => {
+  try {
+    const requestBody = {
+      userInfo: {
+        selectedAddress: userInfo,
+        guestInfo: guestInfo,
+      },
+    };
+    return await axiosInstance.put(
+      `${cartApiUrl}/${sessionId}/user`,
+      requestBody,
+      {
+        withCredentials: false,
+      },
+    );
+  } catch (e) {
+    Logger.error('Unable to get the cart');
+    throw e;
+  }
+};
+
 export const addToCart = async (
   sessionId: string,
   productId: string,

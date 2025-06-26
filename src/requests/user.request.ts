@@ -1,10 +1,10 @@
 import { axiosInstance } from '@/requests/base.request';
 import { authApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
-import { UpdateUserRequest, User } from '@/types/auth';
+import { UserInformation, User } from '@/types/auth';
 
 export const updateUserInfo = async (
-  userInfo: UpdateUserRequest,
+  userInfo: UserInformation,
 ): Promise<any> => {
   try {
     const response = await axiosInstance.post(

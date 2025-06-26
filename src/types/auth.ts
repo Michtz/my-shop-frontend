@@ -70,8 +70,9 @@ export interface ApiResponse<T = any> {
 }
 
 export interface IAddress {
-  type: string;
+  type?: string;
   street: string;
+  houseNumber: string;
   city: string;
   state: string;
   zipCode: string;
@@ -79,7 +80,7 @@ export interface IAddress {
   isDefault: boolean;
 }
 
-export interface UpdateUserRequest {
+export interface UserInformation {
   email?: string;
   firstName?: string;
   lastName?: string;

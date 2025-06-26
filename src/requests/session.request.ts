@@ -118,6 +118,7 @@ export const getCurrentUser = async (): Promise<any> => {
     const response = await axiosInstance.get(`${authApiUrl}/me`, {
       withCredentials: true,
     });
+    console.log(response.data);
     return response;
   } catch (e) {
     Logger.error('Unable to get current user');
