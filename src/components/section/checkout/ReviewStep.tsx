@@ -1,15 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {
-  Elements,
-  useStripe,
-  useElements,
-  PaymentElement,
-} from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 import { stripePromise } from '@/lib/stripe';
 import { Container } from '@/components/system/Container';
-import Button from '@/components/system/Button';
+import Button, { ButtonContainer } from '@/components/system/Button';
 import { useAuth } from '@/hooks/AuthHook';
 import {
   confirmPayment,
@@ -17,12 +12,11 @@ import {
 } from '@/requests/payment.request';
 import { useRouter } from 'next/navigation';
 import { useFeedback } from '@/hooks/FeedbackHook';
-import useCart from '@/hooks/useCart';
 import CartList from '@/components/section/cart/CartList';
 import { Logger } from '@/utils/Logger.class';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+
 const ReviewForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
   const { sessionData } = useAuth();
   const { showFeedback } = useFeedback();
   const router = useRouter();
@@ -34,20 +28,26 @@ const ReviewForm = () => {
     setIsProcessing(true);
 
     try {
-      // Use Backend confirmPayment directly (Payment Method already attached)
+      // Get stored Payment Method ID
+      const paymentMethodId = localStorage.getItem('paymentMethodId');
+
+      // Use Backend confirmPayment with Payment Method ID
       const confirmResult = await confirmPayment(
         sessionData.sessionId,
         'will_be_retrieved', // Backend will get the payment intent
+        paymentMethodId || undefined, // <- Payment Method ID hinzufügen
       );
-      console.log(confirmResult);
+
+      // Clean up localStorage
+      localStorage.removeItem('paymentMethodId');
       if (confirmResult) {
         showFeedback('Order placed successfully!', 'success');
-        router.push(`/checkout/${confirmResult.orderNumber.orderNumber}`);
+        router.push(`/checkout/${confirmResult.order.orderNumber}`);
       } else {
         showFeedback('Order creation failed', 'error');
       }
     } catch (error) {
-      Logger.error('Payment error:', error);
+      console.error('Payment error:', error);
       showFeedback('Payment processing failed', 'error');
     } finally {
       setIsProcessing(false);
@@ -55,28 +55,14 @@ const ReviewForm = () => {
   };
 
   return (
-    <Container flow="column">
-      <Button
-        onClick={handleFinalPayment}
-        disabled={isProcessing}
-        style={{
-          width: '100%',
-          padding: '1rem',
-          fontSize: '1.1rem',
-          backgroundColor: '#28a745',
-        }}
-      >
-        {isProcessing ? 'Processing Payment...' : 'Place Order & Pay'}
-      </Button>
-
-      <Button
-        onClick={() => router.back()}
-        variant="secondary"
-        style={{ width: '100%', marginTop: '0.5rem' }}
-      >
+    <ButtonContainer>
+      <Button onClick={() => router.back()} variant="secondary">
         Back to Payment
       </Button>
-    </Container>
+      <Button onClick={handleFinalPayment} disabled={isProcessing}>
+        {isProcessing ? 'Processing Payment...' : 'Place Order & Pay'}
+      </Button>
+    </ButtonContainer>
   );
 };
 

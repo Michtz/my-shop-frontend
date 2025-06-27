@@ -45,7 +45,13 @@ const PaymentForm = ({
         redirect: 'if_required',
       });
 
-      if (!error) {
+      if (!error && paymentIntent) {
+        // Store Payment Method ID for ReviewStep
+        const paymentMethodId = paymentIntent.payment_method as string;
+        if (paymentMethodId) {
+          localStorage.setItem('paymentMethodId', paymentMethodId);
+        }
+
         // Payment Method is now attached, proceed to review
         onPaymentMethodReady();
       } else {
@@ -57,7 +63,6 @@ const PaymentForm = ({
       setIsProcessing(false);
     }
   };
-
   return (
     <Container flow="column">
       <form onSubmit={handleSubmit}>
