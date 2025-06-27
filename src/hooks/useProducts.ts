@@ -1,6 +1,6 @@
 'use client';
 
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import { getProducts } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
 import {
@@ -8,9 +8,6 @@ import {
   ProductFilters,
   ProductResponse,
 } from '@/types/product.types';
-import { Params } from 'next/dist/server/request/params';
-import { useParams } from 'next/navigation';
-import { getCategoryName } from '@/functions/common';
 
 interface ProductsResponse {
   products: IProduct[];
@@ -18,7 +15,7 @@ interface ProductsResponse {
   error: string | null;
 }
 
-const useProducts = (filters?: ProductFilters): ProductsResponse => {
+const useProducts = (): ProductsResponse => {
   const { data, error, isLoading } = useSWR<ProductResponse, RequestError>(
     'products',
     () => getProducts(),

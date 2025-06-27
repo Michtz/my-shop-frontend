@@ -4,15 +4,6 @@ import useSWR from 'swr';
 import { getCart } from '@/requests/cart.request';
 import { RequestError } from '@/types/request.types';
 import { useAuth } from '@/hooks/AuthHook';
-import { Logger } from '@/utils/Logger.class';
-
-interface Cart {
-  _id: string;
-  name: string;
-  price: number;
-  stockQuantity: number;
-  description?: string;
-}
 
 interface CartAPIResponse {
   success: boolean;

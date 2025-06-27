@@ -1,8 +1,9 @@
 import { axiosInstance } from './base.request';
+import { paymentApiUrl } from '@/config/api.config';
 
 export const createPaymentIntent = async (sessionId: string) => {
   const response = await axiosInstance.post(
-    `/api/payment/create-intent/${sessionId}`,
+    `${paymentApiUrl}/create-intent/${sessionId}`,
   );
   return response.data;
 };
@@ -10,10 +11,10 @@ export const createPaymentIntent = async (sessionId: string) => {
 export const confirmPayment = async (
   sessionId: string,
   paymentIntentId: string,
-  paymentMethodId?: string, // <- Optional hinzufügen
+  paymentMethodId?: string,
 ) => {
   const response = await axiosInstance.post(
-    `/api/payment/confirm/${sessionId}`,
+    `${paymentApiUrl}/confirm/${sessionId}`,
     {
       paymentIntentId,
       paymentMethodId,

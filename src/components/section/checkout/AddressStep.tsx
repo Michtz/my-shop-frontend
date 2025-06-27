@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import Button, { ButtonContainer } from '@/components/system/Button';
-import { useCheckout } from '@/providers/CheckoutContextProvider';
 import { Container } from '@/components/system/Container';
 import Login from '@/components/section/user/Login';
 import UserInformationForm, {

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { CheckoutProvider } from '@/providers/CheckoutContextProvider';
 import AddressStep from '@/components/section/checkout/AddressStep';
 import PaymentStep from '../section/checkout/PaymentStep';
 import ConfirmationStep from '@/components/section/checkout/ConfirmationStep';
@@ -14,18 +13,16 @@ interface View {
 
 const CheckoutContainer: React.FC<View> = ({ view }) => {
   return (
-    <CheckoutProvider>
-      <Container
-        padding={false}
-        justifyContent={'center'}
-        flow="column"
-        alignItems="center"
-        maxWidth={'550'}
-      >
-        <h1>Checkout</h1>
-        <CheckoutContent view={view} />
-      </Container>
-    </CheckoutProvider>
+    <Container
+      padding={false}
+      justifyContent={'center'}
+      flow="column"
+      alignItems="center"
+      maxWidth={'550'}
+    >
+      <h1>Checkout</h1>
+      <CheckoutContent view={view} />
+    </Container>
   );
 };
 const CheckoutContent: React.FC<View> = ({ view }) => {

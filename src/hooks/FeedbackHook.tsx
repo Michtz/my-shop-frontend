@@ -7,9 +7,7 @@ import React, {
   useCallback,
   ReactNode,
 } from 'react';
-/**
- * Defines possible variants for feedback messages
- */
+
 export type FeedbackVariant = 'error' | 'info' | 'success';
 
 interface FeedbackContextType {

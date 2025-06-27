@@ -24,7 +24,7 @@ import { UserProfileFormData } from '@/components/section/user/UserInformationFo
 interface AuthContextType {
   userSessionData: User | undefined;
   sessionData: SessionData | undefined;
-  userInformation: UserInformation;
+  userInformation: UserInformation | undefined;
   isLoading: boolean;
 
   login: (email: string, password: string) => Promise<void>;
