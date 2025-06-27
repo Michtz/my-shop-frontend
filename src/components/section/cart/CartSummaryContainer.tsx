@@ -25,7 +25,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
   const handleStartCheckout = () => {
     console.log('start checkout ');
 
-    router.push(`/checkout`);
+    router.push(`/checkout/address`);
   };
 
   return (

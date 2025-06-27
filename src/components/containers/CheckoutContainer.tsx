@@ -6,9 +6,10 @@ import AddressStep from '@/components/section/checkout/AddressStep';
 import PaymentStep from '../section/checkout/PaymentStep';
 import ConfirmationStep from '@/components/section/checkout/ConfirmationStep';
 import { Container } from '@/components/system/Container';
+import ReviewStep from '@/components/section/checkout/ReviewStep';
 
 interface View {
-  view: 'address' | 'paymentInfo' | 'confirmation';
+  view: 'address' | 'paymentInfo' | 'confirmation' | 'review';
 }
 
 const CheckoutContainer: React.FC<View> = ({ view }) => {
@@ -34,6 +35,8 @@ const CheckoutContent: React.FC<View> = ({ view }) => {
         return <AddressStep />;
       case 'paymentInfo':
         return <PaymentStep />;
+      case 'review':
+        return <ReviewStep />;
       case 'confirmation':
         return <ConfirmationStep />;
       default:
