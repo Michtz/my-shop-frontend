@@ -2,9 +2,16 @@ import { axiosInstance } from '@/requests/base.request';
 import { cartApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
 
-export const getCart = async (sessionId: string): Promise<any> => {
+export const getCart = async (
+  sessionId: string,
+  userId?: string,
+): Promise<any> => {
   try {
-    return await axiosInstance.get(`${cartApiUrl}/${sessionId}`, {
+    const url = userId
+      ? `${cartApiUrl}/${sessionId}/${userId}`
+      : `${cartApiUrl}/${sessionId}`;
+
+    return await axiosInstance.get(url, {
       withCredentials: false,
     });
   } catch (e) {

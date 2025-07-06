@@ -2,10 +2,11 @@
 
 import ThemeRegistry from '@/providers/ThemeRegistry';
 import SWRProvider from '@/providers/SWRProvider';
+import { SocketProvider } from '@/providers/SocketProvider';
 import { AuthProvider } from '@/hooks/AuthHook';
 import 'material-icons/iconfont/material-icons.css';
 import 'material-icons/iconfont/outlined.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { FeedbackProvider } from '@/hooks/FeedbackHook';
 import TranslationProvider from '@/providers/TranslationProvider';
 import React, { ReactNode } from 'react';
@@ -21,17 +22,19 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
       <TranslationProvider>
         <FeedbackProvider>
           <AuthProvider>
-            <html lang="de" suppressHydrationWarning>
-              <head>
-                <title>myShop</title>
-              </head>
-              <body>
-                <Header />
-                <SWRProvider>{children}</SWRProvider>
-                <Feedback />
-                <Footer />
-              </body>
-            </html>
+            <SocketProvider>
+              <html lang="de" suppressHydrationWarning>
+                <head>
+                  <title>myShop</title>
+                </head>
+                <body>
+                  <Header />
+                  <SWRProvider>{children}</SWRProvider>
+                  <Feedback />
+                  <Footer />
+                </body>
+              </html>
+            </SocketProvider>
           </AuthProvider>
         </FeedbackProvider>
       </TranslationProvider>

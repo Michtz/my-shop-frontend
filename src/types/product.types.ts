@@ -10,6 +10,7 @@ export interface IProduct {
   lastUpdated: string;
   createdAt: string;
   updatedAt: string;
+  availableQuantity: number;
 }
 
 export type ProductCategoryOptions =

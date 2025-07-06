@@ -13,8 +13,6 @@ import {
 import { useRouter } from 'next/navigation';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import CartList from '@/components/section/cart/CartList';
-import { Logger } from '@/utils/Logger.class';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 const ReviewForm = () => {
   const { sessionData } = useAuth();
@@ -28,17 +26,14 @@ const ReviewForm = () => {
     setIsProcessing(true);
 
     try {
-      // Get stored Payment Method ID
       const paymentMethodId = localStorage.getItem('paymentMethodId');
 
-      // Use Backend confirmPayment with Payment Method ID
       const confirmResult = await confirmPayment(
         sessionData.sessionId,
         'will_be_retrieved', // Backend will get the payment intent
-        paymentMethodId || undefined, // <- Payment Method ID hinzufügen
+        paymentMethodId || undefined,
       );
 
-      // Clean up localStorage
       localStorage.removeItem('paymentMethodId');
       if (confirmResult) {
         showFeedback('Order placed successfully!', 'success');

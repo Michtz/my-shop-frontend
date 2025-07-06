@@ -11,7 +11,9 @@ import { IProduct } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useAuth } from '@/hooks/AuthHook';
-import image from '@/assets/titleImage.png';
+import image1 from '@/assets/Slide2_Homepage.webp';
+import image2 from '@/assets/Homepage_Wellness2.webp';
+import image3 from '@/assets/Firmenangebot.webp';
 
 interface MainContainerProps {}
 
@@ -42,7 +44,19 @@ const MainContainer: React.FC<MainContainerProps> = () => {
 
   const slides: CarouselItem[] = [
     {
-      image: image,
+      image: image1,
+      alt: products[0]?.name || '',
+      title: '',
+      description: '',
+    },
+    {
+      image: image2,
+      alt: products[0]?.name || '',
+      title: '',
+      description: '',
+    },
+    {
+      image: image3,
       alt: products[0]?.name || '',
       title: '',
       description: '',

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, JSX } from 'react';
+import React, { FC } from 'react';
 import useProduct from '@/hooks/useProduct';
 import useCart from '@/hooks/useCart';
 import { addToCart, replaceCartItems } from '@/requests/cart.request';
@@ -22,6 +22,7 @@ import Button, { ButtonContainer } from '@/components/system/Button';
 interface FormFields {
   quantity: number;
 }
+
 const getDefaultValues = (product = {} as any): any => {
   return {
     quantity: 1,
@@ -29,27 +30,46 @@ const getDefaultValues = (product = {} as any): any => {
 };
 
 const ProductOverview: FC = () => {
-  const { product } = useProduct();
+  const {
+    product,
+    isConnected,
+    availableStock,
+    cartCount,
+    isLowStock,
+    isOutOfStock,
+  } = useProduct();
   const router = useRouter();
   const { products } = useProducts();
   const { sessionData } = useAuth();
-  const { cart, cartItems } = useCart();
+  const { cart, cartItems, hasReservationConflicts } = useCart();
   const { showFeedback } = useFeedback();
-  console.log(sessionData);
+
   const {
     control,
     handleSubmit,
+    watch,
     formState: { isSubmitting },
   } = useForm<FormFields>({
     mode: 'onChange',
     defaultValues: getDefaultValues(product),
   });
 
+  const watchedQuantity = watch('quantity', 1);
+
   const submit = async (data: any) => {
     try {
-      console.log(sessionData?.data.sessionId);
+      if (isOutOfStock) {
+        showFeedback('Produkt ist ausverkauft', 'error');
+        return;
+      }
+
+      if (availableStock < data.quantity) {
+        showFeedback(`Nur noch ${availableStock} auf Lager verfügbar`, 'error');
+        return;
+      }
+
       const result = await addToCart(
-        sessionData?.data.sessionId as string,
+        sessionData?.sessionId as string,
         product?._id as string,
         data.quantity,
       );
@@ -64,8 +84,17 @@ const ProductOverview: FC = () => {
 
   const handleAddToCart = async (id: string) => {
     try {
+      if (!cartItems || !sessionData?.sessionId) {
+        console.warn('Cart items or session not available');
+        return;
+      }
+
       const existingItem = cartItems.find((item: any) => item.productId === id);
-      let updatedItems;
+      let updatedItems: {
+        productId: string;
+        quantity: number;
+        product?: any;
+      }[];
 
       if (existingItem) {
         updatedItems = cartItems.map((item: any) =>
@@ -77,17 +106,20 @@ const ProductOverview: FC = () => {
         const newItem = {
           productId: id,
           quantity: 1,
-          product: products.find((item: any) => item.productId === id),
+          product: products.find((item: any) => item._id === id),
         };
 
         updatedItems = [...cartItems, newItem];
       }
+
       const result = await replaceCartItems(
-        sessionData?.data.sessionId!,
-        updatedItems,
+        sessionData.sessionId,
+        updatedItems as { productId: string; quantity: number }[],
       );
+
       await mutate('product', result);
     } catch (error) {
+      console.error('Add to cart error:', error);
       await mutate('product', cartItems);
     }
   };
@@ -96,13 +128,69 @@ const ProductOverview: FC = () => {
     router.push(`/product/${id}`);
   };
 
+  const formatReservationTimer = (): string | null => {
+    if (!cartItems) return null;
+
+    const cartItem = cartItems.find(
+      (item: any) => item.productId === product?._id,
+    );
+    if (!cartItem?.reservationTimeLeft) return null;
+
+    const minutes = Math.floor(cartItem.reservationTimeLeft / 60);
+    const seconds = cartItem.reservationTimeLeft % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const ConnectionStatus: FC = () => {
+    if (!isConnected) {
+      return (
+        <div style={{ color: 'orange', fontSize: '12px', marginBottom: '8px' }}>
+          ⚠️ Verbindung unterbrochen - Daten werden möglicherweise nicht live
+          aktualisiert
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const StockInfo: FC = () => (
+    <div className={style.stockInfo}>
+      <ConnectionStatus />
+
+      <div className={style.stockDisplay}>
+        {isOutOfStock ? (
+          <span style={{ color: 'red', fontWeight: 'bold' }}>Ausverkauft</span>
+        ) : isLowStock ? (
+          <span style={{ color: 'orange', fontWeight: 'bold' }}>
+            Nur noch {availableStock} verfügbar
+          </span>
+        ) : (
+          <span style={{ color: 'green' }}>{availableStock} verfügbar</span>
+        )}
+      </div>
+
+      {cartCount > 0 && (
+        <div style={{ fontSize: '14px', color: '#666', marginTop: '4px' }}>
+          🛒 {cartCount} andere haben das im Warenkorb
+        </div>
+      )}
+
+      {/*/!* Stock Conflicts *!/*/}
+      {/*{hasReservationConflicts && (*/}
+      {/*  <div style={{ color: 'red', fontSize: '14px', marginTop: '4px' }}>*/}
+      {/*    ⚠️ Lagerbestand hat sich geändert*/}
+      {/*  </div>*/}
+      {/*)}*/}
+    </div>
+  );
+
   const DescriptionContainer: FC = () => (
     <div className={style.descriptionContainer}>
       <h1>{product?.name}</h1>
       <div>
         <p>{product?.description}</p>
         <span className={style.descriptionInfo}>
-          <p>Verfügbar: {product?.stockQuantity}</p>
+          <StockInfo />
           <p>Preis: €{product?.price}</p>
         </span>
       </div>
@@ -110,6 +198,8 @@ const ProductOverview: FC = () => {
   );
 
   const InformationContainer: FC = () => {
+    const isQuantityTooHigh = watchedQuantity > availableStock;
+
     return (
       <FormContainer
         onSubmitAction={handleSubmit(submit)}
@@ -126,12 +216,25 @@ const ProductOverview: FC = () => {
                 quantity={field.value}
                 onQuantityChange={field.onChange}
                 min={1}
-                max={99}
+                max={Math.max(1, availableStock)}
               />
             )}
           />
-          <Button loading={isSubmitting} size={'big'} flex type={'submit'}>
-            Add to cart
+
+          {isQuantityTooHigh && (
+            <div style={{ color: 'red', fontSize: '12px' }}>
+              Nur {availableStock} verfügbar
+            </div>
+          )}
+
+          <Button
+            loading={isSubmitting}
+            size={'big'}
+            flex
+            type={'submit'}
+            disabled={isOutOfStock || isQuantityTooHigh}
+          >
+            {isOutOfStock ? 'Ausverkauft' : 'Add to cart'}
           </Button>
         </ButtonContainer>
       </FormContainer>
