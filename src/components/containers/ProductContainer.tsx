@@ -251,15 +251,14 @@ const ProductOverview: FC = () => {
               alt={product?.name || 'Product image'}
               fill
               className={style.productImage}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority={false}
+              priority
             />
           )}
         </span>
         <InformationContainer />
       </div>
       <Hr />
-      <h1>Das kauften andere Kunden</h1>
+      <h1 className={style.addTitle}>Das kauften andere Kunden</h1>
       <CartsContainer>
         {products?.map((product) => {
           return (

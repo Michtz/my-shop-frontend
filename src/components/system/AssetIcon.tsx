@@ -42,7 +42,7 @@ const AssetIcon: React.FC<AssetIconProps> = ({
       effSize = 28;
       break;
     case 'big':
-      effSize = 42;
+      effSize = 49;
       break;
     case 'huge':
       effSize = 66;
