@@ -32,3 +32,13 @@
     text-align: left;
   }
 }
+
+@media (max-width: 1150px) {
+  .carousel {
+    .carouselItem {
+      .image {
+        border-radius: 0;
+      }
+    }
+  }
+}

@@ -20,21 +20,21 @@ import Image from 'next/image';
 import logo from '@/assets/myShopLogo.png';
 import { UserProfileFormData } from '@/components/section/user/UserInformationForm';
 
-interface LoginFormData {
+export interface LoginFormData {
   email: string;
   password: string;
 }
 
-interface LoginPageProps {
+export interface LoginPageProps {
   withHeader?: boolean;
   withTitle?: boolean;
-  onCheckout?: (data?: any) => Promise<void>;
+  checkout?: boolean;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({
   withHeader,
   withTitle,
-  onCheckout,
+  checkout = false,
 }) => {
   const { t } = useTranslation(['common']);
   const { showFeedback } = useFeedback();
@@ -56,7 +56,8 @@ const LoginPage: React.FC<LoginPageProps> = ({
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
       await login(data.email, data.password);
-      router.replace('/profile');
+      if (!checkout) router.replace('/profile');
+
       showFeedback('feedback.login-success', 'success');
     } catch (err) {
       showFeedback('feedback.login-error', 'error');
@@ -101,7 +102,7 @@ const LoginPage: React.FC<LoginPageProps> = ({
 
         <FormContainer
           className={style.loginForm}
-          onSubmitAction={handleSubmit(onCheckout || onSubmit)}
+          onSubmitAction={handleSubmit(onSubmit)}
         >
           <FormRow gap={'large'}>
             <Input

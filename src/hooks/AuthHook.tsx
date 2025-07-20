@@ -75,6 +75,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log('session', session);
         setSessionData(session.data);
       } else {
+        console.log('session', session);
+
         setSessionData(session.data);
         setUserSessionData(user);
       }

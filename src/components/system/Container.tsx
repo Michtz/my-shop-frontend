@@ -56,7 +56,7 @@ export const FormContainer: FC<ContainerFormProps> = ({
   <form
     onSubmit={onSubmitAction}
     style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}
-    className={style.cormContainer}
+    className={style.formContainer}
   >
     {children}
   </form>
@@ -64,4 +64,10 @@ export const FormContainer: FC<ContainerFormProps> = ({
 
 export const CardContainer: FC<ContainerProps> = ({ children }) => (
   <div className={style.cartContainer}>{children}</div>
+);
+
+export const HorizontalScrollContainer: FC<ContainerProps> = ({ children }) => (
+  <div className={style.horizontalScrollContainer}>
+    <div className={style.scrollWrapper}>{children}</div>
+  </div>
 );

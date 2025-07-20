@@ -1,7 +1,8 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import MaterialIcon from './MaterialIcon';
 import Link from './Link';
 import style from '@/styles/system/Button.module.scss';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'error' | 'ghost';
@@ -89,4 +90,105 @@ export const ButtonContainer: React.FC<ButtonContainerProps> = ({
   </div>
 );
 
+type ComponentSize = 'small' | 'normal' | 'large';
+
+interface ButtonGroupOption {
+  label: string;
+  active?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
+}
+
+interface ButtonGroupProps {
+  options: Array<ButtonGroupOption>;
+  fullWidth?: boolean;
+  navGap?: boolean;
+  size?: ComponentSize;
+}
+
+export const ButtonGroup: React.FC<ButtonGroupProps> = ({
+  size = 'normal',
+  fullWidth = false,
+  options,
+  navGap,
+}): React.ReactElement => {
+  const ref: React.RefObject<HTMLDivElement | null> =
+    useRef<HTMLDivElement>(null);
+  const [flexDirection, setFlexDirection] = useState<'row' | 'column'>('row');
+  const singleNodeWidth: number = 100;
+
+  useEffect(() => {
+    if (!ref.current) return;
+    if (
+      ref.current.clientWidth <=
+      singleNodeWidth * ref.current.childElementCount
+    )
+      setFlexDirection('column');
+    else setFlexDirection('row');
+  }, [ref.current]);
+
+  useEffect(() => {
+    const handler = (): void => {
+      if (!ref.current) return;
+      if (
+        ref.current.clientWidth <=
+        singleNodeWidth * ref.current.childElementCount
+      )
+        setFlexDirection('column');
+      else setFlexDirection('row');
+    };
+    window.addEventListener('resize', handler);
+    return () => {
+      window.removeEventListener('resize', handler);
+    };
+  }, []);
+
+  return (
+    <section
+      ref={ref}
+      className={style.buttonGroup}
+      data-direction={flexDirection}
+      data-nav-gap={navGap}
+      data-fullwidth={fullWidth}
+    >
+      {options.map((optionProps: ButtonGroupOption, index: number) => {
+        return <ButtonGroupOption key={index} size={size} {...optionProps} />;
+      })}
+    </section>
+  );
+};
+
+interface ButtonGroupOptionProps extends ButtonGroupOption {
+  size?: ComponentSize;
+}
+
+const ButtonGroupOption: React.FC<ButtonGroupOptionProps> = ({
+  size = 'normal',
+  active,
+  disabled,
+  label,
+  onClick,
+}): React.ReactElement => {
+  const sharedProps: Record<string, any> = {
+    className: style.buttonOption,
+    'data-size': size,
+    'data-selected': active,
+    'data-disabled': disabled,
+    children: label,
+  };
+
+  const handleButtonClick = (): void => {
+    if (active || disabled) return;
+    if (onClick) onClick();
+  };
+
+  return (
+    <button
+      type="button"
+      {...sharedProps}
+      onClick={handleButtonClick}
+      disabled={disabled}
+    />
+  );
+};
 export default Button;

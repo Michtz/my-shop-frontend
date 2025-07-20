@@ -39,9 +39,9 @@ const Carousel: FC<CarouselProps> = ({
       pause={pause}
       className={style.carousel}
     >
-      {items.map((item) => (
+      {items.map((item, index) => (
         <_Carousel.Item
-          key={item.image as string}
+          key={(item.image as string) + index}
           className={style.carouselItem}
         >
           <div style={{ height: '280px', position: 'relative' }}>

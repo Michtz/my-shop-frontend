@@ -1,6 +1,7 @@
 .container {
   display: flex;
   width: 100%;
+
   background-color: #fcfaf7;
 
   &[data-padding='true'] {
@@ -73,10 +74,71 @@
   }
 }
 
-.cormContainer {
+.formContainer {
+  width: 100%;
 }
 
 .cartContainer {
   display: flex;
   gap: 1rem;
+}
+
+.horizontalScrollContainer {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.scrollWrapper {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 2rem;
+  padding: 1rem;
+  scroll-behavior: smooth;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  > * {
+    flex: 0 0 auto;
+    min-width: 200px;
+  }
+}
+
+.horizontalScrollContainer::before,
+.horizontalScrollContainer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.horizontalScrollContainer::before {
+  left: 0;
+}
+
+.horizontalScrollContainer::after {
+  right: 0;
+}
+@media (max-width: 1150px) {
+  .horizontalScrollContainer::before {
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), transparent);
+  }
+
+  .horizontalScrollContainer::after {
+    background: linear-gradient(to left, rgba(255, 255, 255, 1), transparent);
+  }
+}
+@media (max-width: 468px) {
+  .cardContainer {
+    width: 200px;
+  }
 }

@@ -116,7 +116,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
         ) : (
           <h2>Nutzer Informationen</h2>
         )}
-        <FormRow direction="row">
+        <FormRow>
           <Input
             label="First Name"
             required
@@ -128,7 +128,9 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
             })}
             {...transformFieldError(errors.firstName)}
           />
+        </FormRow>
 
+        <FormRow>
           <Input
             label="Last Name"
             required
@@ -240,7 +242,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
           >
             Cancel
           </Button>
-          <Button type={'submit'}>save</Button>
+          <Button type={'submit'}>{onCheckout ? 'weiter' : 'speichern'}</Button>
         </ButtonContainer>
       </section>
     </FormContainer>

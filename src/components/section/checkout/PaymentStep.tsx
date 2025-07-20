@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/AuthHook';
 import { createPaymentIntent } from '@/requests/payment.request';
 import { useRouter } from 'next/navigation';
 import { useFeedback } from '@/hooks/FeedbackHook';
+
 const PaymentForm = ({
   onPaymentMethodReady,
 }: {
@@ -107,13 +108,43 @@ const PaymentStep: React.FC = () => {
   if (!clientSecret) return <div>Loading payment...</div>;
 
   return (
-    <Container>
+    <Container flow={'column'}>
       <h2>Payment Information</h2>
       <Elements
         stripe={stripePromise}
         options={{
           clientSecret,
-          appearance: { theme: 'stripe' as const },
+          appearance: {
+            theme: 'flat',
+            variables: {
+              colorPrimary: '#efe5d3',
+              colorBackground: '#ffffff',
+              colorText: '#333230',
+              colorDanger: '#dc2626',
+              fontFamily: 'system-ui, sans-serif',
+              spacingUnit: '4px',
+              borderRadius: '8px',
+            },
+            rules: {
+              '.Input': {
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
+                padding: '12px 16px',
+                fontSize: '14px',
+                backgroundColor: '#ffffff',
+                transition: 'all 0.2s ease',
+              },
+              '.Input:focus': {
+                border: '1px solid #efe5d3',
+                boxShadow: '0 0 0 2px rgba(239, 229, 211, 0.2)',
+              },
+              '.Label': {
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+              },
+            },
+          },
         }}
       >
         <PaymentForm onPaymentMethodReady={handlePaymentMethodReady} />

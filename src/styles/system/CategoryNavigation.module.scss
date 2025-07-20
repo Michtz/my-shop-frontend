@@ -4,10 +4,20 @@
   gap: 0;
   background-color: #fcfaf7 !important;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: auto; // Horizontales Scrollen aktivieren
+  overflow-y: hidden;
   width: 100%;
   margin-bottom: 2rem;
   border-bottom: #2d3748;
+  scroll-behavior: smooth;
+
+  // Verstecke Scrollbar
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .categoryNavigationItem {
@@ -19,7 +29,9 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
   border: none;
-  flex: 1;
+  flex: 0 0 auto;
+  min-width: 120px;
+  white-space: nowrap;
 
   &:hover:not(.active) {
     background: #f8f9fa;
@@ -42,4 +54,5 @@
   color: #333;
   font-weight: 500;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }

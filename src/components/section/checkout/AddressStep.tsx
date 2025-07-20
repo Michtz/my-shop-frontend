@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
-import Button, { ButtonContainer } from '@/components/system/Button';
+import React, { useEffect, useState } from 'react';
+import { ButtonGroup } from '@/components/system/Button';
 import { Container } from '@/components/system/Container';
 import Login from '@/components/section/user/Login';
 import UserInformationForm, {
@@ -22,10 +22,12 @@ const AddressStep: React.FC = () => {
 
   useEffect(() => {
     if (userInformation) setUserData(userInformation);
+    console.log(userInformation);
   }, [userInformation]);
 
   const handleWriteAdresseInCart = async (data?: UserProfileFormData) => {
     try {
+      console.log(userInformation, sessionData);
       const userInfo: IAddress = {
         street: data?.street || userData?.addresses?.[0]?.street || '',
         houseNumber:
@@ -36,7 +38,7 @@ const AddressStep: React.FC = () => {
         country: 'ch',
         isDefault: true,
       };
-
+      console.log(userInfo);
       const guestInfo: UserInformation = {
         email: data?.email || userData?.email,
         firstName: data?.firstName || userData?.firstName,
@@ -57,14 +59,28 @@ const AddressStep: React.FC = () => {
     }
   };
 
+  const options = [
+    {
+      label: 'Ich bin bereits Kunde',
+      onClick: () => setActiveTab('login'),
+      active: activeTab === 'login',
+    },
+    {
+      label: 'Ich bin neu kunde',
+      onClick: () => setActiveTab('gast'),
+      active: activeTab === 'gast',
+    },
+  ];
+
   return (
     <Container justifyContent={'center'} padding={false} flow={'column'}>
-      <ButtonContainer spread>
-        <Button onClick={() => setActiveTab('login')}>Login</Button>
-        <Button onClick={() => setActiveTab('gast')}>Gast</Button>
-      </ButtonContainer>
+      <ButtonGroup options={options} />
       {activeTab === 'login' ? (
-        <Login onCheckout={handleWriteAdresseInCart} />
+        sessionData?.isAuthenticated ? (
+          <UserInformationForm onCheckout={handleWriteAdresseInCart} />
+        ) : (
+          <Login checkout />
+        )
       ) : (
         <UserInformationForm onCheckout={handleWriteAdresseInCart} />
       )}

@@ -5,7 +5,10 @@ import CategoryNavigation from '@/components/system/CategoryNavigation';
 import Carousel, { CarouselItem } from '@/components/system/Carousel';
 import { getCategoryName } from '@/functions/common';
 import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
-import { Container } from '@/components/system/Container';
+import {
+  Container,
+  HorizontalScrollContainer,
+} from '@/components/system/Container';
 import { addToCart } from '@/requests/cart.request';
 import { IProduct } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
@@ -45,19 +48,19 @@ const MainContainer: React.FC<MainContainerProps> = () => {
   const slides: CarouselItem[] = [
     {
       image: image1,
-      alt: products[0]?.name || '',
+      alt: 'vf',
       title: '',
       description: '',
     },
     {
       image: image2,
-      alt: products[0]?.name || '',
+      alt: 'def',
       title: '',
       description: '',
     },
     {
       image: image3,
-      alt: products[0]?.name || '',
+      alt: 'abcd',
       title: '',
       description: '',
     },
@@ -97,7 +100,7 @@ const MainContainer: React.FC<MainContainerProps> = () => {
       gap={'2'}
     >
       <Carousel items={slides} controls={false} />
-      <CartsContainer>
+      <HorizontalScrollContainer>
         {category === undefined &&
           articles?.map((product, i: number) => {
             if (i > 4) return;
@@ -114,7 +117,7 @@ const MainContainer: React.FC<MainContainerProps> = () => {
               />
             );
           })}
-      </CartsContainer>
+      </HorizontalScrollContainer>
       <CategoryNavigation activeCategory={category} />
       <CartsContainer>
         {articles?.map((product) => {
