@@ -127,6 +127,21 @@
     }
   }
 
+  &[data-variant='clean'] {
+    background-color: transparent;
+    color: white;
+    border-color: transparent;
+
+    &:hover:not(:disabled) {
+      // background-color: #f3f4f6;
+      //color: #374151;
+    }
+
+    &:active:not(:disabled) {
+      color: #e5e7eb;
+    }
+  }
+
   &:disabled {
     background-color: #f3f4f6;
     color: #9ca3af;

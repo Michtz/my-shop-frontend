@@ -187,6 +187,7 @@ export const AccordionDetailsContainer: React.FC<AccordionDetailsProps> = ({
 
   const variants: Variants = {
     open: {
+      display: 'block',
       height: '100%',
       transition: {
         type: 'spring',
@@ -205,6 +206,7 @@ export const AccordionDetailsContainer: React.FC<AccordionDetailsProps> = ({
         bounce: 0,
         duration: 0.3,
       },
+      display: 'none',
       height: '1px',
       overflow: overflow ? 'auto' : 'hidden',
     },

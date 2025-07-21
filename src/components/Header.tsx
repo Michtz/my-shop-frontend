@@ -57,19 +57,18 @@ const ResponsiveAppBar = () => {
           <Button
             appearance={'icon'}
             size={'big'}
-            variant={'icon'}
+            variant={'clean'}
             icon={'shopping_cart'}
             onClick={() => router.replace('/cart')}
           />
-          <span>
-            <Button
-              appearance={'icon'}
-              size={'big'}
-              variant={'ghost'}
-              icon={'account_circle'}
-              onClick={handleUserClick}
-            />
-          </span>
+
+          <Button
+            appearance={'icon'}
+            size={'big'}
+            variant={'clean'}
+            icon={'account_circle'}
+            onClick={handleUserClick}
+          />
         </span>
       </header>
     </>

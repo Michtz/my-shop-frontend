@@ -7,12 +7,15 @@ import { Container } from '@/components/system/Container';
 import EmptyCart from '@/components/section/cart/EmptyCart';
 
 const CartContainer: FC = () => {
-  const { error } = useCart();
+  const { error, cartItems } = useCart();
 
+  const showEmpty: boolean = !!error || !cartItems || cartItems.length === 0;
+  console.log(showEmpty);
   return (
     <Container padding={false} flow={'column'}>
-      {error ? <EmptyCart /> : <CartList />}
+      {showEmpty ? <EmptyCart /> : <CartList />}
     </Container>
   );
 };
+
 export default CartContainer;

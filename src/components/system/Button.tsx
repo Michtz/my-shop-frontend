@@ -2,10 +2,9 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import MaterialIcon from './MaterialIcon';
 import Link from './Link';
 import style from '@/styles/system/Button.module.scss';
-import { usePathname, useRouter } from 'next/navigation';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'error' | 'ghost' | 'icon';
+  variant?: 'primary' | 'secondary' | 'error' | 'ghost' | 'icon' | 'clean';
   size?: 'small' | 'normal' | 'big';
   appearance?: 'button' | 'icon';
   href?: string;
