@@ -15,6 +15,10 @@ interface ErrorHook {
 const errorMessageKeys: { [key: string]: string } = {
   notAEmail: 'error.not-a-email',
   required: 'error.required',
+  email: 'error.email',
+  minLength: 'error.minLength',
+  maxLength: 'error.maxLength',
+  toSmall: 'error.toSmall',
 };
 
 const ErrorContext = createContext<ErrorHook | undefined>(undefined);

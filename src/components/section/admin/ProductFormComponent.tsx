@@ -31,7 +31,6 @@ interface FormField {
   isActive: boolean;
 }
 
-// Constants outside component
 const CATEGORIES = [
   'Tampers',
   'Milk Jugs',
@@ -41,10 +40,9 @@ const CATEGORIES = [
   'Cleaning Tools',
 ];
 
-// Validation functions outside component
 const validatePrice = (price: number | undefined) => {
-  if (!price) return 'Preis ist erforderlich';
-  return price > 0 || 'Preis muss größer als 0 sein';
+  if (!price) return 'required';
+  return price > 0 || 'required'; // Todo: change to something sinvolles..
 };
 
 const validateStock = (stock: number | undefined) => {
@@ -65,7 +63,7 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
     register,
     handleSubmit,
     control,
-    formState: { errors, isLoading, isDirty },
+    formState: { errors, isLoading, isDirty, isValid },
   } = useForm<FormField>({
     defaultValues: {
       name: product?.name || '',
@@ -75,6 +73,7 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
       category: product?.category || '',
       isActive: product?.isActive ?? true,
     },
+    mode: 'onChange',
   });
 
   const handleFileSelect = (file: File) => {
@@ -207,11 +206,11 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
             label="Artikelname"
             required
             fullWidth
-            clearable
             readOnly={isLoading}
             inputProps={register('name', {
               required: 'required',
               minLength: { value: 3, message: 'minLength' },
+              maxLength: { value: 126, message: 'minLength' },
             })}
             {...transformFieldError(errors.name)}
           />
@@ -224,7 +223,6 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
             fullWidth
             multiline
             minRows={4}
-            maxRows={8}
             readOnly={isLoading}
             inputProps={register('description', {
               required: 'required',
@@ -243,7 +241,6 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
             readOnly={isLoading}
             inputProps={register('price', {
               required: 'required',
-              valueAsNumber: true,
               validate: validatePrice,
             })}
             {...transformFieldError(errors.price)}
@@ -268,7 +265,6 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
           <Controller
             name="category"
             control={control}
-            rules={{ required: 'Kategorie ist erforderlich' }}
             render={({ field }) => (
               <Select
                 name={field.name}
@@ -283,12 +279,6 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
               />
             )}
           />
-          {errors.category && (
-            <div className={style.fieldError}>
-              <MaterialIcon icon="error" iconSize="small" />
-              <span>{errors.category.message}</span>
-            </div>
-          )}
         </FormRow>
 
         <FormRow>
@@ -311,18 +301,15 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
             Abbrechen
           </Button>
 
-          <Button type="submit" disabled={isLoading || !isDirty}>
-            {isLoading ? (
-              <>
-                <div className={style.spinner} />
-                Wird gespeichert...
-              </>
-            ) : (
-              <>
-                <MaterialIcon icon="save" iconSize="small" />
-                {product ? 'Artikel aktualisieren' : 'Artikel anlegen'}
-              </>
-            )}
+          <Button
+            type="submit"
+            loading={isLoading}
+            disabled={isLoading || !isDirty || !isValid}
+          >
+            <>
+              <MaterialIcon icon="save" iconSize="small" />
+              {product ? 'Artikel aktualisieren' : 'Artikel anlegen'}
+            </>
           </Button>
         </ButtonContainer>
       </FormContainer>
