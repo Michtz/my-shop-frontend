@@ -5,13 +5,17 @@ import useCart from '@/hooks/useCart';
 import CartListItem from '@/components/section/cart/CartListItem';
 import CartSummary from '@/components/section/cart/CartSummaryContainer';
 import style from '@/styles/CartList.module.scss';
-import React from 'react';
+import React, { FC } from 'react';
 import { Hr } from '@/components/system/Hr';
 import Skeleton from '@/components/system/Skeleton';
 import CartItemSkeleton from '@/components/section/cart/CartListItemSkleton';
 import { useAuth } from '@/hooks/AuthHook';
 
-const CartList = () => {
+interface Props {
+  review?: boolean;
+}
+
+const CartList: FC<Props> = ({ review }) => {
   const { cartItems, mutate, isLoading } = useCart();
   const { sessionData } = useAuth();
 
@@ -55,13 +59,18 @@ const CartList = () => {
         subtotal={subtotal}
         shipping={shipping}
         total={total}
-        vatRate={8.1}
+        checkoutButton={!review}
       />
     </>
   );
 
   return (
-    <Container flow={'column'} alignItems={'center'} maxWidth={'1150'}>
+    <Container
+      flow={'column'}
+      padding={false}
+      alignItems={'center'}
+      maxWidth={'1150'}
+    >
       <h2>Warenkorb</h2>
       {isLoading ? skeleton : list}
     </Container>

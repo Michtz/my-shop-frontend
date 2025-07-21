@@ -18,13 +18,5 @@ interface ContainerProps extends PropsWithChildren {
 }
 
 export const Hr: FC<ContainerProps> = ({ margin }) => (
-  <div
-    style={{
-      height: '1px',
-      backgroundColor: '#c3c3c3',
-      width: '95%',
-      marginTop: margin ? '4rem' : 0,
-      marginBottom: '4rem',
-    }}
-  ></div>
+  <div className={style.hr}></div>
 );

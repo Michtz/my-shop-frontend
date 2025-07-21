@@ -81,7 +81,7 @@ const ReviewStep: React.FC = () => {
   return (
     <Container flow={'column'}>
       <h2>Review Your Order</h2>
-      <CartList />
+      <CartList review />
 
       <div style={{ marginBottom: '1rem' }}>
         <h4>Payment Method</h4>

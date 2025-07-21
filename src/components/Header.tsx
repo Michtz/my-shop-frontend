@@ -57,7 +57,7 @@ const ResponsiveAppBar = () => {
           <Button
             appearance={'icon'}
             size={'big'}
-            variant={'ghost'}
+            variant={'icon'}
             icon={'shopping_cart'}
             onClick={() => router.replace('/cart')}
           />

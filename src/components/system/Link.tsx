@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import MaterialIcon from './MaterialIcon';
+import style from '@/styles/system/Link.module.scss';
 
 interface LinkProps {
   href?: string;
@@ -55,7 +56,7 @@ const Link: React.FC<LinkProps> = ({
 
   const content = (
     <>
-      <span>{children}</span>
+      <span className={style.text}>{children}</span>
       {icon && <MaterialIcon icon={icon} />}
     </>
   );

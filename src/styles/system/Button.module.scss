@@ -51,6 +51,15 @@
     }
   }
 
+  &[data-variant='icon'] {
+    background-color: transparent;
+
+    &:hover {
+      background-color: rgba(252, 252, 252, 0.7) !important;
+      padding: 0 !important;
+    }
+  }
+
   &[data-variant='primary'] {
     background-color: rgba(239, 229, 211);
 

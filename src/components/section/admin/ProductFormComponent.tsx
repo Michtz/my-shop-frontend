@@ -12,6 +12,7 @@ import { IProduct, ProductCategoryOptions } from '@/types/product.types';
 import { useError } from '@/hooks/ErrorHook';
 import { FormContainer } from '@/components/system/Container';
 import { FormRow } from '@/components/system/Form';
+import Select from '@/components/system/Select';
 
 interface ProductFormProps {
   onClose: () => void;
@@ -247,8 +248,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
             }}
             required
             fullWidth
-            placeholder="Z.B. Premium Espresso Tamper..."
-            startIcon="inventory"
             clearable
             readOnly={isLoading}
             inputProps={register('name', {
@@ -271,7 +270,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
             multiline
             minRows={4}
             maxRows={8}
-            placeholder="Beschreiben Sie das Produkt ausführlich..."
             readOnly={isLoading}
             inputProps={register('description', {
               required: 'required',
@@ -289,8 +287,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
             tooltip={{ text: 'Verkaufspreis in Schweizer Franken' }}
             required
             fullWidth
-            placeholder="0.00"
-            startIcon="payments"
             readOnly={isLoading}
             inputProps={register('price', {
               required: 'required',
@@ -306,8 +302,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
             tooltip={{ text: 'Aktuelle Anzahl der verfügbaren Artikel' }}
             required
             fullWidth
-            placeholder="0"
-            startIcon="inventory_2"
             readOnly={isLoading}
             inputProps={register('stockQuantity', {
               required: 'required',
@@ -325,48 +319,27 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose, product }) => {
             control={control}
             rules={{ required: 'Kategorie ist erforderlich' }}
             render={({ field }) => (
-              <div className={style.selectContainer}>
-                <label className={style.selectLabel}>
-                  Kategorie *
-                  <div className={style.tooltipContainer}>
-                    <MaterialIcon
-                      icon="help_outline"
-                      iconSize="small"
-                      className={style.tooltipIcon}
-                    />
-                    <div className={style.tooltip}>
-                      <div className={style.tooltipContent}>
-                        Wählen Sie die passende Produktkategorie aus
-                      </div>
-                    </div>
-                  </div>
-                </label>
-                <div className={style.selectWrapper}>
-                  <MaterialIcon icon="category" className={style.selectIcon} />
-                  <select
-                    {...field}
-                    className={`${style.select} ${errors.category ? style.selectError : ''}`}
-                    disabled={isLoading}
-                  >
-                    <option value="">Bitte wählen...</option>
-                    {categories.map((category: string) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                  <MaterialIcon
-                    icon="expand_more"
-                    className={style.selectArrow}
-                  />
-                </div>
-                {errors.category && (
-                  <div className={style.fieldError}>
-                    <MaterialIcon icon="error" iconSize="small" />
-                    <span>{errors.category.message}</span>
-                  </div>
-                )}
-              </div>
+              <Select
+                label="Kategorie"
+                tooltip={{
+                  text: 'Wählen Sie die passende Produktkategorie aus',
+                }}
+                options={categories.map((category) => ({
+                  value: category,
+                  label: category,
+                }))}
+                value={field.value || ''}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                name={field.name}
+                error={!!errors.category}
+                helperText={errors.category?.message}
+                required
+                disabled={isLoading}
+                placeholder="Bitte wählen..."
+                fullWidth
+                clearable
+              />
             )}
           />
         </FormRow>

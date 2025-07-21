@@ -38,9 +38,9 @@
   .item-content-container {
     line-height: 16px;
     display: flex;
-    flex: 1;
     padding: 0;
-    text-overflow: ellipsis;
+    width: 100%;
+
     overflow: hidden;
 
     &:hover {
@@ -100,4 +100,10 @@
   color: var(--docugate-lightgray);
   font-size: 20px;
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .item-content {
+    flex-direction: column;
+  }
 }

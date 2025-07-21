@@ -66,7 +66,7 @@ const AddressStep: React.FC = () => {
       active: activeTab === 'login',
     },
     {
-      label: 'Ich bin neu kunde',
+      label: 'Als Gast fortfahren',
       onClick: () => setActiveTab('gast'),
       active: activeTab === 'gast',
     },

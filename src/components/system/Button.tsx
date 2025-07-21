@@ -5,7 +5,7 @@ import style from '@/styles/system/Button.module.scss';
 import { usePathname, useRouter } from 'next/navigation';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'error' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'error' | 'ghost' | 'icon';
   size?: 'small' | 'normal' | 'big';
   appearance?: 'button' | 'icon';
   href?: string;

@@ -1,6 +1,6 @@
 .cartItemContainer {
   background-color: transparent;
-  width: 100%;
+  width: 80%;
   color: #5b5e64;
   margin-bottom: 8px;
   display: flex;
@@ -93,6 +93,10 @@
     grid-template-columns: 60px 1fr;
     grid-template-rows: auto auto;
     gap: 12px;
+  }
+
+  .cartItemContainer {
+    width: 93%;
   }
 
   .productImage {

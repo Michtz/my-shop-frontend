@@ -9,6 +9,7 @@ interface CartSummaryProps {
   shipping: number;
   total: number;
   vatRate?: number;
+  checkoutButton?: boolean;
 }
 
 export const CartSummary: React.FC<CartSummaryProps> = ({
@@ -16,6 +17,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
   shipping,
   total,
   vatRate = 8.1,
+  checkoutButton = false,
 }) => {
   const router = useRouter();
   // Calculate net total and VAT
@@ -71,9 +73,11 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
           *Preise inkl. MwSt. zzgl. Versandkosten
         </p>
       </div>
-      <Button onClick={handleStartCheckout} className={style.checkoutButton}>
-        Checkout
-      </Button>
+      {checkoutButton && (
+        <Button onClick={handleStartCheckout} className={style.checkoutButton}>
+          Checkout
+        </Button>
+      )}
     </div>
   );
 };
