@@ -5,32 +5,16 @@ import { IProduct } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
 
 interface ProductTableHeadProps {
-  productsLength: number;
-  selectedProductsLength: number;
-  handleSelectAll: (checked: boolean) => void;
   handleSort: (column: keyof IProduct) => void;
   getSortIcon: (column: keyof IProduct) => string;
-  sortConfig: { key: keyof IProduct | null; direction: 'asc' | 'desc' };
 }
 
 export const ProductTableHead: React.FC<ProductTableHeadProps> = ({
-  productsLength,
-  selectedProductsLength,
-  handleSelectAll,
   handleSort,
   getSortIcon,
 }) => (
   <thead>
     <tr>
-      <th className={style.checkboxCell}>
-        <input
-          type="checkbox"
-          checked={
-            selectedProductsLength === productsLength && productsLength > 0
-          }
-          onChange={(e) => handleSelectAll(e.target.checked)}
-        />
-      </th>
       <th>
         <span>Bild</span>
       </th>

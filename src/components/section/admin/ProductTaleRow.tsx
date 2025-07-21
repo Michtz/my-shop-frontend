@@ -3,6 +3,8 @@ import Button from '@/components/system/Button';
 import MaterialIcon from '@/components/system/MaterialIcon';
 import { IProduct } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
+import { Controller } from 'react-hook-form';
+import Checkbox from '@/components/system/Checkbox';
 
 interface ProductTableRowProps {
   product: IProduct;
@@ -25,13 +27,6 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
 
   return (
     <tr key={product._id} className={style.productRow}>
-      <td className={style.checkboxCell}>
-        <input
-          type="checkbox"
-          checked={isSelected}
-          onChange={(e) => handleSelectProduct(product._id, e.target.checked)}
-        />
-      </td>
       <td className={style.imageCell}>
         <div className={style.productImage}>
           {product?.imageUrl ? (

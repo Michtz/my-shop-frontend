@@ -1,94 +1,18 @@
 .productForm {
   max-width: 600px;
   margin: 0 auto;
-  background-color: #f9fafb;
+
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
 }
 
 .formHeader {
-  padding: 24px;
-  background-color: #2563eb;
-  color: white;
-}
+  display: flex;
+  justify-content: space-between;
 
-.formTitle {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-.formContent {
-  padding: 24px;
-  background-color: green;
-}
-
-.formGroup {
-  margin-bottom: 20px;
-
-  &:last-child {
-    margin-bottom: 0;
+  h2 {
+    text-align: center;
+    align-content: end;
   }
-}
-
-.formRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #111827;
-  font-size: 0.875rem;
-}
-
-.input,
-.textarea,
-.select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #2563eb;
-  }
-
-  &:disabled {
-    background-color: #f3f4f6;
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
-  &.inputError {
-    border-color: #dc2626;
-  }
-}
-
-.textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.select {
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 20px;
-  padding-right: 40px;
 }
 
 .checkbox {
@@ -96,7 +20,7 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
-  accent-color: #2563eb;
+  accent-color: #8d772d;
 
   &:disabled {
     cursor: not-allowed;
@@ -185,25 +109,11 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(17, 24, 39, 0.8);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: rgba(17, 24, 39, 0.9);
-    transform: scale(1.1);
-  }
 }
 
+.checkboxContainer {
+  display: flex;
+}
 .checkboxLabel {
   display: flex;
   align-items: center;

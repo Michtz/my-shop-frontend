@@ -182,7 +182,7 @@ export const Input = forwardRef<
             {...(commonProps as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
             rows={minRows}
             style={{
-              maxHeight: maxRows ? `${maxRows * 1.5}em` : undefined,
+              maxHeight: maxRows ? `50rem` : undefined,
               ...props.style,
             }}
           />

@@ -146,14 +146,12 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
           <ProductTable
             products={sortedProducts}
             selectedProducts={selectedProducts}
-            handleSelectAll={handleSelectAll}
             handleSelectProduct={handleSelectProduct}
             handleSort={handleSort}
             getSortIcon={getSortIcon}
             onEditProduct={onEditProduct}
             onDeleteProduct={handleDeleteProduct}
             getStockStatus={getStockStatus}
-            sortConfig={sortConfig}
           />
         ) : (
           <EmptyState onCreateProduct={onCreateProduct} />

@@ -32,28 +32,21 @@ const AdminProductsContent: React.FC = () => {
   if (showForm) {
     return (
       <div className={style.adminContainer}>
-        <div className={style.breadcrumb}>
-          <Button variant="ghost" icon="arrow_back" onClick={handleCloseForm}>
-            Zurück zur Produktliste
-          </Button>
-        </div>
-
         <ProductForm product={editingProduct} onClose={handleCloseForm} />
       </div>
     );
   }
 
   return (
-    <div className={style.adminContainer}>
+    <>
       <div className={style.pageHeader}>
         <h1>Produktverwaltung</h1>
-        <p>Verwalten Sie Ihr Produktsortiment</p>
       </div>
       <AdminProductList
         onEditProduct={handleEditProduct}
         onCreateProduct={handleCreateProduct}
       />
-    </div>
+    </>
   );
 };
 

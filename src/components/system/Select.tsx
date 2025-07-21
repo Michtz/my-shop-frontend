@@ -1,53 +1,50 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import MaterialIcon from './MaterialIcon';
-import style from '@/styles/system/Input.module.scss';
+import style from '@/styles/system/Select.module.scss';
 
-export interface SelectOption {
-  value: string;
-  label: string;
-  disabled?: boolean;
-  icon?: string;
+export interface SelectChangeEvent {
+  target: {
+    name?: string;
+    value: string;
+  };
 }
 
-interface TooltipProps {
-  text: string;
-  more?: React.ReactNode;
+export interface SelectOption {
+  value: string | number;
+  label: string;
+  disabled?: boolean;
 }
 
 interface SelectProps {
+  id?: string;
+  name?: string;
+  value: string | number;
   label?: string;
   placeholder?: string;
   options: SelectOption[];
-  value?: string;
-  onChange?: (value: string) => void;
+  onChange: (event: SelectChangeEvent) => void;
   onBlur?: () => void;
-  name?: string;
   error?: boolean;
-  helperText?: string;
-  tooltip?: TooltipProps;
-  required?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
-  clearable?: boolean;
+  required?: boolean;
   className?: string;
 }
 
 const Select = ({
+  id,
+  name,
+  value,
   label,
   placeholder = 'Auswählen...',
   options,
-  value = '',
   onChange,
   onBlur,
-  name,
   error = false,
-  helperText,
-  tooltip,
-  required = false,
   disabled = false,
   fullWidth = false,
-  clearable = false,
+  required = false,
   className,
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,119 +69,58 @@ const Select = ({
 
   const selectedOption = options.find((option) => option.value === value);
   const displayValue = selectedOption?.label || placeholder;
-  const hasValue = !!value;
 
   const handleToggle = () => {
     if (!disabled) setIsOpen(!isOpen);
   };
 
-  const handleSelect = (option: SelectOption) => {
+  const handleOptionClick = (option: SelectOption) => {
     if (option.disabled) return;
-    onChange?.(option.value);
+
+    const event: SelectChangeEvent = {
+      target: {
+        name,
+        value: option.value.toString(),
+      },
+    };
+
+    onChange(event);
     setIsOpen(false);
     onBlur?.();
   };
 
-  const handleClear = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onChange?.('');
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled) return;
-
-    switch (e.key) {
-      case 'Enter':
-      case ' ':
-        e.preventDefault();
-        handleToggle();
-        break;
-      case 'Escape':
-        setIsOpen(false);
-        break;
-      case 'ArrowDown':
-      case 'ArrowUp':
-        e.preventDefault();
-        if (!isOpen) setIsOpen(true);
-        break;
-    }
-  };
-
-  const containerClasses = [
-    style.inputContainer,
-    fullWidth && style.fullWidth,
+  const selectClasses = [
+    style.select,
     error && style.error,
+    fullWidth && style.fullWidth,
     isOpen && style.focused,
+    disabled && style.disabled,
+    !value && style.placeholder,
     className,
   ]
     .filter(Boolean)
     .join(' ');
 
-  const selectClasses = [
-    style.input,
-    style.hasIcons,
-    error && style.error,
-    hasValue && style.hasValue,
-    disabled && style.readOnly,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   return (
-    <div className={containerClasses} ref={selectRef}>
+    <div className={fullWidth ? style.fullWidth : ''}>
       {label && (
-        <div className={style.labelContainer}>
-          <label className={style.label}>
-            {label}
-            {required && <span className={style.required}>*</span>}
-          </label>
-          {tooltip && (
-            <div className={style.tooltipContainer}>
-              <MaterialIcon
-                icon="help_outline"
-                iconSize="small"
-                className={style.tooltipIcon}
-              />
-              <div className={style.tooltip}>
-                <div className={style.tooltipContent}>
-                  {tooltip.text}
-                  {tooltip.more && (
-                    <div className={style.tooltipMore}>{tooltip.more}</div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        <label className={style.label} htmlFor={id}>
+          {label}
+          {required && <span className={style.required}>*</span>}
+        </label>
       )}
 
-      <div className={style.inputWrapper}>
+      <div className={style.selectContainer} ref={selectRef}>
         <div
           className={selectClasses}
           onClick={handleToggle}
-          onKeyDown={handleKeyDown}
-          tabIndex={disabled ? -1 : 0}
+          id={id}
           role="combobox"
           aria-expanded={isOpen}
-          aria-haspopup="listbox"
-          data-placeholder={!hasValue}
-          data-name={name}
+          tabIndex={disabled ? -1 : 0}
         >
-          {selectedOption?.icon && (
-            <MaterialIcon icon={selectedOption.icon} iconSize="small" />
-          )}
           <span className={style.selectValue}>{displayValue}</span>
-        </div>
 
-        <div className={style.endIcons}>
-          {clearable && hasValue && !disabled && (
-            <MaterialIcon
-              icon="clear"
-              iconSize="small"
-              clickable
-              onClick={handleClear}
-            />
-          )}
           <MaterialIcon
             icon={isOpen ? 'expand_less' : 'expand_more'}
             iconSize="small"
@@ -192,30 +128,21 @@ const Select = ({
         </div>
 
         {isOpen && (
-          <div className={style.dropdown}>
+          <div className={style.selectDropdown}>
             {options.map((option) => (
               <div
                 key={option.value}
-                className={`${style.option} ${option.value === value ? style.selected : ''} ${option.disabled ? style.disabled : ''}`}
-                onClick={() => handleSelect(option)}
-                role="option"
-                aria-selected={option.value === value}
+                className={`${style.selectOption} ${
+                  option.value === value ? style.selected : ''
+                } ${option.disabled ? style.disabled : ''}`}
+                onClick={() => handleOptionClick(option)}
               >
-                {option.icon && (
-                  <MaterialIcon icon={option.icon} iconSize="small" />
-                )}
-                <span>{option.label}</span>
+                {option.label}
               </div>
             ))}
           </div>
         )}
       </div>
-
-      {helperText && (
-        <div className={`${style.helperText} ${error ? style.errorText : ''}`}>
-          {helperText}
-        </div>
-      )}
     </div>
   );
 };

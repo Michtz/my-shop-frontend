@@ -4,10 +4,6 @@
 
   background-color: #fcfaf7;
 
-  &[data-padding='true'] {
-    padding: 2rem;
-  }
-
   &[data-flow='column'] {
     flex-direction: column;
   }
@@ -71,6 +67,11 @@
 
   &[data-gap='2'] {
     gap: 2rem;
+  }
+
+  &[data-padding='true'] {
+    padding: 10%;
+    width: 80% !important;
   }
 }
 
