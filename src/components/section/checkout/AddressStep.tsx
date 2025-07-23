@@ -11,8 +11,10 @@ import { Logger } from '@/utils/Logger.class';
 import { IAddress, UserInformation } from '@/types/auth';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 const AddressStep: React.FC = () => {
+  const { t } = useTranslation();
   const { sessionData, userInformation } = useAuth();
   const { showFeedback } = useFeedback();
   const router = useRouter();
@@ -52,7 +54,7 @@ const AddressStep: React.FC = () => {
         guestInfo,
       );
       console.log(cart);
-      showFeedback('cart user updated', 'success');
+      showFeedback(t('checkout.cartUserUpdated'), 'success');
       router.replace('/checkout/paymentInfo');
     } catch (e) {
       Logger.error(e);
@@ -61,12 +63,12 @@ const AddressStep: React.FC = () => {
 
   const options = [
     {
-      label: 'Ich bin bereits Kunde',
+      label: t('checkout.alreadyCustomer'),
       onClick: () => setActiveTab('login'),
       active: activeTab === 'login',
     },
     {
-      label: 'Als Gast fortfahren',
+      label: t('checkout.guestCheckout'),
       onClick: () => setActiveTab('gast'),
       active: activeTab === 'gast',
     },

@@ -6,6 +6,7 @@ import { Container } from '@/components/system/Container';
 import Button from '@/components/system/Button';
 import { axiosInstance } from '@/requests/base.request';
 import { Logger } from '@/utils/Logger.class';
+import { useTranslation } from 'react-i18next';
 
 interface OrderData {
   orderNumber: string;
@@ -38,6 +39,7 @@ interface OrderData {
 }
 
 const ConfirmationStep: React.FC = () => {
+  const { t } = useTranslation();
   const { orderNumber } = useParams();
   const router = useRouter();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
@@ -67,7 +69,7 @@ const ConfirmationStep: React.FC = () => {
   if (loading) {
     return (
       <Container justifyContent="center" padding={true}>
-        <div>Loading order details...</div>
+        <div>{t('checkout.loadingOrderDetails')}</div>
       </Container>
     );
   }
@@ -75,8 +77,10 @@ const ConfirmationStep: React.FC = () => {
   if (!orderData) {
     return (
       <Container justifyContent="center" padding={true}>
-        <div>Order not found</div>
-        <Button onClick={() => router.push('/')}>Back to Shop</Button>
+        <div>{t('checkout.orderNotFound')}</div>
+        <Button onClick={() => router.push('/')}>
+          {t('checkout.backToShop')}
+        </Button>
       </Container>
     );
   }
@@ -97,10 +101,10 @@ const ConfirmationStep: React.FC = () => {
       <div style={{ marginBottom: '2rem' }}>
         <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎉</div>
         <h1 style={{ color: '#28a745', marginBottom: '0.5rem' }}>
-          Order Confirmed!
+          {t('checkout.orderConfirmed')}
         </h1>
         <p style={{ color: '#666', fontSize: '1.1rem' }}>
-          Thank you for your purchase!
+          {t('checkout.thankYou')}
         </p>
       </div>
 
@@ -114,7 +118,9 @@ const ConfirmationStep: React.FC = () => {
           width: '100%',
         }}
       >
-        <h3 style={{ margin: 0, marginBottom: '0.5rem' }}>Order Number</h3>
+        <h3 style={{ margin: 0, marginBottom: '0.5rem' }}>
+          {t('checkout.orderNumber')}
+        </h3>
         <div
           style={{
             fontSize: '1.5rem',
@@ -128,14 +134,14 @@ const ConfirmationStep: React.FC = () => {
         <p
           style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', color: '#666' }}
         >
-          Order placed on {formatDate(orderData.paidAt)}
+          {t('checkout.orderPlacedOn')} {formatDate(orderData.paidAt)}
         </p>
       </div>
 
       {/* Order Summary */}
       <div style={{ width: '100%', marginBottom: '2rem' }}>
         <h3 style={{ textAlign: 'left', marginBottom: '1rem' }}>
-          Order Summary
+          {t('checkout.orderSummary')}
         </h3>
 
         {orderData.items.map((item, index) => (
@@ -157,7 +163,8 @@ const ConfirmationStep: React.FC = () => {
                 {item.product?.name || `Product ${item.productId}`}
               </div>
               <div style={{ color: '#666', fontSize: '0.9rem' }}>
-                Quantity: {item.quantity} × €{item.price.toFixed(2)}
+                {t('checkout.quantity')}: {item.quantity} × €
+                {item.price.toFixed(2)}
               </div>
             </div>
             <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
@@ -180,7 +187,7 @@ const ConfirmationStep: React.FC = () => {
             fontSize: '1.2rem',
           }}
         >
-          <span>Total</span>
+          <span>{t('checkout.total')}</span>
           <span>€{orderData.total.toFixed(2)}</span>
         </div>
       </div>
@@ -189,7 +196,7 @@ const ConfirmationStep: React.FC = () => {
       {orderData.customerInfo?.selectedAddress && (
         <div style={{ width: '100%', marginBottom: '2rem' }}>
           <h3 style={{ textAlign: 'left', marginBottom: '1rem' }}>
-            Delivery Address
+            {t('checkout.deliveryAddress')}
           </h3>
           <div
             style={{
@@ -230,7 +237,9 @@ const ConfirmationStep: React.FC = () => {
           marginBottom: '2rem',
         }}
       >
-        <h4 style={{ margin: '0 0 1rem 0', color: '#1976d2' }}>What's Next?</h4>
+        <h4 style={{ margin: '0 0 1rem 0', color: '#1976d2' }}>
+          {t('checkout.whatsNext')}
+        </h4>
         <ul
           style={{
             textAlign: 'left',
@@ -239,23 +248,23 @@ const ConfirmationStep: React.FC = () => {
             color: '#666',
           }}
         >
-          <li>You'll receive an email confirmation shortly</li>
-          <li>We'll notify you when your order ships</li>
-          <li>Expected delivery: 3-5 business days</li>
+          <li>{t('checkout.emailConfirmation')}</li>
+          <li>{t('checkout.shipNotification')}</li>
+          <li>{t('checkout.expectedDelivery')}</li>
         </ul>
       </div>
 
       {/* Action Buttons */}
       <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
         <Button onClick={() => router.push('/')} style={{ flex: 1 }}>
-          Continue Shopping
+          {t('checkout.continueShopping')}
         </Button>
         <Button
           onClick={() => window.print()}
           variant="secondary"
           style={{ flex: 1 }}
         >
-          Print Order
+          {t('checkout.printOrder')}
         </Button>
       </div>
 
@@ -268,7 +277,7 @@ const ConfirmationStep: React.FC = () => {
           textAlign: 'center',
         }}
       >
-        Questions about your order? Contact us at support@myshop.com
+        {t('checkout.supportContact')}
       </p>
     </Container>
   );

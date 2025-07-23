@@ -14,12 +14,14 @@ import { useAuth } from '@/hooks/AuthHook';
 import { createPaymentIntent } from '@/requests/payment.request';
 import { useRouter } from 'next/navigation';
 import { useFeedback } from '@/hooks/FeedbackHook';
+import { useTranslation } from 'react-i18next';
 
 const PaymentForm = ({
   onPaymentMethodReady,
 }: {
   onPaymentMethodReady: () => void;
 }) => {
+  const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -64,6 +66,7 @@ const PaymentForm = ({
       setIsProcessing(false);
     }
   };
+
   return (
     <Container flow="column">
       <form onSubmit={handleSubmit}>
@@ -74,7 +77,9 @@ const PaymentForm = ({
           disabled={!stripe || isProcessing}
           style={{ width: '100%', marginTop: '1rem' }}
         >
-          {isProcessing ? 'Setting up payment...' : 'Continue to Review'}
+          {isProcessing
+            ? t('checkout.settingUpPayment')
+            : t('checkout.continueToReview')}
         </Button>
       </form>
     </Container>
@@ -82,6 +87,7 @@ const PaymentForm = ({
 };
 
 const PaymentStep: React.FC = () => {
+  const { t } = useTranslation();
   const { sessionData } = useAuth();
   const { showFeedback } = useFeedback();
   const router = useRouter();
@@ -94,22 +100,22 @@ const PaymentStep: React.FC = () => {
         if (result && result.clientSecret) {
           setClientSecret(result.clientSecret);
         } else {
-          showFeedback('Payment initialization failed', 'error');
+          showFeedback(t('checkout.paymentInitFailed'), 'error');
         }
       });
     }
-  }, [sessionData?.sessionId]);
+  }, [sessionData?.sessionId, t]);
 
   const handlePaymentMethodReady = () => {
-    showFeedback('Payment method validated', 'success');
+    showFeedback(t('checkout.paymentMethodValidated'), 'success');
     router.push('/checkout/review');
   };
 
-  if (!clientSecret) return <div>Loading payment...</div>;
+  if (!clientSecret) return <div>{t('checkout.loadingPayment')}</div>;
 
   return (
     <Container flow={'column'}>
-      <h2>Payment Information</h2>
+      <h2>{t('checkout.paymentInformation')}</h2>
       <Elements
         stripe={stripePromise}
         options={{

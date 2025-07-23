@@ -13,8 +13,10 @@ import {
 import { useRouter } from 'next/navigation';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import CartList from '@/components/section/cart/CartList';
+import { useTranslation } from 'react-i18next';
 
 const ReviewForm = () => {
+  const { t } = useTranslation();
   const { sessionData } = useAuth();
   const { showFeedback } = useFeedback();
   const router = useRouter();
@@ -36,14 +38,14 @@ const ReviewForm = () => {
 
       localStorage.removeItem('paymentMethodId');
       if (confirmResult) {
-        showFeedback('Order placed successfully!', 'success');
+        showFeedback(t('checkout.orderPlacedSuccess'), 'success');
         router.push(`/checkout/${confirmResult.order.orderNumber}`);
       } else {
-        showFeedback('Order creation failed', 'error');
+        showFeedback(t('checkout.orderCreationFailed'), 'error');
       }
     } catch (error) {
       console.error('Payment error:', error);
-      showFeedback('Payment processing failed', 'error');
+      showFeedback(t('checkout.paymentProcessingFailed'), 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -52,16 +54,19 @@ const ReviewForm = () => {
   return (
     <ButtonContainer>
       <Button onClick={() => router.back()} variant="secondary">
-        Back to Payment
+        {t('checkout.backToPayment')}
       </Button>
       <Button onClick={handleFinalPayment} disabled={isProcessing}>
-        {isProcessing ? 'Processing Payment...' : 'Place Order & Pay'}
+        {isProcessing
+          ? t('checkout.processingPayment')
+          : t('checkout.placeOrderAndPay')}
       </Button>
     </ButtonContainer>
   );
 };
 
 const ReviewStep: React.FC = () => {
+  const { t } = useTranslation();
   const { sessionData } = useAuth();
   const [clientSecret, setClientSecret] = useState('');
 
@@ -76,16 +81,16 @@ const ReviewStep: React.FC = () => {
     }
   }, [sessionData?.sessionId]);
 
-  if (!clientSecret) return <div>Loading order review...</div>;
+  if (!clientSecret) return <div>{t('checkout.loadingOrderReview')}</div>;
 
   return (
     <Container flow={'column'}>
-      <h2>Review Your Order</h2>
+      <h2>{t('checkout.reviewOrder')}</h2>
       <CartList review />
 
       <div style={{ marginBottom: '1rem' }}>
-        <h4>Payment Method</h4>
-        <p>💳 Credit Card (ending in ••••)</p>
+        <h4>{t('checkout.paymentMethod')}</h4>
+        <p>💳 {t('checkout.creditCardEnding')}</p>
       </div>
 
       <Elements

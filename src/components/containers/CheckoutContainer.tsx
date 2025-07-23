@@ -6,12 +6,15 @@ import PaymentStep from '../section/checkout/PaymentStep';
 import ConfirmationStep from '@/components/section/checkout/ConfirmationStep';
 import { Container } from '@/components/system/Container';
 import ReviewStep from '@/components/section/checkout/ReviewStep';
+import { useTranslation } from 'react-i18next';
 
 interface View {
   view: 'address' | 'paymentInfo' | 'confirmation' | 'review';
 }
 
 const CheckoutContainer: React.FC<View> = ({ view }) => {
+  const { t } = useTranslation();
+
   return (
     <Container
       padding={false}
@@ -20,11 +23,12 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
       alignItems="center"
       maxWidth={'550'}
     >
-      <h1>Checkout</h1>
+      <h1>{t('checkout.title')}</h1>
       <CheckoutContent view={view} />
     </Container>
   );
 };
+
 const CheckoutContent: React.FC<View> = ({ view }) => {
   const getCurrentView = (): React.ReactElement => {
     switch (view) {
@@ -37,7 +41,7 @@ const CheckoutContent: React.FC<View> = ({ view }) => {
       case 'confirmation':
         return <ConfirmationStep />;
       default:
-        return <AddressStep />;
+        return <></>;
     }
   };
 
