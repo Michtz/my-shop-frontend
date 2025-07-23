@@ -51,13 +51,6 @@
     "enterState": "Entrez l'état...",
     "enterZipCode": "Entrez le code postal..."
   },
-  "validation": {
-    "required": "Champ obligatoire",
-    "minLength": "Trop court",
-    "invalidEmail": "Adresse e-mail invalide",
-    "invalidPhoneNumber": "Numéro de téléphone invalide",
-    "streetAddressTooShort": "Adresse de rue trop courte"
-  },
   "admin": {
     "productManagement": "Gestion des produits",
     "productsCount": "Produits ({{count}})",
@@ -95,12 +88,94 @@
     "addToCart": "Ajouter au panier",
     "otherCustomersBought": "Autres clients ont acheté"
   },
+  "auth": {
+    "welcomeBack": "Bon retour",
+    "signInToContinue": "Connectez-vous à votre compte pour continuer",
+    "login": "Connexion",
+    "emailAddress": "Adresse e-mail",
+    "password": "Mot de passe",
+    "emailPlaceholder": "test.test@test.com",
+    "passwordPlaceholder": "**********",
+    "forgotPassword": "Mot de passe oublié ? Bientôt disponible",
+    "loginButton": "Se connecter",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "createAccount": "Créer un ici"
+  },
+  "register": {
+    "welcome": "Bienvenue",
+    "createAccount": "Créer un compte",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "firstNamePlaceholder": "François",
+    "lastNamePlaceholder": "Dupont",
+    "emailAddress": "Adresse e-mail",
+    "password": "Mot de passe",
+    "passwordAgain": "Répéter le mot de passe",
+    "passwordPlaceholder": "**************",
+    "forgotPassword": "Mot de passe oublié ? Bientôt disponible",
+    "createAccountButton": "Créer un compte",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "signIn": "Se connecter"
+  },
+  "passwordChange": {
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmNewPassword": "Confirmer le nouveau mot de passe",
+    "currentPasswordPlaceholder": "Entrez le mot de passe actuel...",
+    "newPasswordPlaceholder": "Entrez le nouveau mot de passe...",
+    "confirmPasswordPlaceholder": "Confirmez le nouveau mot de passe...",
+    "passwordRequirements": "Exigences du mot de passe :",
+    "requirement1": "Au moins 8 caractères",
+    "requirement2": "Contient des lettres majuscules et minuscules",
+    "requirement3": "Contient au moins un chiffre",
+    "cancel": "Annuler",
+    "changing": "Modification...",
+    "changePasswordButton": "Changer le mot de passe",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+    "passwordMissingCase": "Le mot de passe doit contenir des lettres majuscules et minuscules",
+    "passwordMissingNumber": "Le mot de passe doit contenir au moins un chiffre",
+    "passwordChangedSuccess": "Mot de passe modifié avec succès !",
+    "passwordChangeError": "Une erreur s'est produite lors du changement de mot de passe",
+    "currentPasswordRequired": "Le mot de passe actuel est requis",
+    "newPasswordRequired": "Le nouveau mot de passe est requis",
+    "confirmPasswordRequired": "Veuillez confirmer votre nouveau mot de passe"
+  },
+  "cart": {
+    "title": "Panier",
+    "emptyTitle": "Votre panier est encore vide",
+    "continueShopping": "Continuer les achats",
+    "summary": "RÉSUMÉ",
+    "subtotal": "Sous-total",
+    "shipping": "Frais de livraison",
+    "total": "Total",
+    "totalRounded": "Total arrondi",
+    "netTotal": "Total net",
+    "vatIncluded": "plus {{vatRate}}% TVA",
+    "priceDisclaimer": "*Prix TTC plus frais de livraison",
+    "checkout": "Commander"
+  },
+  "validation": {
+    "required": "Champ obligatoire",
+    "minLength": "Trop court",
+    "invalidEmail": "Adresse e-mail invalide",
+    "invalidPhoneNumber": "Numéro de téléphone invalide",
+    "streetAddressTooShort": "Adresse de rue trop courte",
+    "emailRequired": "E-mail est requis",
+    "validEmailRequired": "Veuillez saisir une adresse e-mail valide",
+    "passwordRequired": "Mot de passe est requis",
+    "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
+    "firstNameRequired": "Prénom est requis",
+    "lastNameRequired": "Nom de famille est requis"
+  },
   "feedback": {
     "data-saved-success": "Données enregistrées avec succès",
     "data-saved-error": "Erreur lors de l'enregistrement des données",
     "profileUpdatedSuccess": "Profil mis à jour avec succès !",
     "logoutSuccess": "Déconnexion réussie",
     "logoutError": "Erreur lors de la déconnexion",
-    "add-to-cart-success": "Produit ajouté avec succès"
+    "add-to-cart-success": "Produit ajouté avec succès",
+    "login-success": "Connexion réussie",
+    "login-error": "Échec de la connexion"
   }
 }

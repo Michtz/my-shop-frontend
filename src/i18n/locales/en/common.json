@@ -51,13 +51,6 @@
     "enterState": "Enter state...",
     "enterZipCode": "Enter ZIP code..."
   },
-  "validation": {
-    "required": "Required",
-    "minLength": "Too short",
-    "invalidEmail": "Invalid email address",
-    "invalidPhoneNumber": "Invalid phone number",
-    "streetAddressTooShort": "Street address too short"
-  },
   "admin": {
     "productManagement": "Product Management",
     "productsCount": "Products ({{count}})",
@@ -95,12 +88,94 @@
     "addToCart": "Add to cart",
     "otherCustomersBought": "Other customers bought"
   },
+  "auth": {
+    "welcomeBack": "Welcome Back",
+    "signInToContinue": "Sign in to your account to continue",
+    "login": "Login",
+    "emailAddress": "Email Address",
+    "password": "Password",
+    "emailPlaceholder": "test.test@test.com",
+    "passwordPlaceholder": "**********",
+    "forgotPassword": "Forgot password? coming soon",
+    "loginButton": "Log in",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create one here"
+  },
+  "register": {
+    "welcome": "Welcome",
+    "createAccount": "Create a Account",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "firstNamePlaceholder": "Franz",
+    "lastNamePlaceholder": "Mustermann",
+    "emailAddress": "Email Address",
+    "password": "Password",
+    "passwordAgain": "Password again",
+    "passwordPlaceholder": "**************",
+    "forgotPassword": "Forgot password? coming soon",
+    "createAccountButton": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in"
+  },
+  "passwordChange": {
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "currentPasswordPlaceholder": "Enter current password...",
+    "newPasswordPlaceholder": "Enter new password...",
+    "confirmPasswordPlaceholder": "Confirm new password...",
+    "passwordRequirements": "Password requirements:",
+    "requirement1": "At least 8 characters long",
+    "requirement2": "Contains uppercase and lowercase letters",
+    "requirement3": "Contains at least one number",
+    "cancel": "Cancel",
+    "changing": "Changing...",
+    "changePasswordButton": "Change Password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 8 characters long",
+    "passwordMissingCase": "Password must contain both uppercase and lowercase letters",
+    "passwordMissingNumber": "Password must contain at least one number",
+    "passwordChangedSuccess": "Password changed successfully!",
+    "passwordChangeError": "An error occurred while changing password",
+    "currentPasswordRequired": "Current password is required",
+    "newPasswordRequired": "New password is required",
+    "confirmPasswordRequired": "Please confirm your new password"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "emptyTitle": "Your cart is still empty",
+    "continueShopping": "Continue Shopping",
+    "summary": "SUMMARY",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "totalRounded": "Total Rounded",
+    "netTotal": "Net Total",
+    "vatIncluded": "plus {{vatRate}}% VAT",
+    "priceDisclaimer": "*Prices incl. VAT plus shipping costs",
+    "checkout": "Checkout"
+  },
+  "validation": {
+    "required": "Required",
+    "minLength": "Too short",
+    "invalidEmail": "Invalid email address",
+    "invalidPhoneNumber": "Invalid phone number",
+    "streetAddressTooShort": "Street address too short",
+    "emailRequired": "Email is required",
+    "validEmailRequired": "Please enter a valid email address",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required"
+  },
   "feedback": {
     "data-saved-success": "Data saved successfully",
     "data-saved-error": "Error saving data",
     "profileUpdatedSuccess": "Profile updated successfully!",
     "logoutSuccess": "Successfully logged out",
     "logoutError": "Error during logout",
-    "add-to-cart-success": "Product added successfully"
+    "add-to-cart-success": "Product added successfully",
+    "login-success": "Successfully logged in",
+    "login-error": "Login failed"
   }
 }

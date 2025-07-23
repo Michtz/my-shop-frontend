@@ -10,12 +10,14 @@ import { Hr } from '@/components/system/Hr';
 import Skeleton from '@/components/system/Skeleton';
 import CartItemSkeleton from '@/components/section/cart/CartListItemSkleton';
 import { useAuth } from '@/hooks/AuthHook';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   review?: boolean;
 }
 
 const CartList: FC<Props> = ({ review }) => {
+  const { t } = useTranslation();
   const { cartItems, mutate, isLoading } = useCart();
   const { sessionData } = useAuth();
 
@@ -71,7 +73,7 @@ const CartList: FC<Props> = ({ review }) => {
       alignItems={'center'}
       maxWidth={'1150'}
     >
-      <h2>Warenkorb</h2>
+      <h2>{t('cart.title')}</h2>
       {isLoading ? skeleton : list}
     </Container>
   );

@@ -51,13 +51,6 @@
     "enterState": "Bundesland eingeben...",
     "enterZipCode": "PLZ eingeben..."
   },
-  "validation": {
-    "required": "Pflichtfeld",
-    "minLength": "Zu kurz",
-    "invalidEmail": "Ungültige E-Mail-Adresse",
-    "invalidPhoneNumber": "Ungültige Telefonnummer",
-    "streetAddressTooShort": "Straßenadresse zu kurz"
-  },
   "admin": {
     "productManagement": "Produktverwaltung",
     "productsCount": "Produkte ({{count}})",
@@ -95,12 +88,94 @@
     "addToCart": "In den Warenkorb",
     "otherCustomersBought": "Das kauften andere Kunden"
   },
+  "auth": {
+    "welcomeBack": "Willkommen zurück",
+    "signInToContinue": "Melden Sie sich bei Ihrem Konto an, um fortzufahren",
+    "login": "Anmelden",
+    "emailAddress": "E-Mail-Adresse",
+    "password": "Passwort",
+    "emailPlaceholder": "test.test@test.com",
+    "passwordPlaceholder": "**********",
+    "forgotPassword": "Passwort vergessen? Kommt bald",
+    "loginButton": "Einloggen",
+    "noAccount": "Haben Sie noch kein Konto?",
+    "createAccount": "Hier erstellen"
+  },
+  "register": {
+    "welcome": "Willkommen",
+    "createAccount": "Konto erstellen",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "firstNamePlaceholder": "Franz",
+    "lastNamePlaceholder": "Mustermann",
+    "emailAddress": "E-Mail-Adresse",
+    "password": "Passwort",
+    "passwordAgain": "Passwort wiederholen",
+    "passwordPlaceholder": "**************",
+    "forgotPassword": "Passwort vergessen? Kommt bald",
+    "createAccountButton": "Konto erstellen",
+    "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
+    "signIn": "Anmelden"
+  },
+  "passwordChange": {
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmNewPassword": "Neues Passwort bestätigen",
+    "currentPasswordPlaceholder": "Aktuelles Passwort eingeben...",
+    "newPasswordPlaceholder": "Neues Passwort eingeben...",
+    "confirmPasswordPlaceholder": "Neues Passwort bestätigen...",
+    "passwordRequirements": "Passwort-Anforderungen:",
+    "requirement1": "Mindestens 8 Zeichen lang",
+    "requirement2": "Enthält Groß- und Kleinbuchstaben",
+    "requirement3": "Enthält mindestens eine Zahl",
+    "cancel": "Abbrechen",
+    "changing": "Ändere...",
+    "changePasswordButton": "Passwort ändern",
+    "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
+    "passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
+    "passwordMissingCase": "Passwort muss Groß- und Kleinbuchstaben enthalten",
+    "passwordMissingNumber": "Passwort muss mindestens eine Zahl enthalten",
+    "passwordChangedSuccess": "Passwort erfolgreich geändert!",
+    "passwordChangeError": "Fehler beim Ändern des Passworts",
+    "currentPasswordRequired": "Aktuelles Passwort ist erforderlich",
+    "newPasswordRequired": "Neues Passwort ist erforderlich",
+    "confirmPasswordRequired": "Bitte bestätigen Sie Ihr neues Passwort"
+  },
+  "cart": {
+    "title": "Warenkorb",
+    "emptyTitle": "Dein Warenkorb ist noch leer",
+    "continueShopping": "Weiter stöbern",
+    "summary": "ZUSAMMENFASSUNG",
+    "subtotal": "Zwischensumme",
+    "shipping": "Versandkosten",
+    "total": "Gesamtsumme",
+    "totalRounded": "Gesamtsumme gerundet",
+    "netTotal": "Gesamtnettosumme",
+    "vatIncluded": "zzgl. {{vatRate}}% MwSt.",
+    "priceDisclaimer": "*Preise inkl. MwSt. zzgl. Versandkosten",
+    "checkout": "Checkout"
+  },
+  "validation": {
+    "required": "Pflichtfeld",
+    "minLength": "Zu kurz",
+    "invalidEmail": "Ungültige E-Mail-Adresse",
+    "invalidPhoneNumber": "Ungültige Telefonnummer",
+    "streetAddressTooShort": "Straßenadresse zu kurz",
+    "emailRequired": "E-Mail ist erforderlich",
+    "validEmailRequired": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "passwordRequired": "Passwort ist erforderlich",
+    "passwordMinLength": "Passwort muss mindestens 6 Zeichen haben",
+    "firstNameRequired": "Vorname ist erforderlich",
+    "lastNameRequired": "Nachname ist erforderlich"
+  },
   "feedback": {
     "data-saved-success": "Daten erfolgreich gespeichert",
     "data-saved-error": "Fehler beim Speichern der Daten",
     "profileUpdatedSuccess": "Profil erfolgreich aktualisiert!",
     "logoutSuccess": "Erfolgreich abgemeldet",
     "logoutError": "Fehler beim Abmelden",
-    "add-to-cart-success": "Produkt erfolgreich hinzugefügt"
+    "add-to-cart-success": "Produkt erfolgreich hinzugefügt",
+    "login-success": "Erfolgreich angemeldet",
+    "login-error": "Anmeldung fehlgeschlagen"
   }
 }
