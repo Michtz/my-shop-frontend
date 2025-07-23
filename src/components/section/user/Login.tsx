@@ -36,7 +36,7 @@ const LoginPage: React.FC<LoginPageProps> = ({
   withTitle,
   checkout = false,
 }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const { showFeedback } = useFeedback();
   const { transformFieldError } = useError();
   const router = useRouter();
@@ -66,14 +66,14 @@ const LoginPage: React.FC<LoginPageProps> = ({
   };
 
   const validateEmail = (email: string | undefined) => {
-    if (!email) return 'Email is required';
+    if (!email) return t('validation.emailRequired');
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return emailRegex.test(email) || 'Please enter a valid email address';
+    return emailRegex.test(email) || t('validation.validEmailRequired');
   };
 
   const validatePassword = (password: string | undefined) => {
-    if (!password) return 'Password is required';
-    return password.length >= 6 || 'Password must be at least 6 characters';
+    if (!password) return t('validation.passwordRequired');
+    return password.length >= 6 || t('validation.passwordMinLength');
   };
 
   return (
@@ -85,9 +85,9 @@ const LoginPage: React.FC<LoginPageProps> = ({
               <Image src={logo} alt={'logo'} height={60} />
             </span>
             <div className={style.loginHeader}>
-              <h2 className={style.loginTitle}>Welcome Back</h2>
+              <h2 className={style.loginTitle}>{t('auth.welcomeBack')}</h2>
               <p className={style.loginSubtitle}>
-                Sign in to your account to continue
+                {t('auth.signInToContinue')}
               </p>
             </div>
             <Hr />
@@ -96,7 +96,7 @@ const LoginPage: React.FC<LoginPageProps> = ({
 
         {withTitle && (
           <div style={{ marginBottom: '2rem' }}>
-            <h2>Login</h2>
+            <h2>{t('auth.login')}</h2>
           </div>
         )}
 
@@ -107,13 +107,13 @@ const LoginPage: React.FC<LoginPageProps> = ({
           <FormRow gap={'large'}>
             <Input
               type="email"
-              label="Email Address"
+              label={t('auth.emailAddress')}
               required
               fullWidth
-              placeholder="test.test@test.com"
+              placeholder={t('auth.emailPlaceholder')}
               clearable
               inputProps={register('email', {
-                required: 'Email is required',
+                required: t('validation.emailRequired'),
                 validate: validateEmail,
               })}
               {...transformFieldError(errors.email)}
@@ -123,13 +123,13 @@ const LoginPage: React.FC<LoginPageProps> = ({
           <FormRow>
             <Input
               type="password"
-              label="Password"
+              label={t('auth.password')}
               required
               fullWidth
-              placeholder="**********"
+              placeholder={t('auth.passwordPlaceholder')}
               showPasswordToggle
               inputProps={register('password', {
-                required: 'Password is required',
+                required: t('validation.passwordRequired'),
                 validate: validatePassword,
               })}
               {...transformFieldError(errors.password)}
@@ -138,21 +138,21 @@ const LoginPage: React.FC<LoginPageProps> = ({
 
           <FormRow direction="row">
             <Link href="" disabled className={style.forgotPassword}>
-              Forgot password? coming soon
+              {t('auth.forgotPassword')}
             </Link>
           </FormRow>
 
           <FormRow>
             <Button type="submit" flex disabled={isLoading}>
-              einlogen
+              {t('auth.loginButton')}
             </Button>
           </FormRow>
         </FormContainer>
 
         <div className={style.signupPrompt}>
-          <span>Don't have an account? </span>
+          <span>{t('auth.noAccount')} </span>
           <Link href="/register" className={style.signupLink}>
-            Create one here
+            {t('auth.createAccount')}
           </Link>
         </div>
       </div>

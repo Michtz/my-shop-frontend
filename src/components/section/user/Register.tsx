@@ -19,7 +19,7 @@ import { useFeedback } from '@/hooks/FeedbackHook';
 import Image from 'next/image';
 import logo from '@/assets/myShopLogo.png';
 
-interface LoginFormData {
+interface RegisterFormData {
   email: string;
   password: string;
   passwordSec: string;
@@ -27,13 +27,13 @@ interface LoginFormData {
   firstName: string;
 }
 
-interface LoginPageProps {
-  onLoginSuccess?: (user: any) => void;
+interface RegisterPageProps {
+  onRegisterSuccess?: (user: any) => void;
   redirectTo?: string;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({}) => {
-  const { t } = useTranslation(['common']);
+const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
+  const { t } = useTranslation();
   const { showFeedback } = useFeedback();
   const { transformFieldError } = useError();
   const router = useRouter();
@@ -46,7 +46,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
     control,
     setValue,
     formState: { errors },
-  } = useForm<LoginFormData>({
+  } = useForm<RegisterFormData>({
     defaultValues: {
       email: '',
       password: '',
@@ -56,7 +56,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
     },
   });
 
-  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     try {
       if (data.password === data.passwordSec) {
         await _register(
@@ -69,19 +69,19 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
       }
     } catch (err) {
       showFeedback('feedback.login-error', 'error');
-      Logger.error('Login failed:', err);
+      Logger.error('Registration failed:', err);
     }
   };
 
   const validateEmail = (email: string | undefined) => {
-    if (!email) return 'Email is required';
+    if (!email) return t('validation.emailRequired');
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return emailRegex.test(email) || 'Please enter a valid email address';
+    return emailRegex.test(email) || t('validation.validEmailRequired');
   };
 
   const validatePassword = (password: string | undefined) => {
-    if (!password) return 'Password is required';
-    return password.length >= 6 || 'Password must be at least 6 characters';
+    if (!password) return t('validation.passwordRequired');
+    return password.length >= 6 || t('validation.passwordMinLength');
   };
 
   return (
@@ -91,8 +91,8 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
           <Image src={logo} alt={'logo'} height={60} />
         </span>
         <div className={style.loginHeader}>
-          <h1 className={style.loginTitle}>Welcome</h1>
-          <p className={style.loginSubtitle}>Create a Account</p>
+          <h1 className={style.loginTitle}>{t('register.welcome')}</h1>
+          <p className={style.loginSubtitle}>{t('register.createAccount')}</p>
         </div>
         <Hr />
         <FormContainer
@@ -102,92 +102,98 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
           <FormRow>
             <Input
               type="text"
-              label="First name"
+              label={t('register.firstName')}
               required
               fullWidth
-              placeholder="Franz"
+              placeholder={t('register.firstNamePlaceholder')}
               clearable
               inputProps={register('firstName', {
-                required: 'first name is required',
+                required: t('validation.firstNameRequired'),
               })}
               {...transformFieldError(errors.firstName)}
             />
-          </FormRow>{' '}
+          </FormRow>
+
           <FormRow>
             <Input
               type="text"
-              label="last name"
+              label={t('register.lastName')}
               required
               fullWidth
-              placeholder="mustermann"
+              placeholder={t('register.lastNamePlaceholder')}
               clearable
               inputProps={register('lastName', {
-                required: 'last name is required',
+                required: t('validation.lastNameRequired'),
               })}
               {...transformFieldError(errors.lastName)}
             />
           </FormRow>
+
           <FormRow>
             <Input
               type="email"
-              label="Email Address"
+              label={t('register.emailAddress')}
               required
               fullWidth
-              placeholder="test.test@test.com"
+              placeholder={t('auth.emailPlaceholder')}
               clearable
               inputProps={register('email', {
-                required: 'Email is required',
+                required: t('validation.emailRequired'),
                 validate: validateEmail,
               })}
               {...transformFieldError(errors.email)}
             />
           </FormRow>
+
           <FormRow>
             <Input
               type="password"
-              label="Password"
+              label={t('register.password')}
               required
               fullWidth
-              placeholder="**************"
+              placeholder={t('register.passwordPlaceholder')}
               showPasswordToggle
               inputProps={register('password', {
-                required: 'Password is required',
+                required: t('validation.passwordRequired'),
                 validate: validatePassword,
               })}
               {...transformFieldError(errors.password)}
             />
           </FormRow>
+
           <FormRow>
             <Input
               type="password"
-              label="Password again"
+              label={t('register.passwordAgain')}
               required
               fullWidth
-              placeholder="**************"
+              placeholder={t('register.passwordPlaceholder')}
               showPasswordToggle
               inputProps={register('passwordSec', {
-                required: 'Password is required',
+                required: t('validation.passwordRequired'),
                 validate: validatePassword,
               })}
-              {...transformFieldError(errors.password)}
+              {...transformFieldError(errors.passwordSec)}
             />
           </FormRow>
+
           <FormRow direction="row">
             <Link href="/register" disabled className={style.forgotPassword}>
-              Forgot password? coming soon
+              {t('register.forgotPassword')}
             </Link>
           </FormRow>
+
           <FormRow>
             <Button type="submit" flex disabled={isLoading}>
-              create Account
+              {t('register.createAccountButton')}
             </Button>
           </FormRow>
         </FormContainer>
 
         <div className={style.signupPrompt}>
-          <span> Already have an account? </span>
+          <span>{t('register.alreadyHaveAccount')} </span>
           <Link href="/login" className={style.signupLink}>
-            sign in
+            {t('register.signIn')}
           </Link>
         </div>
       </div>
@@ -195,4 +201,4 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

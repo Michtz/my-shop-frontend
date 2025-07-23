@@ -13,6 +13,7 @@ import { changePassword } from '@/requests/user.request';
 import { useAuth } from '@/hooks/AuthHook';
 import { useRouter } from 'next/navigation';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { useTranslation } from 'react-i18next';
 
 interface PasswordChangeData {
   currentPassword: string;
@@ -23,6 +24,7 @@ interface PasswordChangeData {
 interface PasswordChangeProps {}
 
 const PasswordChangeForm: FC<PasswordChangeProps> = () => {
+  const { t } = useTranslation();
   const { transformFieldError } = useError();
   const { showFeedback } = useFeedback();
   const router: AppRouterInstance = useRouter();
@@ -38,18 +40,19 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
   const watchedNewPassword = watch('newPassword');
 
   const validatePasswordMatch = (value: string) => {
-    return value === watchedNewPassword || 'Passwords do not match';
+    return (
+      value === watchedNewPassword || t('passwordChange.passwordsDoNotMatch')
+    );
   };
 
   const validatePasswordStrength = (password: string) => {
-    if (password.length < 8)
-      return 'Password must be at least 8 characters long';
+    if (password.length < 8) return t('passwordChange.passwordTooShort');
 
     if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password))
-      return 'Password must contain both uppercase and lowercase letters';
+      return t('passwordChange.passwordMissingCase');
 
     if (!/(?=.*\d)/.test(password))
-      return 'Password must contain at least one number';
+      return t('passwordChange.passwordMissingNumber');
 
     return true;
   };
@@ -58,10 +61,10 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
     try {
       await changePassword(data.currentPassword, data.newPassword);
       router.push('/profile');
-      showFeedback('Password changed successfully!', 'success');
+      showFeedback(t('passwordChange.passwordChangedSuccess'), 'success');
     } catch (error) {
       Logger.error('Error changing password:', error);
-      showFeedback('An error occurred while changing password', 'error');
+      showFeedback(t('passwordChange.passwordChangeError'), 'error');
     }
   };
 
@@ -77,16 +80,16 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
       >
         <FormRow>
           <Input
-            label="Current Password"
+            label={t('passwordChange.currentPassword')}
             type="password"
             required
             fullWidth
-            placeholder="Enter current password..."
+            placeholder={t('passwordChange.currentPasswordPlaceholder')}
             inputProps={register('currentPassword', {
-              required: 'Current password is required',
+              required: t('passwordChange.currentPasswordRequired'),
               minLength: {
                 value: 1,
-                message: 'Current password is required',
+                message: t('passwordChange.currentPasswordRequired'),
               },
             })}
             {...transformFieldError(errors.currentPassword)}
@@ -95,13 +98,13 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
 
         <FormRow>
           <Input
-            label="New Password"
+            label={t('passwordChange.newPassword')}
             type="password"
             required
             fullWidth
-            placeholder="Enter new password..."
+            placeholder={t('passwordChange.newPasswordPlaceholder')}
             inputProps={register('newPassword', {
-              required: 'New password is required',
+              required: t('passwordChange.newPasswordRequired'),
               validate: validatePasswordStrength,
             })}
             {...transformFieldError(errors.newPassword)}
@@ -110,13 +113,13 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
 
         <FormRow>
           <Input
-            label="Confirm New Password"
+            label={t('passwordChange.confirmNewPassword')}
             type="password"
             required
             fullWidth
-            placeholder="Confirm new password..."
+            placeholder={t('passwordChange.confirmPasswordPlaceholder')}
             inputProps={register('confirmNewPassword', {
-              required: 'Please confirm your new password',
+              required: t('passwordChange.confirmPasswordRequired'),
               validate: validatePasswordMatch,
             })}
             {...transformFieldError(errors.confirmNewPassword)}
@@ -124,11 +127,13 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
         </FormRow>
 
         <div className={style.passwordInfo}>
-          <p className={style.infoText}>Password requirements:</p>
+          <p className={style.infoText}>
+            {t('passwordChange.passwordRequirements')}
+          </p>
           <ul className={style.requirementsList}>
-            <li>At least 8 characters long</li>
-            <li>Contains uppercase and lowercase letters</li>
-            <li>Contains at least one number</li>
+            <li>{t('passwordChange.requirement1')}</li>
+            <li>{t('passwordChange.requirement2')}</li>
+            <li>{t('passwordChange.requirement3')}</li>
           </ul>
         </div>
 
@@ -139,10 +144,12 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
             onClick={handleCancel}
             disabled={isSubmitting}
           >
-            Cancel
+            {t('passwordChange.cancel')}
           </Button>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Changing...' : 'Change Password'}
+            {isSubmitting
+              ? t('passwordChange.changing')
+              : t('passwordChange.changePasswordButton')}
           </Button>
         </ButtonContainer>
       </FormContainer>

@@ -81,11 +81,26 @@
       "actions": "Aktionen"
     }
   },
+  "product": {
+    "outOfStock": "Produkt ist ausverkauft",
+    "onlyXAvailable": "Nur noch {{count}} auf Lager verfügbar",
+    "connectionLost": "Verbindung unterbrochen - Daten werden möglicherweise nicht live aktualisiert",
+    "soldOut": "Ausverkauft",
+    "onlyXLeft": "Nur noch {{count}} verfügbar",
+    "xAvailable": "{{count}} verfügbar",
+    "othersInCart": "{{count}} andere haben das im Warenkorb",
+    "stockChanged": "Lagerbestand hat sich geändert",
+    "price": "Preis: €{{price}}",
+    "onlyXAvailableShort": "Nur {{count}} verfügbar",
+    "addToCart": "In den Warenkorb",
+    "otherCustomersBought": "Das kauften andere Kunden"
+  },
   "feedback": {
     "data-saved-success": "Daten erfolgreich gespeichert",
     "data-saved-error": "Fehler beim Speichern der Daten",
     "profileUpdatedSuccess": "Profil erfolgreich aktualisiert!",
     "logoutSuccess": "Erfolgreich abgemeldet",
-    "logoutError": "Fehler beim Abmelden"
+    "logoutError": "Fehler beim Abmelden",
+    "add-to-cart-success": "Produkt erfolgreich hinzugefügt"
   }
 }

@@ -81,11 +81,26 @@
       "actions": "Actions"
     }
   },
+  "product": {
+    "outOfStock": "Product is out of stock",
+    "onlyXAvailable": "Only {{count}} left in stock",
+    "connectionLost": "Connection lost - Data may not be updated in real time",
+    "soldOut": "Sold Out",
+    "onlyXLeft": "Only {{count}} left",
+    "xAvailable": "{{count}} available",
+    "othersInCart": "{{count}} others have this in cart",
+    "stockChanged": "Stock has changed",
+    "price": "Price: €{{price}}",
+    "onlyXAvailableShort": "Only {{count}} available",
+    "addToCart": "Add to cart",
+    "otherCustomersBought": "Other customers bought"
+  },
   "feedback": {
     "data-saved-success": "Data saved successfully",
     "data-saved-error": "Error saving data",
     "profileUpdatedSuccess": "Profile updated successfully!",
     "logoutSuccess": "Successfully logged out",
-    "logoutError": "Error during logout"
+    "logoutError": "Error during logout",
+    "add-to-cart-success": "Product added successfully"
   }
 }

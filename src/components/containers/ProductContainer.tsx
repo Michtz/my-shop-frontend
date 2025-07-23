@@ -18,6 +18,7 @@ import { Hr } from '@/components/system/Hr';
 import { useAuth } from '@/hooks/AuthHook';
 import { Logger } from '@/utils/Logger.class';
 import Button, { ButtonContainer } from '@/components/system/Button';
+import { useTranslation } from 'react-i18next';
 
 interface FormFields {
   quantity: number;
@@ -30,6 +31,7 @@ const getDefaultValues = (product = {} as any): any => {
 };
 
 const ProductOverview: FC = () => {
+  const { t } = useTranslation();
   const {
     product,
     isConnected,
@@ -59,12 +61,15 @@ const ProductOverview: FC = () => {
   const submit = async (data: any) => {
     try {
       if (isOutOfStock) {
-        showFeedback('Produkt ist ausverkauft', 'error');
+        showFeedback(t('product.outOfStock'), 'error');
         return;
       }
 
       if (availableStock < data.quantity) {
-        showFeedback(`Nur noch ${availableStock} auf Lager verfügbar`, 'error');
+        showFeedback(
+          t('product.onlyXAvailable', { count: availableStock }),
+          'error',
+        );
         return;
       }
 
@@ -145,8 +150,7 @@ const ProductOverview: FC = () => {
     if (!isConnected) {
       return (
         <div style={{ color: 'orange', fontSize: '12px', marginBottom: '8px' }}>
-          ⚠️ Verbindung unterbrochen - Daten werden möglicherweise nicht live
-          aktualisiert
+          ⚠️ {t('product.connectionLost')}
         </div>
       );
     }
@@ -159,26 +163,30 @@ const ProductOverview: FC = () => {
 
       <div className={style.stockDisplay}>
         {isOutOfStock ? (
-          <span style={{ color: 'red', fontWeight: 'bold' }}>Ausverkauft</span>
+          <span style={{ color: 'red', fontWeight: 'bold' }}>
+            {t('product.soldOut')}
+          </span>
         ) : isLowStock ? (
           <span style={{ color: 'orange', fontWeight: 'bold' }}>
-            Nur noch {availableStock} verfügbar
+            {t('product.onlyXLeft', { count: availableStock })}
           </span>
         ) : (
-          <span style={{ color: 'green' }}>{availableStock} verfügbar</span>
+          <span style={{ color: 'green' }}>
+            {t('product.xAvailable', { count: availableStock })}
+          </span>
         )}
       </div>
 
       {cartCount > 0 && (
         <div style={{ fontSize: '14px', color: '#666', marginTop: '4px' }}>
-          🛒 {cartCount} andere haben das im Warenkorb
+          🛒 {t('product.othersInCart', { count: cartCount })}
         </div>
       )}
 
       {/*/!* Stock Conflicts *!/*/}
       {/*{hasReservationConflicts && (*/}
       {/*  <div style={{ color: 'red', fontSize: '14px', marginTop: '4px' }}>*/}
-      {/*    ⚠️ Lagerbestand hat sich geändert*/}
+      {/*    ⚠️ {t('product.stockChanged')}*/}
       {/*  </div>*/}
       {/*)}*/}
     </div>
@@ -191,7 +199,7 @@ const ProductOverview: FC = () => {
         <p>{product?.description}</p>
         <span className={style.descriptionInfo}>
           <StockInfo />
-          <p>Preis: €{product?.price}</p>
+          <p>{t('product.price', { price: product?.price })}</p>
         </span>
       </div>
     </div>
@@ -223,7 +231,7 @@ const ProductOverview: FC = () => {
 
           {isQuantityTooHigh && (
             <div style={{ color: 'red', fontSize: '12px' }}>
-              Nur {availableStock} verfügbar
+              {t('product.onlyXAvailableShort', { count: availableStock })}
             </div>
           )}
 
@@ -234,7 +242,7 @@ const ProductOverview: FC = () => {
             type={'submit'}
             disabled={isOutOfStock || isQuantityTooHigh}
           >
-            {isOutOfStock ? 'Ausverkauft' : 'Add to cart'}
+            {isOutOfStock ? t('product.soldOut') : t('product.addToCart')}
           </Button>
         </ButtonContainer>
       </FormContainer>
@@ -258,7 +266,7 @@ const ProductOverview: FC = () => {
         <InformationContainer />
       </div>
       <Hr />
-      <h1 className={style.addTitle}>Das kauften andere Kunden</h1>
+      <h1 className={style.addTitle}>{t('product.otherCustomersBought')}</h1>
       <CartsContainer>
         {products?.map((product) => {
           return (

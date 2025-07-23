@@ -30,14 +30,12 @@ const ProfileContent: React.FC<ProfileContainerProps> = ({
       case 'changePw':
         return <PasswordChange />;
       case 'profile':
-        return <UserProfileFormContainer />;
+        return <UserInformationForm />;
       default:
         return <></>;
     }
   };
   return <Container justifyContent={'center'} children={getCurrentView()} />;
 };
-
-const UserProfileFormContainer: FC = () => <UserInformationForm />;
 
 export default ProfileContainer;
