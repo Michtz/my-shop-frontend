@@ -2,8 +2,10 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import deCommon from './locales/de/common.json';
-import enCommon from './locales/en/common.json';
 import frCommon from './locales/fr/common.json';
+import enCommon from './locales/en/common.json';
+import itCommon from './locales/it/common.json';
+import spCommon from './locales/sp/common.json';
 
 const languages: string[] = ['de', 'en', 'fr'];
 const resources = {
@@ -15,6 +17,12 @@ const resources = {
   },
   fr: {
     common: frCommon,
+  },
+  it: {
+    common: itCommon,
+  },
+  sp: {
+    common: spCommon,
   },
 };
 

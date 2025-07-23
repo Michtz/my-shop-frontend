@@ -6,7 +6,7 @@ const middleware = (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;
   console.log('middleware');
   // i18n redirect
-  const pathnameIsMissingLocale = ['de', 'en', 'fr'].every(
+  const pathnameIsMissingLocale = ['de', 'en', 'fr', 'it', 'sp'].every(
     (locale) =>
       !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
   );
