@@ -53,7 +53,7 @@ const ConfirmationStep: React.FC = () => {
   const fetchOrderDetails = async (orderNum: string) => {
     try {
       const response = await axiosInstance.get(`/api/order/${orderNum}`);
-      console.log(response);
+      console.log(response); // Todo: fix response from backend
       if (response) {
         setOrderData(response.data);
       }
