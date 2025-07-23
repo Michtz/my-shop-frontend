@@ -24,7 +24,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   const { products, isLoading, error } = useProducts();
   const { awaitModalResult } = useModal();
   const { showFeedback } = useFeedback();
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [sortConfig, setSortConfig] = useState<{
     key: keyof IProduct | null;
@@ -76,11 +76,11 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
     try {
       const confirmed = await awaitModalResult(
         createConfirmModal(
-          'Produkt löschen',
+          t('products.delete.title'),
           <>
-            Möchten Sie <strong>{product.name}</strong> wirklich löschen?
+            {t('products.delete.confirmMessage', { productName: product.name })}
           </>,
-          { confirmText: 'Löschen' },
+          { confirmText: t('products.delete.confirmButton') },
         ),
       );
 
@@ -112,16 +112,16 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
 
   const getStockStatus = (stock: number) => {
     if (stock === 0)
-      return { text: t('common:products.stock.outOfStock'), class: 'out' };
+      return { text: t('products.stock.outOfStock'), class: 'out' };
     if (stock <= 10)
-      return { text: t('common:products.stock.lowStock'), class: 'low' };
-    return { text: t('common:products.stock.available'), class: 'available' };
+      return { text: t('products.stock.lowStock'), class: 'low' };
+    return { text: t('products.stock.available'), class: 'available' };
   };
 
   if (isLoading) {
     return (
       <div className={style.productList}>
-        <p>Produkte werden geladen...</p>
+        <p>{t('products.loading')}</p>
       </div>
     );
   }
@@ -129,7 +129,9 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   if (error) {
     return (
       <div className={style.productList}>
-        <p>Fehler beim Laden der Produkte: {error}</p>
+        <p>
+          {t('products.loadError')} {error}
+        </p>
       </div>
     );
   }
@@ -165,16 +167,20 @@ interface EmptyStateProps {
   onCreateProduct: () => void;
 }
 
-const EmptyState: React.FC<EmptyStateProps> = ({ onCreateProduct }) => (
-  <div className={style.emptyState}>
-    <MaterialIcon icon="inventory_2" iconSize="huge" />
-    <h3>Keine Produkte gefunden</h3>
-    <p>Erstellen Sie Ihr erstes Produkt oder passen Sie die Filter an.</p>
-    <Button variant="primary" icon="add" onClick={onCreateProduct}>
-      Erstes Produkt erstellen
-    </Button>
-  </div>
-);
+const EmptyState: React.FC<EmptyStateProps> = ({ onCreateProduct }) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className={style.emptyState}>
+      <MaterialIcon icon="inventory_2" iconSize="huge" />
+      <h3>{t('admin.noProductsFound')}</h3>
+      <p>{t('admin.noProductsDescription')}</p>
+      <Button variant="primary" icon="add" onClick={onCreateProduct}>
+        {t('admin.createFirstProduct')}
+      </Button>
+    </div>
+  );
+};
 
 interface ProductListHeaderProps {
   productCount: number;
@@ -184,20 +190,24 @@ interface ProductListHeaderProps {
 export const ProductListHeader: React.FC<ProductListHeaderProps> = ({
   productCount,
   onCreateProduct,
-}) => (
-  <div className={style.listHeader}>
-    <div className={style.headerActions}>
-      <h2>Produkte ({productCount})</h2>
-      <ButtonContainer>
-        <Button
-          variant="primary"
-          icon="add"
-          appearance={'icon'}
-          onClick={onCreateProduct}
-        />
-      </ButtonContainer>
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className={style.listHeader}>
+      <div className={style.headerActions}>
+        <h2>{t('admin.productsCount', { count: productCount })}</h2>
+        <ButtonContainer>
+          <Button
+            variant="primary"
+            icon="add"
+            appearance={'icon'}
+            onClick={onCreateProduct}
+          />
+        </ButtonContainer>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default AdminProductList;

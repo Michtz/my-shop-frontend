@@ -2,7 +2,7 @@
   "products": {
     "categories": {
       "tamper": "Tamper",
-      "milchkannen": "Milk Jugs",
+      "milchkannen": "Milk Pitchers",
       "tools": "Accessories",
       "kaffeetassen": "Coffee Cups",
       "cleaning": "Cleaning",
@@ -16,13 +16,76 @@
       "confirmButton": "Delete"
     },
     "stock": {
-      "outOfStock": "Out of stock",
-      "lowStock": "Low",
+      "outOfStock": "Out of Stock",
+      "lowStock": "Low Stock",
       "available": "Available"
+    }
+  },
+  "userProfile": {
+    "logout": "Logout",
+    "changePassword": "Change Password",
+    "orderInformation": "Order Information",
+    "userInformation": "User Information",
+    "addressInformation": "Address Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "streetAddress": "Street Address",
+    "houseNumber": "House Number",
+    "city": "City",
+    "stateProvince": "State/Province",
+    "zipPostalCode": "ZIP/Postal Code",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "save": "Save"
+  },
+  "placeholders": {
+    "enterFirstName": "Enter first name...",
+    "enterLastName": "Enter last name...",
+    "enterEmailAddress": "Enter email address...",
+    "enterPhoneNumber": "Enter phone number...",
+    "enterStreetAddress": "Enter street address...",
+    "enterHouseNumber": "Enter house number...",
+    "enterCity": "Enter city...",
+    "enterState": "Enter state...",
+    "enterZipCode": "Enter ZIP code..."
+  },
+  "validation": {
+    "required": "Required",
+    "minLength": "Too short",
+    "invalidEmail": "Invalid email address",
+    "invalidPhoneNumber": "Invalid phone number",
+    "streetAddressTooShort": "Street address too short"
+  },
+  "admin": {
+    "productManagement": "Product Management",
+    "productsCount": "Products ({{count}})",
+    "noProductsFound": "No products found",
+    "noProductsDescription": "Create your first product or adjust the filters.",
+    "createFirstProduct": "Create first product",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "activeStatus": "Active",
+    "inactiveStatus": "Inactive"
+  },
+  "table": {
+    "headers": {
+      "image": "Image",
+      "name": "Name",
+      "category": "Category",
+      "price": "Price",
+      "stock": "Stock",
+      "status": "Status",
+      "lastUpdated": "Last Updated",
+      "actions": "Actions"
     }
   },
   "feedback": {
     "data-saved-success": "Data saved successfully",
-    "data-saved-error": "Error saving data"
+    "data-saved-error": "Error saving data",
+    "profileUpdatedSuccess": "Profile updated successfully!",
+    "logoutSuccess": "Successfully logged out",
+    "logoutError": "Error during logout"
   }
 }

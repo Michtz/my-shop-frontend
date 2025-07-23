@@ -21,8 +21,71 @@
       "available": "Verfügbar"
     }
   },
+  "userProfile": {
+    "logout": "Ausloggen",
+    "changePassword": "Password wechseln",
+    "orderInformation": "Bestell Informationen",
+    "userInformation": "Nutzer Informationen",
+    "addressInformation": "Adressinformationen",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "emailAddress": "E-Mail-Adresse",
+    "phoneNumber": "Telefonnummer",
+    "streetAddress": "Straßenadresse",
+    "houseNumber": "Hausnummer",
+    "city": "Stadt",
+    "stateProvince": "Bundesland/Provinz",
+    "zipPostalCode": "PLZ/Postleitzahl",
+    "cancel": "Abbrechen",
+    "continue": "Weiter",
+    "save": "Speichern"
+  },
+  "placeholders": {
+    "enterFirstName": "Vorname eingeben...",
+    "enterLastName": "Nachname eingeben...",
+    "enterEmailAddress": "E-Mail-Adresse eingeben...",
+    "enterPhoneNumber": "Telefonnummer eingeben...",
+    "enterStreetAddress": "Straßenadresse eingeben...",
+    "enterHouseNumber": "Hausnummer eingeben...",
+    "enterCity": "Stadt eingeben...",
+    "enterState": "Bundesland eingeben...",
+    "enterZipCode": "PLZ eingeben..."
+  },
+  "validation": {
+    "required": "Pflichtfeld",
+    "minLength": "Zu kurz",
+    "invalidEmail": "Ungültige E-Mail-Adresse",
+    "invalidPhoneNumber": "Ungültige Telefonnummer",
+    "streetAddressTooShort": "Straßenadresse zu kurz"
+  },
+  "admin": {
+    "productManagement": "Produktverwaltung",
+    "productsCount": "Produkte ({{count}})",
+    "noProductsFound": "Keine Produkte gefunden",
+    "noProductsDescription": "Erstellen Sie Ihr erstes Produkt oder passen Sie die Filter an.",
+    "createFirstProduct": "Erstes Produkt erstellen",
+    "editButton": "Bearbeiten",
+    "deleteButton": "Löschen",
+    "activeStatus": "Aktiv",
+    "inactiveStatus": "Inaktiv"
+  },
+  "table": {
+    "headers": {
+      "image": "Bild",
+      "name": "Name",
+      "category": "Kategorie",
+      "price": "Preis",
+      "stock": "Lager",
+      "status": "Status",
+      "lastUpdated": "Zuletzt aktualisiert",
+      "actions": "Aktionen"
+    }
+  },
   "feedback": {
     "data-saved-success": "Daten erfolgreich gespeichert",
-    "data-saved-error": "Fehler beim Speichern der Daten"
+    "data-saved-error": "Fehler beim Speichern der Daten",
+    "profileUpdatedSuccess": "Profil erfolgreich aktualisiert!",
+    "logoutSuccess": "Erfolgreich abgemeldet",
+    "logoutError": "Fehler beim Abmelden"
   }
 }

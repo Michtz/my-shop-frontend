@@ -5,6 +5,7 @@ import { IProduct } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
 import { Controller } from 'react-hook-form';
 import Checkbox from '@/components/system/Checkbox';
+import { useTranslation } from 'react-i18next';
 
 interface ProductTableRowProps {
   product: IProduct;
@@ -23,6 +24,7 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
   onDeleteProduct,
   getStockStatus,
 }) => {
+  const { t } = useTranslation();
   const stockStatus = getStockStatus(product.stockQuantity);
 
   return (
@@ -75,7 +77,9 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
           <span
             className={`${style.statusBadge} ${product.isActive ? style.active : style.inactive}`}
           >
-            {product.isActive ? 'Aktiv' : 'Inaktiv'}
+            {product.isActive
+              ? t('admin.activeStatus')
+              : t('admin.inactiveStatus')}
           </span>
         </td>
       )}
@@ -91,14 +95,14 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
             variant="ghost"
             icon="edit"
             onClick={() => onEditProduct(product)}
-            title="Bearbeiten"
+            title={t('admin.editButton')}
           />
           <Button
             appearance="icon"
             variant="ghost"
             icon="delete"
             onClick={() => onDeleteProduct(product)}
-            title="Löschen"
+            title={t('admin.deleteButton')}
           />
         </div>
       </td>

@@ -1,0 +1,91 @@
+{
+  "products": {
+    "categories": {
+      "tamper": "Tamper",
+      "milchkannen": "Pichets à lait",
+      "tools": "Accessoires",
+      "kaffeetassen": "Tasses à café",
+      "cleaning": "Nettoyage",
+      "waage": "Balances"
+    },
+    "loading": "Chargement des produits...",
+    "loadError": "Erreur lors du chargement des produits :",
+    "delete": {
+      "title": "Supprimer le produit",
+      "confirmMessage": "Voulez-vous vraiment supprimer <1>{{productName}}</1> ?",
+      "confirmButton": "Supprimer"
+    },
+    "stock": {
+      "outOfStock": "Non disponible",
+      "lowStock": "Stock faible",
+      "available": "Disponible"
+    }
+  },
+  "userProfile": {
+    "logout": "Se déconnecter",
+    "changePassword": "Changer le mot de passe",
+    "orderInformation": "Informations de commande",
+    "userInformation": "Informations utilisateur",
+    "addressInformation": "Informations d'adresse",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "emailAddress": "Adresse e-mail",
+    "phoneNumber": "Numéro de téléphone",
+    "streetAddress": "Adresse de rue",
+    "houseNumber": "Numéro de maison",
+    "city": "Ville",
+    "stateProvince": "État/Province",
+    "zipPostalCode": "Code postal",
+    "cancel": "Annuler",
+    "continue": "Continuer",
+    "save": "Enregistrer"
+  },
+  "placeholders": {
+    "enterFirstName": "Entrez le prénom...",
+    "enterLastName": "Entrez le nom de famille...",
+    "enterEmailAddress": "Entrez l'adresse e-mail...",
+    "enterPhoneNumber": "Entrez le numéro de téléphone...",
+    "enterStreetAddress": "Entrez l'adresse de rue...",
+    "enterHouseNumber": "Entrez le numéro de maison...",
+    "enterCity": "Entrez la ville...",
+    "enterState": "Entrez l'état...",
+    "enterZipCode": "Entrez le code postal..."
+  },
+  "validation": {
+    "required": "Champ obligatoire",
+    "minLength": "Trop court",
+    "invalidEmail": "Adresse e-mail invalide",
+    "invalidPhoneNumber": "Numéro de téléphone invalide",
+    "streetAddressTooShort": "Adresse de rue trop courte"
+  },
+  "admin": {
+    "productManagement": "Gestion des produits",
+    "productsCount": "Produits ({{count}})",
+    "noProductsFound": "Aucun produit trouvé",
+    "noProductsDescription": "Créez votre premier produit ou ajustez les filtres.",
+    "createFirstProduct": "Créer le premier produit",
+    "editButton": "Modifier",
+    "deleteButton": "Supprimer",
+    "activeStatus": "Actif",
+    "inactiveStatus": "Inactif"
+  },
+  "table": {
+    "headers": {
+      "image": "Image",
+      "name": "Nom",
+      "category": "Catégorie",
+      "price": "Prix",
+      "stock": "Stock",
+      "status": "Statut",
+      "lastUpdated": "Dernière mise à jour",
+      "actions": "Actions"
+    }
+  },
+  "feedback": {
+    "data-saved-success": "Données enregistrées avec succès",
+    "data-saved-error": "Erreur lors de l'enregistrement des données",
+    "profileUpdatedSuccess": "Profil mis à jour avec succès !",
+    "logoutSuccess": "Déconnexion réussie",
+    "logoutError": "Erreur lors de la déconnexion"
+  }
+}

@@ -3,14 +3,18 @@ import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import deCommon from './locales/de/common.json';
 import enCommon from './locales/en/common.json';
+import frCommon from './locales/fr/common.json';
 
-const languages: string[] = ['de', 'en'];
+const languages: string[] = ['de', 'en', 'fr'];
 const resources = {
   de: {
     common: deCommon,
   },
   en: {
     common: enCommon,
+  },
+  fr: {
+    common: frCommon,
   },
 };
 

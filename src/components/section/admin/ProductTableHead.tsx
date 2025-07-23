@@ -3,6 +3,7 @@ import MaterialIcon from '@/components/system/MaterialIcon';
 import { Container } from '@/components/system/Container';
 import { IProduct } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
+import { useTranslation } from 'react-i18next';
 
 interface ProductTableHeadProps {
   handleSort: (column: keyof IProduct) => void;
@@ -12,45 +13,55 @@ interface ProductTableHeadProps {
 export const ProductTableHead: React.FC<ProductTableHeadProps> = ({
   handleSort,
   getSortIcon,
-}) => (
-  <thead>
-    <tr>
-      <th>
-        <span>Bild</span>
-      </th>
-      <th className={style.sortableHeader} onClick={() => handleSort('name')}>
-        <Container padding={false}>
-          Name
-          <MaterialIcon icon={getSortIcon('name')} iconSize="small" />
-        </Container>
-      </th>
-      <th>Kategorie</th>
-      <th className={style.sortableHeader} onClick={() => handleSort('price')}>
-        <Container padding={false}>
-          Preis
-          <MaterialIcon icon={getSortIcon('price')} iconSize="small" />
-        </Container>
-      </th>
-      <th
-        className={style.sortableHeader}
-        onClick={() => handleSort('stockQuantity')}
-      >
-        <Container padding={false}>
-          Lager
-          <MaterialIcon icon={getSortIcon('stockQuantity')} iconSize="small" />
-        </Container>
-      </th>
-      <th>Status</th>
-      <th
-        className={style.sortableHeader}
-        onClick={() => handleSort('lastUpdated')}
-      >
-        <Container padding={false}>
-          Zuletzt aktualisiert
-          <MaterialIcon icon={getSortIcon('lastUpdated')} iconSize="small" />
-        </Container>
-      </th>
-      <th>Aktionen</th>
-    </tr>
-  </thead>
-);
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <thead>
+      <tr>
+        <th>
+          <span>{t('table.headers.image')}</span>
+        </th>
+        <th className={style.sortableHeader} onClick={() => handleSort('name')}>
+          <Container padding={false}>
+            {t('table.headers.name')}
+            <MaterialIcon icon={getSortIcon('name')} iconSize="small" />
+          </Container>
+        </th>
+        <th>{t('table.headers.category')}</th>
+        <th
+          className={style.sortableHeader}
+          onClick={() => handleSort('price')}
+        >
+          <Container padding={false}>
+            {t('table.headers.price')}
+            <MaterialIcon icon={getSortIcon('price')} iconSize="small" />
+          </Container>
+        </th>
+        <th
+          className={style.sortableHeader}
+          onClick={() => handleSort('stockQuantity')}
+        >
+          <Container padding={false}>
+            {t('table.headers.stock')}
+            <MaterialIcon
+              icon={getSortIcon('stockQuantity')}
+              iconSize="small"
+            />
+          </Container>
+        </th>
+        <th>{t('table.headers.status')}</th>
+        <th
+          className={style.sortableHeader}
+          onClick={() => handleSort('lastUpdated')}
+        >
+          <Container padding={false}>
+            {t('table.headers.lastUpdated')}
+            <MaterialIcon icon={getSortIcon('lastUpdated')} iconSize="small" />
+          </Container>
+        </th>
+        <th>{t('table.headers.actions')}</th>
+      </tr>
+    </thead>
+  );
+};

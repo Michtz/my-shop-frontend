@@ -16,6 +16,7 @@ import { Logger } from '@/utils/Logger.class';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 export interface UserProfileFormData {
   type: string;
@@ -54,6 +55,7 @@ interface UserInformationFormProps {
 }
 
 const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
+  const { t } = useTranslation();
   const { transformFieldError } = useError();
   const { userInformation } = useAuth();
   const { showFeedback } = useFeedback();
@@ -94,7 +96,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
         ],
       };
       await updateUserInfo(updatedUserData);
-      showFeedback('Profile updated successfully!', 'success');
+      showFeedback(t('feedback.profileUpdatedSuccess'), 'success');
     } catch (error) {
       Logger.error('Error updating profile:', error);
     }
@@ -103,22 +105,22 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
   const validateEmail = (email: string | undefined) => {
     if (!email) return true; // Allow empty when not required
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return emailRegex.test(email) || 'invalidEmail';
+    return emailRegex.test(email) || t('validation.invalidEmail');
   };
 
   const validatePhoneNumber = (phone: string | undefined) => {
     if (!phone) return true; // Allow empty when not required
     const phoneRegex = /^[+]?[\d\s\-()]{8,}$/;
-    return phoneRegex.test(phone) || 'Invalid phone number';
+    return phoneRegex.test(phone) || t('validation.invalidPhoneNumber');
   };
 
   const handleLogout = async (): Promise<void> => {
     try {
       await logout();
       router.replace('/login');
-      showFeedback('feedback.logout-success', 'success');
+      showFeedback(t('feedback.logoutSuccess'), 'success');
     } catch (e) {
-      showFeedback('feedback.logout-error', 'error');
+      showFeedback(t('feedback.logoutError'), 'error');
       Logger.error('error while logout', e);
     }
   };
@@ -128,12 +130,12 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
 
   const options = [
     {
-      label: 'Ausloggen',
+      label: t('userProfile.logout'),
       onClick: handleLogout,
       active: false,
     },
     {
-      label: 'Password wechseln',
+      label: t('userProfile.changePassword'),
       onClick: handlePWChange,
       active: false,
     },
@@ -148,19 +150,19 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
         <ButtonGroup options={options} />
         <section className={style.section}>
           {onCheckout ? (
-            <h2>Bestell Informationen</h2>
+            <h2>{t('userProfile.orderInformation')}</h2>
           ) : (
-            <h2>Nutzer Informationen</h2>
+            <h2>{t('userProfile.userInformation')}</h2>
           )}
           <FormRow>
             <Input
-              label="First Name"
+              label={t('userProfile.firstName')}
               required
               fullWidth
-              placeholder="Enter first name..."
+              placeholder={t('placeholders.enterFirstName')}
               inputProps={register('firstName', {
-                required: 'required',
-                minLength: { value: 2, message: 'minLength' },
+                required: t('validation.required'),
+                minLength: { value: 2, message: t('validation.minLength') },
               })}
               {...transformFieldError(errors.firstName)}
             />
@@ -168,13 +170,13 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
 
           <FormRow>
             <Input
-              label="Last Name"
+              label={t('userProfile.lastName')}
               required
               fullWidth
-              placeholder="Enter last name..."
+              placeholder={t('placeholders.enterLastName')}
               inputProps={register('lastName', {
-                required: 'required',
-                minLength: { value: 2, message: 'minLength' },
+                required: t('validation.required'),
+                minLength: { value: 2, message: t('validation.minLength') },
               })}
               {...transformFieldError(errors.lastName)}
             />
@@ -182,13 +184,13 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
           <FormRow>
             <Input
               type="email"
-              label="Email Address"
+              label={t('userProfile.emailAddress')}
               required
               fullWidth
-              placeholder="Enter email address..."
+              placeholder={t('placeholders.enterEmailAddress')}
               clearable
               inputProps={register('email', {
-                required: 'required',
+                required: t('validation.required'),
                 validate: validateEmail,
               })}
               {...transformFieldError(errors.email)}
@@ -197,9 +199,9 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
           <FormRow>
             <Input
               type="tel"
-              label="Phone Number"
+              label={t('userProfile.phoneNumber')}
               fullWidth
-              placeholder="Enter phone number..."
+              placeholder={t('placeholders.enterPhoneNumber')}
               clearable
               inputProps={register('phoneNumber', {
                 validate: validatePhoneNumber,
@@ -207,62 +209,65 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
               {...transformFieldError(errors.phoneNumber)}
             />
           </FormRow>
-          <h3>Address Information</h3>
+          <h3>{t('userProfile.addressInformation')}</h3>
           <FormRow>
             <Input
-              label="Street Address"
+              label={t('userProfile.streetAddress')}
               required
               fullWidth
-              placeholder="Enter street address..."
+              placeholder={t('placeholders.enterStreetAddress')}
               inputProps={register('street', {
-                required: 'required',
-                minLength: { value: 5, message: 'Street address too short' },
+                required: t('validation.required'),
+                minLength: {
+                  value: 5,
+                  message: t('validation.streetAddressTooShort'),
+                },
               })}
               {...transformFieldError(errors.street)}
             />
           </FormRow>
           <FormRow>
             <Input
-              label="House Number"
+              label={t('userProfile.houseNumber')}
               required
               fullWidth
-              placeholder="Enter house number..."
+              placeholder={t('placeholders.enterHouseNumber')}
               inputProps={register('houseNumber', {
-                required: 'required',
+                required: t('validation.required'),
               })}
               {...transformFieldError(errors.street)}
             />
           </FormRow>
           <FormRow direction="row">
             <Input
-              label="City"
+              label={t('userProfile.city')}
               required
               fullWidth
-              placeholder="Enter city..."
+              placeholder={t('placeholders.enterCity')}
               inputProps={register('city', {
-                required: 'required',
-                minLength: { value: 2, message: 'minLength' },
+                required: t('validation.required'),
+                minLength: { value: 2, message: t('validation.minLength') },
               })}
               {...transformFieldError(errors.city)}
             />
 
             <Input
-              label="State/Province"
+              label={t('userProfile.stateProvince')}
               fullWidth
-              placeholder="Enter state..."
+              placeholder={t('placeholders.enterState')}
               inputProps={register('state')}
               {...transformFieldError(errors.state)}
             />
           </FormRow>
           <FormRow direction="row">
             <Input
-              label="ZIP/Postal Code"
+              label={t('userProfile.zipPostalCode')}
               type={'number'}
               required
               fullWidth
-              placeholder="Enter ZIP code..."
+              placeholder={t('placeholders.enterZipCode')}
               inputProps={register('zipCode', {
-                required: 'required',
+                required: t('validation.required'),
                 minLength: 4,
                 maxLength: 4,
               })}
@@ -276,10 +281,10 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
               onClick={() => reset()}
               disabled={isSubmitting}
             >
-              Cancel
+              {t('userProfile.cancel')}
             </Button>
             <Button type={'submit'}>
-              {onCheckout ? 'weiter' : 'speichern'}
+              {onCheckout ? t('userProfile.continue') : t('userProfile.save')}
             </Button>
           </ButtonContainer>
         </section>
