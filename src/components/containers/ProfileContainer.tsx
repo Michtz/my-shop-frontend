@@ -9,7 +9,7 @@ import UserInformationForm from '@/components/section/user/UserInformationForm';
 import PasswordChange from '@/components/section/user/PasswordChange';
 
 interface ProfileContainerProps {
-  view: 'login' | 'register' | 'profile';
+  view: 'login' | 'register' | 'profile' | 'changePw';
 }
 
 const ProfileContainer: FC<ProfileContainerProps> = ({ view }) => (
@@ -27,8 +27,8 @@ const ProfileContent: React.FC<ProfileContainerProps> = ({
         return <Login />;
       case 'register':
         return <Register />;
-      // case 'logout':
-      //   return <Logout />;
+      case 'changePw':
+        return <PasswordChange />;
       case 'profile':
         return <UserProfileFormContainer />;
       default:
@@ -38,11 +38,6 @@ const ProfileContent: React.FC<ProfileContainerProps> = ({
   return <Container justifyContent={'center'} children={getCurrentView()} />;
 };
 
-const UserProfileFormContainer: FC = () => (
-  <div className={style.userProfileForm}>
-    <UserInformationForm />
-    <PasswordChange />
-  </div>
-);
+const UserProfileFormContainer: FC = () => <UserInformationForm />;
 
 export default ProfileContainer;

@@ -25,9 +25,7 @@ interface PasswordChangeProps {}
 const PasswordChangeForm: FC<PasswordChangeProps> = () => {
   const { transformFieldError } = useError();
   const { showFeedback } = useFeedback();
-  const { logout } = useAuth();
   const router: AppRouterInstance = useRouter();
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const {
     register,
@@ -59,120 +57,95 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
   const onSubmit = async (data: PasswordChangeData) => {
     try {
       await changePassword(data.currentPassword, data.newPassword);
-      reset();
+      router.push('/profile');
       showFeedback('Password changed successfully!', 'success');
-      setIsExpanded(false);
     } catch (error) {
       Logger.error('Error changing password:', error);
       showFeedback('An error occurred while changing password', 'error');
     }
   };
 
-  const handleLogout = async (): Promise<void> => {
-    try {
-      await logout();
-      router.replace('/login');
-      showFeedback('feedback.logout-success', 'success');
-    } catch (e) {
-      showFeedback('feedback.logout-error', 'error');
-      Logger.error('error while logout', e);
-    }
-  };
-
   const handleCancel = () => {
-    reset();
-    setIsExpanded(false);
+    router.push('/profile');
   };
 
   return (
     <section className={style.section}>
-      <ButtonContainer>
-        <Button
-          className={style.toggleButton}
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          {isExpanded ? 'Cancel' : 'Change Password'}
-        </Button>
-        <Button onClick={handleLogout} children={'Logout'} />
-      </ButtonContainer>
+      <FormContainer
+        className={style.passwordFormContainer}
+        onSubmitAction={handleSubmit(onSubmit)}
+      >
+        <FormRow>
+          <Input
+            label="Current Password"
+            type="password"
+            required
+            fullWidth
+            placeholder="Enter current password..."
+            inputProps={register('currentPassword', {
+              required: 'Current password is required',
+              minLength: {
+                value: 1,
+                message: 'Current password is required',
+              },
+            })}
+            {...transformFieldError(errors.currentPassword)}
+          />
+        </FormRow>
 
-      {isExpanded && (
-        <FormContainer
-          className={style.passwordFormContainer}
-          onSubmitAction={handleSubmit(onSubmit)}
-        >
-          <FormRow>
-            <Input
-              label="Current Password"
-              type="password"
-              required
-              fullWidth
-              placeholder="Enter current password..."
-              inputProps={register('currentPassword', {
-                required: 'Current password is required',
-                minLength: {
-                  value: 1,
-                  message: 'Current password is required',
-                },
-              })}
-              {...transformFieldError(errors.currentPassword)}
-            />
-          </FormRow>
+        <FormRow>
+          <Input
+            label="New Password"
+            type="password"
+            required
+            fullWidth
+            placeholder="Enter new password..."
+            inputProps={register('newPassword', {
+              required: 'New password is required',
+              validate: validatePasswordStrength,
+            })}
+            {...transformFieldError(errors.newPassword)}
+          />
+        </FormRow>
 
-          <FormRow>
-            <Input
-              label="New Password"
-              type="password"
-              required
-              fullWidth
-              placeholder="Enter new password..."
-              inputProps={register('newPassword', {
-                required: 'New password is required',
-                validate: validatePasswordStrength,
-              })}
-              {...transformFieldError(errors.newPassword)}
-            />
-          </FormRow>
+        <FormRow>
+          <Input
+            label="Confirm New Password"
+            type="password"
+            required
+            fullWidth
+            placeholder="Confirm new password..."
+            inputProps={register('confirmNewPassword', {
+              required: 'Please confirm your new password',
+              validate: validatePasswordMatch,
+            })}
+            {...transformFieldError(errors.confirmNewPassword)}
+          />
+        </FormRow>
 
-          <FormRow>
-            <Input
-              label="Confirm New Password"
-              type="password"
-              required
-              fullWidth
-              placeholder="Confirm new password..."
-              inputProps={register('confirmNewPassword', {
-                required: 'Please confirm your new password',
-                validate: validatePasswordMatch,
-              })}
-              {...transformFieldError(errors.confirmNewPassword)}
-            />
-          </FormRow>
+        <div className={style.passwordInfo}>
+          <p className={style.infoText}>Password requirements:</p>
+          <ul className={style.requirementsList}>
+            <li>At least 8 characters long</li>
+            <li>Contains uppercase and lowercase letters</li>
+            <li>Contains at least one number</li>
+          </ul>
+        </div>
 
-          <div className={style.passwordInfo}>
-            <p className={style.infoText}>Password requirements:</p>
-            <ul className={style.requirementsList}>
-              <li>At least 8 characters long</li>
-              <li>Contains uppercase and lowercase letters</li>
-              <li>Contains at least one number</li>
-            </ul>
-          </div>
-
-          <ButtonContainer>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={handleCancel}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Changing...' : 'Change Password'}
-            </Button>
-          </ButtonContainer>
-        </FormContainer>
-      )}
+        <ButtonContainer>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={handleCancel}
+            disabled={isSubmitting}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Changing...' : 'Change Password'}
+          </Button>
+        </ButtonContainer>
+      </FormContainer>
     </section>
   );
 };

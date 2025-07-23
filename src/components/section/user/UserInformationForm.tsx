@@ -1,9 +1,12 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { FormContainer } from '@/components/system/Container';
 import style from '@/styles/UserProfileForm.module.scss';
 import { FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
-import Button, { ButtonContainer } from '@/components/system/Button';
+import Button, {
+  ButtonContainer,
+  ButtonGroup,
+} from '@/components/system/Button';
 import { useError } from '@/hooks/ErrorHook';
 import { useAuth } from '@/hooks/AuthHook';
 import { useForm } from 'react-hook-form';
@@ -11,6 +14,8 @@ import { UserInformation } from '@/types/auth';
 import { updateUserInfo } from '@/requests/user.request';
 import { Logger } from '@/utils/Logger.class';
 import { useFeedback } from '@/hooks/FeedbackHook';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { useRouter } from 'next/navigation';
 
 export interface UserProfileFormData {
   type: string;
@@ -52,6 +57,8 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
   const { transformFieldError } = useError();
   const { userInformation } = useAuth();
   const { showFeedback } = useFeedback();
+  const { logout } = useAuth();
+  const router: AppRouterInstance = useRouter();
 
   const {
     register,
@@ -105,147 +112,179 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
     return phoneRegex.test(phone) || 'Invalid phone number';
   };
 
+  const handleLogout = async (): Promise<void> => {
+    try {
+      await logout();
+      router.replace('/login');
+      showFeedback('feedback.logout-success', 'success');
+    } catch (e) {
+      showFeedback('feedback.logout-error', 'error');
+      Logger.error('error while logout', e);
+    }
+  };
+  const handlePWChange = async (): Promise<void> => {
+    router.replace('/changePassword');
+  };
+
+  const options = [
+    {
+      label: 'Ausloggen',
+      onClick: handleLogout,
+      active: false,
+    },
+    {
+      label: 'Password wechseln',
+      onClick: handlePWChange,
+      active: false,
+    },
+  ];
+
   return (
-    <FormContainer
-      className={style.formContainer}
-      onSubmitAction={handleSubmit(onCheckout || onSubmit)}
-    >
-      <section className={style.section}>
-        {onCheckout ? (
-          <h2>Bestell Informationen</h2>
-        ) : (
-          <h2>Nutzer Informationen</h2>
-        )}
-        <FormRow>
-          <Input
-            label="First Name"
-            required
-            fullWidth
-            placeholder="Enter first name..."
-            inputProps={register('firstName', {
-              required: 'required',
-              minLength: { value: 2, message: 'minLength' },
-            })}
-            {...transformFieldError(errors.firstName)}
-          />
-        </FormRow>
+    <section className={style.userProfileForm}>
+      <FormContainer
+        className={style.formContainer}
+        onSubmitAction={handleSubmit(onCheckout || onSubmit)}
+      >
+        <ButtonGroup options={options} />
+        <section className={style.section}>
+          {onCheckout ? (
+            <h2>Bestell Informationen</h2>
+          ) : (
+            <h2>Nutzer Informationen</h2>
+          )}
+          <FormRow>
+            <Input
+              label="First Name"
+              required
+              fullWidth
+              placeholder="Enter first name..."
+              inputProps={register('firstName', {
+                required: 'required',
+                minLength: { value: 2, message: 'minLength' },
+              })}
+              {...transformFieldError(errors.firstName)}
+            />
+          </FormRow>
 
-        <FormRow>
-          <Input
-            label="Last Name"
-            required
-            fullWidth
-            placeholder="Enter last name..."
-            inputProps={register('lastName', {
-              required: 'required',
-              minLength: { value: 2, message: 'minLength' },
-            })}
-            {...transformFieldError(errors.lastName)}
-          />
-        </FormRow>
-        <FormRow>
-          <Input
-            type="email"
-            label="Email Address"
-            required
-            fullWidth
-            placeholder="Enter email address..."
-            clearable
-            inputProps={register('email', {
-              required: 'required',
-              validate: validateEmail,
-            })}
-            {...transformFieldError(errors.email)}
-          />
-        </FormRow>
-        <FormRow>
-          <Input
-            type="tel"
-            label="Phone Number"
-            fullWidth
-            placeholder="Enter phone number..."
-            clearable
-            inputProps={register('phoneNumber', {
-              validate: validatePhoneNumber,
-            })}
-            {...transformFieldError(errors.phoneNumber)}
-          />
-        </FormRow>
-        <h3>Address Information</h3>
-        <FormRow>
-          <Input
-            label="Street Address"
-            required
-            fullWidth
-            placeholder="Enter street address..."
-            inputProps={register('street', {
-              required: 'required',
-              minLength: { value: 5, message: 'Street address too short' },
-            })}
-            {...transformFieldError(errors.street)}
-          />
-        </FormRow>
-        <FormRow>
-          <Input
-            label="House Number"
-            required
-            fullWidth
-            placeholder="Enter house number..."
-            inputProps={register('houseNumber', {
-              required: 'required',
-            })}
-            {...transformFieldError(errors.street)}
-          />
-        </FormRow>
-        <FormRow direction="row">
-          <Input
-            label="City"
-            required
-            fullWidth
-            placeholder="Enter city..."
-            inputProps={register('city', {
-              required: 'required',
-              minLength: { value: 2, message: 'minLength' },
-            })}
-            {...transformFieldError(errors.city)}
-          />
+          <FormRow>
+            <Input
+              label="Last Name"
+              required
+              fullWidth
+              placeholder="Enter last name..."
+              inputProps={register('lastName', {
+                required: 'required',
+                minLength: { value: 2, message: 'minLength' },
+              })}
+              {...transformFieldError(errors.lastName)}
+            />
+          </FormRow>
+          <FormRow>
+            <Input
+              type="email"
+              label="Email Address"
+              required
+              fullWidth
+              placeholder="Enter email address..."
+              clearable
+              inputProps={register('email', {
+                required: 'required',
+                validate: validateEmail,
+              })}
+              {...transformFieldError(errors.email)}
+            />
+          </FormRow>
+          <FormRow>
+            <Input
+              type="tel"
+              label="Phone Number"
+              fullWidth
+              placeholder="Enter phone number..."
+              clearable
+              inputProps={register('phoneNumber', {
+                validate: validatePhoneNumber,
+              })}
+              {...transformFieldError(errors.phoneNumber)}
+            />
+          </FormRow>
+          <h3>Address Information</h3>
+          <FormRow>
+            <Input
+              label="Street Address"
+              required
+              fullWidth
+              placeholder="Enter street address..."
+              inputProps={register('street', {
+                required: 'required',
+                minLength: { value: 5, message: 'Street address too short' },
+              })}
+              {...transformFieldError(errors.street)}
+            />
+          </FormRow>
+          <FormRow>
+            <Input
+              label="House Number"
+              required
+              fullWidth
+              placeholder="Enter house number..."
+              inputProps={register('houseNumber', {
+                required: 'required',
+              })}
+              {...transformFieldError(errors.street)}
+            />
+          </FormRow>
+          <FormRow direction="row">
+            <Input
+              label="City"
+              required
+              fullWidth
+              placeholder="Enter city..."
+              inputProps={register('city', {
+                required: 'required',
+                minLength: { value: 2, message: 'minLength' },
+              })}
+              {...transformFieldError(errors.city)}
+            />
 
-          <Input
-            label="State/Province"
-            fullWidth
-            placeholder="Enter state..."
-            inputProps={register('state')}
-            {...transformFieldError(errors.state)}
-          />
-        </FormRow>
-        <FormRow direction="row">
-          <Input
-            label="ZIP/Postal Code"
-            type={'number'}
-            required
-            fullWidth
-            placeholder="Enter ZIP code..."
-            inputProps={register('zipCode', {
-              required: 'required',
-              minLength: 4,
-              maxLength: 4,
-            })}
-            {...transformFieldError(errors.zipCode)}
-          />
-        </FormRow>
-        <ButtonContainer>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => reset()}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </Button>
-          <Button type={'submit'}>{onCheckout ? 'weiter' : 'speichern'}</Button>
-        </ButtonContainer>
-      </section>
-    </FormContainer>
+            <Input
+              label="State/Province"
+              fullWidth
+              placeholder="Enter state..."
+              inputProps={register('state')}
+              {...transformFieldError(errors.state)}
+            />
+          </FormRow>
+          <FormRow direction="row">
+            <Input
+              label="ZIP/Postal Code"
+              type={'number'}
+              required
+              fullWidth
+              placeholder="Enter ZIP code..."
+              inputProps={register('zipCode', {
+                required: 'required',
+                minLength: 4,
+                maxLength: 4,
+              })}
+              {...transformFieldError(errors.zipCode)}
+            />
+          </FormRow>
+          <ButtonContainer>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => reset()}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button type={'submit'}>
+              {onCheckout ? 'weiter' : 'speichern'}
+            </Button>
+          </ButtonContainer>
+        </section>
+      </FormContainer>
+    </section>
   );
 };
 
