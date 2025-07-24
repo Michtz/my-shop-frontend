@@ -43,7 +43,7 @@ const ResponsiveAppBar = () => {
           </span>
           <ul className={style.navItemContainer}>
             <li className={style.navItem}>
-              <Link href={'/public'}>Über uns</Link>
+              <Link href={'/about'}>Über uns</Link>
             </li>
             <li className={style.navItem}>
               <Link href={'/public'}>Blog</Link>
