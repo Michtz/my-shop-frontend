@@ -1,0 +1,162 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.blogSearch {
+  width: 100%;
+}
+
+.searchForm {
+  display: flex;
+  gap: $spacing-unit;
+  align-items: center;
+}
+
+.searchInputContainer {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: $spacing-unit * 1.5;
+  z-index: 1;
+  color: #666;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: $spacing-unit * 1.5 $spacing-unit * 6 $spacing-unit * 1.5 $spacing-unit * 5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.clearButton {
+  position: absolute;
+  right: $spacing-unit * 6;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f0f0f0;
+    color: #333;
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.searchingIndicator {
+  position: absolute;
+  right: $spacing-unit * 1.5;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid $primary-color;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.searchButton {
+  padding: $spacing-unit * 1.5 $spacing-unit * 3;
+  border: none;
+  border-radius: 8px;
+  background: $primary-color;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: darken($primary-color, 10%);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+  }
+}
+
+@media (max-width: $tablet) {
+  .searchForm {
+    flex-direction: column;
+    gap: $spacing-unit * 1.5;
+  }
+  
+  .searchInputContainer {
+    width: 100%;
+  }
+  
+  .searchButton {
+    width: 100%;
+    padding: $spacing-unit * 2;
+  }
+}
+
+@media (max-width: $mobile) {
+  .searchInput {
+    padding: $spacing-unit * 1.25 $spacing-unit * 5 $spacing-unit * 1.25 $spacing-unit * 4;
+    font-size: 0.875rem;
+  }
+  
+  .clearButton {
+    right: $spacing-unit * 4.5;
+    width: 20px;
+    height: 20px;
+    
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+  
+  .searchIcon {
+    left: $spacing-unit;
+    
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

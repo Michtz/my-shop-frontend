@@ -1,4 +1,70 @@
 {
+  "blog": {
+    "searchPlaceholder": "Search posts...",
+    "filterByTag": "Filter by Tag",
+    "featuredPosts": "Featured Posts",
+    "readMore": "Read More",
+    "noPostsFound": "No posts found",
+    "relatedPosts": "Related Posts",
+    "sharePost": "Share this post",
+    "backToBlog": "Back to Blog"
+  },
+  "admin": {
+    "blogManagement": "Blog Management",
+    "createPost": "Create New Post",
+    "editPost": "Edit Post",
+    "title": "Title",
+    "content": "Content",
+    "excerpt": "Excerpt",
+    "slug": "Slug",
+    "tags": "Tags",
+    "status": "Status",
+    "author": "Author",
+    "publishDate": "Publish Date",
+    "actions": "Actions",
+    "published": "Published",
+    "draft": "Draft",
+    "archived": "Archived",
+    "featuredImage": "Featured Image",
+    "metaTitle": "Meta Title",
+    "metaDescription": "Meta Description",
+    "seoSettings": "SEO Settings",
+    "preview": "Preview",
+    "saveDraft": "Save Draft",
+    "publishPost": "Publish Post",
+    "updatePost": "Update Post",
+    "saving": "Saving...",
+    "unsavedChanges": "Unsaved changes",
+    "backToEdit": "Back to Edit",
+    "noPosts": "No posts found",
+    "noPostsFiltered": "Try adjusting your search criteria.",
+    "noPostsYet": "No blog posts have been created yet.",
+    "createFirstPost": "Create Your First Post",
+    "searchPosts": "Search posts...",
+    "allStatuses": "All Statuses",
+    "lastSaved": "Last saved",
+    "titlePlaceholder": "Enter post title...",
+    "slugPlaceholder": "url-friendly-slug",
+    "excerptPlaceholder": "Brief description of the post...",
+    "contentPlaceholder": "Write your post content here...",
+    "metaTitlePlaceholder": "SEO title (optional)",
+    "metaDescriptionPlaceholder": "SEO description (optional)",
+    "addTags": "Add tags...",
+    "tagHint": "Press Enter or comma to add a tag",
+    "uploadImage": "Click to upload featured image",
+    "imageHint": "Recommended size: 1200x630px (max 5MB)",
+    "changeImage": "Change",
+    "removeImage": "Remove",
+    "imageTooLarge": "Image size must be less than 5MB",
+    "previewNote": "This is how your post will appear to readers"
+  },
+  "common": {
+    "search": "Search",
+    "cancel": "Cancel",
+    "save": "Save",
+    "back": "Back",
+    "clearAll": "Clear All"
+  },
   "products": {
     "categories": {
       "tamper": "Tamper",
@@ -51,7 +117,7 @@
     "enterState": "Enter state...",
     "enterZipCode": "Enter ZIP code..."
   },
-  "admin": {
+  "adminProducts": {
     "productManagement": "Product Management",
     "productsCount": "Products ({{count}})",
     "noProductsFound": "No products found",
@@ -217,5 +283,92 @@
     "add-to-cart-success": "Product added successfully",
     "login-success": "Successfully logged in",
     "login-error": "Login failed"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "disclaimer": "Please note that this FAQ contains general information. For specific questions, please contact our customer service.",
+    "sections": {
+      "orderPayment": "Order & Payment",
+      "shippingDelivery": "Shipping & Delivery",
+      "returnExchange": "Returns & Exchanges",
+      "accountService": "Account & Service",
+      "products": "Products",
+      "moreQuestions": "More Questions?"
+    },
+    "orderPayment": {
+      "howToOrder": {
+        "question": "How can I place an order?",
+        "answer": "You can easily place an order by adding the desired products to your shopping cart and following the checkout process. You can pay as a guest or create an account for faster future orders."
+      },
+      "paymentMethods": {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept the following payment methods:",
+        "method1": "Credit cards (Visa, Mastercard, American Express)",
+        "method2": "PayPal",
+        "method3": "Bank transfer",
+        "method4": "Invoice (for registered customers)"
+      },
+      "changeOrder": {
+        "question": "Can I change my order after placing it?",
+        "answer": "Order changes are only possible within 2 hours after placing the order. Please contact our customer service immediately if you need to make changes."
+      }
+    },
+    "shippingDelivery": {
+      "deliveryTime": {
+        "question": "How long does delivery take?",
+        "answer": "Standard delivery within Switzerland takes 2-3 business days. Express delivery is available and takes 1 business day. International deliveries may take 5-10 business days depending on the destination."
+      },
+      "shippingCosts": {
+        "question": "How much does shipping cost?",
+        "answer": "Shipping within Switzerland is free for orders over CHF 50. For smaller orders, shipping costs CHF 7.90. Express delivery costs an additional CHF 15. International shipping costs vary by destination."
+      },
+      "trackOrder": {
+        "question": "How can I track my order?",
+        "answer": "Once your order has been shipped, you will receive a tracking number via email. You can use this number to track your package on our website or the carrier's website."
+      }
+    },
+    "returnExchange": {
+      "canReturn": {
+        "question": "Can I return products?",
+        "answer": "Yes, you can return unused products in original packaging within 30 days of delivery. Please use our return form and include it with your return shipment."
+      },
+      "returnCosts": {
+        "question": "Who pays for return shipping?",
+        "answer": "For returns due to defects or our error, we cover the return shipping costs. For returns due to change of mind, the customer covers the return shipping costs."
+      },
+      "refundTime": {
+        "question": "When will I receive my refund?",
+        "answer": "Refunds are processed within 5-10 business days after we receive the returned items. The refund will be credited to your original payment method."
+      }
+    },
+    "accountService": {
+      "needAccount": {
+        "question": "Do I need an account to shop?",
+        "answer": "No, you can shop as a guest. However, creating an account offers benefits like order history, faster checkout, and exclusive offers."
+      },
+      "resetPassword": {
+        "question": "How can I reset my password?",
+        "answer": "Click on 'Forgot password?' on the login page and enter your email address. You will receive instructions to reset your password via email."
+      },
+      "unsubscribeNewsletter": {
+        "question": "How can I unsubscribe from the newsletter?",
+        "answer": "You can unsubscribe from the newsletter by clicking the unsubscribe link in any newsletter email or by adjusting your preferences in your account settings."
+      }
+    },
+    "products": {
+      "colorAccuracy": {
+        "question": "Are the product colors displayed correctly?",
+        "answer": "We strive to display colors as accurately as possible. However, colors may vary slightly depending on your screen settings. If you are not satisfied with the color, you can return the product within 30 days."
+      },
+      "availability": {
+        "question": "What if a product is out of stock?",
+        "answer": "If a product is out of stock, it will be marked accordingly. You can sign up for stock notifications to be informed when the product is available again."
+      }
+    },
+    "contact": {
+      "description": "If you have questions that are not answered here, please contact us:",
+      "phone": "Phone",
+      "email": "Email"
+    }
   }
 }

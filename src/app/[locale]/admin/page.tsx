@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import AdminProducts from '@/components/containers/AdminContainer';
+import AdminMainContainer from '@/components/containers/AdminMainContainer';
 
-const AdminProductsPage: FC = () => <AdminProducts />;
-export default AdminProductsPage;
+const AdminPage: FC = () => <AdminMainContainer />;
+export default AdminPage;

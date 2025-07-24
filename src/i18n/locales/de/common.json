@@ -1,4 +1,70 @@
 {
+  "blog": {
+    "searchPlaceholder": "Beiträge suchen...",
+    "filterByTag": "Nach Tag filtern",
+    "featuredPosts": "Empfohlene Beiträge",
+    "readMore": "Weiterlesen",
+    "noPostsFound": "Keine Beiträge gefunden",
+    "relatedPosts": "Ähnliche Beiträge",
+    "sharePost": "Diesen Beitrag teilen",
+    "backToBlog": "Zurück zum Blog"
+  },
+  "admin": {
+    "blogManagement": "Blog-Verwaltung",
+    "createPost": "Neuen Beitrag erstellen",
+    "editPost": "Beitrag bearbeiten",
+    "title": "Titel",
+    "content": "Inhalt",
+    "excerpt": "Auszug",
+    "slug": "URL-Slug",
+    "tags": "Tags",
+    "status": "Status",
+    "author": "Autor",
+    "publishDate": "Veröffentlichungsdatum",
+    "actions": "Aktionen",
+    "published": "Veröffentlicht",
+    "draft": "Entwurf",
+    "archived": "Archiviert",
+    "featuredImage": "Beitragsbild",
+    "metaTitle": "Meta-Titel",
+    "metaDescription": "Meta-Beschreibung",
+    "seoSettings": "SEO-Einstellungen",
+    "preview": "Vorschau",
+    "saveDraft": "Entwurf speichern",
+    "publishPost": "Beitrag veröffentlichen",
+    "updatePost": "Beitrag aktualisieren",
+    "saving": "Speichern...",
+    "unsavedChanges": "Nicht gespeicherte Änderungen",
+    "backToEdit": "Zurück zum Bearbeiten",
+    "noPosts": "Keine Beiträge gefunden",
+    "noPostsFiltered": "Versuchen Sie, Ihre Suchkriterien anzupassen.",
+    "noPostsYet": "Es wurden noch keine Blog-Beiträge erstellt.",
+    "createFirstPost": "Erstellen Sie Ihren ersten Beitrag",
+    "searchPosts": "Beiträge suchen...",
+    "allStatuses": "Alle Status",
+    "lastSaved": "Zuletzt gespeichert",
+    "titlePlaceholder": "Beitragstitel eingeben...",
+    "slugPlaceholder": "url-freundlicher-slug",
+    "excerptPlaceholder": "Kurze Beschreibung des Beitrags...",
+    "contentPlaceholder": "Schreiben Sie hier Ihren Beitrag...",
+    "metaTitlePlaceholder": "SEO-Titel (optional)",
+    "metaDescriptionPlaceholder": "SEO-Beschreibung (optional)",
+    "addTags": "Tags hinzufügen...",
+    "tagHint": "Drücken Sie Enter oder Komma, um einen Tag hinzuzufügen",
+    "uploadImage": "Klicken Sie, um ein Beitragsbild hochzuladen",
+    "imageHint": "Empfohlene Größe: 1200x630px (max. 5MB)",
+    "changeImage": "Ändern",
+    "removeImage": "Entfernen",
+    "imageTooLarge": "Bildgröße muss kleiner als 5MB sein",
+    "previewNote": "So wird Ihr Beitrag den Lesern angezeigt"
+  },
+  "common": {
+    "search": "Suchen",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "back": "Zurück",
+    "clearAll": "Alle löschen"
+  },
   "products": {
     "categories": {
       "tamper": "Tamper",
@@ -23,9 +89,9 @@
   },
   "userProfile": {
     "logout": "Ausloggen",
-    "changePassword": "Password wechseln",
-    "orderInformation": "Bestell Informationen",
-    "userInformation": "Nutzer Informationen",
+    "changePassword": "Passwort ändern",
+    "orderInformation": "Bestellinformationen",
+    "userInformation": "Benutzerinformationen",
     "addressInformation": "Adressinformationen",
     "firstName": "Vorname",
     "lastName": "Nachname",
@@ -51,7 +117,7 @@
     "enterState": "Bundesland eingeben...",
     "enterZipCode": "PLZ eingeben..."
   },
-  "admin": {
+  "adminProducts": {
     "productManagement": "Produktverwaltung",
     "productsCount": "Produkte ({{count}})",
     "noProductsFound": "Keine Produkte gefunden",
@@ -148,12 +214,12 @@
     "summary": "ZUSAMMENFASSUNG",
     "subtotal": "Zwischensumme",
     "shipping": "Versandkosten",
-    "total": "Gesamtsumme",
-    "totalRounded": "Gesamtsumme gerundet",
-    "netTotal": "Gesamtnettosumme",
+    "total": "Gesamt",
+    "totalRounded": "Gesamt gerundet",
+    "netTotal": "Nettobetrag",
     "vatIncluded": "zzgl. {{vatRate}}% MwSt.",
     "priceDisclaimer": "*Preise inkl. MwSt. zzgl. Versandkosten",
-    "checkout": "Checkout"
+    "checkout": "Zur Kasse"
   },
   "validation": {
     "required": "Pflichtfeld",
@@ -169,7 +235,7 @@
     "lastNameRequired": "Nachname ist erforderlich"
   },
   "checkout": {
-    "title": "Checkout",
+    "title": "Kasse",
     "alreadyCustomer": "Ich bin bereits Kunde",
     "guestCheckout": "Als Gast fortfahren",
     "paymentInformation": "Zahlungsinformationen",
@@ -217,5 +283,92 @@
     "add-to-cart-success": "Produkt erfolgreich hinzugefügt",
     "login-success": "Erfolgreich angemeldet",
     "login-error": "Anmeldung fehlgeschlagen"
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "disclaimer": "Bitte beachten Sie, dass diese FAQ allgemeine Informationen enthält. Für spezifische Fragen wenden Sie sich bitte an unseren Kundenservice.",
+    "sections": {
+      "orderPayment": "Bestellung & Zahlung",
+      "shippingDelivery": "Versand & Lieferung",
+      "returnExchange": "Rücksendung & Umtausch",
+      "accountService": "Konto & Service",
+      "products": "Produkte",
+      "moreQuestions": "Weitere Fragen?"
+    },
+    "orderPayment": {
+      "howToOrder": {
+        "question": "Wie kann ich eine Bestellung aufgeben?",
+        "answer": "Sie können ganz einfach eine Bestellung aufgeben, indem Sie die gewünschten Produkte in Ihren Warenkorb legen und dem Checkout-Prozess folgen. Sie können als Gast bezahlen oder ein Konto erstellen für schnellere zukünftige Bestellungen."
+      },
+      "paymentMethods": {
+        "question": "Welche Zahlungsmethoden akzeptieren Sie?",
+        "answer": "Wir akzeptieren folgende Zahlungsmethoden:",
+        "method1": "Kreditkarten (Visa, Mastercard, American Express)",
+        "method2": "PayPal",
+        "method3": "Banküberweisung",
+        "method4": "Rechnung (für registrierte Kunden)"
+      },
+      "changeOrder": {
+        "question": "Kann ich meine Bestellung nach der Aufgabe ändern?",
+        "answer": "Bestellungsänderungen sind nur innerhalb von 2 Stunden nach der Bestellaufgabe möglich. Bitte kontaktieren Sie sofort unseren Kundenservice, wenn Sie Änderungen vornehmen müssen."
+      }
+    },
+    "shippingDelivery": {
+      "deliveryTime": {
+        "question": "Wie lange dauert die Lieferung?",
+        "answer": "Standardlieferung innerhalb der Schweiz dauert 2-3 Werktage. Expresslieferung ist verfügbar und dauert 1 Werktag. Internationale Lieferungen können je nach Zielort 5-10 Werktage dauern."
+      },
+      "shippingCosts": {
+        "question": "Wie viel kostet der Versand?",
+        "answer": "Versand innerhalb der Schweiz ist kostenlos bei Bestellungen über CHF 50. Bei kleineren Bestellungen kostet der Versand CHF 7.90. Expresslieferung kostet zusätzlich CHF 15. Internationale Versandkosten variieren je nach Zielort."
+      },
+      "trackOrder": {
+        "question": "Wie kann ich meine Bestellung verfolgen?",
+        "answer": "Sobald Ihre Bestellung versandt wurde, erhalten Sie eine Sendungsverfolgungsnummer per E-Mail. Sie können diese Nummer verwenden, um Ihr Paket auf unserer Website oder der Website des Spediteurs zu verfolgen."
+      }
+    },
+    "returnExchange": {
+      "canReturn": {
+        "question": "Kann ich Produkte zurücksenden?",
+        "answer": "Ja, Sie können unbenutzte Produkte in Originalverpackung innerhalb von 30 Tagen nach Lieferung zurücksenden. Bitte verwenden Sie unser Rücksendungsformular und legen Sie es Ihrer Rücksendung bei."
+      },
+      "returnCosts": {
+        "question": "Wer zahlt für den Rückversand?",
+        "answer": "Bei Rücksendungen aufgrund von Defekten oder unserem Fehler übernehmen wir die Rückversandkosten. Bei Rücksendungen aufgrund einer Meinungsänderung trägt der Kunde die Rückversandkosten."
+      },
+      "refundTime": {
+        "question": "Wann erhalte ich meine Rückerstattung?",
+        "answer": "Rückerstattungen werden innerhalb von 5-10 Werktagen nach Erhalt der zurückgesandten Artikel bearbeitet. Die Rückerstattung wird auf Ihre ursprüngliche Zahlungsmethode gutgeschrieben."
+      }
+    },
+    "accountService": {
+      "needAccount": {
+        "question": "Benötige ich ein Konto zum Einkaufen?",
+        "answer": "Nein, Sie können als Gast einkaufen. Das Erstellen eines Kontos bietet jedoch Vorteile wie Bestellhistorie, schnellerer Checkout und exklusive Angebote."
+      },
+      "resetPassword": {
+        "question": "Wie kann ich mein Passwort zurücksetzen?",
+        "answer": "Klicken Sie auf 'Passwort vergessen?' auf der Anmeldeseite und geben Sie Ihre E-Mail-Adresse ein. Sie erhalten Anweisungen zum Zurücksetzen Ihres Passworts per E-Mail."
+      },
+      "unsubscribeNewsletter": {
+        "question": "Wie kann ich den Newsletter abbestellen?",
+        "answer": "Sie können den Newsletter abbestellen, indem Sie auf den Abmeldelink in jeder Newsletter-E-Mail klicken oder Ihre Einstellungen in Ihren Kontoeinstellungen anpassen."
+      }
+    },
+    "products": {
+      "colorAccuracy": {
+        "question": "Werden die Produktfarben korrekt angezeigt?",
+        "answer": "Wir bemühen uns, Farben so genau wie möglich anzuzeigen. Allerdings können Farben je nach Ihren Bildschirmeinstellungen leicht variieren. Falls Sie mit der Farbe nicht zufrieden sind, können Sie das Produkt innerhalb von 30 Tagen zurücksenden."
+      },
+      "availability": {
+        "question": "Was ist, wenn ein Produkt nicht auf Lager ist?",
+        "answer": "Wenn ein Produkt nicht auf Lager ist, wird es entsprechend markiert. Sie können sich für Lagerbenachrichtigungen anmelden, um informiert zu werden, wenn das Produkt wieder verfügbar ist."
+      }
+    },
+    "contact": {
+      "description": "Falls Sie Fragen haben, die hier nicht beantwortet werden, kontaktieren Sie uns bitte:",
+      "phone": "Telefon",
+      "email": "E-Mail"
+    }
   }
 }

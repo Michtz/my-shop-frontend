@@ -1,4 +1,70 @@
 {
+  "blog": {
+    "searchPlaceholder": "Rechercher des articles...",
+    "filterByTag": "Filtrer par tag",
+    "featuredPosts": "Articles en vedette",
+    "readMore": "Lire la suite",
+    "noPostsFound": "Aucun article trouvé",
+    "relatedPosts": "Articles connexes",
+    "sharePost": "Partager cet article",
+    "backToBlog": "Retour au blog"
+  },
+  "admin": {
+    "blogManagement": "Gestion du blog",
+    "createPost": "Créer un nouvel article",
+    "editPost": "Modifier l'article",
+    "title": "Titre",
+    "content": "Contenu",
+    "excerpt": "Extrait",
+    "slug": "Slug URL",
+    "tags": "Tags",
+    "status": "Statut",
+    "author": "Auteur",
+    "publishDate": "Date de publication",
+    "actions": "Actions",
+    "published": "Publié",
+    "draft": "Brouillon",
+    "archived": "Archivé",
+    "featuredImage": "Image à la une",
+    "metaTitle": "Meta titre",
+    "metaDescription": "Meta description",
+    "seoSettings": "Paramètres SEO",
+    "preview": "Aperçu",
+    "saveDraft": "Enregistrer le brouillon",
+    "publishPost": "Publier l'article",
+    "updatePost": "Mettre à jour l'article",
+    "saving": "Enregistrement...",
+    "unsavedChanges": "Modifications non enregistrées",
+    "backToEdit": "Retour à l'édition",
+    "noPosts": "Aucun article trouvé",
+    "noPostsFiltered": "Essayez d'ajuster vos critères de recherche.",
+    "noPostsYet": "Aucun article de blog n'a encore été créé.",
+    "createFirstPost": "Créez votre premier article",
+    "searchPosts": "Rechercher des articles...",
+    "allStatuses": "Tous les statuts",
+    "lastSaved": "Dernier enregistrement",
+    "titlePlaceholder": "Saisir le titre de l'article...",
+    "slugPlaceholder": "slug-convivial-url",
+    "excerptPlaceholder": "Brève description de l'article...",
+    "contentPlaceholder": "Rédigez le contenu de votre article ici...",
+    "metaTitlePlaceholder": "Titre SEO (optionnel)",
+    "metaDescriptionPlaceholder": "Description SEO (optionnelle)",
+    "addTags": "Ajouter des tags...",
+    "tagHint": "Appuyez sur Entrée ou virgule pour ajouter un tag",
+    "uploadImage": "Cliquez pour télécharger une image à la une",
+    "imageHint": "Taille recommandée : 1200x630px (max 5MB)",
+    "changeImage": "Modifier",
+    "removeImage": "Supprimer",
+    "imageTooLarge": "La taille de l'image doit être inférieure à 5MB",
+    "previewNote": "C'est ainsi que votre article apparaîtra aux lecteurs"
+  },
+  "common": {
+    "search": "Rechercher",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "back": "Retour",
+    "clearAll": "Tout effacer"
+  },
   "products": {
     "categories": {
       "tamper": "Tamper",
@@ -31,10 +97,10 @@
     "lastName": "Nom de famille",
     "emailAddress": "Adresse e-mail",
     "phoneNumber": "Numéro de téléphone",
-    "streetAddress": "Adresse de rue",
-    "houseNumber": "Numéro de maison",
+    "streetAddress": "Adresse",
+    "houseNumber": "Numéro",
     "city": "Ville",
-    "stateProvince": "État/Province",
+    "stateProvince": "Province/État",
     "zipPostalCode": "Code postal",
     "cancel": "Annuler",
     "continue": "Continuer",
@@ -45,13 +111,13 @@
     "enterLastName": "Entrez le nom de famille...",
     "enterEmailAddress": "Entrez l'adresse e-mail...",
     "enterPhoneNumber": "Entrez le numéro de téléphone...",
-    "enterStreetAddress": "Entrez l'adresse de rue...",
-    "enterHouseNumber": "Entrez le numéro de maison...",
+    "enterStreetAddress": "Entrez l'adresse...",
+    "enterHouseNumber": "Entrez le numéro...",
     "enterCity": "Entrez la ville...",
-    "enterState": "Entrez l'état...",
+    "enterState": "Entrez la province...",
     "enterZipCode": "Entrez le code postal..."
   },
-  "admin": {
+  "adminProducts": {
     "productManagement": "Gestion des produits",
     "productsCount": "Produits ({{count}})",
     "noProductsFound": "Aucun produit trouvé",
@@ -77,7 +143,7 @@
   "product": {
     "outOfStock": "Produit en rupture de stock",
     "onlyXAvailable": "Plus que {{count}} en stock disponible",
-    "connectionLost": "Connexion interrompue - Les données peuvent ne pas être mises à jour en temps réel",
+    "connectionLost": "Connexion perdue - Les données peuvent ne pas être mises à jour en temps réel",
     "soldOut": "Épuisé",
     "onlyXLeft": "Plus que {{count}} disponible",
     "xAvailable": "{{count}} disponible",
@@ -147,7 +213,7 @@
     "continueShopping": "Continuer les achats",
     "summary": "RÉSUMÉ",
     "subtotal": "Sous-total",
-    "shipping": "Frais de livraison",
+    "shipping": "Livraison",
     "total": "Total",
     "totalRounded": "Total arrondi",
     "netTotal": "Total net",
@@ -160,13 +226,13 @@
     "minLength": "Trop court",
     "invalidEmail": "Adresse e-mail invalide",
     "invalidPhoneNumber": "Numéro de téléphone invalide",
-    "streetAddressTooShort": "Adresse de rue trop courte",
+    "streetAddressTooShort": "Adresse trop courte",
     "emailRequired": "E-mail est requis",
     "validEmailRequired": "Veuillez saisir une adresse e-mail valide",
     "passwordRequired": "Mot de passe est requis",
     "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
-    "firstNameRequired": "Prénom est requis",
-    "lastNameRequired": "Nom de famille est requis"
+    "firstNameRequired": "Le prénom est requis",
+    "lastNameRequired": "Le nom de famille est requis"
   },
   "checkout": {
     "title": "Commande",
@@ -217,5 +283,92 @@
     "add-to-cart-success": "Produit ajouté avec succès",
     "login-success": "Connexion réussie",
     "login-error": "Échec de la connexion"
+  },
+  "faq": {
+    "title": "Questions Fréquemment Posées",
+    "disclaimer": "Veuillez noter que cette FAQ contient des informations générales. Pour des questions spécifiques, veuillez contacter notre service client.",
+    "sections": {
+      "orderPayment": "Commande & Paiement",
+      "shippingDelivery": "Expédition & Livraison",
+      "returnExchange": "Retours & Échanges",
+      "accountService": "Compte & Service",
+      "products": "Produits",
+      "moreQuestions": "Plus de questions ?"
+    },
+    "orderPayment": {
+      "howToOrder": {
+        "question": "Comment puis-je passer une commande ?",
+        "answer": "Vous pouvez facilement passer une commande en ajoutant les produits souhaités à votre panier et en suivant le processus de commande. Vous pouvez payer en tant qu'invité ou créer un compte pour des commandes futures plus rapides."
+      },
+      "paymentMethods": {
+        "question": "Quels modes de paiement acceptez-vous ?",
+        "answer": "Nous acceptons les modes de paiement suivants :",
+        "method1": "Cartes de crédit (Visa, Mastercard, American Express)",
+        "method2": "PayPal",
+        "method3": "Virement bancaire",
+        "method4": "Facture (pour les clients enregistrés)"
+      },
+      "changeOrder": {
+        "question": "Puis-je modifier ma commande après l'avoir passée ?",
+        "answer": "Les modifications de commande ne sont possibles que dans les 2 heures suivant la passation de la commande. Veuillez contacter immédiatement notre service client si vous devez apporter des modifications."
+      }
+    },
+    "shippingDelivery": {
+      "deliveryTime": {
+        "question": "Combien de temps prend la livraison ?",
+        "answer": "La livraison standard en Suisse prend 2-3 jours ouvrables. La livraison express est disponible et prend 1 jour ouvrable. Les livraisons internationales peuvent prendre 5-10 jours ouvrables selon la destination."
+      },
+      "shippingCosts": {
+        "question": "Combien coûte l'expédition ?",
+        "answer": "L'expédition en Suisse est gratuite pour les commandes de plus de CHF 50. Pour les commandes plus petites, l'expédition coûte CHF 7.90. La livraison express coûte CHF 15 supplémentaires. Les coûts d'expédition internationale varient selon la destination."
+      },
+      "trackOrder": {
+        "question": "Comment puis-je suivre ma commande ?",
+        "answer": "Une fois votre commande expédiée, vous recevrez un numéro de suivi par e-mail. Vous pouvez utiliser ce numéro pour suivre votre colis sur notre site web ou celui du transporteur."
+      }
+    },
+    "returnExchange": {
+      "canReturn": {
+        "question": "Puis-je retourner des produits ?",
+        "answer": "Oui, vous pouvez retourner des produits non utilisés dans leur emballage d'origine dans les 30 jours suivant la livraison. Veuillez utiliser notre formulaire de retour et l'inclure avec votre envoi de retour."
+      },
+      "returnCosts": {
+        "question": "Qui paie pour le retour ?",
+        "answer": "Pour les retours dus à des défauts ou à notre erreur, nous couvrons les frais de retour. Pour les retours dus à un changement d'avis, le client couvre les frais de retour."
+      },
+      "refundTime": {
+        "question": "Quand recevrai-je mon remboursement ?",
+        "answer": "Les remboursements sont traités dans les 5-10 jours ouvrables après réception des articles retournés. Le remboursement sera crédité sur votre mode de paiement original."
+      }
+    },
+    "accountService": {
+      "needAccount": {
+        "question": "Ai-je besoin d'un compte pour faire des achats ?",
+        "answer": "Non, vous pouvez faire des achats en tant qu'invité. Cependant, créer un compte offre des avantages comme l'historique des commandes, une commande plus rapide et des offres exclusives."
+      },
+      "resetPassword": {
+        "question": "Comment puis-je réinitialiser mon mot de passe ?",
+        "answer": "Cliquez sur 'Mot de passe oublié ?' sur la page de connexion et entrez votre adresse e-mail. Vous recevrez des instructions pour réinitialiser votre mot de passe par e-mail."
+      },
+      "unsubscribeNewsletter": {
+        "question": "Comment puis-je me désabonner de la newsletter ?",
+        "answer": "Vous pouvez vous désabonner de la newsletter en cliquant sur le lien de désabonnement dans n'importe quel e-mail de newsletter ou en ajustant vos préférences dans les paramètres de votre compte."
+      }
+    },
+    "products": {
+      "colorAccuracy": {
+        "question": "Les couleurs des produits sont-elles affichées correctement ?",
+        "answer": "Nous nous efforçons d'afficher les couleurs aussi précisément que possible. Cependant, les couleurs peuvent varier légèrement selon les paramètres de votre écran. Si vous n'êtes pas satisfait de la couleur, vous pouvez retourner le produit dans les 30 jours."
+      },
+      "availability": {
+        "question": "Que se passe-t-il si un produit est en rupture de stock ?",
+        "answer": "Si un produit est en rupture de stock, il sera marqué en conséquence. Vous pouvez vous inscrire aux notifications de stock pour être informé lorsque le produit est à nouveau disponible."
+      }
+    },
+    "contact": {
+      "description": "Si vous avez des questions qui ne sont pas répondues ici, veuillez nous contacter :",
+      "phone": "Téléphone",
+      "email": "E-mail"
+    }
   }
 }

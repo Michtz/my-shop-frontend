@@ -46,7 +46,7 @@ const ResponsiveAppBar = () => {
               <Link href={'/about'}>Über uns</Link>
             </li>
             <li className={style.navItem}>
-              <Link href={'/public'}>Blog</Link>
+              <Link href={'/blog'}>Blog</Link>
             </li>
             <li className={style.navItem}>
               <Link href={'/public'}>Wissen</Link>

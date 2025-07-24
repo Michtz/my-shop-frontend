@@ -3,8 +3,11 @@
 import React from 'react';
 import { Container } from '@/components/system/Container';
 import style from '@/styles/LegalContainer.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const FAQContainer: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <Container
       flow="column"
@@ -15,154 +18,183 @@ const FAQContainer: React.FC = () => {
       gap="2"
     >
       <div className={style.legalContainer}>
-        <h1 className={style.title}>
-          Häufig gestellte Fragen (FAQ)
-        </h1>
-        
+        <h1 className={style.title}>{t('faq.title')}</h1>
+
         <div className={style.content}>
           <div className={style.section}>
-            <h2 className={style.sectionTitle}>Bestellung & Bezahlung</h2>
-            
+            <h2 className={style.disclaimer}>{t('faq.disclaimer')}</h2>
+
+            <h2 className={style.sectionTitle}>
+              {t('faq.sections.orderPayment')}
+            </h2>
+
             <div className={style.section}>
-              <h3 className={style.sectionTitle}>Wie kann ich eine Bestellung aufgeben?</h3>
+              <h3 className={style.sectionTitle}>
+                {t('faq.orderPayment.howToOrder.question')}
+              </h3>
               <p className={style.paragraph}>
-                Wählen Sie die gewünschten Produkte aus, legen Sie sie in den Warenkorb und folgen Sie den Schritten zur Kasse. Sie benötigen ein Kundenkonto, um eine Bestellung abzuschließen.
+                {t('faq.orderPayment.howToOrder.answer')}
               </p>
             </div>
 
             <div className={style.section}>
-              <h3 className={style.sectionTitle}>Welche Zahlungsmethoden werden akzeptiert?</h3>
+              <h3 className={style.sectionTitle}>
+                {t('faq.orderPayment.paymentMethods.question')}
+              </h3>
               <p className={style.paragraph}>
-                Wir akzeptieren folgende Zahlungsmethoden:
+                {t('faq.orderPayment.paymentMethods.answer')}
               </p>
               <ul className={style.list}>
-                <li>Kreditkarte (Visa, Mastercard, American Express)</li>
-                <li>PayPal</li>
-                <li>Sofortüberweisung</li>
-                <li>Banküberweisung (Vorkasse)</li>
-                <li>Rechnung (für Stammkunden)</li>
+                <li>{t('faq.orderPayment.paymentMethods.method1')}</li>
+                <li>{t('faq.orderPayment.paymentMethods.method2')}</li>
+                <li>{t('faq.orderPayment.paymentMethods.method3')}</li>
+                <li>{t('faq.orderPayment.paymentMethods.method4')}</li>
               </ul>
             </div>
 
             <div className={style.section}>
-              <h3 className={style.sectionTitle}>Kann ich meine Bestellung ändern oder stornieren?</h3>
+              <h3 className={style.sectionTitle}>
+                {t('faq.orderPayment.changeOrder.question')}
+              </h3>
               <p className={style.paragraph}>
-                Bestellungen können nur vor dem Versand geändert oder storniert werden. Kontaktieren Sie uns so schnell wie möglich unter +49 (0) 123 456789 oder service@myshop.de.
+                {t('faq.orderPayment.changeOrder.answer')}
               </p>
             </div>
           </div>
 
           <div className={style.section}>
-            <h2 className={style.sectionTitle}>Versand & Lieferung</h2>
-            
+            <h2 className={style.sectionTitle}>
+              {t('faq.sections.shippingDelivery')}
+            </h2>
+
             <div className={style.section}>
-              <h3 className={style.sectionTitle}>Wie lange dauert die Lieferung?</h3>
+              <h3 className={style.sectionTitle}>
+                {t('faq.shippingDelivery.deliveryTime.question')}
+              </h3>
               <p className={style.paragraph}>
-                Die Standardlieferzeit beträgt 3-5 Werktage innerhalb Deutschlands. Expressversand ist innerhalb von 1-2 Werktagen möglich.
+                {t('faq.shippingDelivery.deliveryTime.answer')}
               </p>
             </div>
 
             <div className={style.section}>
-              <h3 className={style.sectionTitle}>Wie hoch sind die Versandkosten?</h3>
+              <h3 className={style.sectionTitle}>
+                {t('faq.shippingDelivery.shippingCosts.question')}
+              </h3>
               <p className={style.paragraph}>
-                Der Versand innerhalb Deutschlands kostet 4,95 EUR. Ab einem Bestellwert von 50 EUR ist der Versand kostenlos.
+                {t('faq.shippingDelivery.shippingCosts.answer')}
               </p>
             </div>
 
             <div className={style.section}>
-              <h3 className={style.sectionTitle}>Kann ich den Status meiner Bestellung verfolgen?</h3>
+              <h3 className={style.sectionTitle}>
+                {t('faq.shippingDelivery.trackOrder.question')}
+              </h3>
               <p className={style.paragraph}>
-                Ja, nach dem Versand erhalten Sie eine E-Mail mit der Sendungsnummer. Mit dieser können Sie Ihre Sendung online verfolgen.
-              </p>
-            </div>
-          </div>
-
-          <div className={style.section}>
-            <h2 className={style.sectionTitle}>Rückgabe & Umtausch</h2>
-            
-            <div className={style.section}>
-              <h3 className={style.sectionTitle}>Kann ich Artikel zurückgeben?</h3>
-              <p className={style.paragraph}>
-                Ja, Sie haben 14 Tage Widerrufsrecht ab Erhalt der Ware. Die Artikel müssen sich im ursprünglichen Zustand befinden.
-              </p>
-            </div>
-
-            <div className={style.section}>
-              <h3 className={style.sectionTitle}>Wer trägt die Kosten für die Rücksendung?</h3>
-              <p className={style.paragraph}>
-                Die Rücksendekosten trägt grundsätzlich der Kunde, außer bei mangelhafter Ware oder wenn wir einen Fehler gemacht haben.
-              </p>
-            </div>
-
-            <div className={style.section}>
-              <h3 className={style.sectionTitle}>Wie lange dauert die Erstattung?</h3>
-              <p className={style.paragraph}>
-                Nach Erhalt und Prüfung der Rücksendung erstatten wir den Betrag innerhalb von 14 Tagen über die ursprüngliche Zahlungsmethode.
+                {t('faq.shippingDelivery.trackOrder.answer')}
               </p>
             </div>
           </div>
 
           <div className={style.section}>
-            <h2 className={style.sectionTitle}>Kundenkonto & Service</h2>
-            
+            <h2 className={style.sectionTitle}>
+              {t('faq.sections.returnExchange')}
+            </h2>
+
             <div className={style.section}>
-              <h3 className={style.sectionTitle}>Muss ich ein Kundenkonto erstellen?</h3>
+              <h3 className={style.sectionTitle}>
+                {t('faq.returnExchange.canReturn.question')}
+              </h3>
               <p className={style.paragraph}>
-                Ja, für eine Bestellung benötigen Sie ein Kundenkonto. Dies ermöglicht es Ihnen, Ihre Bestellungen zu verwalten und von exklusiven Angeboten zu profitieren.
+                {t('faq.returnExchange.canReturn.answer')}
               </p>
             </div>
 
             <div className={style.section}>
-              <h3 className={style.sectionTitle}>Wie kann ich mein Passwort zurücksetzen?</h3>
+              <h3 className={style.sectionTitle}>
+                {t('faq.returnExchange.returnCosts.question')}
+              </h3>
               <p className={style.paragraph}>
-                Klicken Sie auf der Anmeldeseite auf "Passwort vergessen" und geben Sie Ihre E-Mail-Adresse ein. Sie erhalten dann eine E-Mail mit Anweisungen.
+                {t('faq.returnExchange.returnCosts.answer')}
               </p>
             </div>
 
             <div className={style.section}>
-              <h3 className={style.sectionTitle}>Wie kann ich den Newsletter abbestellen?</h3>
+              <h3 className={style.sectionTitle}>
+                {t('faq.returnExchange.refundTime.question')}
+              </h3>
               <p className={style.paragraph}>
-                Sie können sich jederzeit über den Abmelde-Link in jeder Newsletter-E-Mail oder in Ihrem Kundenkonto abmelden.
-              </p>
-            </div>
-          </div>
-
-          <div className={style.section}>
-            <h2 className={style.sectionTitle}>Produkte & Größen</h2>
-            
-            <div className={style.section}>
-              <h3 className={style.sectionTitle}>Wie finde ich die richtige Größe?</h3>
-              <p className={style.paragraph}>
-                Nutzen Sie unseren detaillierten Größenratgeber, der bei jedem Produkt verfügbar ist. Bei Fragen beraten wir Sie gerne persönlich.
-              </p>
-            </div>
-
-            <div className={style.section}>
-              <h3 className={style.sectionTitle}>Sind die Produktbilder farbecht?</h3>
-              <p className={style.paragraph}>
-                Wir bemühen uns um eine möglichst realistische Darstellung. Aufgrund unterschiedlicher Bildschirmeinstellungen können leichte Farbabweichungen auftreten.
-              </p>
-            </div>
-
-            <div className={style.section}>
-              <h3 className={style.sectionTitle}>Wann sind ausverkaufte Artikel wieder verfügbar?</h3>
-              <p className={style.paragraph}>
-                Die Verfügbarkeit variiert je nach Artikel. Nutzen Sie die "Benachrichtigen"-Funktion, um informiert zu werden, sobald der Artikel wieder verfügbar ist.
+                {t('faq.returnExchange.refundTime.answer')}
               </p>
             </div>
           </div>
 
           <div className={style.section}>
-            <h2 className={style.sectionTitle}>Weitere Fragen?</h2>
+            <h2 className={style.sectionTitle}>
+              {t('faq.sections.accountService')}
+            </h2>
+
+            <div className={style.section}>
+              <h3 className={style.sectionTitle}>
+                {t('faq.accountService.needAccount.question')}
+              </h3>
+              <p className={style.paragraph}>
+                {t('faq.accountService.needAccount.answer')}
+              </p>
+            </div>
+
+            <div className={style.section}>
+              <h3 className={style.sectionTitle}>
+                {t('faq.accountService.resetPassword.question')}
+              </h3>
+              <p className={style.paragraph}>
+                {t('faq.accountService.resetPassword.answer')}
+              </p>
+            </div>
+
+            <div className={style.section}>
+              <h3 className={style.sectionTitle}>
+                {t('faq.accountService.unsubscribeNewsletter.question')}
+              </h3>
+              <p className={style.paragraph}>
+                {t('faq.accountService.unsubscribeNewsletter.answer')}
+              </p>
+            </div>
+          </div>
+
+          <div className={style.section}>
+            <h2 className={style.sectionTitle}>{t('faq.sections.products')}</h2>
+
+            <h3 className={style.sectionTitle}>
+              {t('faq.products.colorAccuracy.question')}
+            </h3>
             <p className={style.paragraph}>
-              Haben Sie eine Frage, die hier nicht beantwortet wurde? Kontaktieren Sie uns gerne:
+              {t('faq.products.colorAccuracy.answer')}
             </p>
-            <ul className={style.list}>
-              <li><strong>Telefon:</strong> +49 (0) 123 456789</li>
-              <li><strong>E-Mail:</strong> service@myshop.de</li>
-              <li><strong>Live-Chat:</strong> Montag - Freitag, 9:00 - 17:00 Uhr</li>
-            </ul>
           </div>
+
+          <div className={style.section}>
+            <h3 className={style.sectionTitle}>
+              {t('faq.products.availability.question')}
+            </h3>
+            <p className={style.paragraph}>
+              {t('faq.products.availability.answer')}
+            </p>
+          </div>
+        </div>
+
+        <div className={style.section}>
+          <h2 className={style.sectionTitle}>
+            {t('faq.sections.moreQuestions')}
+          </h2>
+          <p className={style.paragraph}>{t('faq.contact.description')}</p>
+          <ul className={style.list}>
+            <li>
+              <strong>{t('faq.contact.phone')}:</strong> +41 00 000 00 00
+            </li>
+            <li>
+              <strong>{t('faq.contact.email')}:</strong> onlyExample@myshop.ch
+            </li>
+          </ul>
         </div>
       </div>
     </Container>
