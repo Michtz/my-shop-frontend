@@ -4,9 +4,8 @@ import { useAuth } from '@/hooks/AuthHook';
 
 const middleware = (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;
-  console.log('middleware');
-  // i18n redirect
-  const pathnameIsMissingLocale = ['de', 'en', 'fr', 'it', 'sp'].every(
+
+  const pathnameIsMissingLocale = ['de', 'en', 'fr'].every(
     (locale) =>
       !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
   );
