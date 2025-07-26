@@ -284,6 +284,46 @@
     "login-success": "Successfully logged in",
     "login-error": "Login failed"
   },
+  "footer": {
+    "navigation": {
+      "customerService": "Customer Service",
+      "contact": "Contact",
+      "faqHelp": "FAQ / Help",
+      "customerSupport": "Customer Support",
+      "sizeGuide": "Size Guide"
+    },
+    "contact": {
+      "hotline": "Hotline",
+      "hours": "Mon-Fri",
+      "schedule": "9:00 AM - 6:00 PM"
+    },
+    "legal": {
+      "title": "Legal",
+      "terms": "Terms & Conditions",
+      "privacy": "Privacy Policy",
+      "imprint": "Imprint",
+      "shipping": "Shipping Information",
+      "returns": "Returns & Exchanges"
+    },
+    "company": {
+      "title": "About Us",
+      "aboutUs": "About MyShop",
+      "careers": "Careers",
+      "sustainability": "Sustainability",
+      "corporate": "Corporate"
+    },
+    "social": {
+      "title": "Newsletter",
+      "description": "Stay updated on new products and exclusive offers.",
+      "newsletter": "Subscribe to Newsletter",
+      "giftCards": "Gift Cards",
+      "b2b": "B2B / Business Customers"
+    },
+    "copyright": {
+      "text": "© {{year}} {{companyName}}. All rights reserved.",
+      "disclaimer": "All prices include VAT plus shipping costs and possible cash on delivery fees, unless otherwise stated."
+    }
+  },
   "faq": {
     "title": "Frequently Asked Questions",
     "disclaimer": "Please note that this FAQ contains general information. For specific questions, please contact our customer service.",

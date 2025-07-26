@@ -284,6 +284,46 @@
     "login-success": "Erfolgreich angemeldet",
     "login-error": "Anmeldung fehlgeschlagen"
   },
+  "footer": {
+    "navigation": {
+      "customerService": "Kundenservice",
+      "contact": "Kontakt",
+      "faqHelp": "FAQ / Hilfe",
+      "customerSupport": "Kundendienst",
+      "sizeGuide": "Größenratgeber"
+    },
+    "contact": {
+      "hotline": "Hotline",
+      "hours": "Mo-Fr",
+      "schedule": "9:00 - 18:00 Uhr"
+    },
+    "legal": {
+      "title": "Rechtliches",
+      "terms": "AGB",
+      "privacy": "Datenschutz",
+      "imprint": "Impressum",
+      "shipping": "Versandinformationen",
+      "returns": "Rückgabe & Umtausch"
+    },
+    "company": {
+      "title": "Über uns",
+      "aboutUs": "Über MyShop",
+      "careers": "Karriere",
+      "sustainability": "Nachhaltigkeit",
+      "corporate": "Unternehmen"
+    },
+    "social": {
+      "title": "Newsletter",
+      "description": "Bleiben Sie auf dem Laufenden über neue Produkte und exklusive Angebote.",
+      "newsletter": "Newsletter anmelden",
+      "giftCards": "Geschenkgutscheine",
+      "b2b": "B2B / Firmenkunden"
+    },
+    "copyright": {
+      "text": "© {{year}} {{companyName}}. Alle Rechte vorbehalten.",
+      "disclaimer": "Alle Preise inkl. gesetzl. MwSt. zzgl. Versandkosten und ggf. Nachnahmegebühren, wenn nicht anders beschrieben."
+    }
+  },
   "faq": {
     "title": "Häufig gestellte Fragen",
     "disclaimer": "Bitte beachten Sie, dass diese FAQ allgemeine Informationen enthält. Für spezifische Fragen wenden Sie sich bitte an unseren Kundenservice.",

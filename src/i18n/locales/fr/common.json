@@ -284,6 +284,46 @@
     "login-success": "Connexion réussie",
     "login-error": "Échec de la connexion"
   },
+  "footer": {
+    "navigation": {
+      "customerService": "Service Client",
+      "contact": "Contact",
+      "faqHelp": "FAQ / Aide",
+      "customerSupport": "Support Client",
+      "sizeGuide": "Guide des Tailles"
+    },
+    "contact": {
+      "hotline": "Ligne directe",
+      "hours": "Lun-Ven",
+      "schedule": "9h00 - 18h00"
+    },
+    "legal": {
+      "title": "Mentions Légales",
+      "terms": "Conditions Générales",
+      "privacy": "Politique de Confidentialité",
+      "imprint": "Mentions Légales",
+      "shipping": "Informations de Livraison",
+      "returns": "Retours & Échanges"
+    },
+    "company": {
+      "title": "À Propos",
+      "aboutUs": "À Propos de MyShop",
+      "careers": "Carrières",
+      "sustainability": "Développement Durable",
+      "corporate": "Entreprise"
+    },
+    "social": {
+      "title": "Newsletter",
+      "description": "Restez informé des nouveaux produits et des offres exclusives.",
+      "newsletter": "S'abonner à la Newsletter",
+      "giftCards": "Cartes Cadeaux",
+      "b2b": "B2B / Clients Professionnels"
+    },
+    "copyright": {
+      "text": "© {{year}} {{companyName}}. Tous droits réservés.",
+      "disclaimer": "Tous les prix incluent la TVA plus les frais de livraison et éventuellement les frais de remboursement, sauf indication contraire."
+    }
+  },
   "faq": {
     "title": "Questions Fréquemment Posées",
     "disclaimer": "Veuillez noter que cette FAQ contient des informations générales. Pour des questions spécifiques, veuillez contacter notre service client.",

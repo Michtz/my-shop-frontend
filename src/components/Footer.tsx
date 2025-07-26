@@ -3,107 +3,110 @@
 import { FC } from 'react';
 import Link from '@/components/system/Link';
 import style from '@/styles/Footer.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const Footer: FC = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className={style.footer}>
       <div className={style.footerContainer}>
         <div className={style.footerContent}>
-          {/* Customer Service Column */}
           <div className={style.footerColumn}>
-            <h3 className={style.columnTitle}>Kundenservice</h3>
+            <h3 className={style.columnTitle}>{t('footer.navigation.customerService')}</h3>
             <ul className={style.linkList}>
               <li>
-                <Link href="/service/contact">Kontakt</Link>
+                <Link href="/service/contact">{t('footer.navigation.contact')}</Link>
               </li>
               <li>
-                <Link href="/service/faq">FAQ / Hilfe</Link>
+                <Link href="/service/faq">{t('footer.navigation.faqHelp')}</Link>
               </li>
               <li>
-                <Link href="/service/customer-service">Kundendienst</Link>
+                <Link href="/service/customer-service">{t('footer.navigation.customerSupport')}</Link>
               </li>
               <li>
-                <Link href="/service/size-guide">Größenratgeber</Link>
+                <Link href="/service/size-guide">{t('footer.navigation.sizeGuide')}</Link>
               </li>
             </ul>
-            
+
             <div className={style.contactInfo}>
               <div className={style.contactItem}>
-                <strong>Hotline:</strong> +49 (0) 123 456789
+                <strong>{t('footer.contact.hotline')}:</strong> +49 (0) 123 456789
               </div>
               <div className={style.contactItem}>
-                <strong>Mo-Fr:</strong> 9:00 - 18:00 Uhr
+                <strong>{t('footer.contact.hours')}:</strong> {t('footer.contact.schedule')}
               </div>
             </div>
           </div>
 
-          {/* Legal Information Column */}
           <div className={style.footerColumn}>
-            <h3 className={style.columnTitle}>Rechtliches</h3>
+            <h3 className={style.columnTitle}>{t('footer.legal.title')}</h3>
             <ul className={style.linkList}>
               <li>
-                <Link href="/legal/terms">AGB</Link>
+                <Link href="/legal/terms">{t('footer.legal.terms')}</Link>
               </li>
               <li>
-                <Link href="/legal/privacy">Datenschutz</Link>
+                <Link href="/legal/privacy">{t('footer.legal.privacy')}</Link>
               </li>
               <li>
-                <Link href="/legal/imprint">Impressum</Link>
+                <Link href="/legal/imprint">{t('footer.legal.imprint')}</Link>
               </li>
               <li>
-                <Link href="/legal/shipping">Versandinformationen</Link>
+                <Link href="/legal/shipping">{t('footer.legal.shipping')}</Link>
               </li>
               <li>
-                <Link href="/legal/returns">Rückgabe & Umtausch</Link>
+                <Link href="/legal/returns">{t('footer.legal.returns')}</Link>
               </li>
             </ul>
           </div>
 
-          {/* Company Information Column */}
           <div className={style.footerColumn}>
-            <h3 className={style.columnTitle}>Über uns</h3>
+            <h3 className={style.columnTitle}>{t('footer.company.title')}</h3>
             <ul className={style.linkList}>
               <li>
-                <Link href="/about">Über MyShop</Link>
+                <Link href="/about">{t('footer.company.aboutUs')}</Link>
               </li>
               <li>
-                <Link href="#" external>Karriere</Link>
+                <Link href="#" external>
+                  {t('footer.company.careers')}
+                </Link>
               </li>
               <li>
-                <Link href="#" external>Nachhaltigkeit</Link>
+                <Link href="#" external>
+                  {t('footer.company.sustainability')}
+                </Link>
               </li>
               <li>
-                <Link href="#" external>Unternehmen</Link>
+                <Link href="#" external>
+                  {t('footer.company.corporate')}
+                </Link>
               </li>
             </ul>
-
-            <div className={style.socialLinks}>
-              <Link href="#" external>📘</Link>
-              <Link href="#" external>📷</Link>
-              <Link href="#" external>🐦</Link>
-              <Link href="#" external>📺</Link>
-            </div>
           </div>
 
-          {/* Newsletter & Extra Column */}
           <div className={style.footerColumn}>
-            <h3 className={style.columnTitle}>Newsletter</h3>
+            <h3 className={style.columnTitle}>{t('footer.social.title')}</h3>
             <div className={style.contactInfo}>
-              <p>Bleiben Sie auf dem Laufenden über neue Produkte und exklusive Angebote.</p>
-              <div className={style.contactItem}>
-                <strong>E-Mail:</strong> newsletter@myshop.de
-              </div>
+              <p>
+                {t('footer.social.description')}
+              </p>
             </div>
 
             <ul className={style.linkList}>
               <li>
-                <Link href="#" external>Newsletter anmelden</Link>
+                <Link href="#" external>
+                  {t('footer.social.newsletter')}
+                </Link>
               </li>
               <li>
-                <Link href="#" external>Geschenkgutscheine</Link>
+                <Link href="#" external>
+                  {t('footer.social.giftCards')}
+                </Link>
               </li>
               <li>
-                <Link href="#" external>B2B / Firmenkunden</Link>
+                <Link href="#" external>
+                  {t('footer.social.b2b')}
+                </Link>
               </li>
             </ul>
           </div>
@@ -113,21 +116,19 @@ const Footer: FC = () => {
           <div className={style.paymentMethods}>
             <span className={style.paymentIcon}>VISA</span>
             <span className={style.paymentIcon}>MC</span>
-            <span className={style.paymentIcon}>PayPal</span>
-            <span className={style.paymentIcon}>AMEX</span>
             <span className={style.paymentIcon}>SOFORT</span>
             <span className={style.paymentIcon}>SEPA</span>
           </div>
-          
+
           <div className={style.copyright}>
             <p>
-              © 2024 MyShop GmbH. Alle Rechte vorbehalten. | 
-              <Link href="/legal/terms"> AGB</Link> | 
-              <Link href="/legal/privacy"> Datenschutz</Link> | 
-              <Link href="/legal/imprint"> Impressum</Link>
+              {t('footer.copyright.text', { year: 2024, companyName: 'MyShop GmbH' })} |
+              <Link href="/legal/terms"> {t('footer.legal.terms')}</Link> |
+              <Link href="/legal/privacy"> {t('footer.legal.privacy')}</Link> |
+              <Link href="/legal/imprint"> {t('footer.legal.imprint')}</Link>
             </p>
             <p>
-              Alle Preise inkl. gesetzl. MwSt. zzgl. Versandkosten und ggf. Nachnahmegebühren, wenn nicht anders beschrieben.
+              {t('footer.copyright.disclaimer')}
             </p>
           </div>
         </div>
