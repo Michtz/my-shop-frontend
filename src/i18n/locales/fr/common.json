@@ -7,7 +7,18 @@
     "noPostsFound": "Aucun article trouvé",
     "relatedPosts": "Articles connexes",
     "sharePost": "Partager cet article",
-    "backToBlog": "Retour au blog"
+    "backToBlog": "Retour au blog",
+    "post": "article",
+    "posts": "articles",
+    "found": "trouvé(s)",
+    "inTag": "dans \"{{tag}}\"",
+    "matching": "correspondant à \"{{query}}\"",
+    "clearFilters": "Effacer les filtres",
+    "noPostsFiltered": "Essayez d'ajuster vos critères de recherche ou d'effacer les filtres.",
+    "noPostsYet": "Aucun article de blog n'a encore été publié.",
+    "viewAll": "Voir Tout",
+    "viewAllPosts": "Voir Tous les Articles",
+    "by": "Par"
   },
   "admin": {
     "blogManagement": "Gestion du blog",

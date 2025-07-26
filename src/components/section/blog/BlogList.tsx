@@ -9,6 +9,7 @@ import LoadingSpinner from '@/components/system/LoadingSpinner';
 import { IBlogPost } from '@/types/blog.types';
 import { getPublishedPosts, getAllTags } from '@/requests/blog.request';
 import { Logger } from '@/utils/Logger.class';
+import { useTranslation } from 'react-i18next';
 import styles from '@/styles/blog/BlogList.module.scss';
 
 interface BlogListProps {
@@ -28,6 +29,7 @@ const BlogList: React.FC<BlogListProps> = ({
   showTagFilter = true,
   pageSize = 10,
 }) => {
+  const { t } = useTranslation();
   const [posts, setPosts] = useState<IBlogPost[]>(initialPosts);
   const [tags, setTags] = useState<string[]>(initialTags);
   const [loading, setLoading] = useState(false);
@@ -112,15 +114,15 @@ const BlogList: React.FC<BlogListProps> = ({
         <div className={styles.headerContent}>
           <h1>Blog</h1>
           <p className={styles.subtitle}>
-            {totalPosts} {totalPosts === 1 ? 'post' : 'posts'} found
-            {activeTag && ` in "${activeTag}"`}
-            {searchQuery && ` matching "${searchQuery}"`}
+            {totalPosts} {totalPosts === 1 ? t('blog.post') : t('blog.posts')} {t('blog.found')}
+            {activeTag && ` ${t('blog.inTag', { tag: activeTag })}`}
+            {searchQuery && ` ${t('blog.matching', { query: searchQuery })}`}
           </p>
         </div>
 
         {(activeTag || searchQuery) && (
           <button onClick={clearFilters} className={styles.clearFilters}>
-            Clear Filters
+            {t('blog.clearFilters')}
           </button>
         )}
       </div>
@@ -144,11 +146,11 @@ const BlogList: React.FC<BlogListProps> = ({
 
       {posts.length === 0 ? (
         <div className={styles.noPosts}>
-          <h3>No posts found</h3>
+          <h3>{t('blog.noPostsFound')}</h3>
           <p>
             {searchQuery || activeTag
-              ? 'Try adjusting your search criteria or clearing filters.'
-              : 'No blog posts have been published yet.'}
+              ? t('blog.noPostsFiltered')
+              : t('blog.noPostsYet')}
           </p>
         </div>
       ) : (

@@ -7,7 +7,18 @@
     "noPostsFound": "No posts found",
     "relatedPosts": "Related Posts",
     "sharePost": "Share this post",
-    "backToBlog": "Back to Blog"
+    "backToBlog": "Back to Blog",
+    "post": "post",
+    "posts": "posts",
+    "found": "found",
+    "inTag": "in \"{{tag}}\"",
+    "matching": "matching \"{{query}}\"",
+    "clearFilters": "Clear Filters",
+    "noPostsFiltered": "Try adjusting your search criteria or clearing filters.",
+    "noPostsYet": "No blog posts have been published yet.",
+    "viewAll": "View All",
+    "viewAllPosts": "View All Posts",
+    "by": "By"
   },
   "admin": {
     "blogManagement": "Blog Management",

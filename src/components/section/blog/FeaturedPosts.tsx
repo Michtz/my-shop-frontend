@@ -7,6 +7,7 @@ import { getFeaturedPosts } from '@/requests/blog.request';
 import { formatDate } from '@/functions/common';
 import { Logger } from '@/utils/Logger.class';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 import styles from '@/styles/blog/FeaturedPosts.module.scss';
 
 interface FeaturedPostsProps {
@@ -19,9 +20,11 @@ interface FeaturedPostsProps {
 const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
   limit = 3,
   showImages = true,
-  title = 'Featured Posts',
+  title,
   className = '',
 }) => {
+  const { t } = useTranslation();
+  const displayTitle = title || t('blog.featuredPosts');
   const [posts, setPosts] = useState<IBlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +59,7 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
   if (loading) {
     return (
       <div className={`${styles.featuredPosts} ${className}`}>
-        <h3 className={styles.title}>{title}</h3>
+        <h3 className={styles.title}>{displayTitle}</h3>
         <div className={styles.loading}>
           <LoadingSpinner />
         </div>
@@ -71,9 +74,9 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
   return (
     <div className={`${styles.featuredPosts} ${className}`}>
       <div className={styles.header}>
-        <h3 className={styles.title}>{title}</h3>
+        <h3 className={styles.title}>{displayTitle}</h3>
         <Link href="/blog" className={styles.viewAll}>
-          View All →
+          {t('blog.viewAll')} →
         </Link>
       </div>
 
@@ -118,7 +121,7 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
               <p className={styles.excerpt}>{post.excerpt}</p>
 
               <div className={styles.author}>
-                <span>By {post.author_id.firstName}</span>
+                <span>{t('blog.by')} {post.author_id.firstName}</span>
               </div>
             </div>
           </article>
@@ -127,7 +130,7 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
 
       <div className={styles.footer}>
         <Link href="/blog" className={styles.viewAllButton}>
-          View All Posts
+          {t('blog.viewAllPosts')}
         </Link>
       </div>
     </div>

@@ -7,7 +7,18 @@
     "noPostsFound": "Keine Beiträge gefunden",
     "relatedPosts": "Ähnliche Beiträge",
     "sharePost": "Diesen Beitrag teilen",
-    "backToBlog": "Zurück zum Blog"
+    "backToBlog": "Zurück zum Blog",
+    "post": "Beitrag",
+    "posts": "Beiträge",
+    "found": "gefunden",
+    "inTag": "in \"{{tag}}\"",
+    "matching": "passend zu \"{{query}}\"",
+    "clearFilters": "Filter löschen",
+    "noPostsFiltered": "Versuchen Sie, Ihre Suchkriterien anzupassen.",
+    "noPostsYet": "Es wurden noch keine Blog-Beiträge veröffentlicht.",
+    "viewAll": "Alle anzeigen",
+    "viewAllPosts": "Alle Beiträge anzeigen",
+    "by": "Von"
   },
   "admin": {
     "blogManagement": "Blog-Verwaltung",

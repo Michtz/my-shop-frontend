@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { IBlogPost } from '@/types/blog.types';
 import { formatDate } from '@/functions/common';
+import { useTranslation } from 'react-i18next';
 import styles from '@/styles/blog/BlogCard.module.scss';
 
 interface BlogCardProps {
@@ -17,6 +18,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   showImage = true, 
   className = '' 
 }) => {
+  const { t } = useTranslation();
   return (
     <div className={`${styles.blogCard} ${className}`}>
       {showImage && post.featured_image && (
@@ -64,7 +66,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
         )}
         
         <Link href={`/blog/${post.slug}`} className={styles.readMore}>
-          Read More →
+          {t('blog.readMore')} →
         </Link>
       </div>
     </div>
