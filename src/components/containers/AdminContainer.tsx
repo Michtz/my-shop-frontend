@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import style from '@/styles/admin/AdminProduct.module.scss';
-import AdminProductList from '@/components/section/admin/AdminProductList';
+import AdminProductList from '@/components/section/admin/product/AdminProductList';
 import { Container } from '@/components/system/Container';
 import { ModalProvider } from '@/hooks/ModalProvide';
-import ProductForm from '@/components/section/admin/ProductFormComponent';
+import ProductForm from '@/components/section/admin/product/ProductFormComponent';
 import { IProduct } from '@/types/product.types';
 import { useTranslation } from 'react-i18next';
 
@@ -40,7 +40,7 @@ const AdminProductsContent: React.FC = () => {
   return (
     <>
       <div className={style.pageHeader}>
-        <h1>{t('admin.productManagement')}</h1>
+        <h1>{t('adminProducts.productManagement')}</h1>
       </div>
       <AdminProductList
         onEditProduct={handleEditProduct}

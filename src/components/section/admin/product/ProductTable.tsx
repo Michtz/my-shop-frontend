@@ -2,7 +2,7 @@ import React from 'react';
 import { IProduct } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
 import { ProductTableHead } from './ProductTableHead';
-import { ProductTableRow } from '@/components/section/admin/ProductTaleRow';
+import { ProductTableRow } from '@/components/section/admin/product/ProductTaleRow';
 
 interface ProductTableProps {
   products: IProduct[];
