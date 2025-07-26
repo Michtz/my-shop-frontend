@@ -42,9 +42,6 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
   const {
     register,
     handleSubmit,
-    watch,
-    control,
-    setValue,
     formState: { errors },
   } = useForm<RegisterFormData>({
     defaultValues: {
@@ -85,119 +82,117 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
   };
 
   return (
-    <>
-      <div className={style.loginContainer}>
-        <span className={style.logo} onClick={() => router.replace('/')}>
-          <Image src={logo} alt={'logo'} height={60} />
-        </span>
-        <div className={style.loginHeader}>
-          <h1 className={style.loginTitle}>{t('register.welcome')}</h1>
-          <p className={style.loginSubtitle}>{t('register.createAccount')}</p>
-        </div>
-        <Hr />
-        <FormContainer
-          className={style.loginForm}
-          onSubmitAction={handleSubmit(onSubmit)}
-        >
-          <FormRow>
-            <Input
-              type="text"
-              label={t('register.firstName')}
-              required
-              fullWidth
-              placeholder={t('register.firstNamePlaceholder')}
-              clearable
-              inputProps={register('firstName', {
-                required: t('validation.firstNameRequired'),
-              })}
-              {...transformFieldError(errors.firstName)}
-            />
-          </FormRow>
-
-          <FormRow>
-            <Input
-              type="text"
-              label={t('register.lastName')}
-              required
-              fullWidth
-              placeholder={t('register.lastNamePlaceholder')}
-              clearable
-              inputProps={register('lastName', {
-                required: t('validation.lastNameRequired'),
-              })}
-              {...transformFieldError(errors.lastName)}
-            />
-          </FormRow>
-
-          <FormRow>
-            <Input
-              type="email"
-              label={t('register.emailAddress')}
-              required
-              fullWidth
-              placeholder={t('auth.emailPlaceholder')}
-              clearable
-              inputProps={register('email', {
-                required: t('validation.emailRequired'),
-                validate: validateEmail,
-              })}
-              {...transformFieldError(errors.email)}
-            />
-          </FormRow>
-
-          <FormRow>
-            <Input
-              type="password"
-              label={t('register.password')}
-              required
-              fullWidth
-              placeholder={t('register.passwordPlaceholder')}
-              showPasswordToggle
-              inputProps={register('password', {
-                required: t('validation.passwordRequired'),
-                validate: validatePassword,
-              })}
-              {...transformFieldError(errors.password)}
-            />
-          </FormRow>
-
-          <FormRow>
-            <Input
-              type="password"
-              label={t('register.passwordAgain')}
-              required
-              fullWidth
-              placeholder={t('register.passwordPlaceholder')}
-              showPasswordToggle
-              inputProps={register('passwordSec', {
-                required: t('validation.passwordRequired'),
-                validate: validatePassword,
-              })}
-              {...transformFieldError(errors.passwordSec)}
-            />
-          </FormRow>
-
-          <FormRow direction="row">
-            <Link href="/register" disabled className={style.forgotPassword}>
-              {t('register.forgotPassword')}
-            </Link>
-          </FormRow>
-
-          <FormRow>
-            <Button type="submit" flex disabled={isLoading}>
-              {t('register.createAccountButton')}
-            </Button>
-          </FormRow>
-        </FormContainer>
-
-        <div className={style.signupPrompt}>
-          <span>{t('register.alreadyHaveAccount')} </span>
-          <Link href="/login" className={style.signupLink}>
-            {t('register.signIn')}
-          </Link>
-        </div>
+    <div className={style.loginContainer}>
+      <span className={style.logo} onClick={() => router.replace('/')}>
+        <Image src={logo} alt={'logo'} height={60} />
+      </span>
+      <div className={style.loginHeader}>
+        <h1 className={style.loginTitle}>{t('register.welcome')}</h1>
+        <p className={style.loginSubtitle}>{t('register.createAccount')}</p>
       </div>
-    </>
+      <Hr />
+      <FormContainer
+        className={style.loginForm}
+        onSubmitAction={handleSubmit(onSubmit)}
+      >
+        <FormRow>
+          <Input
+            type="text"
+            label={t('register.firstName')}
+            required
+            fullWidth
+            placeholder={t('register.firstNamePlaceholder')}
+            clearable
+            inputProps={register('firstName', {
+              required: t('validation.firstNameRequired'),
+            })}
+            {...transformFieldError(errors.firstName)}
+          />
+        </FormRow>
+
+        <FormRow>
+          <Input
+            type="text"
+            label={t('register.lastName')}
+            required
+            fullWidth
+            placeholder={t('register.lastNamePlaceholder')}
+            clearable
+            inputProps={register('lastName', {
+              required: t('validation.lastNameRequired'),
+            })}
+            {...transformFieldError(errors.lastName)}
+          />
+        </FormRow>
+
+        <FormRow>
+          <Input
+            type="email"
+            label={t('register.emailAddress')}
+            required
+            fullWidth
+            placeholder={t('auth.emailPlaceholder')}
+            clearable
+            inputProps={register('email', {
+              required: t('validation.emailRequired'),
+              validate: validateEmail,
+            })}
+            {...transformFieldError(errors.email)}
+          />
+        </FormRow>
+
+        <FormRow>
+          <Input
+            type="password"
+            label={t('register.password')}
+            required
+            fullWidth
+            placeholder={t('register.passwordPlaceholder')}
+            showPasswordToggle
+            inputProps={register('password', {
+              required: t('validation.passwordRequired'),
+              validate: validatePassword,
+            })}
+            {...transformFieldError(errors.password)}
+          />
+        </FormRow>
+
+        <FormRow>
+          <Input
+            type="password"
+            label={t('register.passwordAgain')}
+            required
+            fullWidth
+            placeholder={t('register.passwordPlaceholder')}
+            showPasswordToggle
+            inputProps={register('passwordSec', {
+              required: t('validation.passwordRequired'),
+              validate: validatePassword,
+            })}
+            {...transformFieldError(errors.passwordSec)}
+          />
+        </FormRow>
+
+        <FormRow direction="row">
+          <Link href="/register" disabled className={style.forgotPassword}>
+            {t('register.forgotPassword')}
+          </Link>
+        </FormRow>
+
+        <FormRow>
+          <Button type="submit" flex disabled={isLoading}>
+            {t('register.createAccountButton')}
+          </Button>
+        </FormRow>
+      </FormContainer>
+
+      <div className={style.signupPrompt}>
+        <span>{t('register.alreadyHaveAccount')} </span>
+        <Link href="/login" className={style.signupLink}>
+          {t('register.signIn')}
+        </Link>
+      </div>
+    </div>
   );
 };
 

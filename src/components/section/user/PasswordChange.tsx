@@ -1,5 +1,5 @@
 'use client';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import style from '@/styles/UserProfileForm.module.scss';
 import { useError } from '@/hooks/ErrorHook';
@@ -10,7 +10,6 @@ import Button, { ButtonContainer } from '@/components/system/Button';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { Logger } from '@/utils/Logger.class';
 import { changePassword } from '@/requests/user.request';
-import { useAuth } from '@/hooks/AuthHook';
 import { useRouter } from 'next/navigation';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useTranslation } from 'react-i18next';
@@ -33,7 +32,6 @@ const PasswordChangeForm: FC<PasswordChangeProps> = () => {
     register,
     handleSubmit,
     watch,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm<PasswordChangeData>();
 

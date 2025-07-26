@@ -7,7 +7,12 @@ import BlogImageUpload from './BlogImageUpload';
 import BlogTagInput from './BlogTagInput';
 import BlogPreview from './BlogPreview';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
-import { IBlogPost, CreateBlogPostRequest, UpdateBlogPostRequest, BlogPostStatus } from '@/types/blog.types';
+import {
+  IBlogPost,
+  CreateBlogPostRequest,
+  UpdateBlogPostRequest,
+  BlogPostStatus,
+} from '@/types/blog.types';
 import { createPost, updatePost, getPostById } from '@/requests/blog.request';
 import { Logger } from '@/utils/Logger.class';
 import styles from '@/styles/admin/blog/BlogForm.module.scss';
@@ -29,11 +34,7 @@ interface FormData {
   status: BlogPostStatus;
 }
 
-const BlogForm: React.FC<BlogFormProps> = ({
-  post,
-  onClose,
-  onSave,
-}) => {
+const BlogForm: React.FC<BlogFormProps> = ({ post, onClose, onSave }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -80,16 +81,21 @@ const BlogForm: React.FC<BlogFormProps> = ({
       content: data.content,
       excerpt: data.excerpt,
       slug: data.slug,
-      author: {
-        name: 'Current User',
+      author_id: {
+        _id: 'test',
+        firstName: 'Current User ',
+        lastName: 'Current User',
         email: 'current@user.com',
       },
       tags: data.tags,
-      featured_image: featuredImage ? URL.createObjectURL(featuredImage) : post?.featured_image,
+      featured_image: featuredImage
+        ? URL.createObjectURL(featuredImage)
+        : post?.featured_image,
       meta_title: data.meta_title,
       meta_description: data.meta_description,
       status: data.status,
-      publishedAt: data.status === 'published' ? new Date().toISOString() : undefined,
+      publishedAt:
+        data.status === 'published' ? new Date().toISOString() : undefined,
       createdAt: post?.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -104,17 +110,24 @@ const BlogForm: React.FC<BlogFormProps> = ({
   const onSubmit = async (data: FormData, isDraft = false) => {
     try {
       setSaving(true);
-      
+
       const postData = {
         ...data,
-        status: isDraft ? 'draft' as BlogPostStatus : data.status,
+        status: isDraft ? ('draft' as BlogPostStatus) : data.status,
       };
 
       let response;
       if (post) {
-        response = await updatePost(post._id, postData as UpdateBlogPostRequest, featuredImage || undefined);
+        response = await updatePost(
+          post._id,
+          postData as UpdateBlogPostRequest,
+          featuredImage || undefined,
+        );
       } else {
-        response = await createPost(postData as CreateBlogPostRequest, featuredImage || undefined);
+        response = await createPost(
+          postData as CreateBlogPostRequest,
+          featuredImage || undefined,
+        );
       }
 
       if (response.success) {
@@ -148,10 +161,9 @@ const BlogForm: React.FC<BlogFormProps> = ({
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <h1>
-            {post 
+            {post
               ? t('admin.editPost', 'Edit Blog Post')
-              : t('admin.createPost', 'Create New Blog Post')
-            }
+              : t('admin.createPost', 'Create New Blog Post')}
           </h1>
           {isDirty && (
             <span className={styles.unsavedChanges}>
@@ -159,26 +171,28 @@ const BlogForm: React.FC<BlogFormProps> = ({
             </span>
           )}
         </div>
-        
+
         <div className={styles.headerActions}>
-          <button 
+          <button
             type="button"
             onClick={handlePreview}
             className={styles.previewButton}
           >
             {t('admin.preview', 'Preview')}
           </button>
-          
-          <button 
+
+          <button
             type="button"
             onClick={handleSaveDraft}
             disabled={saving}
             className={styles.draftButton}
           >
-            {saving ? t('admin.saving', 'Saving...') : t('admin.saveDraft', 'Save Draft')}
+            {saving
+              ? t('admin.saving', 'Saving...')
+              : t('admin.saveDraft', 'Save Draft')}
           </button>
-          
-          <button 
+
+          <button
             type="button"
             onClick={onClose}
             className={styles.cancelButton}
@@ -188,7 +202,10 @@ const BlogForm: React.FC<BlogFormProps> = ({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit((data) => onSubmit(data))} className={styles.form}>
+      <form
+        onSubmit={handleSubmit((data) => onSubmit(data))}
+        className={styles.form}
+      >
         <div className={styles.formContent}>
           <div className={styles.mainColumn}>
             <div className={styles.field}>
@@ -203,7 +220,9 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 placeholder={t('admin.titlePlaceholder', 'Enter post title...')}
               />
               {errors.title && (
-                <span className={styles.errorMessage}>{errors.title.message}</span>
+                <span className={styles.errorMessage}>
+                  {errors.title.message}
+                </span>
               )}
             </div>
 
@@ -219,7 +238,9 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 placeholder={t('admin.slugPlaceholder', 'url-friendly-slug')}
               />
               {errors.slug && (
-                <span className={styles.errorMessage}>{errors.slug.message}</span>
+                <span className={styles.errorMessage}>
+                  {errors.slug.message}
+                </span>
               )}
             </div>
 
@@ -232,10 +253,15 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 {...register('excerpt', { required: 'Excerpt is required' })}
                 className={`${styles.textarea} ${errors.excerpt ? styles.error : ''}`}
                 rows={3}
-                placeholder={t('admin.excerptPlaceholder', 'Brief description of the post...')}
+                placeholder={t(
+                  'admin.excerptPlaceholder',
+                  'Brief description of the post...',
+                )}
               />
               {errors.excerpt && (
-                <span className={styles.errorMessage}>{errors.excerpt.message}</span>
+                <span className={styles.errorMessage}>
+                  {errors.excerpt.message}
+                </span>
               )}
             </div>
 
@@ -248,10 +274,15 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 {...register('content', { required: 'Content is required' })}
                 className={`${styles.contentTextarea} ${errors.content ? styles.error : ''}`}
                 rows={20}
-                placeholder={t('admin.contentPlaceholder', 'Write your post content here...')}
+                placeholder={t(
+                  'admin.contentPlaceholder',
+                  'Write your post content here...',
+                )}
               />
               {errors.content && (
-                <span className={styles.errorMessage}>{errors.content.message}</span>
+                <span className={styles.errorMessage}>
+                  {errors.content.message}
+                </span>
               )}
             </div>
           </div>
@@ -261,13 +292,14 @@ const BlogForm: React.FC<BlogFormProps> = ({
               <label className={styles.label}>
                 {t('admin.status', 'Status')}
               </label>
-              <select
-                {...register('status')}
-                className={styles.select}
-              >
+              <select {...register('status')} className={styles.select}>
                 <option value="draft">{t('admin.draft', 'Draft')}</option>
-                <option value="published">{t('admin.published', 'Published')}</option>
-                <option value="archived">{t('admin.archived', 'Archived')}</option>
+                <option value="published">
+                  {t('admin.published', 'Published')}
+                </option>
+                <option value="archived">
+                  {t('admin.archived', 'Archived')}
+                </option>
               </select>
             </div>
 
@@ -285,7 +317,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
               <h3 className={styles.sectionTitle}>
                 {t('admin.seoSettings', 'SEO Settings')}
               </h3>
-              
+
               <div className={styles.field}>
                 <label htmlFor="meta_title" className={styles.label}>
                   {t('admin.metaTitle', 'Meta Title')}
@@ -295,7 +327,10 @@ const BlogForm: React.FC<BlogFormProps> = ({
                   type="text"
                   {...register('meta_title')}
                   className={styles.input}
-                  placeholder={t('admin.metaTitlePlaceholder', 'SEO title (optional)')}
+                  placeholder={t(
+                    'admin.metaTitlePlaceholder',
+                    'SEO title (optional)',
+                  )}
                 />
               </div>
 
@@ -308,7 +343,10 @@ const BlogForm: React.FC<BlogFormProps> = ({
                   {...register('meta_description')}
                   className={styles.textarea}
                   rows={3}
-                  placeholder={t('admin.metaDescriptionPlaceholder', 'SEO description (optional)')}
+                  placeholder={t(
+                    'admin.metaDescriptionPlaceholder',
+                    'SEO description (optional)',
+                  )}
                 />
               </div>
             </div>
@@ -319,21 +357,22 @@ const BlogForm: React.FC<BlogFormProps> = ({
           <div className={styles.footerLeft}>
             {post && (
               <span className={styles.lastSaved}>
-                {t('admin.lastSaved', 'Last saved')}: {new Date(post.updatedAt).toLocaleString()}
+                {t('admin.lastSaved', 'Last saved')}:{' '}
+                {new Date(post.updatedAt).toLocaleString()}
               </span>
             )}
           </div>
-          
+
           <div className={styles.footerActions}>
-            <button 
+            <button
               type="button"
               onClick={onClose}
               className={styles.cancelButton}
             >
               {t('common.cancel', 'Cancel')}
             </button>
-            
-            <button 
+
+            <button
               type="submit"
               disabled={saving}
               className={styles.saveButton}
@@ -343,10 +382,10 @@ const BlogForm: React.FC<BlogFormProps> = ({
                   <LoadingSpinner />
                   {t('admin.saving', 'Saving...')}
                 </span>
+              ) : post ? (
+                t('admin.updatePost', 'Update Post')
               ) : (
-                post 
-                  ? t('admin.updatePost', 'Update Post')
-                  : t('admin.publishPost', 'Publish Post')
+                t('admin.publishPost', 'Publish Post')
               )}
             </button>
           </div>
