@@ -7,34 +7,41 @@ import { useTranslation } from 'react-i18next';
 
 const Footer: FC = () => {
   const { t } = useTranslation();
-
+  // Das wäre dan die Endform wen ich den Auftrag erhalte würde ich alles so Übersetzen um eine konstant übersetzte Seite zu erhalten
   return (
     <footer className={style.footer}>
       <div className={style.footerContainer}>
         <div className={style.footerContent}>
           <div className={style.footerColumn}>
-            <h3 className={style.columnTitle}>{t('footer.navigation.customerService')}</h3>
+            <h3 className={style.columnTitle}>
+              {t('footer.navigation.customerService')}
+            </h3>
             <ul className={style.linkList}>
               <li>
-                <Link href="/service/contact">{t('footer.navigation.contact')}</Link>
+                <Link href="/service/contact">
+                  {t('footer.navigation.contact')}
+                </Link>
               </li>
               <li>
-                <Link href="/service/faq">{t('footer.navigation.faqHelp')}</Link>
+                <Link href="/service/faq">
+                  {t('footer.navigation.faqHelp')}
+                </Link>
               </li>
               <li>
-                <Link href="/service/customer-service">{t('footer.navigation.customerSupport')}</Link>
-              </li>
-              <li>
-                <Link href="/service/size-guide">{t('footer.navigation.sizeGuide')}</Link>
+                <Link href="/service/customer-service">
+                  {t('footer.navigation.customerSupport')}
+                </Link>
               </li>
             </ul>
 
             <div className={style.contactInfo}>
               <div className={style.contactItem}>
-                <strong>{t('footer.contact.hotline')}:</strong> +49 (0) 123 456789
+                <strong>{t('footer.contact.hotline')}:</strong> +49 (0) 123
+                456789
               </div>
               <div className={style.contactItem}>
-                <strong>{t('footer.contact.hours')}:</strong> {t('footer.contact.schedule')}
+                <strong>{t('footer.contact.hours')}:</strong>{' '}
+                {t('footer.contact.schedule')}
               </div>
             </div>
           </div>
@@ -87,9 +94,7 @@ const Footer: FC = () => {
           <div className={style.footerColumn}>
             <h3 className={style.columnTitle}>{t('footer.social.title')}</h3>
             <div className={style.contactInfo}>
-              <p>
-                {t('footer.social.description')}
-              </p>
+              <p>{t('footer.social.description')}</p>
             </div>
 
             <ul className={style.linkList}>
@@ -122,14 +127,15 @@ const Footer: FC = () => {
 
           <div className={style.copyright}>
             <p>
-              {t('footer.copyright.text', { year: 2024, companyName: 'MyShop GmbH' })} |
-              <Link href="/legal/terms"> {t('footer.legal.terms')}</Link> |
+              {t('footer.copyright.text', {
+                year: 2024,
+                companyName: 'Barista Accessoire ',
+              })}{' '}
+              |<Link href="/legal/terms"> {t('footer.legal.terms')}</Link> |
               <Link href="/legal/privacy"> {t('footer.legal.privacy')}</Link> |
               <Link href="/legal/imprint"> {t('footer.legal.imprint')}</Link>
             </p>
-            <p>
-              {t('footer.copyright.disclaimer')}
-            </p>
+            <p>{t('footer.copyright.disclaimer')}</p>
           </div>
         </div>
       </div>

@@ -22,7 +22,12 @@ const FAQContainer: React.FC = () => {
 
         <div className={style.content}>
           <div className={style.section}>
-            <h2 className={style.disclaimer}>{t('faq.disclaimer')}</h2>
+            <p className={style.paragraph} style={{ color: 'red' }}>
+              <strong>
+                Achtung der komplette Shop ist nur ein Schulprojekt und es kan
+                nichts erworben werden!
+              </strong>
+            </p>
 
             <h2 className={style.sectionTitle}>
               {t('faq.sections.orderPayment')}
@@ -192,7 +197,7 @@ const FAQContainer: React.FC = () => {
               <strong>{t('faq.contact.phone')}:</strong> +41 00 000 00 00
             </li>
             <li>
-              <strong>{t('faq.contact.email')}:</strong> onlyExample@myshop.ch
+              <strong>{t('faq.contact.email')}:</strong> onlyExample@example.ch
             </li>
           </ul>
         </div>

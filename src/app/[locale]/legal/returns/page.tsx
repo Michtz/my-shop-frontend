@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import ReturnsContainer from '@/components/containers/ReturnsContainer';
+import LegalContainer from '@/components/containers/LegalContainer';
 
-const ReturnsPage: FC = () => <ReturnsContainer />;
+const ReturnsPage: FC = () => <LegalContainer view={'returns'} />;
 
 export default ReturnsPage;

@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import ShippingContainer from '@/components/containers/ShippingContainer';
+import LegalContainer from '@/components/containers/LegalContainer';
 
-const ShippingPage: FC = () => <ShippingContainer />;
+const ShippingPage: FC = () => <LegalContainer view={'shipping'} />;
 
 export default ShippingPage;

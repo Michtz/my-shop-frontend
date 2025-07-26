@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import PrivacyContainer from '@/components/containers/PrivacyContainer';
+import LegalContainer from '@/components/containers/LegalContainer';
 
-const PrivacyPage: FC = () => <PrivacyContainer />;
+const PrivacyPage: FC = () => <LegalContainer view={'privacy'} />;
 
 export default PrivacyPage;

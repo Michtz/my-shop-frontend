@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import ImprintContainer from '@/components/containers/ImprintContainer';
+import LegalContainer from '@/components/containers/LegalContainer';
 
-const ImprintPage: FC = () => <ImprintContainer />;
+const ImprintPage: FC = () => <LegalContainer view={'imprint'} />;
 
 export default ImprintPage;
