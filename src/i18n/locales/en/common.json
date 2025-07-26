@@ -221,6 +221,15 @@
     "priceDisclaimer": "*Prices incl. VAT plus shipping costs",
     "checkout": "Checkout"
   },
+  "error": {
+    "error": "An error occurred",
+    "not-a-email": "Invalid email address",
+    "required": "This field is required",
+    "email": "Invalid email address",
+    "minLength": "Too short",
+    "maxLength": "Too long",
+    "toSmall": "Value is too small"
+  },
   "validation": {
     "required": "Required",
     "minLength": "Too short",

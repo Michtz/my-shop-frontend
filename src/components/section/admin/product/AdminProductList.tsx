@@ -173,10 +173,10 @@ const EmptyState: React.FC<EmptyStateProps> = ({ onCreateProduct }) => {
   return (
     <div className={style.emptyState}>
       <MaterialIcon icon="inventory_2" iconSize="huge" />
-      <h3>{t('admin.noProductsFound')}</h3>
-      <p>{t('admin.noProductsDescription')}</p>
+      <h3>{t('adminProducts.noProductsFound')}</h3>
+      <p>{t('adminProducts.noProductsDescription')}</p>
       <Button variant="primary" icon="add" onClick={onCreateProduct}>
-        {t('admin.createFirstProduct')}
+        {t('adminProducts.createFirstProduct')}
       </Button>
     </div>
   );
@@ -196,7 +196,7 @@ export const ProductListHeader: React.FC<ProductListHeaderProps> = ({
   return (
     <div className={style.listHeader}>
       <div className={style.headerActions}>
-        <h2>{t('admin.productsCount', { count: productCount })}</h2>
+        <h2>{t('adminProducts.productsCount', { count: productCount })}</h2>
         <ButtonContainer>
           <Button
             variant="primary"

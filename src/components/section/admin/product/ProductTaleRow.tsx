@@ -78,8 +78,8 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
             className={`${style.statusBadge} ${product.isActive ? style.active : style.inactive}`}
           >
             {product.isActive
-              ? t('admin.activeStatus')
-              : t('admin.inactiveStatus')}
+              ? t('adminProducts.activeStatus')
+              : t('adminProducts.inactiveStatus')}
           </span>
         </td>
       )}
@@ -95,14 +95,14 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
             variant="ghost"
             icon="edit"
             onClick={() => onEditProduct(product)}
-            title={t('admin.editButton')}
+            title={t('adminProducts.editButton')}
           />
           <Button
             appearance="icon"
             variant="ghost"
             icon="delete"
             onClick={() => onDeleteProduct(product)}
-            title={t('admin.deleteButton')}
+            title={t('adminProducts.deleteButton')}
           />
         </div>
       </td>

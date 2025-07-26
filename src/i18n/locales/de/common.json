@@ -221,6 +221,15 @@
     "priceDisclaimer": "*Preise inkl. MwSt. zzgl. Versandkosten",
     "checkout": "Zur Kasse"
   },
+  "error": {
+    "error": "Ein Fehler ist aufgetreten",
+    "not-a-email": "Ungültige E-Mail-Adresse",
+    "required": "Dieses Feld ist erforderlich",
+    "email": "Ungültige E-Mail-Adresse",
+    "minLength": "Zu kurz",
+    "maxLength": "Zu lang",
+    "toSmall": "Wert ist zu klein"
+  },
   "validation": {
     "required": "Pflichtfeld",
     "minLength": "Zu kurz",

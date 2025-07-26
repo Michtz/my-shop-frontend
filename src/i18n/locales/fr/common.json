@@ -221,6 +221,15 @@
     "priceDisclaimer": "*Prix TTC plus frais de livraison",
     "checkout": "Commander"
   },
+  "error": {
+    "error": "Une erreur s'est produite",
+    "not-a-email": "Adresse e-mail invalide",
+    "required": "Ce champ est requis",
+    "email": "Adresse e-mail invalide",
+    "minLength": "Trop court",
+    "maxLength": "Trop long",
+    "toSmall": "La valeur est trop petite"
+  },
   "validation": {
     "required": "Champ obligatoire",
     "minLength": "Trop court",
