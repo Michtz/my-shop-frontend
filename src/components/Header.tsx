@@ -9,19 +9,15 @@ import { useAuth } from '@/hooks/AuthHook';
 import CartIcon from '@/components/icons/CartIcon';
 import ProfileIcon from '@/components/icons/ProfileIcon';
 import Logo from '@/components/icons/Logo';
+import HamburgerIcon from '@/components/icons/HamburgerIcon';
+import SideNav from '@/components/system/SideNav';
 
 const ResponsiveAppBar = () => {
   const router = useRouter();
   const { userSessionData } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null,
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null,
-  );
+  const [isSideNavOpen, setIsSideNavOpen] = useState(false);
 
   useEffect(() => {
     // Simuliere Ladezeit (kannst du durch echte Daten-Loading ersetzen)
@@ -36,16 +32,12 @@ const ResponsiveAppBar = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
+  const toggleSideNav = () => {
+    setIsSideNavOpen(!isSideNavOpen);
   };
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const closeSideNav = () => {
+    setIsSideNavOpen(false);
   };
 
   const handleUserClick = () => {
@@ -72,6 +64,17 @@ const ResponsiveAppBar = () => {
         <div
           className={`${style.leftNavContainer} ${showContent ? style.fadeIn : style.fadeOut}`}
         >
+          {/* Mobile Hamburger Menu */}
+          <div className={style.hamburgerMenu}>
+            <HamburgerIcon
+              isOpen={isSideNavOpen}
+              onClick={toggleSideNav}
+              width={24}
+              height={24}
+            />
+          </div>
+
+          {/* Desktop Navigation */}
           <ul className={style.navItemContainer}>
             <li className={style.navItem}>
               <Link href={'/about'}>Über uns</Link>
@@ -101,6 +104,9 @@ const ResponsiveAppBar = () => {
           <ProfileIcon onClick={handleUserClick} />
         </span>
       </header>
+
+      {/* Side Navigation */}
+      <SideNav isOpen={isSideNavOpen} onClose={closeSideNav} />
     </>
   );
 };
