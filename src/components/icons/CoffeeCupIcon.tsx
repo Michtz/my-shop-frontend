@@ -1,14 +1,7 @@
-// components/icons/CoffeeCupIcon.tsx
 import React from 'react';
+import { SvgIconProps } from '@/types/common';
 
-interface SvgIconProps {
-  width?: number;
-  height?: number;
-  color?: string;
-  className?: string;
-}
-
-export const CoffeeCupIcon: React.FC<SvgIconProps> = ({
+const CoffeeCupIcon: React.FC<SvgIconProps> = ({
   width = 45,
   height = 45,
   color = '#4C4B4B',
@@ -57,3 +50,5 @@ export const CoffeeCupIcon: React.FC<SvgIconProps> = ({
     />
   </svg>
 );
+
+export default CoffeeCupIcon;

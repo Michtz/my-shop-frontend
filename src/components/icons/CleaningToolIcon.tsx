@@ -1,14 +1,7 @@
-// components/icons/CleaningToolIcon.tsx
 import React from 'react';
+import { SvgIconProps } from '@/types/common';
 
-interface SvgIconProps {
-  width?: number;
-  height?: number;
-  color?: string;
-  className?: string;
-}
-
-export const CleaningToolIcon: React.FC<SvgIconProps> = ({
+const CleaningToolIcon: React.FC<SvgIconProps> = ({
   width = 45,
   height = 45,
   color = '#4C4B4B',
@@ -73,3 +66,5 @@ export const CleaningToolIcon: React.FC<SvgIconProps> = ({
     <rect x="21.5" y="25.5" width="12" height="13" rx="1.5" stroke={color} />
   </svg>
 );
+
+export default CleaningToolIcon;

@@ -1,11 +1,11 @@
 import React from 'react';
 import style from '@/styles/system/AssetIcon.module.scss';
-import { CleaningToolIcon } from '@/components/icons/CleaningToolIcon';
-import { CoffeeCupIcon } from '@/components/icons/CoffeeCupIcon';
-import { MilkJugIcon } from '@/components/icons/MilkJugIcon';
-import { ScaleIcon } from '@/components/icons/ScaleIcon';
-import { TamperIcon } from '@/components/icons/TamperIcon';
-import { ToolIcon } from '@/components/icons/ToolIcon';
+import CleaningToolIcon from '@/components/icons/CleaningToolIcon';
+import CoffeeCupIcon from '@/components/icons/CoffeeCupIcon';
+import MilkJugIcon from '@/components/icons/MilkJugIcon';
+import ScaleIcon from '@/components/icons/ScaleIcon';
+import TamperIcon from '@/components/icons/TamperIcon';
+import ToolIcon from '@/components/icons/ToolIcon';
 
 export type IconType =
   | 'cleaning-tools'

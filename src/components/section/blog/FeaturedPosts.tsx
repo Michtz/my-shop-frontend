@@ -34,11 +34,13 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await getFeaturedPosts(limit);
-      
+
       if (response.success && response.data) {
-        const postsArray = Array.isArray(response.data) ? response.data : [response.data];
+        const postsArray = Array.isArray(response.data)
+          ? response.data
+          : [response.data];
         setPosts(postsArray);
       } else {
         setError('Failed to load featured posts');
@@ -74,15 +76,15 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
           View All →
         </Link>
       </div>
-      
+
       <div className={styles.postsList}>
         {posts.map((post, index) => (
           <article key={post._id} className={styles.featuredPost}>
             {showImages && post.featured_image && (
               <div className={styles.imageContainer}>
                 <Link href={`/blog/${post.slug}`}>
-                  <img 
-                    src={post.featured_image} 
+                  <img
+                    src={post.featured_image}
                     alt={post.title}
                     className={styles.postImage}
                     loading={index === 0 ? 'eager' : 'lazy'}
@@ -90,7 +92,7 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
                 </Link>
               </div>
             )}
-            
+
             <div className={styles.content}>
               <div className={styles.meta}>
                 <span className={styles.date}>
@@ -99,7 +101,7 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
                 {post.tags && post.tags.length > 0 && (
                   <>
                     <span className={styles.separator}>•</span>
-                    <Link 
+                    <Link
                       href={`/blog/tag/${encodeURIComponent(post.tags[0])}`}
                       className={styles.primaryTag}
                     >
@@ -108,23 +110,21 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
                   </>
                 )}
               </div>
-              
+
               <h4 className={styles.postTitle}>
-                <Link href={`/blog/${post.slug}`}>
-                  {post.title}
-                </Link>
+                <Link href={`/blog/${post.slug}`}>{post.title}</Link>
               </h4>
-              
+
               <p className={styles.excerpt}>{post.excerpt}</p>
-              
+
               <div className={styles.author}>
-                <span>By {post.author.name}</span>
+                <span>By {post.author_id.firstName}</span>
               </div>
             </div>
           </article>
         ))}
       </div>
-      
+
       <div className={styles.footer}>
         <Link href="/blog" className={styles.viewAllButton}>
           View All Posts

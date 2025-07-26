@@ -1,14 +1,7 @@
-// components/icons/ToolIcon.tsx
 import React from 'react';
+import { SvgIconProps } from '@/types/common';
 
-interface SvgIconProps {
-  width?: number;
-  height?: number;
-  color?: string;
-  className?: string;
-}
-
-export const ToolIcon: React.FC<SvgIconProps> = ({
+const ToolIcon: React.FC<SvgIconProps> = ({
   width = 45,
   height = 45,
   color = '#4C4B4B',
@@ -78,3 +71,4 @@ export const ToolIcon: React.FC<SvgIconProps> = ({
     />
   </svg>
 );
+export default ToolIcon;

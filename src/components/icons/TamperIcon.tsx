@@ -1,14 +1,7 @@
-// components/icons/TamperIcon.tsx
+import { SvgIconProps } from '@/types/common';
 import React from 'react';
 
-interface SvgIconProps {
-  width?: number;
-  height?: number;
-  color?: string;
-  className?: string;
-}
-
-export const TamperIcon: React.FC<SvgIconProps> = ({
+const TamperIcon: React.FC<SvgIconProps> = ({
   width = 45,
   height = 45,
   color = '#4C4B4B',
@@ -40,3 +33,4 @@ export const TamperIcon: React.FC<SvgIconProps> = ({
     />
   </svg>
 );
+export default TamperIcon;

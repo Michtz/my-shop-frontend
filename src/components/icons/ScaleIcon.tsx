@@ -1,14 +1,7 @@
-// components/icons/ScaleIcon.tsx
 import React from 'react';
+import { SvgIconProps } from '@/types/common';
 
-interface SvgIconProps {
-  width?: number;
-  height?: number;
-  color?: string;
-  className?: string;
-}
-
-export const ScaleIcon: React.FC<SvgIconProps> = ({
+const ScaleIcon: React.FC<SvgIconProps> = ({
   width = 45,
   height = 45,
   color = '#4C4B4B',
@@ -73,3 +66,4 @@ export const ScaleIcon: React.FC<SvgIconProps> = ({
     />
   </svg>
 );
+export default ScaleIcon;

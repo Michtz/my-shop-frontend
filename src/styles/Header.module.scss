@@ -5,39 +5,142 @@
   padding: 0 2rem;
   background-color: #e3c7a5;
   color: white;
-
   border-bottom: 2px solid rgba(239, 232, 220);
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.02);
   margin-bottom: 2rem;
 
+  // Animation Properties
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 10;
+
+  &.headerHidden {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  &.headerVisible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .leftNavContainer {
     display: flex;
     align-items: center;
-
-    .logo {
-      cursor: pointer;
-    }
+    transition: all 0.4s ease-in-out;
 
     .navItemContainer {
       display: flex;
       align-items: center;
       margin-bottom: 0;
       padding-left: 20px;
-
       list-style: none;
 
       .navItem {
         padding-right: 20px;
         cursor: pointer;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+          transform: translateY(-1px);
+        }
       }
     }
   }
+
+  .logo {
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+
+    &.logoSmall {
+      transform: scale(0.8);
+    }
+  }
+
   .rightNavContainer {
     display: flex;
     align-items: center;
     gap: 3rem;
+    transition: all 0.4s ease-in-out;
+
     .cartIcon {
       cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
+  }
+}
+
+// Loading Overlay Styles
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #e3c7a5; // Deine Header-Farbe
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-100%);
+  }
+}
+
+.loadingLogo {
+  animation: logoLoading 2s ease-in-out;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @keyframes logoLoading {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) translateY(20px);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1) translateY(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+}
+
+.loadingOverlay.hidden .loadingLogo {
+  transform: scale(0.3) translateY(-50vh);
+  opacity: 0;
+}
+
+// Content Fade-in Animation
+.fadeIn {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s; // Startet nach Logo-Animation
+}
+
+.fadeOut {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+// Responsive Anpassungen
+@media (max-width: 768px) {
+  .loadingLogo {
+    transform: scale(0.8);
+  }
+
+  .logo.logoSmall {
+    transform: scale(0.7);
   }
 }
