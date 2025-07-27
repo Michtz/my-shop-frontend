@@ -74,7 +74,7 @@ const ProductOverview: FC = () => {
       }
 
       if (!isSessionReady || !sessionData?.sessionId) {
-        showFeedback('feedback.session-not-ready', 'warning');
+        showFeedback('feedback.session-not-ready', 'error');
         return;
       }
 
