@@ -30,7 +30,7 @@ const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
-  const { sessionData } = useAuth();
+  const { sessionData, isSessionReady } = useAuth();
   const category: string | undefined = getCategoryName(
     params?.category as string,
   );
@@ -76,7 +76,12 @@ const MainContainer: React.FC = () => {
 
   const handleAddToCart = async (id: string) => {
     try {
-      const result = await addToCart(sessionData?.sessionId as string, id, 1);
+      if (!isSessionReady || !sessionData?.sessionId) {
+        showFeedback('feedback.session-not-ready', 'warning');
+        return;
+      }
+      
+      const result = await addToCart(sessionData.sessionId, id, 1);
       console.log(result);
       showFeedback('feedback.add-to-cart-success', 'success');
     } catch (error) {

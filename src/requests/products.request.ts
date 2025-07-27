@@ -12,7 +12,7 @@ import {
 export const getProducts = async (): Promise<ProductResponse> => {
   try {
     const response = await axiosInstance.get(`${productsApiUrl}`, {
-      withCredentials: false,
+      withCredentials: true,
     });
 
     if (
@@ -43,7 +43,7 @@ export const getProducts = async (): Promise<ProductResponse> => {
 export const getProduct = async (uuid: string): Promise<ProductResponse> => {
   try {
     const response = await axiosInstance.get(`${productsApiUrl}/${uuid}`, {
-      withCredentials: false,
+      withCredentials: true,
     });
 
     if (
@@ -90,7 +90,7 @@ export const createProduct = async (
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        withCredentials: false,
+        withCredentials: true,
       });
       return response.data;
     } else {
@@ -101,7 +101,7 @@ export const createProduct = async (
         {
           headers: {
             'Content-Type': 'application/json',
-            withCredentials: false,
+            withCredentials: true,
           },
         },
       );
@@ -131,7 +131,7 @@ export const updateProduct = async (
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            withCredentials: false,
+            withCredentials: true,
           },
         },
       );
@@ -144,7 +144,7 @@ export const updateProduct = async (
         {
           headers: {
             'Content-Type': 'application/json',
-            withCredentials: false,
+            withCredentials: true,
           },
         },
       );
@@ -167,7 +167,7 @@ export const updateStock = async (
       {
         headers: {
           'Content-Type': 'application/json',
-          withCredentials: false,
+          withCredentials: true,
         },
       },
     );
@@ -181,7 +181,7 @@ export const updateStock = async (
 export const deleteProduct = async (uuid: string): Promise<ProductResponse> => {
   try {
     const response = await axiosInstance.delete(`${productsApiUrl}/${uuid}`, {
-      withCredentials: false,
+      withCredentials: true,
     });
     return response.data;
   } catch (e) {

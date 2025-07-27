@@ -42,7 +42,7 @@ const ProductOverview: FC = () => {
   } = useProduct();
   const router = useRouter();
   const { products } = useProducts();
-  const { sessionData } = useAuth();
+  const { sessionData, isSessionReady } = useAuth();
   const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
 
@@ -73,8 +73,13 @@ const ProductOverview: FC = () => {
         return;
       }
 
+      if (!isSessionReady || !sessionData?.sessionId) {
+        showFeedback('feedback.session-not-ready', 'warning');
+        return;
+      }
+
       const result = await addToCart(
-        sessionData?.sessionId as string,
+        sessionData.sessionId,
         product?._id as string,
         data.quantity,
       );
@@ -89,7 +94,7 @@ const ProductOverview: FC = () => {
 
   const handleAddToCart = async (id: string) => {
     try {
-      if (!cartItems || !sessionData?.sessionId) {
+      if (!cartItems || !isSessionReady || !sessionData?.sessionId) {
         console.warn('Cart items or session not available');
         return;
       }

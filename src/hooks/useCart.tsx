@@ -34,7 +34,7 @@ interface CartResponse {
 }
 
 const useCart = (): CartResponse => {
-  const { sessionData, userSessionData } = useAuth();
+  const { sessionData, userSessionData, isSessionReady } = useAuth();
   const { isConnected } = useSocket();
   const [socketData] = useState<CartSocketData>({
     cartCount: {},
@@ -43,12 +43,24 @@ const useCart = (): CartResponse => {
   });
 
   const cartKey = sessionData?.sessionId;
+  const shouldFetch = isSessionReady && cartKey && cartKey !== 'undefined';
+  
+  console.log('🛒 useCart Debug:', { 
+    isSessionReady, 
+    cartKey, 
+    shouldFetch,
+    sessionData 
+  });
+  
   const { data, error, isLoading, mutate } = useSWR<
     CartAPIResponse,
     RequestError
   >(
-    cartKey ? `cart-${cartKey}` : null,
-    () => getCart(sessionData?.sessionId as string, userSessionData?.user?.id),
+    shouldFetch ? `cart-${cartKey}` : null,
+    () => {
+      console.log('🛒 Fetching cart for session:', cartKey);
+      return getCart(cartKey!, userSessionData?.user?.id);
+    },
     {
       suspense: false,
       refreshInterval: 30000,
@@ -56,9 +68,18 @@ const useCart = (): CartResponse => {
   );
 
   const processCartItems = (): CartItemWithReservation[] | null => {
-    if (!data?.data?.items) return null;
+    console.log('🛒 Processing cart items, data:', data);
+    
+    // Handle nested data structure: data.data.data.items
+    const items = data?.data?.data?.items || data?.data?.items;
+    
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      console.log('🛒 No cart items found, items:', items);
+      return null;
+    }
 
-    return data.data.items.map((item: any) => {
+    console.log('🛒 Processing', items.length, 'cart items');
+    return items.map((item: any) => {
       const reservedUntil = item.reservedUntil
         ? new Date(item.reservedUntil)
         : null;
@@ -88,7 +109,7 @@ const useCart = (): CartResponse => {
     return () => clearInterval(interval);
   }, [data?.data?.items, mutate]);
 
-  return {
+  const result = {
     cart: data?.data || null,
     cartItems: processCartItems(),
     isLoading,
@@ -98,6 +119,9 @@ const useCart = (): CartResponse => {
     cartCount: socketData.cartCount,
     hasReservationConflicts: socketData.stockConflicts.length > 0,
   };
+  
+  console.log('🛒 useCart returning:', result);
+  return result;
 };
 
 export default useCart;

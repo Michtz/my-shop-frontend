@@ -7,12 +7,16 @@ export const getCart = async (
   userId?: string,
 ): Promise<any> => {
   try {
+    if (!sessionId || sessionId === 'undefined') {
+      throw new Error('Valid session ID is required');
+    }
+
     const url = userId
       ? `${cartApiUrl}/${sessionId}/${userId}`
       : `${cartApiUrl}/${sessionId}`;
 
     return await axiosInstance.get(url, {
-      withCredentials: false,
+      withCredentials: true,
     });
   } catch (e) {
     Logger.error('Unable to get the cart');
@@ -23,7 +27,7 @@ export const getCart = async (
 export const updateCart = async (sessionId: string): Promise<any> => {
   try {
     return await axiosInstance.get(`${cartApiUrl}/${sessionId}`, {
-      withCredentials: false,
+      withCredentials: true,
     });
   } catch (e) {
     Logger.error('Unable to get the cart');
@@ -47,7 +51,7 @@ export const updateCartUser = async (
       `${cartApiUrl}/${sessionId}/user`,
       requestBody,
       {
-        withCredentials: false,
+        withCredentials: true,
       },
     );
   } catch (e) {
@@ -71,7 +75,7 @@ export const addToCart = async (
       ],
     };
     return await axiosInstance.put(`${cartApiUrl}/${sessionId}`, requestBody, {
-      withCredentials: false,
+      withCredentials: true,
     });
   } catch (e) {
     Logger.error('Unable to add to cart');
@@ -96,7 +100,7 @@ export const updateCartItem = async (
     return await axiosInstance.put(
       `${cartApiUrl}/${sessionId}/product/${productId}`,
       requestBody,
-      { withCredentials: false },
+      { withCredentials: true },
     );
   } catch (e) {
     Logger.error('Unable to update the cart item');
@@ -119,7 +123,7 @@ export const replaceCartItems = async (
     return await axiosInstance.put(
       `${cartApiUrl}/${sessionId}/items`,
       requestBody,
-      { withCredentials: false },
+      { withCredentials: true },
     );
   } catch (e) {
     Logger.error('Unable to replace cart items');

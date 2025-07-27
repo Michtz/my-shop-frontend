@@ -29,8 +29,9 @@ export const useUpdateProduct = (): UseUpdateProductResponse => {
 
     try {
       const response = await axios.put<{ data: IProduct }>(
-        `http://localhost:4200/api/products/${id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/${id}`,
         data,
+        { withCredentials: true }
       );
       await mutate(`/api/products/${id}`);
 

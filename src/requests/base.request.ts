@@ -3,7 +3,7 @@ import { prodApiUrl, localApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? prodApiUrl : localApiUrl,
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || prodApiUrl,
   timeout: 10000,
   timeoutErrorMessage: 'Timeout',
   headers: {
@@ -14,10 +14,19 @@ export const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(async (request) => {
-  const token: string = JSON.parse(sessionStorage.getItem('user')!)?.token;
+  try {
+    const userStr = sessionStorage.getItem('user');
+    const token: string = userStr ? JSON.parse(userStr)?.token : null;
 
-  if (token) request.headers.Authorization = `Bearer ${token}`;
-  // console.log('is token', JSON.parse(sessionStorage.getItem('user')!), token);
+    if (token) request.headers.Authorization = `Bearer ${token}`;
+    
+    // Note: Session ID is handled via URL parameters in individual requests
+    // Custom headers like X-Session-ID are blocked by CORS policy
+  } catch (err) {
+    // Handle JSON parse errors gracefully
+    console.warn('Failed to parse session storage data:', err);
+  }
+  
   return request;
 });
 
