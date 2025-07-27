@@ -3,6 +3,7 @@
 import style from '@/styles/admin/ProductForm.module.scss';
 import { useState, DragEvent, ChangeEvent } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import Image from 'next/image';
 
 import Input from '@/components/system/Input';
 import MaterialIcon from '@/components/system/MaterialIcon';
@@ -165,10 +166,12 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
             >
               {imagePreview ? (
                 <div className={style.imagePreviewContainer}>
-                  <img
+                  <Image
                     src={imagePreview}
                     alt="Vorschau"
                     className={style.imagePreview}
+                    width={200}
+                    height={200}
                   />
                   <Button
                     type="button"

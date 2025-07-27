@@ -38,6 +38,7 @@ interface OrderData {
   paidAt: string;
 }
 
+// Todo: refactor completely
 const ConfirmationStep: React.FC = () => {
   const { t } = useTranslation();
   const { orderNumber } = useParams();

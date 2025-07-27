@@ -124,7 +124,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
     )
       setFlexDirection('column');
     else setFlexDirection('row');
-  }, [ref.current]);
+  }, []);
 
   useEffect(() => {
     const handler = (): void => {

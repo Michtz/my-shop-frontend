@@ -25,7 +25,6 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   const { awaitModalResult } = useModal();
   const { showFeedback } = useFeedback();
   const { t } = useTranslation();
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [sortConfig, setSortConfig] = useState<{
     key: keyof IProduct | null;
     direction: 'asc' | 'desc';
@@ -56,13 +55,6 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
     }
     return sortableItems;
   }, [products, sortConfig]);
-
-
-  const handleSelectProduct = (productId: string, checked: boolean) => {
-    setSelectedProducts((prev) =>
-      checked ? [...prev, productId] : prev.filter((id) => id !== productId),
-    );
-  };
 
   const handleDeleteProduct = async (product: IProduct) => {
     try {
@@ -139,8 +131,6 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
         {products.length > 0 ? (
           <ProductTable
             products={sortedProducts}
-            selectedProducts={selectedProducts}
-            handleSelectProduct={handleSelectProduct}
             handleSort={handleSort}
             getSortIcon={getSortIcon}
             onEditProduct={onEditProduct}

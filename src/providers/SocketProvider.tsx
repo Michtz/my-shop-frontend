@@ -81,6 +81,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     return () => {
       socketInstance.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionData?.sessionId, userSessionData?.user.id]);
 
   // Socket Event Listeners

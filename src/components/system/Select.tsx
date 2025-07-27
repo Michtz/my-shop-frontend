@@ -117,6 +117,7 @@ const Select = ({
           id={id}
           role="combobox"
           aria-expanded={isOpen}
+          aria-controls={`${id}-listbox`}
           tabIndex={disabled ? -1 : 0}
         >
           <span className={style.selectValue}>{displayValue}</span>

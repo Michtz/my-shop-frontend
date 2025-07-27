@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import Image from 'next/image';
 import styles from '@/styles/admin/blog/BlogImageUpload.module.scss';
 
 interface BlogImageUploadProps {
@@ -57,7 +58,7 @@ const BlogImageUpload: React.FC<BlogImageUploadProps> = ({
       <div className={styles.uploadArea}>
         {preview ? (
           <div className={styles.imagePreview}>
-            <img src={preview} alt="Preview" className={styles.previewImage} />
+            <Image src={preview} alt="Preview" className={styles.previewImage} width={300} height={200} />
             <div className={styles.imageOverlay}>
               <button
                 type="button"

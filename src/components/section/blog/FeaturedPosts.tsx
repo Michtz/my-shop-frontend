@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { IBlogPost } from '@/types/blog.types';
 import { getFeaturedPosts } from '@/requests/blog.request';
 import { formatDate } from '@/functions/common';
@@ -31,9 +32,9 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
 
   useEffect(() => {
     loadFeaturedPosts();
-  }, [limit]);
+  }, [loadFeaturedPosts]);
 
-  const loadFeaturedPosts = async () => {
+  const loadFeaturedPosts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -54,7 +55,7 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [limit]);
 
   if (loading) {
     return (
@@ -86,11 +87,13 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
             {showImages && post.featured_image && (
               <div className={styles.imageContainer}>
                 <Link href={`/blog/${post.slug}`}>
-                  <img
+                  <Image
                     src={post.featured_image}
                     alt={post.title}
                     className={styles.postImage}
-                    loading={index === 0 ? 'eager' : 'lazy'}
+                    width={300}
+                    height={200}
+                    priority={index === 0}
                   />
                 </Link>
               </div>
@@ -121,7 +124,9 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
               <p className={styles.excerpt}>{post.excerpt}</p>
 
               <div className={styles.author}>
-                <span>{t('blog.by')} {post.author_id.firstName}</span>
+                <span>
+                  {t('blog.by')} {post.author_id.firstName}
+                </span>
               </div>
             </div>
           </article>

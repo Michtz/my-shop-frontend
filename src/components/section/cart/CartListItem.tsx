@@ -2,6 +2,7 @@
 
 import style from '@/styles/system/CartListItem.module.scss';
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Accordion, {
   AccordionDetailsContainer,
   AccordionHeaderButtonsContainer,
@@ -19,6 +20,7 @@ interface CartListItemProp {
   items: any[];
   sessionId: string;
   mutate: () => void;
+  review?: boolean;
 }
 
 const CartListItem: React.FC<CartListItemProp> = ({
@@ -26,6 +28,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
   items,
   sessionId,
   mutate,
+  review = false,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -78,9 +81,11 @@ const CartListItem: React.FC<CartListItemProp> = ({
         <AccordionHeaderContent>
           <div className={style.productInfo}>
             <div className={style.productImage}>
-              <img
+              <Image
                 src={item.product.imageUrl || '/placeholder-image.jpg'}
                 alt={item.product.name}
+                width={60}
+                height={60}
               />
               {/*<div style={{ backgroundColor: 'green', height: '80px' }} />*/}
             </div>
@@ -95,18 +100,21 @@ const CartListItem: React.FC<CartListItemProp> = ({
           </div>
           <AccordionHeaderButtonsContainer flexDirection={'row'}>
             <div className={style.productControls}>
-              <NumberStepper
-                quantity={item.quantity}
-                onQuantityChange={(newQuantity) =>
-                  handleQuantityChange(item.productId, newQuantity)
-                }
-                onDelete={() => handleDeleteItem(item.productId)}
-                disabled={isLoading}
-                min={1}
-                max={99}
-              />
+              {!review && (
+                <NumberStepper
+                  quantity={item.quantity}
+                  onQuantityChange={(newQuantity) =>
+                    handleQuantityChange(item.productId, newQuantity)
+                  }
+                  onDelete={() => handleDeleteItem(item.productId)}
+                  disabled={isLoading}
+                  min={1}
+                  max={99}
+                />
+              )}
               <div className={style.totalPrice}>
-                CHF {itemTotal.toFixed(2)}.-
+                {review && `${item.quantity} Stück für insgesamt`} CHF{' '}
+                {itemTotal.toFixed(2)}.-
               </div>
             </div>
           </AccordionHeaderButtonsContainer>

@@ -104,7 +104,7 @@ const PaymentStep: React.FC = () => {
         }
       });
     }
-  }, [sessionData?.sessionId, t]);
+  }, [sessionData?.sessionId, t, showFeedback]);
 
   const handlePaymentMethodReady = () => {
     showFeedback(t('checkout.paymentMethodValidated'), 'success');

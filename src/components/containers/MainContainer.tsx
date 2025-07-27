@@ -41,7 +41,8 @@ const MainContainer: React.FC = () => {
 
   useEffect(() => {
     setArticles(filteredProducts(products, category));
-  }, [isLoading, category, products]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, category]);
 
   const slides: CarouselItem[] = [
     {

@@ -84,8 +84,7 @@ const ReviewStep: React.FC = () => {
   if (!clientSecret) return <div>{t('checkout.loadingOrderReview')}</div>;
 
   return (
-    <Container flow={'column'}>
-      <h2>{t('checkout.reviewOrder')}</h2>
+    <Container flow={'column'} padding={false}>
       <CartList review />
 
       <div style={{ marginBottom: '1rem' }}>

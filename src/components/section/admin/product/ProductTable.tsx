@@ -6,8 +6,6 @@ import { ProductTableRow } from '@/components/section/admin/product/ProductTaleR
 
 interface ProductTableProps {
   products: IProduct[];
-  selectedProducts: string[];
-  handleSelectProduct: (productId: string, checked: boolean) => void;
   handleSort: (column: keyof IProduct) => void;
   getSortIcon: (column: keyof IProduct) => string;
   onEditProduct: (product: IProduct) => void;
@@ -17,8 +15,6 @@ interface ProductTableProps {
 
 export const ProductTable: React.FC<ProductTableProps> = ({
   products,
-  selectedProducts,
-  handleSelectProduct,
   handleSort,
   getSortIcon,
   onEditProduct,
@@ -33,8 +29,6 @@ export const ProductTable: React.FC<ProductTableProps> = ({
           <ProductTableRow
             key={product._id}
             product={product}
-            isSelected={selectedProducts.includes(product._id)}
-            handleSelectProduct={handleSelectProduct}
             onEditProduct={onEditProduct}
             onDeleteProduct={onDeleteProduct}
             getStockStatus={getStockStatus}

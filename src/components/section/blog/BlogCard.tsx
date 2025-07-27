@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { IBlogPost } from '@/types/blog.types';
 import { formatDate } from '@/functions/common';
 import { useTranslation } from 'react-i18next';
@@ -24,11 +25,12 @@ const BlogCard: React.FC<BlogCardProps> = ({
       {showImage && post.featured_image && (
         <div className={styles.imageContainer}>
           <Link href={`/blog/${post.slug}`}>
-            <img 
+            <Image 
               src={post.featured_image} 
               alt={post.title}
               className={styles.featuredImage}
-              loading="lazy"
+              width={300}
+              height={200}
             />
           </Link>
         </div>

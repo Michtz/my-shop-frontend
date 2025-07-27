@@ -73,7 +73,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
 
   useEffect(() => {
     if (userInformation) reset(getFormDefaultValues(userInformation));
-  }, [userInformation]);
+  }, [userInformation, reset]);
 
   const onSubmit = async (data: UserProfileFormData) => {
     try {
@@ -147,7 +147,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
         className={style.formContainer}
         onSubmitAction={handleSubmit(onCheckout || onSubmit)}
       >
-        <ButtonGroup options={options} />
+        {!onCheckout && <ButtonGroup options={options} />}
         <section className={style.section}>
           {onCheckout ? (
             <h2>{t('userProfile.orderInformation')}</h2>
@@ -278,7 +278,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
             <Button
               type="button"
               variant="secondary"
-              onClick={() => reset()}
+              onClick={onCheckout ? () => router.back() : () => reset()}
               disabled={isSubmitting}
             >
               {t('userProfile.cancel')}

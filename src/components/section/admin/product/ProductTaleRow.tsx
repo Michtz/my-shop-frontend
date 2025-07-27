@@ -4,6 +4,7 @@ import MaterialIcon from '@/components/system/MaterialIcon';
 import { IProduct } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
 import { useTranslation } from 'react-i18next';
+import Image from 'next/image';
 
 interface ProductTableRowProps {
   product: IProduct;
@@ -26,7 +27,7 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
       <td className={style.imageCell}>
         <div className={style.productImage}>
           {product?.imageUrl ? (
-            <img src={product.imageUrl} alt={product.name} />
+            <Image src={product.imageUrl} alt={product.name} width={50} height={50} />
           ) : (
             <div className={style.imagePlaceholder}>
               <MaterialIcon icon="image" />

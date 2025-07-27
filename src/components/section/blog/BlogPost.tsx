@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
@@ -66,10 +67,12 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
         <header className={styles.header}>
           {post.featured_image && (
             <div className={styles.featuredImageContainer}>
-              <img 
+              <Image 
                 src={post.featured_image} 
                 alt={post.title}
                 className={styles.featuredImage}
+                width={800}
+                height={400}
               />
             </div>
           )}
@@ -197,10 +200,11 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
                 {relatedPost.featured_image && (
                   <div className={styles.relatedImage}>
                     <Link href={`/blog/${relatedPost.slug}`}>
-                      <img 
+                      <Image 
                         src={relatedPost.featured_image} 
                         alt={relatedPost.title}
-                        loading="lazy"
+                        width={200}
+                        height={150}
                       />
                     </Link>
                   </div>

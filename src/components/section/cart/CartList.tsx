@@ -53,6 +53,7 @@ const CartList: FC<Props> = ({ review }) => {
             items={cartItems}
             sessionId={sessionData?.sessionId as string}
             mutate={mutate}
+            review={review}
           />
           <Hr />
         </React.Fragment>
@@ -73,7 +74,7 @@ const CartList: FC<Props> = ({ review }) => {
       alignItems={'center'}
       maxWidth={'1150'}
     >
-      <h2>{t('cart.title')}</h2>
+      {!review && <h2>{t('cart.title')}</h2>}
       {isLoading ? skeleton : list}
     </Container>
   );

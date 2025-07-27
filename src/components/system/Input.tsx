@@ -83,7 +83,7 @@ export const Input = forwardRef<
       if (element) {
         setHasValue(!!element.value);
       }
-    }, [props.value, props.defaultValue]);
+    }, [props.value, props.defaultValue, inputRef]);
 
     const handleFocus = (
       e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,

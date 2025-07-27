@@ -49,6 +49,7 @@ export const useBlogPosts = (filters?: BlogFilters) => {
 
   useEffect(() => {
     loadPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const refetch = (newFilters?: BlogFilters) => {

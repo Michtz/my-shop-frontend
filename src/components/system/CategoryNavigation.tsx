@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import style from '@/styles/system/CategoryNavigation.module.scss';
 import AssetIcon, { IconType } from '@/components/system/AssetIcon';
 import { useParams, useRouter } from 'next/navigation';
