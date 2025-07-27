@@ -22,7 +22,10 @@ axiosInstance.interceptors.request.use(async (request) => {
 });
 
 axiosInstance.interceptors.response.use(
-  (response) => response.data,
+  (response) => {
+    // Don't unwrap response.data automatically to preserve API response structure
+    return response;
+  },
   async (error) => {
     const returnError = {
       message: error.message || 'Error',
