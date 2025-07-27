@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { localApiUrl } from '@/config/api.config';
+import { prodApiUrl, localApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
 
 export const axiosInstance = axios.create({
-  baseURL: localApiUrl,
+  baseURL: process.env.NODE_ENV === 'production' ? prodApiUrl : localApiUrl,
   timeout: 10000,
   timeoutErrorMessage: 'Timeout',
   headers: {

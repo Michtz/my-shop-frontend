@@ -1,4 +1,4 @@
-export const prodApiUrl: string = '';
+export const prodApiUrl: string = 'https://my-shop-backend-usaq.onrender.com';
 export const localApiUrl: string = 'http://localhost:4200';
 
 export const cartApiUrl: string = 'api/cart';
