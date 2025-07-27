@@ -32,7 +32,7 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
 
   useEffect(() => {
     loadFeaturedPosts();
-  }, [loadFeaturedPosts]);
+  }, []);
 
   const loadFeaturedPosts = useCallback(async () => {
     try {
