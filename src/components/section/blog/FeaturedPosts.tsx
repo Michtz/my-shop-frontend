@@ -30,10 +30,6 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadFeaturedPosts();
-  }, []);
-
   const loadFeaturedPosts = useCallback(async () => {
     try {
       setLoading(true);
@@ -56,6 +52,10 @@ const FeaturedPosts: React.FC<FeaturedPostsProps> = ({
       setLoading(false);
     }
   }, [limit]);
+
+  useEffect(() => {
+    loadFeaturedPosts();
+  }, [loadFeaturedPosts]);
 
   if (loading) {
     return (

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { prodApiUrl, localApiUrl } from '@/config/api.config';
+import { prodApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
 
 export const axiosInstance = axios.create({
