@@ -8,9 +8,8 @@ import { Container } from '@/components/system/Container';
 import ReviewStep from '@/components/section/checkout/ReviewStep';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroup } from '@/components/system/Button';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { Params } from 'next/dist/server/request/params';
 
 interface View {
   view: 'address' | 'paymentInfo' | 'confirmation' | 'review';
