@@ -1,4 +1,3 @@
-import useCart from '@/hooks/useCart';
 import { useRouter } from 'next/navigation';
 import { Container } from '@/components/system/Container';
 import Button, { ButtonContainer } from '@/components/system/Button';

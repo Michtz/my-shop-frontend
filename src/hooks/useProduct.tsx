@@ -27,7 +27,7 @@ const useProduct = (): SingleProductResponse => {
   const uuid = params?.id as string;
   const { isConnected, isReady, watchProduct, unwatchProduct } = useSocket();
 
-  const [socketData, setSocketData] = useState<ProductSocketData>({
+  const [socketData] = useState<ProductSocketData>({
     availableStock: 0,
     cartCount: 0,
     lastStockUpdate: new Date(),

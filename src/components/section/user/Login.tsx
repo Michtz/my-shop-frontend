@@ -18,7 +18,6 @@ import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import Image from 'next/image';
 import logo from '@/assets/myShopLogo.png';
-import { UserProfileFormData } from '@/components/section/user/UserInformationForm';
 
 export interface LoginFormData {
   email: string;

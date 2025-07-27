@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import BlogCard from './BlogCard';
 import BlogPagination from './BlogPagination';
-import BlogSearch from './BlogSearch';
 import BlogTagList from './BlogTagList';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
 import { IBlogPost } from '@/types/blog.types';
@@ -25,7 +24,6 @@ const BlogList: React.FC<BlogListProps> = ({
   initialPosts = [],
   initialTags = [],
   selectedTag,
-  showSearch = true,
   showTagFilter = true,
   pageSize = 10,
 }) => {
@@ -39,14 +37,17 @@ const BlogList: React.FC<BlogListProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTag, setActiveTag] = useState(selectedTag || '');
 
-  useEffect(() => {
-    loadPosts();
-    if (showTagFilter && tags.length === 0) {
-      loadTags();
-    }
-  }, [currentPage, activeTag, searchQuery]);
+  useEffect(
+    () => {
+      loadPosts();
+      if (showTagFilter && tags.length === 0) {
+        loadTags();
+      }
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentPage, activeTag, searchQuery, showTagFilter, tags.length],
+  );
 
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     setLoading(true);
     try {
       const response = await getPublishedPosts(
@@ -66,9 +67,9 @@ const BlogList: React.FC<BlogListProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, pageSize, activeTag, searchQuery]);
 
-  const loadTags = async () => {
+  const loadTags = useCallback(async () => {
     try {
       const response = await getAllTags();
       if (response.success && response.data) {
@@ -77,16 +78,11 @@ const BlogList: React.FC<BlogListProps> = ({
     } catch (error) {
       Logger.error('Failed to load blog tags:', error);
     }
-  };
+  }, []);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    setCurrentPage(1);
   };
 
   const handleTagSelect = (tag: string) => {
@@ -114,7 +110,8 @@ const BlogList: React.FC<BlogListProps> = ({
         <div className={styles.headerContent}>
           <h1>Blog</h1>
           <p className={styles.subtitle}>
-            {totalPosts} {totalPosts === 1 ? t('blog.post') : t('blog.posts')} {t('blog.found')}
+            {totalPosts} {totalPosts === 1 ? t('blog.post') : t('blog.posts')}{' '}
+            {t('blog.found')}
             {activeTag && ` ${t('blog.inTag', { tag: activeTag })}`}
             {searchQuery && ` ${t('blog.matching', { query: searchQuery })}`}
           </p>

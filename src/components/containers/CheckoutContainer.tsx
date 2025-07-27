@@ -45,7 +45,7 @@ const CheckoutContent: React.FC<View> = ({ view }) => {
     }
   };
 
-  return <Container justifyContent={'center'} children={getCurrentView()} />;
+  return <Container justifyContent={'center'}>{getCurrentView()}</Container>;
 };
 
 export default CheckoutContainer;

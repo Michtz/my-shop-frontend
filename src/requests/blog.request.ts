@@ -7,7 +7,6 @@ import {
   BlogTagResponse,
   CreateBlogPostRequest,
   UpdateBlogPostRequest,
-  BlogFilters,
   IBlogPost,
 } from '@/types/blog.types';
 

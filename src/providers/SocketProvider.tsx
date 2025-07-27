@@ -12,7 +12,6 @@ import { mutate } from 'swr';
 import { useAuth } from '@/hooks/AuthHook';
 import {
   SocketContextType,
-  SocketEventMap,
   CartReservationData,
   CartUpdateData,
   CartSyncData,

@@ -10,13 +10,12 @@ interface CategoryNavigationProps {
   activeCategory?: string;
 }
 
-const CategoryNavigation: React.FC<CategoryNavigationProps> = ({
-  activeCategory,
-}): React.ReactElement => {
+const CategoryNavigation: React.FC<
+  CategoryNavigationProps
+> = (): React.ReactElement => {
   const router = useRouter();
   const params = useParams();
   const { t } = useTranslation(['common']);
-  const [activeItem, setActiveItem] = useState<string>(activeCategory || '');
 
   const categories = [
     { icon: 'tampers', label: t('common:products.categories.tamper') },
@@ -31,7 +30,6 @@ const CategoryNavigation: React.FC<CategoryNavigationProps> = ({
   ];
 
   const handleItemClick = (iconName: string) => {
-    setActiveItem(iconName);
     router.push(`/${iconName}`);
   };
   return (

@@ -2,7 +2,6 @@
 
 import { FC, FormEvent, PropsWithChildren, ReactNode } from 'react';
 import style from '@/styles/Container.module.scss';
-import { padding } from '@mui/system';
 
 interface ContainerProps extends PropsWithChildren {
   children?: ReactNode;
@@ -50,7 +49,6 @@ interface ContainerFormProps {
 
 export const FormContainer: FC<ContainerFormProps> = ({
   children,
-  className,
   onSubmitAction,
 }) => (
   <form

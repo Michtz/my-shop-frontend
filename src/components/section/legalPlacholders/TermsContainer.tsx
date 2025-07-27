@@ -42,7 +42,7 @@ const TermsContainer: React.FC = () => {
             <p className={style.paragraph}>
               Die Darstellung der Produkte in unserem Online-Shop stellt kein
               bindendes Angebot, sondern einen unverbindlichen Online-Katalog
-              dar. Durch Anklicken des Buttons "Kaufen" geben Sie eine
+              dar. Durch Anklicken des Buttons &quot;Kaufen&quot; geben Sie eine
               verbindliche Bestellung der auf der Bestellseite aufgelisteten
               Waren ab.
             </p>

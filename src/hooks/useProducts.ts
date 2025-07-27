@@ -4,11 +4,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import { getProducts } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
-import {
-  IProduct,
-  ProductFilters,
-  ProductResponse,
-} from '@/types/product.types';
+import { IProduct, ProductResponse } from '@/types/product.types';
 import useSocket from '@/hooks/useSocket';
 
 interface ProductWithSocketData extends IProduct {
@@ -29,10 +25,8 @@ interface ProductsResponse {
 }
 
 const useProducts = (): ProductsResponse => {
-  const { isConnected, isReady } = useSocket();
-  const [cartCounts, setCartCounts] = useState<{ [productId: string]: number }>(
-    {},
-  );
+  const { isConnected } = useSocket();
+  const [cartCounts] = useState<{ [productId: string]: number }>({});
 
   const { data, error, isLoading } = useSWR<ProductResponse, RequestError>(
     'products',

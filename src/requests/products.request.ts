@@ -6,7 +6,6 @@ import {
   CreateProductRequest,
   UpdateProductRequest,
   UpdateStockRequest,
-  ProductFilters,
   IProduct,
 } from '@/types/product.types';
 

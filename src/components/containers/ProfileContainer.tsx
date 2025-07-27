@@ -4,7 +4,6 @@ import React, { FC } from 'react';
 import { Container } from '@/components/system/Container';
 import Login from '@/components/section/user/Login';
 import Register from '@/components/section/user/Register';
-import style from '@/styles/UserProfileForm.module.scss';
 import UserInformationForm from '@/components/section/user/UserInformationForm';
 import PasswordChange from '@/components/section/user/PasswordChange';
 
@@ -35,7 +34,7 @@ const ProfileContent: React.FC<ProfileContainerProps> = ({
         return <></>;
     }
   };
-  return <Container justifyContent={'center'} children={getCurrentView()} />;
+  return <Container justifyContent={'center'}>{getCurrentView()}</Container>;
 };
 
 export default ProfileContainer;

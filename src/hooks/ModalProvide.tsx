@@ -3,7 +3,6 @@ import React, {
   createContext,
   PropsWithChildren,
   useContext,
-  useEffect,
   useState,
 } from 'react';
 import { v4 } from 'uuid';

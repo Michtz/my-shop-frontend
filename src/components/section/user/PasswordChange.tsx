@@ -20,9 +20,7 @@ interface PasswordChangeData {
   confirmNewPassword: string;
 }
 
-interface PasswordChangeProps {}
-
-const PasswordChangeForm: FC<PasswordChangeProps> = () => {
+const PasswordChangeForm: FC = () => {
   const { t } = useTranslation();
   const { transformFieldError } = useError();
   const { showFeedback } = useFeedback();

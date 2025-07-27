@@ -17,6 +17,6 @@ interface ContainerProps extends PropsWithChildren {
     | 'space-evenly';
 }
 
-export const Hr: FC<ContainerProps> = ({ margin }) => (
+export const Hr: FC<ContainerProps> = () => (
   <div className={style.hr}></div>
 );

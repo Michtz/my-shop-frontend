@@ -29,17 +29,18 @@ const MaterialIcon: React.FC<MaterialIconProps> = ({
       data-size={iconSize}
       data-color={color}
       data-clickable={!!onClick || clickable || !!href}
-      children={href ? <Link href={href} children={icon} /> : icon}
       onClick={onClick}
       {...props}
-    />
+    >
+      {href ? <Link href={href}>{icon}</Link> : icon}
+    </span>
   );
 };
 
 export const IconContainer: React.FC<PropsWithChildren> = ({
   children,
 }): React.ReactElement => {
-  return <div className={style['icons-container']} children={children} />;
+  return <div className={style['icons-container']}>{children}</div>;
 };
 
 export default MaterialIcon;

@@ -24,7 +24,7 @@ interface FormFields {
   quantity: number;
 }
 
-const getDefaultValues = (product = {} as any): any => {
+const getDefaultValues = (): any => {
   return {
     quantity: 1,
   };
@@ -43,7 +43,7 @@ const ProductOverview: FC = () => {
   const router = useRouter();
   const { products } = useProducts();
   const { sessionData } = useAuth();
-  const { cart, cartItems, hasReservationConflicts } = useCart();
+  const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
 
   const {
@@ -53,7 +53,7 @@ const ProductOverview: FC = () => {
     formState: { isSubmitting },
   } = useForm<FormFields>({
     mode: 'onChange',
-    defaultValues: getDefaultValues(product),
+    defaultValues: getDefaultValues(),
   });
 
   const watchedQuantity = watch('quantity', 1);
@@ -133,18 +133,6 @@ const ProductOverview: FC = () => {
     router.push(`/product/${id}`);
   };
 
-  const formatReservationTimer = (): string | null => {
-    if (!cartItems) return null;
-
-    const cartItem = cartItems.find(
-      (item: any) => item.productId === product?._id,
-    );
-    if (!cartItem?.reservationTimeLeft) return null;
-
-    const minutes = Math.floor(cartItem.reservationTimeLeft / 60);
-    const seconds = cartItem.reservationTimeLeft % 60;
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  };
 
   const ConnectionStatus: FC = () => {
     if (!isConnected) {

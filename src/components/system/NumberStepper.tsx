@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, FormEvent } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Button from './Button';
 import style from '@/styles/system/NumberStepper.module.scss';
 

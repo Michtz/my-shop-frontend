@@ -128,7 +128,7 @@ const CustomerServiceContainer: React.FC = () => {
               }}
             >
               <h3 className={style.sectionTitle}>
-                ❓ "Wo ist meine Bestellung?"
+                &quot;Wo ist meine Bestellung?&quot;
               </h3>
               <p className={style.paragraph}>
                 Nutzen Sie die erhaltenen Sendungsverfolgung mit Ihrer
@@ -146,7 +146,7 @@ const CustomerServiceContainer: React.FC = () => {
               }}
             >
               <h3 className={style.sectionTitle}>
-                "Wie kann ich zurückgeben?"
+                &quot;Wie kann ich zurückgeben?&quot;
               </h3>
               <p className={style.paragraph}>
                 Besuchen Sie unsere Rückgabe-Seite oder kontaktieren Sie

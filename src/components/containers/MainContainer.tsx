@@ -18,8 +18,6 @@ import image1 from '@/assets/Slide2_Homepage.webp';
 import image2 from '@/assets/Homepage_Wellness2.webp';
 import image3 from '@/assets/Firmenangebot.webp';
 
-interface MainContainerProps {}
-
 const filteredProducts = (
   items: IProduct[],
   category: string | undefined,
@@ -28,7 +26,7 @@ const filteredProducts = (
   return items.filter((product) => product.category === category);
 };
 
-const MainContainer: React.FC<MainContainerProps> = () => {
+const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
@@ -43,7 +41,7 @@ const MainContainer: React.FC<MainContainerProps> = () => {
 
   useEffect(() => {
     setArticles(filteredProducts(products, category));
-  }, [isLoading]);
+  }, [isLoading, category, products]);
 
   const slides: CarouselItem[] = [
     {

@@ -35,7 +35,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   });
 
   const sortedProducts = useMemo(() => {
-    let sortableItems = [...products];
+    const sortableItems = [...products];
     if (sortConfig.key !== null) {
       sortableItems.sort((a, b) => {
         const aValue = a[sortConfig.key!];
@@ -57,14 +57,6 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
     return sortableItems;
   }, [products, sortConfig]);
 
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      const allProductIds = products.map((product) => product._id);
-      setSelectedProducts(allProductIds);
-    } else {
-      setSelectedProducts([]);
-    }
-  };
 
   const handleSelectProduct = (productId: string, checked: boolean) => {
     setSelectedProducts((prev) =>

@@ -13,7 +13,7 @@ import {
   UpdateBlogPostRequest,
   BlogPostStatus,
 } from '@/types/blog.types';
-import { createPost, updatePost, getPostById } from '@/requests/blog.request';
+import { createPost, updatePost } from '@/requests/blog.request';
 import { Logger } from '@/utils/Logger.class';
 import styles from '@/styles/admin/blog/BlogForm.module.scss';
 
@@ -36,7 +36,6 @@ interface FormData {
 
 const BlogForm: React.FC<BlogFormProps> = ({ post, onClose, onSave }) => {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [featuredImage, setFeaturedImage] = useState<File | null>(null);
   const [previewMode, setPreviewMode] = useState(false);

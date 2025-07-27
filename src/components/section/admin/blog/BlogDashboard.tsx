@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import BlogStatusBadge from './BlogStatusBadge';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
@@ -36,9 +36,10 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
 
   useEffect(() => {
     loadPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, statusFilter, searchQuery]);
 
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     try {
       setLoading(true);
       const response: any = await getAllPosts(
@@ -58,7 +59,7 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, statusFilter, searchQuery]);
 
   const handleStatusChange = async (
     postId: string,

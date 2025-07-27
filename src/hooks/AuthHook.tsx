@@ -15,7 +15,6 @@ import {
   register as _register,
   logout as _logout,
   getCurrentUser,
-  validateToken,
   refreshToken,
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';

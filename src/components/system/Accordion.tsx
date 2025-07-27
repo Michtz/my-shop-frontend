@@ -70,7 +70,7 @@ const Accordion: React.FC<AccordionProps> = ({
         initial={false}
         className={className}
       >
-        <div {...restProps} children={children} />
+        <div {...restProps}>{children}</div>
       </motion.div>
     </AccordionContext.Provider>
   );
@@ -87,8 +87,9 @@ export const AccordionHeaderContainer: React.FC<PropsWithChildren> = ({
       data-expanded={expanded}
       onClick={!disabled ? toggle : undefined}
       className={style['list-container-item']}
-      children={children}
-    />
+    >
+      {children}
+    </motion.section>
   );
 };
 
@@ -119,7 +120,7 @@ export const AccordionHeaderContent: React.FC<PropsWithChildren> = ({
       data-cy={'list-container-item-content'}
       className={style['item-content-container']}
     >
-      <section className={style['item-content']} children={children} />
+      <section className={style['item-content']}>{children}</section>
     </section>
   );
 };
@@ -132,8 +133,9 @@ export const AccordionHeaderExpandableIcon: React.FC<PropsWithChildren> = ({
       variants={{ open: { rotate: 180 }, closed: { rotate: 0 } }}
       transition={{ duration: 0.2 }}
       className={style['accordion-header-expandable-icon']}
-      children={children}
-    />
+    >
+      {children}
+    </motion.span>
   );
 };
 
@@ -149,7 +151,6 @@ export const AccordionHeaderButtonsContainer: React.FC<
   children,
   tooltip,
   tooltipPlacement = 'left',
-  flexDirection = 'column',
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.stopPropagation(); // Prevent the click from bubbling up to the header
@@ -240,8 +241,9 @@ export const AccordionItemContainer: React.FC<PropsWithChildren> = ({
     <motion.div
       variants={variants}
       style={{ marginBottom: '1px' }}
-      children={children}
-    ></motion.div>
+    >
+      {children}
+    </motion.div>
   );
 };
 
@@ -251,8 +253,9 @@ export const AccordionNoItemsContainer: React.FC<PropsWithChildren> = ({
   return (
     <div
       className={style['accordion-no-items-container']}
-      children={children}
-    ></div>
+    >
+      {children}
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import { axiosInstance } from '@/requests/base.request';
 import { authApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
-import { UserInformation, User } from '@/types/auth';
+import { UserInformation } from '@/types/auth';
 
 export const updateUserInfo = async (
   userInfo: UserInformation,

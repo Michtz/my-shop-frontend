@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { useAuth } from '@/hooks/AuthHook';
 
 const middleware = (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;

@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import style from '@/styles/ProductCard.module.scss';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import MaterialIcon from '@/components/system/MaterialIcon';

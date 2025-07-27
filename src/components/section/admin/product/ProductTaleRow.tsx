@@ -3,14 +3,10 @@ import Button from '@/components/system/Button';
 import MaterialIcon from '@/components/system/MaterialIcon';
 import { IProduct } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
-import { Controller } from 'react-hook-form';
-import Checkbox from '@/components/system/Checkbox';
 import { useTranslation } from 'react-i18next';
 
 interface ProductTableRowProps {
   product: IProduct;
-  isSelected: boolean;
-  handleSelectProduct: (productId: string, checked: boolean) => void;
   onEditProduct: (product: IProduct) => void;
   onDeleteProduct: (product: IProduct) => Promise<void>;
   getStockStatus: (stock: number) => { text: string; class: string };
@@ -18,8 +14,6 @@ interface ProductTableRowProps {
 
 export const ProductTableRow: React.FC<ProductTableRowProps> = ({
   product,
-  isSelected,
-  handleSelectProduct,
   onEditProduct,
   onDeleteProduct,
   getStockStatus,

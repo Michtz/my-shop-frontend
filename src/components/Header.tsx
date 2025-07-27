@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import style from '@/styles/Header.module.scss';
 import Link from '@/components/system/Link';
-import Button from '@/components/system/Button';
 import { useAuth } from '@/hooks/AuthHook';
 import CartIcon from '@/components/icons/CartIcon';
 import ProfileIcon from '@/components/icons/ProfileIcon';

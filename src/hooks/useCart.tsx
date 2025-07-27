@@ -35,8 +35,8 @@ interface CartResponse {
 
 const useCart = (): CartResponse => {
   const { sessionData, userSessionData } = useAuth();
-  const { isConnected, isReady } = useSocket();
-  const [socketData, setSocketData] = useState<CartSocketData>({
+  const { isConnected } = useSocket();
+  const [socketData] = useState<CartSocketData>({
     cartCount: {},
     reservationTimers: {},
     stockConflicts: [],

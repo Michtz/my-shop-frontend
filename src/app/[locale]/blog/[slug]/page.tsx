@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import BlogPost from '@/components/section/blog/BlogPost';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
@@ -23,9 +23,10 @@ const BlogPostPage: React.FC = () => {
     if (slug) {
       loadPost();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
-  const loadPost = async () => {
+  const loadPost = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -51,7 +52,7 @@ const BlogPostPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug]);
 
   const loadRelatedPosts = async (tag: string, excludeId: string) => {
     try {
