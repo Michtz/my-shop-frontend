@@ -49,11 +49,21 @@ const PaymentForm = ({
       });
 
       if (!error && paymentIntent) {
-        // Store Payment Method ID for ReviewStep
+        // Store Payment Method ID and Payment Intent ID for ReviewStep
         const paymentMethodId = paymentIntent.payment_method as string;
+        const paymentIntentId = paymentIntent.id;
+        
         if (paymentMethodId) {
           localStorage.setItem('paymentMethodId', paymentMethodId);
         }
+        if (paymentIntentId) {
+          localStorage.setItem('paymentIntentId', paymentIntentId);
+        }
+
+        console.log('💳 Payment setup complete:', {
+          paymentMethodId: paymentMethodId ? 'STORED' : 'MISSING',
+          paymentIntentId: paymentIntentId ? 'STORED' : 'MISSING'
+        });
 
         // Payment Method is now attached, proceed to review
         onPaymentMethodReady();

@@ -23,12 +23,26 @@ export const confirmPayment = async (
   paymentIntentId: string,
   paymentMethodId?: string,
 ) => {
-  const response = await axiosInstance.post(
-    `${paymentApiUrl}/confirm/${sessionId}`,
-    {
+  try {
+    console.log('💳 Confirming payment:', {
+      sessionId,
       paymentIntentId,
-      paymentMethodId,
-    },
-  );
-  return response.data;
+      paymentMethodId: paymentMethodId ? 'PROVIDED' : 'MISSING',
+      url: `${paymentApiUrl}/confirm/${sessionId}`
+    });
+
+    const response = await axiosInstance.post(
+      `${paymentApiUrl}/confirm/${sessionId}`,
+      {
+        paymentIntentId,
+        paymentMethodId,
+      },
+    );
+
+    console.log('💳 Payment confirmation API response:', response);
+    return response.data;
+  } catch (error) {
+    console.error('💳 Payment confirmation API error:', error);
+    throw error;
+  }
 };

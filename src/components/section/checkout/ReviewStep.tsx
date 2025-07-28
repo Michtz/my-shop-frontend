@@ -18,28 +18,60 @@ const ReviewForm = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleFinalPayment = async () => {
-    if (!sessionData?.sessionId) return;
+    if (!sessionData?.sessionId) {
+      console.error('❌ No session ID available for payment');
+      showFeedback('Session not available', 'error');
+      return;
+    }
 
     setIsProcessing(true);
 
     try {
       const paymentMethodId = localStorage.getItem('paymentMethodId');
+      console.log('💳 Starting payment confirmation with:', {
+        sessionId: sessionData.sessionId,
+        paymentMethodId: paymentMethodId || 'None'
+      });
 
+      if (!paymentMethodId) {
+        console.error('❌ No payment method ID found');
+        showFeedback('Payment method not found. Please go back to payment step.', 'error');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Get the payment intent ID from local storage (set during payment step)
+      const paymentIntentId = localStorage.getItem('paymentIntentId') || 'will_be_retrieved';
+      
       const confirmResult = await confirmPayment(
         sessionData.sessionId,
-        'will_be_retrieved', // Backend will get the payment intent
-        paymentMethodId || undefined,
+        paymentIntentId,
+        paymentMethodId,
       );
 
+      console.log('💳 Payment confirmation result:', confirmResult);
+
       localStorage.removeItem('paymentMethodId');
-      if (confirmResult) {
+      localStorage.removeItem('paymentIntentId');
+      
+      if (confirmResult && confirmResult.success) {
+        console.log('✅ Payment successful, redirecting to order confirmation');
         showFeedback(t('checkout.orderPlacedSuccess'), 'success');
-        router.push(`/checkout/${confirmResult.order.orderNumber}`);
+        
+        // Handle different response structures
+        const orderNumber = confirmResult.order?.orderNumber || confirmResult.data?.orderNumber;
+        if (orderNumber) {
+          router.push(`/checkout/${orderNumber}`);
+        } else {
+          console.error('❌ No order number in response:', confirmResult);
+          showFeedback('Order created but confirmation failed', 'error');
+        }
       } else {
+        console.error('❌ Payment confirmation failed:', confirmResult);
         showFeedback(t('checkout.orderCreationFailed'), 'error');
       }
     } catch (error) {
-      console.error('Payment error:', error);
+      console.error('💳 Payment error:', error);
       showFeedback(t('checkout.paymentProcessingFailed'), 'error');
     } finally {
       setIsProcessing(false);
@@ -92,10 +124,10 @@ const ReviewStep: React.FC = () => {
       >
         <h4>{t('checkout.paymentMethod')}</h4>
         <p>💳 {t('checkout.creditCardSelected')}</p>
-        <p style={{ fontSize: '12px', color: '#666' }}>
-          Payment Method ID:{' '}
-          {localStorage.getItem('paymentMethodId') || 'Not found'}
-        </p>
+        <div style={{ fontSize: '12px', color: '#666' }}>
+          <div>Payment Method ID: {localStorage.getItem('paymentMethodId') || 'Not found'}</div>
+          <div>Payment Intent ID: {localStorage.getItem('paymentIntentId') || 'Not found'}</div>
+        </div>
       </div>
 
       <div
