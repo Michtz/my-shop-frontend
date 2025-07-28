@@ -32,12 +32,7 @@ const BlogTagPage: React.FC = () => {
       </Head>
 
       <Container flow="column" alignItems="center">
-        <BlogList
-          selectedTag={tag}
-          showSearch={true}
-          showTagFilter={true}
-          pageSize={12}
-        />
+        <BlogList selectedTag={tag} />
       </Container>
     </>
   );

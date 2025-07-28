@@ -40,16 +40,15 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
     newStatus: BlogPostStatus,
   ) => {
     try {
-      let response;
       switch (newStatus) {
         case 'published':
-          response = await publishPost(postId);
+          await publishPost(postId);
           break;
         case 'draft':
-          response = await unpublishPost(postId);
+          await unpublishPost(postId);
           break;
         case 'archived':
-          response = await archivePost(postId);
+          await archivePost(postId);
           break;
         default:
           return;

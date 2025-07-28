@@ -28,7 +28,7 @@ const BlogPage: React.FC = () => {
       </Head>
 
       <Container flow="column" alignItems="center">
-        <BlogList showSearch={true} showTagFilter={true} pageSize={12} />
+        <BlogList />
       </Container>
     </>
   );
