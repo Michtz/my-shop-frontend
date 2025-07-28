@@ -89,8 +89,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (userStr) {
         try {
           const user = JSON.parse(userStr);
-          console.log('🔄 Found user in storage, checking token validity:', user);
-          
+          console.log(
+            '🔄 Found user in storage, checking token validity:',
+            user,
+          );
+
           // Check if token exists before trying to refresh
           if (!user.token || !user.refreshToken) {
             console.log('❌ Invalid user data, missing tokens');
@@ -102,18 +105,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             try {
               const refreshResponse = await refreshToken();
               console.log('🔄 Token refresh response:', refreshResponse);
-              
+
               // Handle nested response structure
-              const refreshedData = refreshResponse.data?.data || refreshResponse.data;
+              const refreshedData =
+                refreshResponse.data?.data || refreshResponse.data;
               if (refreshedData && refreshedData.token) {
                 console.log('✅ Token refreshed successfully');
                 sessionStorage.setItem('user', JSON.stringify(refreshedData));
                 setUserSessionData(refreshedData);
-                
+
                 // Get current user info
                 const userInformation = await getCurrentUser();
                 console.log('👤 Current user response:', userInformation);
-                const userInfoData = userInformation.data?.data?.user || userInformation.data?.user;
+                const userInfoData =
+                  userInformation.data?.data?.user ||
+                  userInformation.data?.user;
                 if (userInfoData) {
                   setUserInformation(userInfoData);
                 }
@@ -133,7 +139,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } catch (parseError) {
           console.log('❌ Failed to parse user data from storage:', parseError);
           sessionStorage.removeItem('user');
-          setUserSessionData(undefined); 
+          setUserSessionData(undefined);
           setUserInformation(undefined);
         }
       }
@@ -197,8 +203,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await _login(email, password);
       console.log('🔐 Login response:', response);
-
-      // Handle axios response structure - response.data contains the actual API response
       const apiResponse = response.data as any;
       const loginData = apiResponse?.data || apiResponse;
       const isSuccess = apiResponse?.success !== false && loginData;
