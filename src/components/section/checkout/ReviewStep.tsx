@@ -56,15 +56,30 @@ const ReviewForm = () => {
       
       if (confirmResult && confirmResult.success) {
         console.log('✅ Payment successful, redirecting to order confirmation');
-        showFeedback(t('checkout.orderPlacedSuccess'), 'success');
+        console.log('📋 Full confirm result structure:', JSON.stringify(confirmResult, null, 2));
         
-        // Handle different response structures
-        const orderNumber = confirmResult.order?.orderNumber || confirmResult.data?.orderNumber;
+        // Handle different response structures - check all possible locations
+        const orderNumber = confirmResult.order?.orderNumber || 
+                           confirmResult.data?.orderNumber || 
+                           confirmResult.data?.order?.orderNumber ||
+                           confirmResult.orderNumber;
+        
+        console.log('🔍 Looking for order number in:', {
+          'confirmResult.order?.orderNumber': confirmResult.order?.orderNumber,
+          'confirmResult.data?.orderNumber': confirmResult.data?.orderNumber,
+          'confirmResult.data?.order?.orderNumber': confirmResult.data?.order?.orderNumber,
+          'confirmResult.orderNumber': confirmResult.orderNumber,
+          'final orderNumber': orderNumber
+        });
+        
         if (orderNumber) {
+          console.log('✅ Found order number, redirecting to:', `/checkout/${orderNumber}`);
+          showFeedback(t('checkout.orderPlacedSuccess'), 'success');
           router.push(`/checkout/${orderNumber}`);
         } else {
-          console.error('❌ No order number in response:', confirmResult);
-          showFeedback('Order created but confirmation failed', 'error');
+          console.error('❌ No order number found anywhere in response');
+          console.error('Full response structure:', confirmResult);
+          showFeedback('Order created but order number missing. Check console for details.', 'error');
         }
       } else {
         console.error('❌ Payment confirmation failed:', confirmResult);
