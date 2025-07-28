@@ -84,36 +84,57 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         session = { success: false };
       }
 
-      // Handle user authentication
-      const user = JSON.parse(sessionStorage.getItem('user') as any);
-      if (user) {
+      // Handle user authentication - check if user exists in sessionStorage
+      const userStr = sessionStorage.getItem('user');
+      if (userStr) {
         try {
-          console.log('🔄 Refreshing token for user:', user);
-          const refreshResponse = await refreshToken();
-          console.log('🔄 Token refresh response:', refreshResponse);
-
-          // Handle nested response structure
-          const refreshedData =
-            refreshResponse.data?.data || refreshResponse.data;
-          if (refreshedData) {
-            sessionStorage.setItem('user', JSON.stringify(refreshedData));
-            setUserSessionData(refreshedData);
+          const user = JSON.parse(userStr);
+          console.log('🔄 Found user in storage, checking token validity:', user);
+          
+          // Check if token exists before trying to refresh
+          if (!user.token || !user.refreshToken) {
+            console.log('❌ Invalid user data, missing tokens');
+            sessionStorage.removeItem('user');
+            setUserSessionData(undefined);
+            setUserInformation(undefined);
+          } else {
+            // Try to refresh token
+            try {
+              const refreshResponse = await refreshToken();
+              console.log('🔄 Token refresh response:', refreshResponse);
+              
+              // Handle nested response structure
+              const refreshedData = refreshResponse.data?.data || refreshResponse.data;
+              if (refreshedData && refreshedData.token) {
+                console.log('✅ Token refreshed successfully');
+                sessionStorage.setItem('user', JSON.stringify(refreshedData));
+                setUserSessionData(refreshedData);
+                
+                // Get current user info
+                const userInformation = await getCurrentUser();
+                console.log('👤 Current user response:', userInformation);
+                const userInfoData = userInformation.data?.data?.user || userInformation.data?.user;
+                if (userInfoData) {
+                  setUserInformation(userInfoData);
+                }
+              } else {
+                console.log('❌ Token refresh failed or invalid response');
+                sessionStorage.removeItem('user');
+                setUserSessionData(undefined);
+                setUserInformation(undefined);
+              }
+            } catch (refreshError) {
+              console.log('❌ Token refresh failed:', refreshError);
+              sessionStorage.removeItem('user');
+              setUserSessionData(undefined);
+              setUserInformation(undefined);
+            }
           }
-
-          // Get current user info
-          const userInformation = await getCurrentUser();
-          console.log('👤 Current user response:', userInformation);
-          const userInfoData =
-            userInformation.data?.data?.user || userInformation.data?.user;
-          if (userInfoData) {
-            setUserInformation(userInfoData);
-          }
-        } catch (userError) {
-          Logger.warn(
-            'User auth failed, continuing with guest session:',
-            userError,
-          );
+        } catch (parseError) {
+          console.log('❌ Failed to parse user data from storage:', parseError);
           sessionStorage.removeItem('user');
+          setUserSessionData(undefined); 
+          setUserInformation(undefined);
         }
       }
 
@@ -177,9 +198,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await _login(email, password);
       console.log('🔐 Login response:', response);
 
-      // Check response structure - API response could be nested
-      const loginData = response.data || response.data;
-      const isSuccess = response?.success !== false && loginData;
+      // Handle axios response structure - response.data contains the actual API response
+      const apiResponse = response.data as any;
+      const loginData = apiResponse?.data || apiResponse;
+      const isSuccess = apiResponse?.success !== false && loginData;
 
       if (isSuccess && loginData) {
         console.log('✅ Login successful, user data:', loginData);
@@ -200,19 +222,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           console.warn('Failed to get user info after login:', userErr);
         }
 
-        // Update session after login
-        try {
-          const sessionResponse = await getCurrentSession();
-          console.log('📡 Session after login:', sessionResponse);
-          const sessionData =
-            sessionResponse.data?.data || sessionResponse.data;
-          if (sessionData) {
-            setSessionData(sessionData);
-            sessionStorage.setItem('session', JSON.stringify(sessionData));
-          }
-        } catch (err) {
-          Logger.warn('Failed to update session after login:', err);
-        }
+        // After successful login, we don't need to refresh the session
+        // The existing session continues to work and the user is now authenticated
+        console.log('✅ Login completed, keeping existing session');
       } else {
         console.log('❌ Login failed or no data:', response);
       }
@@ -259,19 +271,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           console.warn('Failed to get user info after registration:', userErr);
         }
 
-        // Update session after registration
-        try {
-          const sessionResponse = await getCurrentSession();
-          console.log('📡 Session after registration:', sessionResponse);
-          const sessionData =
-            sessionResponse.data?.data || sessionResponse.data;
-          if (sessionData) {
-            setSessionData(sessionData);
-            sessionStorage.setItem('session', JSON.stringify(sessionData));
-          }
-        } catch (err) {
-          Logger.warn('Failed to update session after registration:', err);
-        }
+        // After successful registration, we don't need to refresh the session
+        // The existing session continues to work and the user is now authenticated
+        console.log('✅ Registration completed, keeping existing session');
       } else {
         console.log('❌ Registration failed or no data:', response);
       }
