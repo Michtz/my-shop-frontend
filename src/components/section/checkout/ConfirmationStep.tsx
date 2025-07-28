@@ -55,12 +55,21 @@ const ConfirmationStep: React.FC = () => {
 
   const fetchOrderDetails = async (orderNum: string) => {
     try {
+      console.log('🔍 Fetching order details for:', orderNum);
       const response = await axiosInstance.get(`/api/order/${orderNum}`);
-      console.log(response); // Todo: fix response from backend
-      if (response) {
-        setOrderData(response.data);
+      console.log('📋 Order API response:', response);
+      
+      // Handle nested response structure
+      const orderData = response.data?.data || response.data;
+      console.log('📋 Processed order data:', orderData);
+      
+      if (orderData) {
+        setOrderData(orderData);
+      } else {
+        console.error('❌ No order data found in response');
       }
     } catch (error) {
+      console.error('❌ Failed to fetch order details:', error);
       Logger.error('Failed to fetch order details:', error);
     } finally {
       setLoading(false);
