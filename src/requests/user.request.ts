@@ -23,20 +23,27 @@ export const updateUserInfo = async (
 };
 
 export const changePassword = async (
-  oldPassword: string,
+  currentPassword: string,
   newPassword: string,
 ): Promise<any> => {
   try {
+    console.log('🔐 Changing password with data:', {
+      currentPassword: currentPassword ? 'PROVIDED' : 'MISSING',
+      newPassword: newPassword ? 'PROVIDED' : 'MISSING'
+    });
+    
     const response = await axiosInstance.post(
       `${authApiUrl}/change-password`,
-      { oldPassword, newPassword },
+      { currentPassword, newPassword },
       {
         withCredentials: true,
       },
     );
-    console.log(response.data);
+    
+    console.log('🔐 Password change response:', response.data);
     return response;
   } catch (e) {
+    console.error('🔐 Password change error:', e);
     Logger.error('Unable to change password');
     throw e;
   }
