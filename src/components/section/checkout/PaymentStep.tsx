@@ -95,14 +95,31 @@ const PaymentStep: React.FC = () => {
 
   useEffect(() => {
     if (sessionData?.sessionId) {
-      createPaymentIntent(sessionData.sessionId).then((result) => {
-        console.log(result);
-        if (result && result.clientSecret) {
-          setClientSecret(result.clientSecret);
-        } else {
+      console.log('💳 Initializing payment with session:', sessionData.sessionId);
+      createPaymentIntent(sessionData.sessionId)
+        .then((result) => {
+          console.log('💳 Payment intent response:', result);
+          
+          // Handle nested response structure
+          const data = result?.data || result;
+          const clientSecret = data?.clientSecret || data?.client_secret;
+          
+          if (clientSecret) {
+            console.log('✅ Payment intent created successfully');
+            console.log('💳 Client secret:', clientSecret);
+            console.log('💳 Client secret prefix:', clientSecret.substring(0, 20) + '...');
+            setClientSecret(clientSecret);
+          } else {
+            console.log('❌ No client secret in response:', result);
+            showFeedback(t('checkout.paymentInitFailed'), 'error');
+          }
+        })
+        .catch((error) => {
+          console.error('💳 Payment intent creation failed:', error);
           showFeedback(t('checkout.paymentInitFailed'), 'error');
-        }
-      });
+        });
+    } else {
+      console.log('❌ No session ID available for payment initialization');
     }
   }, [sessionData?.sessionId, t, showFeedback]);
 
@@ -111,12 +128,31 @@ const PaymentStep: React.FC = () => {
     router.push('/checkout/review');
   };
 
-  if (!clientSecret) return <div>{t('checkout.loadingPayment')}</div>;
+  if (!clientSecret) {
+    return (
+      <Container flow={'column'}>
+        <h2>{t('checkout.paymentInformation')}</h2>
+        <div>{t('checkout.loadingPayment')}</div>
+        <div style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>
+          {sessionData?.sessionId ? 
+            `Session ID: ${sessionData.sessionId}` : 
+            'Warte auf Session...'
+          }
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container flow={'column'}>
       <h2>{t('checkout.paymentInformation')}</h2>
+      <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f3f4f6', borderRadius: '8px', fontSize: '12px' }}>
+        <div>🔑 Stripe Key Prefix: {process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.substring(0, 20)}...</div>
+        <div>💳 Client Secret Prefix: {clientSecret.substring(0, 20)}...</div>
+        <div>🏢 Payment API: {`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/payment`}</div>
+      </div>
       <Elements
+        key={clientSecret} // Force re-render when clientSecret changes
         stripe={stripePromise}
         options={{
           clientSecret,
