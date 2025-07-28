@@ -2,8 +2,8 @@ import React from 'react';
 import { SvgIconProps } from '@/types/common';
 
 const Logo: React.FC<SvgIconProps> = ({
-  width = 220,
-  height = 73,
+  width,
+  height,
   color = '#fff',
   className,
   onClick,

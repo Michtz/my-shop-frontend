@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'next/navigation';
 
 import style from '@/styles/Header.module.scss';
 import Link from '@/components/system/Link';
@@ -10,13 +12,18 @@ import ProfileIcon from '@/components/icons/ProfileIcon';
 import Logo from '@/components/icons/Logo';
 import HamburgerIcon from '@/components/icons/HamburgerIcon';
 import SideNav from '@/components/system/SideNav';
+import TranslateIcon from '@/components/icons/TranslateIcon';
 
 const ResponsiveAppBar = () => {
+  const { t, i18n } = useTranslation();
   const router = useRouter();
+  const params = useParams();
   const { userSessionData } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+  const languageDropdownRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
     // Simuliere Ladezeit (kannst du durch echte Daten-Loading ersetzen)
@@ -45,6 +52,42 @@ const ResponsiveAppBar = () => {
     if (!userSessionData) router.replace('/login');
   };
 
+  const toggleLanguageDropdown = () => {
+    setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
+  };
+
+  const handleLanguageChange = (language: string) => {
+    i18n.changeLanguage(language).then(() => {
+      const currentPath = window.location.pathname;
+      const newPath = currentPath.replace(/^\/[a-z]{2}/, `/${language}`);
+      router.push(newPath);
+    });
+    setIsLanguageDropdownOpen(false);
+  };
+
+  const languages = [
+    { code: 'de', name: 'Deutsch' },
+    { code: 'en', name: 'English' },
+    { code: 'fr', name: 'Français' },
+  ];
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        languageDropdownRef.current &&
+        !languageDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsLanguageDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       {/* Loading Overlay */}
@@ -63,7 +106,6 @@ const ResponsiveAppBar = () => {
         <div
           className={`${style.leftNavContainer} ${showContent ? style.fadeIn : style.fadeOut}`}
         >
-          {/* Mobile Hamburger Menu */}
           <div className={style.hamburgerMenu}>
             <HamburgerIcon
               isOpen={isSideNavOpen}
@@ -73,16 +115,15 @@ const ResponsiveAppBar = () => {
             />
           </div>
 
-          {/* Desktop Navigation */}
           <ul className={style.navItemContainer}>
             <li className={style.navItem}>
-              <Link href={'/about'}>Über uns</Link>
+              <Link href={'/about'}>{t('nav.about')}</Link>
             </li>
             <li className={style.navItem}>
-              <Link href={'/blog'}>Blog</Link>
+              <Link href={'/blog'}>{t('nav.blog')}</Link>
             </li>
             <li className={style.navItem}>
-              <Link href={'/public'}>Wissen</Link>
+              <Link href={'/'}>{t('nav.sale')}</Link>
             </li>
           </ul>
         </div>
@@ -91,7 +132,7 @@ const ResponsiveAppBar = () => {
           className={`${style.logo} ${!isLoading ? style.logoSmall : ''}`}
           onClick={() => router.replace('/')}
         >
-          <Logo />
+          <Logo className={style.headerLogo} />
         </span>
 
         <span
@@ -100,11 +141,38 @@ const ResponsiveAppBar = () => {
           <div className={style.cartIcon}>
             <CartIcon onClick={() => router.replace('/cart')} />
           </div>
-          <ProfileIcon onClick={handleUserClick} />
+          <div className={style.cartIcon}>
+            <ProfileIcon onClick={handleUserClick} />
+          </div>
+          <ul className={style.translationIcon}>
+            <li
+              className={`${style.navItem} ${style.languageDropdown}`}
+              ref={languageDropdownRef}
+            >
+              <span
+                onClick={toggleLanguageDropdown}
+                className={style.languageToggle}
+              >
+                <TranslateIcon />
+              </span>
+              {isLanguageDropdownOpen && (
+                <div className={style.dropdownMenu}>
+                  {languages.map((lang) => (
+                    <span
+                      key={lang.code}
+                      className={`${style.dropdownItem} ${params.locale === lang.code ? style.activeLanguage : ''}`}
+                      onClick={() => handleLanguageChange(lang.code)}
+                    >
+                      {lang.name}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </li>
+          </ul>
         </span>
       </header>
 
-      {/* Side Navigation */}
       <SideNav isOpen={isSideNavOpen} onClose={closeSideNav} />
     </>
   );

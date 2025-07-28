@@ -10,7 +10,7 @@ const EmptyCart: FC = () => {
 
   return (
     <Container flow={'column'}>
-      <h1>{t('cart.emptyTitle')}</h1>
+      <h2>{t('cart.emptyTitle')}</h2>
       <ButtonContainer>
         <Button onClick={() => router.replace('/')}>
           {t('cart.continueShopping')}

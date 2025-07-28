@@ -344,6 +344,30 @@
       "disclaimer": "Alle Preise inkl. gesetzl. MwSt. zzgl. Versandkosten und ggf. Nachnahmegebühren, wenn nicht anders beschrieben."
     }
   },
+  "nav": {
+    "home": "Home",
+    "about": "Über uns",
+    "blog": "Blog",
+    "knowledge": "Wissen",
+    "sale": "Aktionen"
+  },
+  "sideNav": {
+    "service": "Service",
+    "contact": "Kontakt",
+    "customerService": "Kundenservice",
+    "faq": "FAQ",
+    "sizeGuide": "Größenratgeber",
+    "legal": "Rechtliches",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "shipping": "Versand",
+    "returns": "Widerrufsrecht",
+    "language": "Sprachen",
+    "cart": "Warenkorb",
+    "profile": "Profil",
+    "login": "Anmelden"
+  },
   "faq": {
     "title": "Häufig gestellte Fragen",
     "disclaimer": "Bitte beachten Sie, dass diese FAQ allgemeine Informationen enthält. Für spezifische Fragen wenden Sie sich bitte an unseren Kundenservice.",

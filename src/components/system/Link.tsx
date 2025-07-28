@@ -16,6 +16,7 @@ interface LinkProps {
   asButton?: boolean;
   fullWidth?: boolean;
   weight?: 'normal' | 'bold';
+  active?: boolean;
 }
 
 const Link: React.FC<LinkProps> = ({
@@ -30,6 +31,7 @@ const Link: React.FC<LinkProps> = ({
   asButton = false,
   fullWidth = false,
   weight = 'normal',
+  active = false,
 }) => {
   const router = useRouter();
   const prefetched = useRef<boolean>(false);
@@ -67,6 +69,7 @@ const Link: React.FC<LinkProps> = ({
     'data-disabled': disabled,
     'data-fullwidth': fullWidth,
     'data-weight': weight,
+    'data-active': active,
   };
 
   // Button mode

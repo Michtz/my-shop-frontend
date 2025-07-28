@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import style from '@/styles/system/SideNav.module.scss';
 import Link from '@/components/system/Link';
 import { useAuth } from '@/hooks/AuthHook';
 import CartIcon from '@/components/icons/CartIcon';
 import ProfileIcon from '@/components/icons/ProfileIcon';
 import Logo from '@/components/icons/Logo';
+import { Params } from 'next/dist/server/request/params';
 
 interface SideNavProps {
   isOpen: boolean;
@@ -13,8 +15,10 @@ interface SideNavProps {
 }
 
 const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const { userSessionData } = useAuth();
+  const params: Params = useParams();
 
   const handleUserClick = () => {
     if (!!userSessionData) router.replace('/profile');
@@ -23,6 +27,14 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
   };
 
   const handleLinkClick = () => {
+    onClose();
+  };
+
+  const handleLanguageChange = (language: string) => {
+    i18n.changeLanguage(language);
+    const currentPath = window.location.pathname;
+    const newPath = currentPath.replace(/^\/[a-z]{2}/, `/${language}`);
+    router.push(newPath);
     onClose();
   };
 
@@ -64,22 +76,22 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
             <ul className={style.navList}>
               <li className={style.navItem}>
                 <Link href="/" onClick={handleLinkClick}>
-                  Home
+                  {t('nav.home')}
                 </Link>
               </li>
               <li className={style.navItem}>
                 <Link href="/about" onClick={handleLinkClick}>
-                  Über uns
+                  {t('nav.about')}
                 </Link>
               </li>
               <li className={style.navItem}>
                 <Link href="/blog" onClick={handleLinkClick}>
-                  Blog
+                  {t('nav.blog')}
                 </Link>
               </li>
               <li className={style.navItem}>
                 <Link href="/public" onClick={handleLinkClick}>
-                  Wissen
+                  {t('nav.knowledge')}
                 </Link>
               </li>
             </ul>
@@ -87,11 +99,11 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
 
           {/* Service Links */}
           <div className={style.navSection}>
-            <h3 className={style.sectionTitle}>Service</h3>
+            <h3 className={style.sectionTitle}>{t('sideNav.service')}</h3>
             <ul className={style.navList}>
               <li className={style.navItem}>
                 <Link href="/service/contact" onClick={handleLinkClick}>
-                  Kontakt
+                  {t('sideNav.contact')}
                 </Link>
               </li>
               <li className={style.navItem}>
@@ -99,17 +111,17 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
                   href="/service/customer-service"
                   onClick={handleLinkClick}
                 >
-                  Kundenservice
+                  {t('sideNav.customerService')}
                 </Link>
               </li>
               <li className={style.navItem}>
                 <Link href="/service/faq" onClick={handleLinkClick}>
-                  FAQ
+                  {t('sideNav.faq')}
                 </Link>
               </li>
               <li className={style.navItem}>
                 <Link href="/service/size-guide" onClick={handleLinkClick}>
-                  Größenratgeber
+                  {t('sideNav.sizeGuide')}
                 </Link>
               </li>
             </ul>
@@ -117,32 +129,66 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
 
           {/* Legal Links */}
           <div className={style.navSection}>
-            <h3 className={style.sectionTitle}>Rechtliches</h3>
+            <h3 className={style.sectionTitle}>{t('sideNav.legal')}</h3>
             <ul className={style.navList}>
               <li className={style.navItem}>
                 <Link href="/legal/imprint" onClick={handleLinkClick}>
-                  Impressum
+                  {t('sideNav.imprint')}
                 </Link>
               </li>
               <li className={style.navItem}>
                 <Link href="/legal/privacy" onClick={handleLinkClick}>
-                  Datenschutz
+                  {t('sideNav.privacy')}
                 </Link>
               </li>
               <li className={style.navItem}>
                 <Link href="/legal/terms" onClick={handleLinkClick}>
-                  AGB
+                  {t('sideNav.terms')}
                 </Link>
               </li>
               <li className={style.navItem}>
                 <Link href="/legal/shipping" onClick={handleLinkClick}>
-                  Versand
+                  {t('sideNav.shipping')}
                 </Link>
               </li>
               <li className={style.navItem}>
                 <Link href="/legal/returns" onClick={handleLinkClick}>
-                  Widerrufsrecht
+                  {t('sideNav.returns')}
                 </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Language Selection */}
+          <div className={style.navSection}>
+            <h3 className={style.sectionTitle}>{t('sideNav.language')}</h3>
+            <ul className={style.navList}>
+              <li className={style.navItem}>
+                <span
+                  className={params.locale === 'de' ? style.activeLanguage : ''}
+                  onClick={() => handleLanguageChange('de')}
+                >
+                  Deutsch
+                </span>
+              </li>
+              <li className={style.navItem}>
+                <span
+                  className={params.locale === 'en' ? style.activeLanguage : ''}
+                  onClick={() => handleLanguageChange('en')}
+                >
+                  English
+                </span>
+              </li>
+              <li
+                style={{ textDecorationStyle: 'solid' }}
+                className={style.navItem}
+              >
+                <span
+                  className={params.locale === 'fr' ? style.activeLanguage : ''}
+                  onClick={() => handleLanguageChange('fr')}
+                >
+                  Français
+                </span>
               </li>
             </ul>
           </div>
@@ -157,11 +203,13 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
               }}
             >
               <CartIcon width={24} height={24} />
-              <span>Warenkorb</span>
+              <span>{t('sideNav.cart')}</span>
             </div>
             <div className={style.actionItem} onClick={handleUserClick}>
               <ProfileIcon width={24} height={24} />
-              <span>{userSessionData ? 'Profil' : 'Anmelden'}</span>
+              <span>
+                {userSessionData ? t('sideNav.profile') : t('sideNav.login')}
+              </span>
             </div>
           </div>
         </div>

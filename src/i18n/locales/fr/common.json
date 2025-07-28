@@ -344,6 +344,30 @@
       "disclaimer": "Tous les prix incluent la TVA plus les frais de livraison et éventuellement les frais de remboursement, sauf indication contraire."
     }
   },
+  "nav": {
+    "home": "Accueil",
+    "about": "À Propos",
+    "blog": "Blog",
+    "knowledge": "Connaissances",
+    "sale": "Promotion"
+  },
+  "sideNav": {
+    "service": "Service",
+    "contact": "Contact",
+    "customerService": "Service Client",
+    "faq": "FAQ",
+    "sizeGuide": "Guide des Tailles",
+    "legal": "Mentions Légales",
+    "imprint": "Mentions Légales",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions Générales",
+    "shipping": "Livraison",
+    "returns": "Retours",
+    "language": "Langues",
+    "cart": "Panier",
+    "profile": "Profil",
+    "login": "Connexion"
+  },
   "faq": {
     "title": "Questions Fréquemment Posées",
     "disclaimer": "Veuillez noter que cette FAQ contient des informations générales. Pour des questions spécifiques, veuillez contacter notre service client.",
