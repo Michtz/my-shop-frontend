@@ -104,7 +104,7 @@ const PaymentStep: React.FC = () => {
           const data = result?.data || result;
           const clientSecret = data?.clientSecret || data?.client_secret;
           
-          if (clientSecret) {
+          if (clientSecret && clientSecret.startsWith('pi_') && clientSecret.includes('_secret_')) {
             console.log('✅ Payment intent created successfully');
             console.log('💳 Client secret:', clientSecret);
             console.log('💳 Client secret prefix:', clientSecret.substring(0, 20) + '...');
@@ -147,9 +147,10 @@ const PaymentStep: React.FC = () => {
     <Container flow={'column'}>
       <h2>{t('checkout.paymentInformation')}</h2>
       <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f3f4f6', borderRadius: '8px', fontSize: '12px' }}>
-        <div>🔑 Stripe Key Prefix: {process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.substring(0, 20)}...</div>
-        <div>💳 Client Secret Prefix: {clientSecret.substring(0, 20)}...</div>
-        <div>🏢 Payment API: {`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/payment`}</div>
+        <div>🔑 Stripe Key: {process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ? 'SET' : 'MISSING'}</div>
+        <div>💳 Client Secret: {clientSecret ? 'RECEIVED' : 'MISSING'}</div>
+        <div>🏢 API Base URL: {process.env.NEXT_PUBLIC_API_BASE_URL || 'UNDEFINED'}</div>
+        <div>🌍 Environment: {process.env.NODE_ENV}</div>
       </div>
       <Elements
         key={clientSecret} // Force re-render when clientSecret changes

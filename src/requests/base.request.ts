@@ -2,8 +2,12 @@ import axios from 'axios';
 import { prodApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
 
+// Fallback to prodApiUrl if environment variable is not set
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || prodApiUrl;
+console.log('🔧 Axios baseURL:', baseURL);
+
 export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || prodApiUrl,
+  baseURL,
   timeout: 10000,
   timeoutErrorMessage: 'Timeout',
   headers: {
