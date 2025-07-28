@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import BlogStatusBadge from './BlogStatusBadge';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
 import { IBlogPost, BlogPostStatus } from '@/types/blog.types';
 import {
-  getAllPosts,
   deletePost,
   publishPost,
   unpublishPost,
@@ -15,6 +14,7 @@ import {
 import { formatDate } from '@/functions/common';
 import { Logger } from '@/utils/Logger.class';
 import styles from '@/styles/admin/blog/BlogDashboard.module.scss';
+import { useBlogPosts } from '@/hooks/useBlog';
 
 interface BlogDashboardProps {
   onEditPost: (post: IBlogPost) => void;
@@ -26,40 +26,14 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
   onCreatePost,
 }) => {
   const { t } = useTranslation();
-  const [posts, setPosts] = useState<IBlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { posts, isLoading, error, pagination } = useBlogPosts();
   const [selectedPosts, setSelectedPosts] = useState<Set<string>>(new Set());
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    loadPosts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, statusFilter, searchQuery]);
-
-  const loadPosts = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response: any = await getAllPosts(
-        currentPage,
-        10,
-        statusFilter === 'all' ? undefined : statusFilter,
-        searchQuery || undefined,
-      );
-
-      if (response) {
-        console.log(response);
-        setPosts(response);
-        setTotalPages(response.pagination.totalPages);
-      }
-    } catch (error) {
-      Logger.error('Failed to load posts:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [currentPage, statusFilter, searchQuery]);
+  // Use pagination from hook instead of local state
+  const currentPage = pagination.currentPage;
+  const totalPages = pagination.totalPages;
 
   const handleStatusChange = async (
     postId: string,
@@ -80,10 +54,6 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
         default:
           return;
       }
-
-      if (response.success) {
-        loadPosts();
-      }
     } catch (error) {
       Logger.error('Failed to update post status:', error);
     }
@@ -94,7 +64,6 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
       try {
         const response = await deletePost(postId);
         if (response.success) {
-          loadPosts();
         }
       } catch (error) {
         Logger.error('Failed to delete post:', error);
@@ -116,7 +85,6 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
         );
         await Promise.all(promises);
         setSelectedPosts(new Set());
-        loadPosts();
       } catch (error) {
         Logger.error('Failed to update posts:', error);
       }
@@ -137,7 +105,6 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
         );
         await Promise.all(promises);
         setSelectedPosts(new Set());
-        loadPosts();
       } catch (error) {
         Logger.error('Failed to delete posts:', error);
       }
@@ -162,21 +129,30 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
     }
   };
 
-  if (loading && posts.length === 0) {
+  if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
         <LoadingSpinner />
+        <p>Loading blog posts...</p>
       </div>
     );
   }
-  console.log(posts);
+
+  if (error) {
+    return (
+      <div className={styles.loadingContainer}>
+        <p>Error loading posts: {error}</p>
+        <button onClick={() => window.location.reload()}>Retry</button>
+      </div>
+    );
+  }
   return (
     <div className={styles.blogDashboard}>
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <h1>{t('admin.blogManagement', 'Blog Management')}</h1>
           <p className={styles.subtitle}>
-            {posts.length} {posts.length === 1 ? 'post' : 'posts'}
+            {posts?.length} {posts?.length === 1 ? 'post' : 'posts'}
           </p>
         </div>
         <button onClick={onCreatePost} className={styles.createButton}>
@@ -210,7 +186,7 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
           </select>
         </div>
 
-        {selectedPosts.size > 0 && (
+        {selectedPosts?.size > 0 && (
           <div className={styles.bulkActions}>
             <span className={styles.selectionCount}>
               {selectedPosts.size} selected
@@ -243,7 +219,7 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
         )}
       </div>
 
-      {posts.length === 0 ? (
+      {posts?.length === 0 ? (
         <div className={styles.emptyState}>
           <h3>{t('admin.noPosts', 'No posts found')}</h3>
           <p>
@@ -270,7 +246,8 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
                     <input
                       type="checkbox"
                       checked={
-                        selectedPosts.size === posts.length && posts.length > 0
+                        selectedPosts.size === posts?.length &&
+                        posts?.length > 0
                       }
                       onChange={toggleSelectAll}
                     />
@@ -283,7 +260,7 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
                 </tr>
               </thead>
               <tbody>
-                {posts.map((post) => (
+                {posts?.map((post) => (
                   <tr key={post._id} className={styles.postRow}>
                     <td className={styles.checkboxColumn}>
                       <input
@@ -357,7 +334,7 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
           {totalPages > 1 && (
             <div className={styles.pagination}>
               <button
-                onClick={() => setCurrentPage(currentPage - 1)}
+                onClick={() => console.log('Previous page - TODO: implement')}
                 disabled={currentPage === 1}
                 className={styles.pageButton}
               >
@@ -369,7 +346,7 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
               </span>
 
               <button
-                onClick={() => setCurrentPage(currentPage + 1)}
+                onClick={() => console.log('Next page - TODO: implement')}
                 disabled={currentPage === totalPages}
                 className={styles.pageButton}
               >

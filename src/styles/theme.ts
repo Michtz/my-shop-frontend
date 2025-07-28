@@ -18,8 +18,7 @@ const theme = createTheme({
         body: {
           // Alle Body-Styles zurücksetzen
           margin: 'initial',
-          color: 'initial',
-          fontFamily: 'initial',
+          color: 'black',
           fontWeight: 'initial',
           fontSize: 'initial',
           lineHeight: 'initial',

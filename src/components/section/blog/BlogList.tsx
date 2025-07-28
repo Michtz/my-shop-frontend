@@ -1,109 +1,35 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import BlogCard from './BlogCard';
-import BlogPagination from './BlogPagination';
-import BlogTagList from './BlogTagList';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
-import { IBlogPost } from '@/types/blog.types';
-import { getPublishedPosts, getAllTags } from '@/requests/blog.request';
-import { Logger } from '@/utils/Logger.class';
 import { useTranslation } from 'react-i18next';
 import styles from '@/styles/blog/BlogList.module.scss';
+import { useBlogPosts } from '@/hooks/useBlog';
 
 interface BlogListProps {
-  initialPosts?: IBlogPost[];
-  initialTags?: string[];
   selectedTag?: string;
-  showSearch?: boolean;
-  showTagFilter?: boolean;
-  pageSize?: number;
 }
 
-const BlogList: React.FC<BlogListProps> = ({
-  initialPosts = [],
-  initialTags = [],
-  selectedTag,
-  showTagFilter = true,
-  pageSize = 10,
-}) => {
+const BlogList: React.FC<BlogListProps> = ({ selectedTag }) => {
   const { t } = useTranslation();
-  const [posts, setPosts] = useState<IBlogPost[]>(initialPosts);
-  const [tags, setTags] = useState<string[]>(initialTags);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalPosts, setTotalPosts] = useState(0);
+  const { posts, isLoading, totalPosts } = useBlogPosts();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTag, setActiveTag] = useState(selectedTag || '');
-
-  useEffect(
-    () => {
-      loadPosts();
-      if (showTagFilter && tags.length === 0) {
-        loadTags();
-      }
-    }, // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentPage, activeTag, searchQuery, showTagFilter, tags.length],
-  );
-
-  const loadPosts = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await getPublishedPosts(
-        currentPage,
-        pageSize,
-        activeTag,
-        searchQuery,
-      );
-
-      if (response.success && response.data) {
-        setPosts(response.data.posts);
-        setTotalPages(response.data.pagination.totalPages);
-        setTotalPosts(response.data.pagination.totalPosts);
-      }
-    } catch (error) {
-      Logger.error('Failed to load blog posts:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [currentPage, pageSize, activeTag, searchQuery]);
-
-  const loadTags = useCallback(async () => {
-    try {
-      const response = await getAllTags();
-      if (response.success && response.data) {
-        setTags(response.data);
-      }
-    } catch (error) {
-      Logger.error('Failed to load blog tags:', error);
-    }
-  }, []);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleTagSelect = (tag: string) => {
-    setActiveTag(tag === activeTag ? '' : tag);
-    setCurrentPage(1);
-  };
 
   const clearFilters = () => {
     setActiveTag('');
     setSearchQuery('');
-    setCurrentPage(1);
   };
 
-  if (loading && posts.length === 0) {
+  if (isLoading && posts.length === 0) {
     return (
       <div className={styles.loadingContainer}>
         <LoadingSpinner />
       </div>
     );
   }
-
+  console.log(totalPosts);
   return (
     <div className={styles.blogList}>
       <div className={styles.header}>
@@ -124,24 +50,20 @@ const BlogList: React.FC<BlogListProps> = ({
         )}
       </div>
 
-      <div className={styles.filters}>
-        {/*  {showSearch && (*/}
-        {/*    <BlogSearch */}
-        {/*      onSearch={handleSearch}*/}
-        {/*      initialQuery={searchQuery}*/}
-        {/*    />*/}
-        {/*  )}*/}
-        {/*  */}
-        {showTagFilter && tags.length > 0 && (
-          <BlogTagList
-            tags={tags}
-            selectedTag={activeTag}
-            onTagSelect={handleTagSelect}
-          />
-        )}
-      </div>
+      {/*<div className={styles.filters}>*/}
+      {/*  /!*  {showSearch && (*!/*/}
+      {/*  /!*    <BlogSearch *!/*/}
+      {/*  /!*      onSearch={handleSearch}*!/*/}
+      {/*  /!*      initialQuery={searchQuery}*!/*/}
+      {/*  /!*    />*!/*/}
+      {/*  /!*  )}*!/*/}
+      {/*  /!*  *!/*/}
+      {/*  /!*{showTagFilter && tags.length > 0 && (*!/*/}
+      {/*  /!*  <BlogTagList selectedTag={activeTag} onTagSelect={handleTagSelect} />*!/*/}
+      {/*  /!*)}*!/*/}
+      {/*</div>*/}
 
-      {posts.length === 0 ? (
+      {posts?.length === 0 ? (
         <div className={styles.noPosts}>
           <h3>{t('blog.noPostsFound')}</h3>
           <p>
@@ -153,22 +75,20 @@ const BlogList: React.FC<BlogListProps> = ({
       ) : (
         <>
           <div className={styles.postsGrid}>
-            {posts.map((post) => (
-              <BlogCard key={post._id} post={post} />
-            ))}
+            {posts?.map((post) => <BlogCard key={post._id} post={post} />)}
           </div>
 
-          {totalPages > 1 && (
-            <BlogPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          )}
+          {/*{totalPages > 1 && (*/}
+          {/*  <BlogPagination*/}
+          {/*    currentPage={currentPage}*/}
+          {/*    totalPages={totalPages}*/}
+          {/*    onPageChange={handlePageChange}*/}
+          {/*  />*/}
+          {/*)}*/}
         </>
       )}
 
-      {loading && posts.length > 0 && (
+      {isLoading && posts?.length > 0 && (
         <div className={styles.loadingOverlay}>
           <LoadingSpinner />
         </div>

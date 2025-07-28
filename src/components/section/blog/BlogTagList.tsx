@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import styles from '@/styles/blog/BlogTagList.module.scss';
 
 interface BlogTagListProps {
-  tags: string[];
+  tags?: string[];
   selectedTag?: string;
   onTagSelect?: (tag: string) => void;
   showAll?: boolean;
@@ -31,7 +31,7 @@ const BlogTagList: React.FC<BlogTagListProps> = ({
 
   const renderTag = (tag: string) => {
     const isSelected = selectedTag === tag;
-    
+
     if (variant === 'navigation') {
       return (
         <Link
@@ -57,12 +57,12 @@ const BlogTagList: React.FC<BlogTagListProps> = ({
         #{tag}
         {isSelected && (
           <span className={styles.removeIcon}>
-            <svg 
-              width="14" 
-              height="14" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
               strokeWidth="2"
             >
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -89,14 +89,12 @@ const BlogTagList: React.FC<BlogTagListProps> = ({
           )}
         </div>
       )}
-      
+
       <div className={`${styles.tagContainer} ${styles[variant]}`}>
         {displayTags.map(renderTag)}
-        
+
         {hasMoreTags && (
-          <span className={styles.moreTags}>
-            +{tags.length - maxTags} more
-          </span>
+          <span className={styles.moreTags}>+{tags.length - maxTags} more</span>
         )}
       </div>
     </div>

@@ -11,7 +11,7 @@ import { Logger } from '@/utils/Logger.class';
 
 export const useBlogPosts = (filters?: BlogFilters) => {
   const [posts, setPosts] = useState<IBlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -26,6 +26,8 @@ export const useBlogPosts = (filters?: BlogFilters) => {
       setError(null);
 
       const currentFilters = { ...filters, ...newFilters };
+      console.log('📚 Loading blog posts with filters:', currentFilters);
+
       const response = await getPublishedPosts(
         currentFilters?.page,
         currentFilters?.limit,
@@ -33,13 +35,31 @@ export const useBlogPosts = (filters?: BlogFilters) => {
         currentFilters?.search,
       );
 
+      console.log('📚 Blog posts API response:', response);
+
       if (response.success && response.data) {
-        setPosts(response.data.posts);
-        setPagination(response.data.pagination);
+        const posts = response.data.posts || response.data;
+        const pagination = response.data.pagination || {
+          currentPage: 1,
+          totalPages: 1,
+          totalPosts: Array.isArray(posts) ? posts.length : 0,
+          limit: 10,
+        };
+
+        console.log('📚 Setting posts:', posts);
+        console.log('📚 Setting pagination:', pagination);
+
+        setPosts(Array.isArray(posts) ? posts : []);
+        setPagination(pagination);
       } else {
+        console.error(
+          '📚 Failed to load posts - response not successful:',
+          response,
+        );
         setError('Failed to load posts');
       }
     } catch (err) {
+      console.error('📚 Error loading blog posts:', err);
       Logger.error('Failed to load blog posts:', err);
       setError('Failed to load posts');
     } finally {
@@ -58,7 +78,8 @@ export const useBlogPosts = (filters?: BlogFilters) => {
 
   return {
     posts,
-    loading,
+    isLoading,
+    totalPosts: posts.length,
     error,
     pagination,
     refetch,

@@ -66,7 +66,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
   } = useForm<UserProfileFormData>({
     defaultValues: getFormDefaultValues(userInformation),
   });
@@ -275,17 +275,24 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
             />
           </FormRow>
           <ButtonContainer>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={onCheckout ? () => router.back() : () => reset()}
-              disabled={isSubmitting}
-            >
-              {t('userProfile.cancel')}
-            </Button>
-            <Button type={'submit'}>
-              {onCheckout ? t('userProfile.continue') : t('userProfile.save')}
-            </Button>
+            {isDirty && (
+              <>
+                {' '}
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={onCheckout ? () => router.back() : () => reset()}
+                  disabled={isSubmitting || !isDirty}
+                >
+                  {t('userProfile.cancel')}
+                </Button>
+                <Button type={'submit'} disabled={isSubmitting || !isDirty}>
+                  {onCheckout
+                    ? t('userProfile.continue')
+                    : t('userProfile.save')}
+                </Button>
+              </>
+            )}
           </ButtonContainer>
         </section>
       </FormContainer>
