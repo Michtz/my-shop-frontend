@@ -1,15 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Elements } from '@stripe/react-stripe-js';
-import { stripePromise } from '@/lib/stripe';
+import React, { useState } from 'react';
 import { Container } from '@/components/system/Container';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { useAuth } from '@/hooks/AuthHook';
-import {
-  confirmPayment,
-  createPaymentIntent,
-} from '@/requests/payment.request';
+import { confirmPayment } from '@/requests/payment.request';
 import { useRouter } from 'next/navigation';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import CartList from '@/components/section/cart/CartList';
@@ -74,25 +69,49 @@ const ReviewStep: React.FC = () => {
   return (
     <Container flow={'column'} padding={false}>
       <h2>{t('checkout.reviewOrder')}</h2>
-      
-      <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+
+      <div
+        style={{
+          marginBottom: '16px',
+          padding: '12px',
+          backgroundColor: '#f9f9f9',
+          borderRadius: '8px',
+        }}
+      >
         <h3>{t('checkout.orderSummary')}</h3>
         <CartList review />
       </div>
 
-      <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+      <div
+        style={{
+          marginBottom: '16px',
+          padding: '12px',
+          backgroundColor: '#f9f9f9',
+          borderRadius: '8px',
+        }}
+      >
         <h4>{t('checkout.paymentMethod')}</h4>
         <p>💳 {t('checkout.creditCardSelected')}</p>
         <p style={{ fontSize: '12px', color: '#666' }}>
-          Payment Method ID: {localStorage.getItem('paymentMethodId') || 'Not found'}
+          Payment Method ID:{' '}
+          {localStorage.getItem('paymentMethodId') || 'Not found'}
         </p>
       </div>
 
-      <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+      <div
+        style={{
+          marginBottom: '16px',
+          padding: '12px',
+          backgroundColor: '#f9f9f9',
+          borderRadius: '8px',
+        }}
+      >
         <h4>Debug Info</h4>
         <div style={{ fontSize: '12px', color: '#666' }}>
           <div>Session ID: {sessionData?.sessionId || 'Not available'}</div>
-          <div>User: {sessionData?.isAuthenticated ? 'Authenticated' : 'Guest'}</div>
+          <div>
+            User: {sessionData?.isAuthenticated ? 'Authenticated' : 'Guest'}
+          </div>
         </div>
       </div>
 
