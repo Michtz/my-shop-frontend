@@ -68,39 +68,35 @@ const ReviewForm = () => {
 const ReviewStep: React.FC = () => {
   const { t } = useTranslation();
   const { sessionData } = useAuth();
-  const [clientSecret, setClientSecret] = useState('');
 
-  useEffect(() => {
-    if (sessionData?.sessionId) {
-      createPaymentIntent(sessionData.sessionId).then((result) => {
-        console.log(result);
-        if (result && result.clientSecret) {
-          setClientSecret(result.clientSecret);
-        }
-      });
-    }
-  }, [sessionData?.sessionId]);
-
-  if (!clientSecret) return <div>{t('checkout.loadingOrderReview')}</div>;
+  console.log('📋 Review step loaded with session:', sessionData?.sessionId);
 
   return (
     <Container flow={'column'} padding={false}>
-      <CartList review />
-
-      <div style={{ marginBottom: '1rem' }}>
-        <h4>{t('checkout.paymentMethod')}</h4>
-        <p>💳 {t('checkout.creditCardEnding')}</p>
+      <h2>{t('checkout.reviewOrder')}</h2>
+      
+      <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+        <h3>{t('checkout.orderSummary')}</h3>
+        <CartList review />
       </div>
 
-      <Elements
-        stripe={stripePromise}
-        options={{
-          clientSecret,
-          appearance: { theme: 'flat' as const },
-        }}
-      >
-        <ReviewForm />
-      </Elements>
+      <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+        <h4>{t('checkout.paymentMethod')}</h4>
+        <p>💳 {t('checkout.creditCardSelected')}</p>
+        <p style={{ fontSize: '12px', color: '#666' }}>
+          Payment Method ID: {localStorage.getItem('paymentMethodId') || 'Not found'}
+        </p>
+      </div>
+
+      <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+        <h4>Debug Info</h4>
+        <div style={{ fontSize: '12px', color: '#666' }}>
+          <div>Session ID: {sessionData?.sessionId || 'Not available'}</div>
+          <div>User: {sessionData?.isAuthenticated ? 'Authenticated' : 'Guest'}</div>
+        </div>
+      </div>
+
+      <ReviewForm />
     </Container>
   );
 };

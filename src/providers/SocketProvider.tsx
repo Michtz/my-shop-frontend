@@ -46,13 +46,15 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   useEffect(() => {
     if (!sessionData?.sessionId) return;
 
-    const socketInstance = io(
-      process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4200',
-      {
-        withCredentials: true,
-        transports: ['websocket', 'polling'],
-      },
-    );
+    // Use the same base URL as the API
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4200';
+    console.log('🔌 Connecting socket to:', backendUrl);
+    
+    const socketInstance = io(backendUrl, {
+      withCredentials: true,
+      transports: ['websocket', 'polling'],
+      timeout: 20000,
+    });
 
     // Connection Events
     socketInstance.on('connect', () => {
