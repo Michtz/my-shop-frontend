@@ -94,9 +94,7 @@ const ResponsiveAppBar = () => {
       <div
         className={`${style.loadingOverlay} ${!isLoading ? style.hidden : ''}`}
       >
-        <div className={style.loadingLogo}>
-          <Logo width={660} height={225} />
-        </div>
+        <Logo className={style.loadingLogo} />
       </div>
 
       {/* Actual Header */}

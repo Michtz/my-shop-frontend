@@ -61,52 +61,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoading(true);
       console.log('🔄 Starting auth initialization...');
 
-      // First check localStorage for persisted session
-      const storedSession = localStorage.getItem('session');
+      // Try to get current session
       let session;
-      
-      if (storedSession) {
-        try {
-          const parsedSession = JSON.parse(storedSession);
-          if (parsedSession.sessionId) {
-            console.log('📦 Found stored session:', parsedSession.sessionId);
-            setSessionData(parsedSession);
-            sessionStorage.setItem('session', JSON.stringify(parsedSession));
-            setIsSessionReady(true);
-            session = { success: true };
-          } else {
-            console.log('❌ Stored session has no sessionId');
-            localStorage.removeItem('session');
-            session = { success: false };
-          }
-        } catch (parseError) {
-          console.log('❌ Failed to parse stored session');
-          localStorage.removeItem('session');
-          session = { success: false };
-        }
-      } else {
-        // Try to get current session (cookie-based)
-        try {
-          console.log('📡 Checking current session via cookie...');
-          const sessionResponse = await getCurrentSession();
-          console.log('📡 getCurrentSession response:', sessionResponse);
+      try {
+        console.log('📡 Trying to get current session...');
+        const sessionResponse = await getCurrentSession();
+        console.log('📡 getCurrentSession response:', sessionResponse);
 
-          // Check if session is successful based on response data
-          if (sessionResponse.status === 200 && sessionResponse.data?.success !== false) {
-            console.log('✅ Session is valid');
-            session = sessionResponse;
-            // Use session data from response or fallback
-            const sessionData = sessionResponse.data?.data || sessionResponse.data;
-            setSessionData(sessionData);
-            setIsSessionReady(true);
-          } else {
-            console.log('❌ Session not valid:', sessionResponse.data);
-            session = { success: false };
-          }
-        } catch (sessionError) {
-          console.log('❌ Failed to get current session:', sessionError);
+        // Check if the response indicates success
+        const sessionId =
+          sessionResponse.data?.data?.sessionId ||
+          sessionResponse.data?.sessionId;
+        if (sessionResponse.data?.success !== false && sessionId) {
+          console.log('✅ Found valid existing session:', sessionId);
+          session = sessionResponse;
+        } else {
+          console.log('❌ Session not found or invalid, will create new one');
           session = { success: false };
         }
+      } catch (sessionError) {
+        console.log('❌ Failed to get current session:', sessionError);
+        session = { success: false };
       }
 
       // Handle user authentication - check if user exists in sessionStorage
@@ -184,8 +159,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           if (sessionId) {
             console.log('✅ Session created successfully with ID:', sessionId);
             setSessionData(sessionData);
-            // Store session in both storages - localStorage for persistence, sessionStorage for compatibility
-            localStorage.setItem('session', JSON.stringify(sessionData));
+            // Store session in sessionStorage for header-based transmission
             sessionStorage.setItem('session', JSON.stringify(sessionData));
             setIsSessionReady(true);
           } else {

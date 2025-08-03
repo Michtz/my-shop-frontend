@@ -7,7 +7,7 @@ import { Container } from '@/components/system/Container';
 import EmptyCart from '@/components/section/cart/EmptyCart';
 
 const CartContainer: FC = () => {
-  const { error, cartItems, isLoading, cart } = useCart();
+  const { error, cartItems } = useCart();
 
   const showEmpty: boolean = !!error || !cartItems || cartItems.length === 0;
 
