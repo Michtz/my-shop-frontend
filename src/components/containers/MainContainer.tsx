@@ -38,7 +38,7 @@ const MainContainer: React.FC = () => {
     filteredProducts(products, category),
   );
   const router = useRouter();
-
+  console.log(sessionData);
   useEffect(() => {
     setArticles(filteredProducts(products, category));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,7 +80,7 @@ const MainContainer: React.FC = () => {
         showFeedback('feedback.session-not-ready', 'error');
         return;
       }
-      
+
       const result = await addToCart(sessionData.sessionId, id, 1);
       console.log(result);
       showFeedback('feedback.add-to-cart-success', 'success');

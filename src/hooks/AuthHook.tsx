@@ -65,14 +65,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       let session;
       try {
         console.log('📡 Trying to get current session...');
-        const sessionResponse = await getCurrentSession();
+        const sessionDateSessionStorage = JSON.parse(
+          sessionStorage.getItem('session')!,
+        );
+        console.log(sessionDateSessionStorage);
+        let sessionResponse;
+        if (!sessionDateSessionStorage) {
+          sessionResponse = await getCurrentSession();
+        } else {
+          sessionResponse = sessionDateSessionStorage;
+        }
         console.log('📡 getCurrentSession response:', sessionResponse);
 
         // Check if the response indicates success
-        const sessionId =
-          sessionResponse.data?.data?.sessionId ||
-          sessionResponse.data?.sessionId;
-        if (sessionResponse.data?.success !== false && sessionId) {
+        const sessionId = sessionResponse?.sessionId;
+
+        if (sessionId) {
           console.log('✅ Found valid existing session:', sessionId);
           session = sessionResponse;
         } else {
@@ -117,9 +125,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 // Get current user info
                 const userInformation = await getCurrentUser();
                 console.log('👤 Current user response:', userInformation);
-                const userInfoData =
-                  userInformation.data?.data?.user ||
-                  userInformation.data?.user;
+                const userInfoData = userInformation.data?.user;
                 if (userInfoData) {
                   setUserInformation(userInfoData);
                 }
@@ -144,26 +150,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       }
 
-      // Ensure we have a session (create one if needed)
       if (session.success === false) {
         try {
           const newSession = await createSession();
-          console.log('🆕 Created new session:', newSession);
-          console.log('🆕 Session data structure:', newSession.data);
-
-          // Check for sessionId in the nested data structure
-          const sessionId =
-            newSession.data?.data?.sessionId || newSession.data?.sessionId;
-          const sessionData = newSession.data?.data || newSession.data;
+          const sessionId = newSession.data.data?.sessionId;
+          const sessionData = newSession.data.data;
 
           if (sessionId) {
-            console.log('✅ Session created successfully with ID:', sessionId);
             setSessionData(sessionData);
-            // Store session in sessionStorage for header-based transmission
             sessionStorage.setItem('session', JSON.stringify(sessionData));
             setIsSessionReady(true);
           } else {
-            console.log('❌ Created session has no sessionId:', newSession);
             Logger.error('Created session has no sessionId:', newSession);
             setIsSessionReady(false);
           }
@@ -173,15 +170,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       } else {
         console.log('✅ Using existing session:', session);
-        const sessionId =
-          session.data?.data?.sessionId || session.data?.sessionId;
-        const sessionData = session.data?.data || session.data;
+        const sessionId = session?.sessionId;
+        const sessionData = session;
 
         if (sessionId) {
           console.log('✅ Existing session ID:', sessionId);
           setSessionData(sessionData);
-          // Store session in sessionStorage for header-based transmission
-          sessionStorage.setItem('session', JSON.stringify(sessionData));
+          sessionStorage.setItem('session', JSON.stringify(sessionData)); // maybe not nesesaire todo
           setIsSessionReady(true);
         } else {
           console.log('❌ Existing session has no sessionId:', session);
