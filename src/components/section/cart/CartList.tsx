@@ -21,13 +21,13 @@ const CartList: FC<Props> = ({ review }) => {
   const { cartItems, mutate, isLoading } = useCart();
   const { sessionData } = useAuth();
 
-  const subtotal =
+  const subtotal: number =
     cartItems?.reduce(
       (sum: number, item: any) => sum + item.quantity * item.price,
       0,
     ) || 0;
-  const shipping = 0; // jetzt no gratis
-  const total = subtotal + shipping;
+  const shipping: number = 11;
+  const total: number = subtotal + shipping;
 
   const skeleton = (
     <>

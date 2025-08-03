@@ -10,15 +10,7 @@ const CartContainer: FC = () => {
   const { error, cartItems, isLoading, cart } = useCart();
 
   const showEmpty: boolean = !!error || !cartItems || cartItems.length === 0;
-  
-  console.log('🛒 CartContainer Debug:', {
-    showEmpty,
-    error,
-    cartItems,
-    cartItemsLength: cartItems?.length,
-    isLoading,
-    cart
-  });
+
   return (
     <Container padding={false} flow={'column'}>
       {showEmpty ? <EmptyCart /> : <CartList />}

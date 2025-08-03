@@ -145,6 +145,11 @@
     background: linear-gradient(to left, rgba(255, 255, 255, 1), transparent);
   }
 }
+@media (max-width: 768px) {
+  .hr {
+    margin: 1rem auto;
+  }
+}
 @media (max-width: 468px) {
   .cardContainer {
     width: 200px;
