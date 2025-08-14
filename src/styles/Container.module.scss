@@ -64,6 +64,11 @@
     margin: auto;
     overflow: hidden;
   }
+  &[data-max-width='456'] {
+    max-width: 456px !important;
+    margin: auto;
+    overflow: hidden;
+  }
 
   &[data-gap='2'] {
     gap: 2rem;

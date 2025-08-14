@@ -20,11 +20,12 @@ const AddressStep: React.FC = () => {
   const router = useRouter();
 
   const [userData, setUserData] = useState<UserInformation>();
+  const [auth, setAuth] = useState<boolean>(sessionData?.isAuthenticated!);
   const [activeTab, setActiveTab] = useState<'login' | 'gast'>('gast');
 
   useEffect(() => {
     if (userInformation) setUserData(userInformation);
-    console.log(userInformation);
+    console.log(userInformation, sessionData?.isAuthenticated);
   }, [userInformation]);
 
   const handleWriteAdresseInCart = async (data?: UserProfileFormData) => {
@@ -54,8 +55,8 @@ const AddressStep: React.FC = () => {
         guestInfo,
       );
       console.log(cart);
-      showFeedback(t('checkout.cartUserUpdated'), 'success');
       router.replace('/checkout/paymentInfo');
+      showFeedback(t('checkout.cartUserUpdated'), 'success');
     } catch (e) {
       Logger.error(e);
     }
@@ -75,10 +76,15 @@ const AddressStep: React.FC = () => {
   ];
 
   return (
-    <Container justifyContent={'center'} padding={false} flow={'column'}>
+    <Container
+      justifyContent={'center'}
+      maxWidth={'456'}
+      padding={false}
+      flow={'column'}
+    >
       <ButtonGroup options={options} />
       {activeTab === 'login' ? (
-        sessionData?.isAuthenticated ? (
+        !!userData ? (
           <UserInformationForm onCheckout={handleWriteAdresseInCart} />
         ) : (
           <Login checkout />

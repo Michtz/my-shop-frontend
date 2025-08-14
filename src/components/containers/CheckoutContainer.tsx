@@ -7,9 +7,10 @@ import ConfirmationStep from '@/components/section/checkout/ConfirmationStep';
 import { Container } from '@/components/system/Container';
 import ReviewStep from '@/components/section/checkout/ReviewStep';
 import { useTranslation } from 'react-i18next';
-import { ButtonGroup } from '@/components/system/Button';
+import styles from '@/styles/system/Button.module.scss';
 import { usePathname, useRouter } from 'next/navigation';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import MaterialIcon from '@/components/system/MaterialIcon';
 
 interface View {
   view: 'address' | 'paymentInfo' | 'confirmation' | 'review';
@@ -54,12 +55,15 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
     {
       label: t(t('userProfile.orderInformation')),
       onClick: handleGoToAddress,
-      active: activeTab === 'address',
+      active:
+        activeTab === 'address' ||
+        activeTab === 'paymentInfo' ||
+        activeTab === 'review',
     },
     {
       label: t('checkout.paymentInformation'),
       onClick: handleGoToPayment,
-      active: activeTab === 'paymentInfo',
+      active: activeTab === 'paymentInfo' || activeTab === 'review',
     },
     {
       label: t('checkout.reviewOrder'),
@@ -67,6 +71,21 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
       active: activeTab === 'review',
     },
   ];
+
+  const ProgressButtons = () => (
+    <ul className={styles.progressContainer}>
+      {options.map((obj) => {
+        return (
+          <li onClick={() => obj.onClick()} className={styles.listItem}>
+            {obj.label}{' '}
+            <span className={styles.icon} data-done={obj.active}>
+              <MaterialIcon icon={'check'} />
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
   return (
     <Container
       padding={false}
@@ -75,7 +94,7 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
       alignItems="center"
     >
       <h1>{t('checkout.title')}</h1>
-      {activeTab && <ButtonGroup options={options} />}
+      {activeTab && <ProgressButtons />}
       <CheckoutContent view={view} />
     </Container>
   );
