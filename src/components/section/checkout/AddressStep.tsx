@@ -20,7 +20,6 @@ const AddressStep: React.FC = () => {
   const router = useRouter();
 
   const [userData, setUserData] = useState<UserInformation>();
-  const [auth, setAuth] = useState<boolean>(sessionData?.isAuthenticated!);
   const [activeTab, setActiveTab] = useState<'login' | 'gast'>('gast');
 
   useEffect(() => {

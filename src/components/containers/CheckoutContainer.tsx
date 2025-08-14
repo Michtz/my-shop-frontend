@@ -76,7 +76,11 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
     <ul className={styles.progressContainer}>
       {options.map((obj) => {
         return (
-          <li onClick={() => obj.onClick()} className={styles.listItem}>
+          <li
+            key={obj.label}
+            onClick={() => obj.onClick()}
+            className={styles.listItem}
+          >
             {obj.label}{' '}
             <span className={styles.icon} data-done={obj.active}>
               <MaterialIcon icon={'check'} />
