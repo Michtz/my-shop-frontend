@@ -109,7 +109,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log('❌ Failed to get current session:', sessionError);
         session = { success: false };
       }
-
+      console.log(session);
       //
       // // Handle user authentication - check if user exists in sessionStorage
       const userStr = sessionStorage.getItem('user');

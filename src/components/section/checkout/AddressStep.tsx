@@ -24,7 +24,6 @@ const AddressStep: React.FC = () => {
 
   useEffect(() => {
     if (userInformation) setUserData(userInformation);
-    console.log(userInformation, sessionData?.isAuthenticated);
   }, [userInformation]);
 
   const handleWriteAdresseInCart = async (data?: UserProfileFormData) => {
