@@ -76,6 +76,7 @@ const MainContainer: React.FC = () => {
 
   const handleAddToCart = async (id: string) => {
     try {
+      console.log(sessionData);
       if (!isSessionReady || !sessionData?.sessionId) {
         showFeedback('feedback.session-not-ready', 'error');
         return;

@@ -56,43 +56,62 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initializeAuth();
   }, []);
 
-  const initializeAuth = async () => {
+  const initializeAuth = async (): Promise<void> => {
     try {
       setIsLoading(true);
       console.log('🔄 Starting auth initialization...');
-
+      await new Promise((resolve) => setTimeout(resolve, 100));
       // Try to get current session
       let session;
       try {
-        console.log('📡 Trying to get current session...');
-        const sessionDateSessionStorage = JSON.parse(
-          sessionStorage.getItem('session')!,
-        );
-        console.log(sessionDateSessionStorage);
-        let sessionResponse;
-        if (!sessionDateSessionStorage) {
-          sessionResponse = await getCurrentSession();
+        let sessionResponse = await getCurrentSession();
+
+        if (!sessionResponse.data.success) {
+          console.log(sessionResponse);
+
+          sessionResponse = await createSession();
+          console.log(sessionResponse.data.success);
         } else {
-          sessionResponse = sessionDateSessionStorage;
+          console.log('else', sessionResponse.data.success);
         }
-        console.log('📡 getCurrentSession response:', sessionResponse);
+
+        console.log('📡 Trying to get current session...', sessionResponse);
+        // console.log(sessionResponse1);
+        // const sessionDateSessionStorage = JSON.parse(
+        //   sessionStorage.getItem('session')!,
+        // );
+        // console.log(sessionDateSessionStorage);
+        // let sessionResponse;
+        // if (!sessionDateSessionStorage) {
+        //   sessionResponse = sessionResponse1;
+        // } else {
+        //   sessionResponse = sessionResponse1;
+        // }
+        // console.log('📡 getCurrentSession response:', sessionResponse);
 
         // Check if the response indicates success
-        const sessionId = sessionResponse?.sessionId;
-
+        const sessionId = sessionResponse?.data.data.sessionId;
+        console.log(sessionResponse?.data.data);
         if (sessionId) {
-          console.log('✅ Found valid existing session:', sessionId);
+          console.log('✅ Found valid existing session:', sessionResponse);
           session = sessionResponse;
+          setSessionData(sessionResponse.data.data);
+          sessionStorage.setItem(
+            'session',
+            JSON.stringify(sessionResponse?.data.data),
+          );
         } else {
           console.log('❌ Session not found or invalid, will create new one');
           session = { success: false };
         }
+        console.log(sessionData);
       } catch (sessionError) {
         console.log('❌ Failed to get current session:', sessionError);
         session = { success: false };
       }
 
-      // Handle user authentication - check if user exists in sessionStorage
+      //
+      // // Handle user authentication - check if user exists in sessionStorage
       const userStr = sessionStorage.getItem('user');
       if (userStr) {
         try {
@@ -149,41 +168,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUserInformation(undefined);
         }
       }
+      //
+      // if (session.success === false) {
+      //   try {
+      //     const newSession = await createSession();
+      //     const sessionId = newSession.data.data?.sessionId;
+      //     const sessionData = newSession.data.data;
+      //
+      //     if (sessionId) {
+      //       setSessionData(sessionData);
+      //       sessionStorage.setItem('session', JSON.stringify(sessionData));
+      //       setIsSessionReady(true);
+      //     } else {
+      //       Logger.error('Created session has no sessionId:', newSession);
+      //       setIsSessionReady(false);
+      //     }
+      //   } catch (createError) {
+      //     Logger.error('Failed to create session:', createError);
+      //     setIsSessionReady(false);
+      //   }
+      // } else {
+      //   console.log('✅ Using existing session:', session);
+      //   const sessionId = session?.data.data.sessionId;
+      //   const sessionData = session;
+      //
+      //   if (sessionId) {
+      //     console.log('✅ Existing session ID:', sessionId);
+      //     setSessionData(sessionData);
+      //     sessionStorage.setItem('session', JSON.stringify(sessionData)); // maybe not nesesaire todo
+      //     setIsSessionReady(true);
+      //   } else {
+      //     console.log('❌ Existing session has no sessionId:', session);
+      //     Logger.error('Existing session has no sessionId:', session);
+      //     setIsSessionReady(false);
+      //   }
+      // }
 
-      if (session.success === false) {
-        try {
-          const newSession = await createSession();
-          const sessionId = newSession.data.data?.sessionId;
-          const sessionData = newSession.data.data;
-
-          if (sessionId) {
-            setSessionData(sessionData);
-            sessionStorage.setItem('session', JSON.stringify(sessionData));
-            setIsSessionReady(true);
-          } else {
-            Logger.error('Created session has no sessionId:', newSession);
-            setIsSessionReady(false);
-          }
-        } catch (createError) {
-          Logger.error('Failed to create session:', createError);
-          setIsSessionReady(false);
-        }
-      } else {
-        console.log('✅ Using existing session:', session);
-        const sessionId = session?.sessionId;
-        const sessionData = session;
-
-        if (sessionId) {
-          console.log('✅ Existing session ID:', sessionId);
-          setSessionData(sessionData);
-          sessionStorage.setItem('session', JSON.stringify(sessionData)); // maybe not nesesaire todo
-          setIsSessionReady(true);
-        } else {
-          console.log('❌ Existing session has no sessionId:', session);
-          Logger.error('Existing session has no sessionId:', session);
-          setIsSessionReady(false);
-        }
-      }
+      setSessionData(sessionData);
     } catch (err) {
       Logger.error('Auth initialization failed:', err);
       setIsSessionReady(false);
