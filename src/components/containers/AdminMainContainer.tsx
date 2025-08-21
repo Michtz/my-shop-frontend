@@ -4,9 +4,16 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Container } from '@/components/system/Container';
 import styles from '@/styles/admin/AdminMain.module.scss';
+import { useAuth } from '@/hooks/AuthHook';
 
 const AdminMainContainer: React.FC = () => {
   const router = useRouter();
+  const { userInformation } = useAuth();
+
+  if (userInformation?.role !== 'admin') {
+    if (!userInformation) return <div>You are not logged in </div>;
+    return <div>You are no admin or not logged in</div>;
+  }
 
   const adminSections = [
     {

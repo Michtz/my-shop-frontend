@@ -3,7 +3,6 @@ import { prodApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || prodApiUrl;
-console.log('🔧 Axios baseURL:', baseURL);
 
 export const axiosInstance = axios.create({
   baseURL,

@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 
 const middleware = (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;
+  const sessionCookie = request.cookies.get('language')?.value;
 
   const pathnameIsMissingLocale = ['de', 'en', 'fr'].every(
     (locale) =>
@@ -10,7 +11,9 @@ const middleware = (request: NextRequest) => {
   );
 
   if (pathnameIsMissingLocale) {
-    return NextResponse.redirect(new URL(`/de${pathname}`, request.url));
+    return NextResponse.redirect(
+      new URL(`/${sessionCookie}${pathname}`, request.url),
+    );
   }
   //
   //   // Auth protection

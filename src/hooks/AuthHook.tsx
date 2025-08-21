@@ -59,80 +59,36 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const initializeAuth = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      console.log('🔄 Starting auth initialization...');
-      // await new Promise((resolve) => setTimeout(resolve, 100));
-      // Try to get current session
-      let session;
+
       try {
         let sessionResponse = await getCurrentSession();
-        const sessionDateSessionStorage = JSON.parse(
-          sessionStorage.getItem('session')!,
-        );
-        console.log(sessionDateSessionStorage);
         if (!sessionResponse.data.success) {
-          console.log(sessionResponse);
-
           sessionResponse = await createSession();
-          console.log(sessionResponse.data.success);
-        } else {
-          console.log('else', sessionResponse.data.success);
         }
 
-        console.log('📡 Trying to get current session...', sessionResponse);
-        // console.log(sessionResponse1);
-        // const sessionDateSessionStorage = JSON.parse(
-        //   sessionStorage.getItem('session')!,
-        // );
-        // console.log(sessionDateSessionStorage);
-        // let sessionResponse;
-        // if (!sessionDateSessionStorage) {
-        //   sessionResponse = sessionResponse1;
-        // } else {
-        //   sessionResponse = sessionResponse1;
-        // }
-        // console.log('📡 getCurrentSession response:', sessionResponse);
+        const sessionId: string = sessionResponse?.data.data.sessionId;
 
-        // Check if the response indicates success
-        const sessionId = sessionResponse?.data.data.sessionId;
-        console.log(sessionResponse?.data.data);
         if (sessionId) {
-          console.log('✅ Found valid existing session:', sessionResponse);
-          session = sessionResponse;
           setSessionData(sessionResponse?.data.data);
           setIsSessionReady(true);
           sessionStorage.setItem(
             'session',
             JSON.stringify(sessionResponse?.data.data),
           );
-        } else {
-          console.log('❌ Session not found or invalid, will create new one');
-          session = { success: false };
         }
-        console.log(sessionData);
-      } catch (sessionError) {
-        console.log('❌ Failed to get current session:', sessionError);
-        session = { success: false };
-      }
-      console.log(session);
-      //
-      // // Handle user authentication - check if user exists in sessionStorage
+      } catch (sessionError) {}
+
       const userStr = sessionStorage.getItem('user');
+
       if (userStr) {
         try {
           const user = JSON.parse(userStr);
-          console.log(
-            '🔄 Found user in storage, checking token validity:',
-            user,
-          );
 
-          // Check if token exists before trying to refresh
           if (!user.token || !user.refreshToken) {
-            console.log('❌ Invalid user data, missing tokens');
             sessionStorage.removeItem('user');
             setUserSessionData(undefined);
             setUserInformation(undefined);
           } else {
-            // Try to refresh token
             try {
               const refreshResponse = await refreshToken();
               console.log('🔄 Token refresh response:', refreshResponse);
@@ -148,8 +104,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 // Get current user info
                 const userInformation = await getCurrentUser();
                 console.log('👤 Current user response:', userInformation);
-                const userInfoData = userInformation.data?.user;
+                const userInfoData = userInformation.data?.data.user;
                 if (userInfoData) {
+                  console.log(userInfoData);
                   setUserInformation(userInfoData);
                 }
               } else {

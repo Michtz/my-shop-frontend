@@ -86,4 +86,5 @@ export interface UserInformation {
   lastName?: string;
   phoneNumber?: string;
   addresses?: IAddress[];
+  role?: string;
 }

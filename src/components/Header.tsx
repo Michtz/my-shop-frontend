@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'next/navigation';
 
 import style from '@/styles/Header.module.scss';
 import Link from '@/components/system/Link';
@@ -14,30 +13,29 @@ import HamburgerIcon from '@/components/icons/HamburgerIcon';
 import SideNav from '@/components/system/SideNav';
 import TranslateIcon from '@/components/icons/TranslateIcon';
 import { updateCurrentSession } from '@/requests/session.request';
+import LoadingSpinner from '@/components/system/LoadingSpinner';
+import Cookies from 'js-cookie';
 
 const ResponsiveAppBar = () => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  const params = useParams();
-  const { userSessionData, sessionData } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
-  const [showContent, setShowContent] = useState(false);
+  const language = sessionStorage.getItem('session');
+  const { userSessionData, sessionData, isLoading } = useAuth();
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const languageDropdownRef = useRef<HTMLLIElement>(null);
 
-  useEffect(() => {
-    // Simuliere Ladezeit (kannst du durch echte Daten-Loading ersetzen)
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      // Kurz warten, dann Content einblenden
-      setTimeout(() => {
-        setShowContent(true);
-      }, 300);
-    }, 2000); // 2 Sekunden Ladezeit
-
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   // Simuliere Ladezeit (kannst du durch echte Daten-Loading ersetzen)
+  //   const timer = setTimeout(() => {
+  //     // Kurz warten, dann Content einblenden
+  //     setTimeout(() => {
+  //       setShowContent(true);
+  //     }, 300);
+  //   }, 2000); // 2 Sekunden Ladezeit
+  //
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const toggleSideNav = () => {
     setIsSideNavOpen(!isSideNavOpen);
@@ -58,31 +56,34 @@ const ResponsiveAppBar = () => {
   };
 
   const handleLanguageChange = async (language: string) => {
-    i18n.changeLanguage(language).then(() => {
-      const currentPath = window.location.pathname;
-      const newPath = currentPath.replace(/^\/[a-z]{2}/, `/${language}`);
-      router.push(newPath);
-    });
-    console.log(sessionData);
-
-    const newPreference: any = {
-      ...sessionData?.data.preferences,
-      language: language,
-    };
-
-    console.log(newPreference);
     try {
-      const resp = await updateCurrentSession(
+      i18n.changeLanguage(language).then(() => {
+        const currentPath = window.location.pathname;
+        const newPath = currentPath.replace(/^\/[a-z]{2}/, `/${language}`);
+        router.push(newPath);
+      });
+
+      const newPreference: any = {
+        ...sessionData?.data.preferences,
+        language: language,
+      };
+
+      await updateCurrentSession(
         newPreference,
         sessionData?.sessionId as string,
       );
-      console.log(resp);
+
+      Cookies.set('language', language, {
+        expires: 1,
+        path: '/',
+        sameSite: 'strict',
+      });
     } catch (e) {
       console.error(e);
     }
     setIsLanguageDropdownOpen(false);
   };
-  console.log(sessionData?.data.preferences);
+
   const languages = [
     { code: 'de', name: 'Deutsch' },
     { code: 'en', name: 'English' },
@@ -95,9 +96,8 @@ const ResponsiveAppBar = () => {
       if (
         languageDropdownRef.current &&
         !languageDropdownRef.current.contains(event.target as Node)
-      ) {
+      )
         setIsLanguageDropdownOpen(false);
-      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -113,14 +113,14 @@ const ResponsiveAppBar = () => {
         className={`${style.loadingOverlay} ${!isLoading ? style.hidden : ''}`}
       >
         <Logo className={style.loadingLogo} />
+        <LoadingSpinner color={'white'} />
       </div>
 
-      {/* Actual Header */}
       <header
         className={`${style.header} ${isLoading ? style.headerHidden : style.headerVisible}`}
       >
         <div
-          className={`${style.leftNavContainer} ${showContent ? style.fadeIn : style.fadeOut}`}
+          className={`${style.leftNavContainer} ${!isLoading ? style.fadeIn : style.fadeOut}`}
         >
           <div className={style.hamburgerMenu}>
             <HamburgerIcon
@@ -146,13 +146,15 @@ const ResponsiveAppBar = () => {
 
         <span
           className={`${style.logo} ${!isLoading ? style.logoSmall : ''}`}
-          onClick={() => router.replace('/')}
+          onClick={() =>
+            router.replace(`/${JSON.parse(language!).data.language || ''}`)
+          }
         >
           <Logo className={style.headerLogo} />
         </span>
 
         <span
-          className={`${style.rightNavContainer} ${showContent ? style.fadeIn : style.fadeOut}`}
+          className={`${style.rightNavContainer} ${!isLoading ? style.fadeIn : style.fadeOut}`}
         >
           <div className={style.cartIcon}>
             <CartIcon onClick={() => router.replace('/cart')} />
@@ -176,7 +178,7 @@ const ResponsiveAppBar = () => {
                   {languages.map((lang) => (
                     <span
                       key={lang.code}
-                      className={`${style.dropdownItem} ${params.locale === lang.code ? style.activeLanguage : ''}`}
+                      className={`${style.dropdownItem} ${JSON.parse(language!).data.language === lang.code ? style.activeLanguage : ''}`}
                       onClick={() => handleLanguageChange(lang.code)}
                     >
                       {lang.name}
