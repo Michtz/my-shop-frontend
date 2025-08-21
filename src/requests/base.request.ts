@@ -2,7 +2,6 @@ import axios from 'axios';
 import { prodApiUrl } from '@/config/api.config';
 import { Logger } from '@/utils/Logger.class';
 
-// Fallback to prodApiUrl if environment variable is not set
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || prodApiUrl;
 console.log('🔧 Axios baseURL:', baseURL);
 
@@ -23,23 +22,49 @@ axiosInstance.interceptors.request.use(async (request) => {
     const token: string = userStr ? JSON.parse(userStr)?.token : null;
 
     if (token) request.headers.Authorization = `Bearer ${token}`;
-    
-    // Note: Session ID is handled via URL parameters in individual requests
-    // Custom headers like X-Session-ID are blocked by CORS policy
+
+    // 🔍 DEBUG: Cookie & Credentials Check
+    console.log('🚀 Outgoing Request:', {
+      url: request.url,
+      method: request.method,
+      withCredentials: request.withCredentials,
+      allCookies: document.cookie,
+      sessionCookie: document.cookie
+        .split(';')
+        .find((c) => c.trim().startsWith('sessionId=')),
+      hasToken: !!token,
+      headers: request.headers,
+    });
   } catch (err) {
-    // Handle JSON parse errors gracefully
     console.warn('Failed to parse session storage data:', err);
   }
-  
+
   return request;
 });
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Don't unwrap response.data automatically to preserve API response structure
+    // 🔍 DEBUG: Response & Cookie Check
+    console.log('✅ Response received:', {
+      status: response.status,
+      url: response.config.url,
+      setCookieHeaders: response.headers['set-cookie'],
+      cookiesAfterResponse: document.cookie,
+      data: response.data,
+    });
+
     return response;
   },
   async (error) => {
+    // 🔍 DEBUG: Error & Cookie Check
+    console.error('❌ Request failed:', {
+      status: error.response?.status,
+      url: error.config?.url,
+      currentCookies: document.cookie,
+      errorData: error.response?.data,
+      message: error.message,
+    });
+
     const returnError = {
       message: error.message || 'Error',
       code: error.response?.status || 'UNKNOWN_ERROR',

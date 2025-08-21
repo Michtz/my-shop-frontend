@@ -60,12 +60,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       console.log('🔄 Starting auth initialization...');
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // await new Promise((resolve) => setTimeout(resolve, 100));
       // Try to get current session
       let session;
       try {
         let sessionResponse = await getCurrentSession();
-
+        const sessionDateSessionStorage = JSON.parse(
+          sessionStorage.getItem('session')!,
+        );
+        console.log(sessionDateSessionStorage);
         if (!sessionResponse.data.success) {
           console.log(sessionResponse);
 
@@ -95,7 +98,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (sessionId) {
           console.log('✅ Found valid existing session:', sessionResponse);
           session = sessionResponse;
-          setSessionData(sessionResponse.data.data);
+          setSessionData(sessionResponse?.data.data);
+          setIsSessionReady(true);
           sessionStorage.setItem(
             'session',
             JSON.stringify(sessionResponse?.data.data),
@@ -204,7 +208,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       //   }
       // }
 
-      setSessionData(sessionData);
+      // setSessionData(sessionData);
     } catch (err) {
       Logger.error('Auth initialization failed:', err);
       setIsSessionReady(false);
@@ -230,6 +234,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUserSessionData(loginData);
         sessionStorage.setItem('user', JSON.stringify(loginData));
 
+        const newSessionData = {
+          ...sessionData,
+          data: {
+            ...sessionData?.data,
+            isAuthenticated: true,
+          },
+        };
+
+        sessionStorage.setItem('session', JSON.stringify(newSessionData));
         // Try to get user information after login
         try {
           const userInfo = await getCurrentUser();
@@ -312,13 +325,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       Logger.error('Logout request failed:', err);
     }
 
-    // setSessionData(undefined);
     setUserSessionData(undefined);
+
+    sessionStorage.removeItem('user');
     setIsLoading(false);
     const session = await createSession();
+    sessionStorage.setItem('session', JSON.stringify(session.data.data));
     console.log('session', session);
     setSessionData(session.data);
-    sessionStorage.setItem('session', JSON.stringify(session.data));
   };
 
   const value: AuthContextType = {

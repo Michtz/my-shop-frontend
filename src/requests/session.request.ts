@@ -32,9 +32,12 @@ export const getCurrentSession = async (): Promise<any> => {
   }
 };
 
-export const updateCurrentSession = async (data: any): Promise<any> => {
+export const updateCurrentSession = async (
+  data: any,
+  sessionId: string,
+): Promise<any> => {
   try {
-    const response = await axiosInstance.put(`${sessionsApiUrl}/current`, {
+    const response = await axiosInstance.put(`${sessionsApiUrl}/${sessionId}`, {
       data,
     });
     return response;

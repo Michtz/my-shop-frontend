@@ -13,12 +13,13 @@ import Logo from '@/components/icons/Logo';
 import HamburgerIcon from '@/components/icons/HamburgerIcon';
 import SideNav from '@/components/system/SideNav';
 import TranslateIcon from '@/components/icons/TranslateIcon';
+import { updateCurrentSession } from '@/requests/session.request';
 
 const ResponsiveAppBar = () => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const params = useParams();
-  const { userSessionData } = useAuth();
+  const { userSessionData, sessionData } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
@@ -56,15 +57,32 @@ const ResponsiveAppBar = () => {
     setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
   };
 
-  const handleLanguageChange = (language: string) => {
+  const handleLanguageChange = async (language: string) => {
     i18n.changeLanguage(language).then(() => {
       const currentPath = window.location.pathname;
       const newPath = currentPath.replace(/^\/[a-z]{2}/, `/${language}`);
       router.push(newPath);
     });
+    console.log(sessionData);
+
+    const newPreference: any = {
+      ...sessionData?.data.preferences,
+      language: language,
+    };
+
+    console.log(newPreference);
+    try {
+      const resp = await updateCurrentSession(
+        newPreference,
+        sessionData?.sessionId as string,
+      );
+      console.log(resp);
+    } catch (e) {
+      console.error(e);
+    }
     setIsLanguageDropdownOpen(false);
   };
-
+  console.log(sessionData?.data.preferences);
   const languages = [
     { code: 'de', name: 'Deutsch' },
     { code: 'en', name: 'English' },

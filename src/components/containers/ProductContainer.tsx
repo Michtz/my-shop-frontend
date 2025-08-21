@@ -60,6 +60,8 @@ const ProductOverview: FC = () => {
 
   const submit = async (data: any) => {
     try {
+      console.log(sessionData);
+
       if (isOutOfStock) {
         showFeedback(t('product.outOfStock'), 'error');
         return;
@@ -72,7 +74,7 @@ const ProductOverview: FC = () => {
         );
         return;
       }
-
+      console.log(!sessionData?.sessionId, !isSessionReady);
       if (!isSessionReady || !sessionData?.sessionId) {
         showFeedback('feedback.session-not-ready', 'error');
         return;
@@ -137,7 +139,6 @@ const ProductOverview: FC = () => {
   const handleCardClick = (id: string) => {
     router.push(`/product/${id}`);
   };
-
 
   const ConnectionStatus: FC = () => {
     if (!isConnected) {
