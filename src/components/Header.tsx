@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -15,11 +15,12 @@ import TranslateIcon from '@/components/icons/TranslateIcon';
 import { updateCurrentSession } from '@/requests/session.request';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
 import Cookies from 'js-cookie';
+import { Logger } from '@/utils/Logger.class';
 
 const ResponsiveAppBar = () => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  const language = sessionStorage.getItem('session');
+  const path = usePathname();
   const { userSessionData, sessionData, isLoading } = useAuth();
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
@@ -46,7 +47,6 @@ const ResponsiveAppBar = () => {
   };
 
   const handleUserClick = () => {
-    console.log(userSessionData);
     if (!!userSessionData) router.replace('/profile');
     if (!userSessionData) router.replace('/login');
   };
@@ -58,8 +58,7 @@ const ResponsiveAppBar = () => {
   const handleLanguageChange = async (language: string) => {
     try {
       i18n.changeLanguage(language).then(() => {
-        const currentPath = window.location.pathname;
-        const newPath = currentPath.replace(/^\/[a-z]{2}/, `/${language}`);
+        const newPath = path.replace(/^\/[a-z]{2}/, `/${language}`);
         router.push(newPath);
       });
 
@@ -79,7 +78,7 @@ const ResponsiveAppBar = () => {
         sameSite: 'strict',
       });
     } catch (e) {
-      console.error(e);
+      Logger.error(e);
     }
     setIsLanguageDropdownOpen(false);
   };
@@ -146,9 +145,7 @@ const ResponsiveAppBar = () => {
 
         <span
           className={`${style.logo} ${!isLoading ? style.logoSmall : ''}`}
-          onClick={() =>
-            router.replace(`/${JSON.parse(language!).data.language || ''}`)
-          }
+          onClick={() => router.replace(`/${Cookies.get('language') || ''}`)}
         >
           <Logo className={style.headerLogo} />
         </span>
@@ -178,7 +175,7 @@ const ResponsiveAppBar = () => {
                   {languages.map((lang) => (
                     <span
                       key={lang.code}
-                      className={`${style.dropdownItem} ${JSON.parse(language!).data.language === lang.code ? style.activeLanguage : ''}`}
+                      className={`${style.dropdownItem} ${Cookies.get('language') === lang.code ? style.activeLanguage : ''}`}
                       onClick={() => handleLanguageChange(lang.code)}
                     >
                       {lang.name}

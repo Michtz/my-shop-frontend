@@ -18,11 +18,9 @@ const resources = {
   },
 };
 
-const language = sessionStorage.getItem('session');
-console.log(JSON.parse(language!).data.language);
 i18next.use(initReactI18next).init({
   debug: false,
-  fallbackLng: JSON.parse(language!).data.language || 'de',
+  fallbackLng: 'de',
   supportedLngs: languages,
   defaultNS: 'common',
   ns: ['common'],
@@ -31,7 +29,7 @@ i18next.use(initReactI18next).init({
   react: {
     useSuspense: false,
   },
-  lng: JSON.parse(language!).data.language || 'de',
+  lng: 'de',
 });
 
 export default i18next;
