@@ -56,7 +56,7 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     // 🔍 DEBUG: Error & Cookie Check
-    console.error('❌ Request failed:', {
+    Logger.error('❌ Request failed:', {
       status: error.response?.status,
       url: error.config?.url,
       currentCookies: document.cookie,

@@ -76,7 +76,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             JSON.stringify(sessionResponse?.data.data),
           );
         }
-      } catch (sessionError) {}
+      } catch (sessionError) {
+        Logger.error(sessionError);
+      }
 
       const userStr = sessionStorage.getItem('user');
 

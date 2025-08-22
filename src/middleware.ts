@@ -12,37 +12,37 @@ const middleware = (request: NextRequest) => {
 
   if (pathnameIsMissingLocale) {
     return NextResponse.redirect(
-      new URL(`/${sessionCookie}${pathname}`, request.url),
+      new URL(`/${sessionCookie || 'de'}${pathname}`, request.url),
     );
   }
-  //
-  //   // Auth protection
-  //   const token = request.cookies.get('auth_token')?.value;
-  //   console.log(token);
-  //   const isAdminRoute = pathname.includes('/admin');
-  //   const isProtectedRoute =
-  //     // pathname.includes('/cart') ||
-  //     // pathname.includes('/checkout') ||
-  //     isAdminRoute;
-  //
-  //   if (isAdminRoute && !token) {
-  //     const loginUrl = new URL('/login', request.url);
-  //     loginUrl.searchParams.set('redirect', pathname);
-  //     return NextResponse.redirect(loginUrl);
-  //   }
-  //
-  //   if (isAdminRoute && token) {
-  //     try {
-  //       const payload = JSON.parse(atob(token.split('.')[1]));
-  //       if (payload.role !== 'admin') {
-  //         return NextResponse.redirect(new URL('/unauthorized', request.url));
-  //       }
-  //     } catch {
-  //       return NextResponse.redirect(new URL('/login', request.url));
-  //     }
-  //   }
-  //
-  //   return NextResponse.next();
+
+  // Auth protection
+  const token = request.cookies.get('auth_token')?.value;
+  console.log(token);
+  const isAdminRoute = pathname.includes('/admin');
+  // const isProtectedRoute =
+  //   // pathname.includes('/cart') ||
+  //   // pathname.includes('/checkout') ||
+  //   isAdminRoute;
+
+  if (isAdminRoute && !token) {
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  if (isAdminRoute && token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.role !== 'admin') {
+        return NextResponse.redirect(new URL('/unauthorized', request.url));
+      }
+    } catch {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+
+  return NextResponse.next();
 };
 
 export default middleware;

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import style from '@/styles/Header.module.scss';
 import Link from '@/components/system/Link';
 import { useAuth } from '@/hooks/AuthHook';
@@ -62,13 +61,11 @@ const ResponsiveAppBar = () => {
         router.push(newPath);
       });
 
-      const newPreference: any = {
-        ...sessionData?.data.preferences,
-        language: language,
-      };
-
       await updateCurrentSession(
-        newPreference,
+        {
+          ...sessionData?.data.preferences,
+          language: language,
+        },
         sessionData?.sessionId as string,
       );
 
