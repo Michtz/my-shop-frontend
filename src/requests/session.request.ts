@@ -12,7 +12,7 @@ export const createSession = async (preferences?: any): Promise<any> => {
         },
       },
     });
-    return response;
+    return response.data;
   } catch (e) {
     Logger.error('Unable to create session');
     throw e;
@@ -25,7 +25,7 @@ export const getCurrentSession = async (): Promise<any> => {
       withCredentials: true,
     });
 
-    return response;
+    return response.data;
   } catch (e) {
     Logger.error('Unable to get current session', e);
     throw e;
@@ -40,7 +40,7 @@ export const updateCurrentSession = async (
     const response = await axiosInstance.put(`${sessionsApiUrl}/${sessionId}`, {
       data,
     });
-    return response;
+    return response.data;
   } catch (e) {
     Logger.error('Unable to update session');
     throw e;
@@ -55,7 +55,7 @@ interface LoginUser {
   role: string;
 }
 
-interface LoginSuccessResponse {
+export interface LoginSuccessResponse {
   success: boolean;
   data?: {
     token: string;
@@ -64,15 +64,17 @@ interface LoginSuccessResponse {
   };
   error?: string;
 }
+
 export const login = async (
   email: string,
   password: string,
 ): Promise<LoginSuccessResponse> => {
   try {
-    return await axiosInstance.post(`${authApiUrl}/login`, {
+    const response = await axiosInstance.post(`${authApiUrl}/login`, {
       email,
       password,
     });
+    return response.data as LoginSuccessResponse;
   } catch (e) {
     Logger.error('Unable to login', e);
     throw e;
@@ -92,7 +94,7 @@ export const register = async (
       firstName,
       lastName,
     });
-    return response;
+    return response.data;
   } catch (e) {
     Logger.error('Unable to register');
     throw e;
@@ -100,16 +102,13 @@ export const register = async (
 };
 export const logout = async (sessionId: string): Promise<any> => {
   try {
-    const response = await axiosInstance.post(
+    await axiosInstance.post(
       `${authApiUrl}/logout`,
       { sessionId: sessionId },
       {
         withCredentials: true,
       },
     );
-    sessionStorage.removeItem('user');
-
-    return response;
   } catch (e) {
     Logger.error('Unable to logout');
     throw e;
@@ -121,8 +120,7 @@ export const getCurrentUser = async (): Promise<any> => {
     const response = await axiosInstance.get(`${authApiUrl}/me`, {
       withCredentials: true,
     });
-    console.log(response.data);
-    return response;
+    return response.data;
   } catch (e) {
     Logger.error('Unable to get current user');
     throw e;
@@ -134,7 +132,7 @@ export const validateToken = async (): Promise<any> => {
     const response = await axiosInstance.post(`${authApiUrl}/validate-token`, {
       withCredentials: true,
     });
-    return response;
+    return response.data;
   } catch (e) {
     Logger.error('Unable to validate token');
     throw e;
@@ -150,7 +148,7 @@ export const refreshToken = async (): Promise<any> => {
         withCredentials: true,
       },
     );
-    return response;
+    return response.data;
   } catch (e) {
     Logger.error('Unable to validate token');
     throw e;

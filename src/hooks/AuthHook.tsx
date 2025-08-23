@@ -16,6 +16,7 @@ import {
   logout as _logout,
   getCurrentUser,
   refreshToken,
+  LoginSuccessResponse,
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';
 import { UserProfileFormData } from '@/components/section/user/UserInformationForm';
@@ -62,11 +63,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       try {
         let sessionResponse = await getCurrentSession();
-        if (!sessionResponse.data.success) {
+        if (!sessionResponse.success) {
           sessionResponse = await createSession();
         }
 
-        const sessionId: string = sessionResponse?.data.data.sessionId;
+        const sessionId: string = sessionResponse?.data.sessionId;
 
         if (sessionId) {
           setSessionData(sessionResponse?.data.data);
@@ -96,8 +97,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               console.log('🔄 Token refresh response:', refreshResponse);
 
               // Handle nested response structure
-              const refreshedData =
-                refreshResponse.data?.data || refreshResponse.data;
+              const refreshedData = refreshResponse?.data;
               if (refreshedData && refreshedData.token) {
                 console.log('✅ Token refreshed successfully');
                 sessionStorage.setItem('user', JSON.stringify(refreshedData));
@@ -106,7 +106,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 // Get current user info
                 const userInformation = await getCurrentUser();
                 console.log('👤 Current user response:', userInformation);
-                const userInfoData = userInformation.data?.data.user;
+                const userInfoData = userInformation?.data.user;
                 if (userInfoData) {
                   console.log(userInfoData);
                   setUserInformation(userInfoData);
@@ -131,43 +131,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUserInformation(undefined);
         }
       }
-      //
-      // if (session.success === false) {
-      //   try {
-      //     const newSession = await createSession();
-      //     const sessionId = newSession.data.data?.sessionId;
-      //     const sessionData = newSession.data.data;
-      //
-      //     if (sessionId) {
-      //       setSessionData(sessionData);
-      //       sessionStorage.setItem('session', JSON.stringify(sessionData));
-      //       setIsSessionReady(true);
-      //     } else {
-      //       Logger.error('Created session has no sessionId:', newSession);
-      //       setIsSessionReady(false);
-      //     }
-      //   } catch (createError) {
-      //     Logger.error('Failed to create session:', createError);
-      //     setIsSessionReady(false);
-      //   }
-      // } else {
-      //   console.log('✅ Using existing session:', session);
-      //   const sessionId = session?.data.data.sessionId;
-      //   const sessionData = session;
-      //
-      //   if (sessionId) {
-      //     console.log('✅ Existing session ID:', sessionId);
-      //     setSessionData(sessionData);
-      //     sessionStorage.setItem('session', JSON.stringify(sessionData)); // maybe not nesesaire todo
-      //     setIsSessionReady(true);
-      //   } else {
-      //     console.log('❌ Existing session has no sessionId:', session);
-      //     Logger.error('Existing session has no sessionId:', session);
-      //     setIsSessionReady(false);
-      //   }
-      // }
-
-      // setSessionData(sessionData);
     } catch (err) {
       Logger.error('Auth initialization failed:', err);
       setIsSessionReady(false);
@@ -177,22 +140,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const login = async (email: string, password: string) => {
-    setIsLoading(true);
-
     try {
-      const response = await _login(email, password);
-      console.log('🔐 Login response:', response);
-      const apiResponse = response.data as any;
-      const loginData = apiResponse?.data || apiResponse;
-      const isSuccess = apiResponse?.success !== false && loginData;
+      setIsLoading(true);
+      const response: LoginSuccessResponse = await _login(email, password);
 
-      if (isSuccess && loginData) {
-        console.log('✅ Login successful, user data:', loginData);
-
-        // Store user data in session storage
-        setUserSessionData(loginData);
-        sessionStorage.setItem('user', JSON.stringify(loginData));
-
+      if (response.success) {
         const newSessionData = {
           ...sessionData,
           data: {
@@ -200,25 +152,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             isAuthenticated: true,
           },
         };
-
+        setUserSessionData(response?.data);
+        sessionStorage.setItem('user', JSON.stringify(response?.data)); // backup
         sessionStorage.setItem('session', JSON.stringify(newSessionData));
-        // Try to get user information after login
+
         try {
           const userInfo = await getCurrentUser();
-          console.log('👤 User info response:', userInfo);
-          const userInfoData = userInfo.data?.data?.user || userInfo.data?.user;
+          const userInfoData = userInfo?.data?.user;
           if (userInfoData) {
             setUserInformation(userInfoData);
           }
         } catch (userErr) {
-          console.warn('Failed to get user info after login:', userErr);
+          Logger.warn('Failed to get user info after login:', userErr);
         }
-
-        // After successful login, we don't need to refresh the session
-        // The existing session continues to work and the user is now authenticated
-        console.log('✅ Login completed, keeping existing session');
       } else {
-        console.log('❌ Login failed or no data:', response);
+        Logger.log('Login failed or no data:', response);
       }
     } catch (err: any) {
       Logger.error('Login error:', err);
@@ -232,16 +180,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     password: string,
     firstName: string,
     lastName: string,
-  ) => {
+  ): Promise<void> => {
     setIsLoading(true);
 
     try {
       const response = await _register(email, password, firstName, lastName);
-      console.log('📝 Register response:', response);
 
       // Handle nested response structure
-      const registerData = response.data?.data || response.data;
-      const isSuccess = response.data?.success !== false && registerData;
+      const registerData = response.data;
+      const isSuccess = response?.success !== false && registerData;
 
       if (isSuccess && registerData) {
         console.log('✅ Registration successful, user data:', registerData);
@@ -255,7 +202,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
           const userInfo = await getCurrentUser();
           console.log('👤 User info after registration:', userInfo);
-          const userInfoData = userInfo.data?.data?.user || userInfo.data?.user;
+          const userInfoData = userInfo?.data?.user;
           if (userInfoData) {
             setUserInformation(userInfoData);
           }
@@ -285,13 +232,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     setUserSessionData(undefined);
-
     sessionStorage.removeItem('user');
-    setIsLoading(false);
+    sessionStorage.removeItem('session');
+
     const session = await createSession();
-    sessionStorage.setItem('session', JSON.stringify(session.data.data));
-    console.log('session', session);
-    setSessionData(session.data);
+    sessionStorage.setItem('session', JSON.stringify(session.data));
+    setSessionData(session);
+    setIsLoading(false);
   };
 
   const value: AuthContextType = {

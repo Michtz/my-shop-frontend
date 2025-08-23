@@ -1,31 +1,14 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Container } from '@/components/system/Container';
 import styles from '@/styles/admin/AdminMain.module.scss';
 import { useAuth } from '@/hooks/AuthHook';
-import Cookies from 'js-cookie';
 
 const AdminMainContainer: React.FC = () => {
   const router = useRouter();
   const { userInformation } = useAuth();
-  useEffect(() => {
-    console.log('🔍 Admin-Seite geladen');
-    console.log('🍪 Cookies beim Laden:', document.cookie);
-    console.log('🍪 authToken beim Laden:', Cookies.get('authToken'));
-
-    // Überwache Cookie-Änderungen
-    const checkCookie = setInterval(() => {
-      const token = Cookies.get('authToken');
-      if (!token) {
-        console.log('❌ AUTHTOKEN WURDE GELÖSCHT!');
-        console.trace('Cookie gelöscht - Stack trace:');
-      }
-    }, 500);
-
-    return () => clearInterval(checkCookie);
-  }, []);
 
   if (userInformation?.role !== 'admin') {
     if (!userInformation) return <div>You are not logged in </div>;

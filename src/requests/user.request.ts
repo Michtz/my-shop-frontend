@@ -7,15 +7,13 @@ export const updateUserInfo = async (
   userInfo: UserInformation,
 ): Promise<any> => {
   try {
-    const response = await axiosInstance.post(
+    return await axiosInstance.post(
       `${authApiUrl}/change-user-info`,
       { userInfo },
       {
         withCredentials: true,
       },
     );
-    console.log(response.data);
-    return response;
   } catch (e) {
     Logger.error('Unable to logout');
     throw e;
@@ -27,21 +25,13 @@ export const changePassword = async (
   newPassword: string,
 ): Promise<any> => {
   try {
-    console.log('🔐 Changing password with data:', {
-      currentPassword: currentPassword ? 'PROVIDED' : 'MISSING',
-      newPassword: newPassword ? 'PROVIDED' : 'MISSING'
-    });
-    
-    const response = await axiosInstance.post(
+    return await axiosInstance.post(
       `${authApiUrl}/change-password`,
       { currentPassword, newPassword },
       {
         withCredentials: true,
       },
     );
-    
-    console.log('🔐 Password change response:', response.data);
-    return response;
   } catch (e) {
     console.error('🔐 Password change error:', e);
     Logger.error('Unable to change password');
