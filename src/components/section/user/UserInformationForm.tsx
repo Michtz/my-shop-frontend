@@ -23,7 +23,6 @@ export interface UserProfileFormData {
   street: string;
   houseNumber: string;
   city: string;
-  state: string;
   zipCode: string;
   country: string;
   isDefault: boolean;
@@ -43,7 +42,6 @@ const getFormDefaultValues = (userInfo: any): UserProfileFormData => {
     street: userInfo?.addresses?.[0]?.street || '',
     houseNumber: userInfo?.addresses?.[0]?.houseNumber || '',
     city: userInfo?.addresses?.[0]?.city || '',
-    state: userInfo?.addresses?.[0]?.state || '',
     zipCode: userInfo?.addresses?.[0]?.zipCode || '',
     country: userInfo?.addresses?.[0]?.country || 'CH',
     isDefault: true,
@@ -91,7 +89,6 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
             street: data.street,
             houseNumber: data.houseNumber,
             city: data.city,
-            state: data.state,
             zipCode: data.zipCode,
             country: 'ch',
             isDefault: true,
@@ -252,14 +249,6 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
                 minLength: { value: 2, message: t('validation.minLength') },
               })}
               {...transformFieldError(errors.city)}
-            />
-
-            <Input
-              label={t('userProfile.stateProvince')}
-              fullWidth
-              placeholder={t('placeholders.enterState')}
-              inputProps={register('state')}
-              {...transformFieldError(errors.state)}
             />
           </FormRow>
           <FormRow direction="row">

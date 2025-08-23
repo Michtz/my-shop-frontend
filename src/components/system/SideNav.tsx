@@ -95,7 +95,7 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
             <ul className={style.navList}>
               {languagesOptions.map((obj: LanguageOptionType) => (
                 <li className={style.navItem} key={obj.code}>
-                  <span
+                  <Link
                     className={
                       params.locale === obj.code ? style.activeLanguage : ''
                     }
@@ -111,7 +111,7 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
                     }
                   >
                     {obj.name}
-                  </span>
+                  </Link>
                 </li>
               ))}
             </ul>

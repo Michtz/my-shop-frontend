@@ -17,8 +17,8 @@
 }
 
 .activeLanguage {
-  border-bottom: 2px solid white;
-  font-weight: bold;
+  border-bottom: 1px solid white;
+  font-weight: 600;
 }
 
 .sideNav {
@@ -73,7 +73,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.1rem;
 }
 
 .navItem {
