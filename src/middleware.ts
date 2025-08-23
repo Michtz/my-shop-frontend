@@ -39,8 +39,15 @@ const middleware = (request: NextRequest) => {
   // Auth protection
   const token = request.cookies.get('authToken')?.value;
   const isAdminRoute = pathname.includes('/admin');
+  const isProfileRoute = pathname.includes('/profile');
 
   if (isAdminRoute && !token) {
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  if (isProfileRoute && !token) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);

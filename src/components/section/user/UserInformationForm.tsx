@@ -15,7 +15,7 @@ import { updateUserInfo } from '@/requests/user.request';
 import { Logger } from '@/utils/Logger.class';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
 export interface UserProfileFormData {
@@ -57,10 +57,12 @@ interface UserInformationFormProps {
 const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
   const { t } = useTranslation();
   const { transformFieldError } = useError();
-  const { userInformation } = useAuth();
+  const { userInformation, isLoading } = useAuth();
   const { showFeedback } = useFeedback();
   const { logout } = useAuth();
   const router: AppRouterInstance = useRouter();
+  const pathname = usePathname();
+  const hasProfile = pathname.includes('/profile');
 
   const {
     register,
@@ -73,7 +75,8 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
 
   useEffect(() => {
     if (userInformation) reset(getFormDefaultValues(userInformation));
-  }, [userInformation, reset]);
+    if (!userInformation && !isLoading && hasProfile) router.replace('/login');
+  }, [userInformation, reset, isLoading]);
 
   const onSubmit = async (data: UserProfileFormData) => {
     try {

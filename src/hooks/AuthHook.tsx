@@ -70,7 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const sessionId: string = sessionResponse?.data.sessionId;
 
         if (sessionId) {
-          setSessionData(sessionResponse?.data.data);
+          setSessionData(sessionResponse?.data);
           setIsSessionReady(true);
           sessionStorage.setItem(
             'session',
