@@ -26,6 +26,10 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
   const router: AppRouterInstance = useRouter();
   const pathname: string = usePathname();
   const step = pathname.split('/').pop();
+  const showTitle: boolean =
+    step === 'address' ||
+    step === 'paymentInformation' ||
+    step === 'paymentInfo';
 
   const isValidCheckoutStep = (
     step: string | undefined,
@@ -37,7 +41,6 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
     isValidCheckoutStep(step) ? step : null,
   );
 
-  console.log(activeTab);
   const handleGoToAddress = () => {
     router.push('/checkout/address');
     setActiveTab('address');
@@ -97,7 +100,7 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
       flow="column"
       alignItems="center"
     >
-      <h1>{t('checkout.title')}</h1>
+      {showTitle && <h1>{t('checkout.title')}</h1>}
       {activeTab && <ProgressButtons />}
       <CheckoutContent view={view} />
     </Container>

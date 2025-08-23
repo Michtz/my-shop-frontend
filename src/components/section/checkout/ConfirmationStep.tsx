@@ -3,10 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Container } from '@/components/system/Container';
-import Button from '@/components/system/Button';
+import Button, { ButtonContainer } from '@/components/system/Button';
 import { axiosInstance } from '@/requests/base.request';
 import { Logger } from '@/utils/Logger.class';
 import { useTranslation } from 'react-i18next';
+import CartListItem from '@/components/section/cart/CartListItem';
+import { Hr } from '@/components/system/Hr';
+import useCart from '@/hooks/useCart';
+import { useAuth } from '@/hooks/AuthHook';
+import CartSummary from '@/components/section/cart/CartSummaryContainer';
 
 interface OrderData {
   orderNumber: string;
@@ -42,9 +47,19 @@ interface OrderData {
 const ConfirmationStep: React.FC = () => {
   const { t } = useTranslation();
   const { orderNumber } = useParams();
+  const { cartItems, mutate } = useCart();
+  const { sessionData } = useAuth();
   const router = useRouter();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const subtotal: number =
+    cartItems?.reduce(
+      (sum: number, item: any) => sum + item.quantity * item.price,
+      0,
+    ) || 0;
+  const shipping: number = 11;
+  const total: number = subtotal + shipping;
 
   useEffect(() => {
     console.log(orderNumber);
@@ -58,11 +73,11 @@ const ConfirmationStep: React.FC = () => {
       console.log('🔍 Fetching order details for:', orderNum);
       const response = await axiosInstance.get(`/api/order/${orderNum}`);
       console.log('📋 Order API response:', response);
-      
+
       // Handle nested response structure
       const orderData = response.data?.data || response.data;
       console.log('📋 Processed order data:', orderData);
-      
+
       if (orderData) {
         setOrderData(orderData);
       } else {
@@ -106,148 +121,98 @@ const ConfirmationStep: React.FC = () => {
   };
 
   return (
-    <Container flow="column" alignItems="center" maxWidth="600" padding={true}>
+    <Container flow="column" alignItems="center" maxWidth="1150" padding={true}>
       {/* Success Header */}
       <div style={{ marginBottom: '2rem' }}>
-        <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎉</div>
-        <h1 style={{ color: '#28a745', marginBottom: '0.5rem' }}>
-          {t('checkout.orderConfirmed')}
-        </h1>
-        <p style={{ color: '#666', fontSize: '1.1rem' }}>
-          {t('checkout.thankYou')}
-        </p>
+        <h1>{t('checkout.orderConfirmed')}</h1>
+        <p>{t('checkout.thankYou')}</p>
       </div>
-
-      {/* Order Number */}
-      <div
+      <span
         style={{
-          backgroundColor: '#f8f9fa',
-          padding: '1.5rem',
-          borderRadius: '8px',
-          marginBottom: '2rem',
           width: '100%',
+          padding: '1.5rem',
+          backgroundColor: '#fdf3e3',
+          borderRadius: '12px',
+          marginBottom: '2rem',
         }}
       >
-        <h3 style={{ margin: 0, marginBottom: '0.5rem' }}>
-          {t('checkout.orderNumber')}
-        </h3>
-        <div
-          style={{
-            fontSize: '1.5rem',
-            fontWeight: 'bold',
-            fontFamily: 'monospace',
-            color: '#007bff',
-          }}
-        >
-          {orderData.orderNumber}
-        </div>
-        <p
-          style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', color: '#666' }}
-        >
-          {t('checkout.orderPlacedOn')} {formatDate(orderData.paidAt)}
-        </p>
-      </div>
-
-      {/* Order Summary */}
-      <div style={{ width: '100%', marginBottom: '2rem' }}>
-        <h3 style={{ textAlign: 'left', marginBottom: '1rem' }}>
-          {t('checkout.orderSummary')}
-        </h3>
-
-        {orderData.items.map((item, index) => (
+        {/* Delivery Information */}
+        {orderData.customerInfo?.selectedAddress && (
           <div
-            key={index}
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '1rem',
-              backgroundColor: '#fff',
-              border: '1px solid #eee',
-              borderRadius: '4px',
-              marginBottom: '0.5rem',
+              marginBottom: '2rem',
             }}
           >
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ fontWeight: 'bold' }}>
-                {item.product?.name || `Product ${item.productId}`}
+            <h3>{t('checkout.deliveryAddress')}</h3>
+            <div>
+              {orderData.customerInfo.guestInfo && (
+                <div>
+                  {orderData.customerInfo.guestInfo.firstName}{' '}
+                  {orderData.customerInfo.guestInfo.lastName}
+                </div>
+              )}
+              <div>
+                {orderData.customerInfo.selectedAddress.street}{' '}
+                {orderData.customerInfo.selectedAddress.houseNumber}
               </div>
-              <div style={{ color: '#666', fontSize: '0.9rem' }}>
-                {t('checkout.quantity')}: {item.quantity} × €
-                {item.price.toFixed(2)}
+              <div>
+                {orderData.customerInfo.selectedAddress.zipCode}{' '}
+                {orderData.customerInfo.selectedAddress.city}{' '}
+                {orderData.customerInfo.selectedAddress.country.toUpperCase()}
               </div>
-            </div>
-            <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-              €{(item.quantity * item.price).toFixed(2)}
+              <div></div>
             </div>
           </div>
-        ))}
+        )}
 
-        {/* Total */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '1rem',
-            backgroundColor: '#28a745',
-            color: 'white',
-            borderRadius: '4px',
-            fontWeight: 'bold',
-            fontSize: '1.2rem',
-          }}
-        >
-          <span>{t('checkout.total')}</span>
-          <span>€{orderData.total.toFixed(2)}</span>
-        </div>
-      </div>
-
-      {/* Delivery Information */}
-      {orderData.customerInfo?.selectedAddress && (
-        <div style={{ width: '100%', marginBottom: '2rem' }}>
-          <h3 style={{ textAlign: 'left', marginBottom: '1rem' }}>
-            {t('checkout.deliveryAddress')}
+        {/* Order Number */}
+        <div>
+          <h3 style={{ margin: 0, marginBottom: '0.5rem' }}>
+            {t('checkout.orderNumber')}
           </h3>
-          <div
+          <div>{orderData.orderNumber}</div>
+          <p
             style={{
-              padding: '1rem',
-              backgroundColor: '#f8f9fa',
-              borderRadius: '4px',
-              textAlign: 'left',
+              margin: '0.5rem 0 0 0',
+              fontSize: '0.9rem',
+              color: '#666',
             }}
           >
-            {orderData.customerInfo.guestInfo && (
-              <div style={{ marginBottom: '0.5rem', fontWeight: 'bold' }}>
-                {orderData.customerInfo.guestInfo.firstName}{' '}
-                {orderData.customerInfo.guestInfo.lastName}
-              </div>
-            )}
-            <div>
-              {orderData.customerInfo.selectedAddress.street}{' '}
-              {orderData.customerInfo.selectedAddress.houseNumber}
-            </div>
-            <div>
-              {orderData.customerInfo.selectedAddress.zipCode}{' '}
-              {orderData.customerInfo.selectedAddress.city}
-            </div>
-            <div>
-              {orderData.customerInfo.selectedAddress.country.toUpperCase()}
-            </div>
-          </div>
+            {t('checkout.orderPlacedOn')} {formatDate(orderData.paidAt)}
+          </p>
         </div>
-      )}
-
-      {/* What's Next */}
+      </span>
+      {/* Order Summary */}
+      <span style={{ width: '100%', marginBottom: '5rem' }}>
+        {orderData.items?.map((item: any) => (
+          <React.Fragment key={item.productId}>
+            <CartListItem
+              item={item}
+              items={orderData.items}
+              sessionId={sessionData?.sessionId as string}
+              mutate={mutate}
+              review={true}
+            />
+            <Hr />
+          </React.Fragment>
+        ))}
+        <CartSummary subtotal={subtotal} shipping={shipping} total={total} />
+      </span>
+      <ButtonContainer>
+        <Button onClick={() => router.push('/')} style={{ flex: 1 }}>
+          {t('checkout.continueShopping')}
+        </Button>
+      </ButtonContainer>
       <div
         style={{
           width: '100%',
           padding: '1.5rem',
-          backgroundColor: '#e3f2fd',
-          borderRadius: '8px',
-          marginBottom: '2rem',
+          backgroundColor: '#fdf3e3',
+          borderRadius: '12px',
+          marginTop: '12rem',
         }}
       >
-        <h4 style={{ margin: '0 0 1rem 0', color: '#1976d2' }}>
+        <h4 style={{ margin: '0 0 1rem 0', color: '#383434' }}>
           {t('checkout.whatsNext')}
         </h4>
         <ul
@@ -264,21 +229,6 @@ const ConfirmationStep: React.FC = () => {
         </ul>
       </div>
 
-      {/* Action Buttons */}
-      <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
-        <Button onClick={() => router.push('/')} style={{ flex: 1 }}>
-          {t('checkout.continueShopping')}
-        </Button>
-        <Button
-          onClick={() => window.print()}
-          variant="secondary"
-          style={{ flex: 1 }}
-        >
-          {t('checkout.printOrder')}
-        </Button>
-      </div>
-
-      {/* Footer Note */}
       <p
         style={{
           marginTop: '2rem',
