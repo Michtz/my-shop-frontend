@@ -1,10 +1,30 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { authApiUrl, localApiUrl } from '@/config/api.config';
+import { Logger } from '@/utils/Logger.class';
+
+const validateTokenSecure = async (token: string): Promise<boolean> => {
+  try {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || localApiUrl;
+
+    const response = await fetch(`${apiBaseUrl}${authApiUrl}/validate-token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.ok;
+  } catch (error) {
+    Logger.error('Token validation failed:', error);
+    return false;
+  }
+};
 
 const middleware = (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;
-  const sessionCookie = request.cookies.get('language')?.value;
-
+  const sessionCookie = request.cookies.get('language')?.value || 'de';
   const pathnameIsMissingLocale = ['de', 'en', 'fr'].every(
     (locale) =>
       !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
@@ -17,13 +37,8 @@ const middleware = (request: NextRequest) => {
   }
 
   // Auth protection
-  const token = request.cookies.get('auth_token')?.value;
-  console.log(token);
+  const token = request.cookies.get('authToken')?.value;
   const isAdminRoute = pathname.includes('/admin');
-  // const isProtectedRoute =
-  //   // pathname.includes('/cart') ||
-  //   // pathname.includes('/checkout') ||
-  //   isAdminRoute;
 
   if (isAdminRoute && !token) {
     const loginUrl = new URL('/login', request.url);
@@ -32,9 +47,10 @@ const middleware = (request: NextRequest) => {
   }
 
   if (isAdminRoute && token) {
+    const isTokenValid: Promise<boolean> = validateTokenSecure(token);
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      if (payload.role !== 'admin') {
+      if (!isTokenValid || payload.role !== 'admin') {
         return NextResponse.redirect(new URL('/unauthorized', request.url));
       }
     } catch {

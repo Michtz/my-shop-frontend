@@ -11,14 +11,14 @@ import Logo from '@/components/icons/Logo';
 import HamburgerIcon from '@/components/icons/HamburgerIcon';
 import SideNav from '@/components/system/SideNav';
 import TranslateIcon from '@/components/icons/TranslateIcon';
-import { updateCurrentSession } from '@/requests/session.request';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
 import Cookies from 'js-cookie';
-import { Logger } from '@/utils/Logger.class';
+import { handleLanguageChange, languagesOptions } from '@/i18n/client';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 const ResponsiveAppBar = () => {
   const { t, i18n } = useTranslation();
-  const router = useRouter();
+  const router: AppRouterInstance = useRouter();
   const path = usePathname();
   const { userSessionData, sessionData, isLoading } = useAuth();
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
@@ -53,38 +53,6 @@ const ResponsiveAppBar = () => {
   const toggleLanguageDropdown = () => {
     setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
   };
-
-  const handleLanguageChange = async (language: string) => {
-    try {
-      i18n.changeLanguage(language).then(() => {
-        const newPath = path.replace(/^\/[a-z]{2}/, `/${language}`);
-        router.push(newPath);
-      });
-
-      await updateCurrentSession(
-        {
-          ...sessionData?.data.preferences,
-          language: language,
-        },
-        sessionData?.sessionId as string,
-      );
-
-      Cookies.set('language', language, {
-        expires: 1,
-        path: '/',
-        sameSite: 'strict',
-      });
-    } catch (e) {
-      Logger.error(e);
-    }
-    setIsLanguageDropdownOpen(false);
-  };
-
-  const languages = [
-    { code: 'de', name: 'Deutsch' },
-    { code: 'en', name: 'English' },
-    { code: 'fr', name: 'Français' },
-  ];
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -134,9 +102,6 @@ const ResponsiveAppBar = () => {
             <li className={style.navItem}>
               <Link href={'/blog'}>{t('nav.blog')}</Link>
             </li>
-            <li className={style.navItem}>
-              <Link href={'/'}>{t('nav.sale')}</Link>
-            </li>
           </ul>
         </div>
 
@@ -169,11 +134,21 @@ const ResponsiveAppBar = () => {
               </span>
               {isLanguageDropdownOpen && (
                 <div className={style.dropdownMenu}>
-                  {languages.map((lang) => (
+                  {languagesOptions.map((lang) => (
                     <span
                       key={lang.code}
                       className={`${style.dropdownItem} ${Cookies.get('language') === lang.code ? style.activeLanguage : ''}`}
-                      onClick={() => handleLanguageChange(lang.code)}
+                      onClick={() =>
+                        handleLanguageChange({
+                          language: lang.code,
+                          router,
+                          path,
+                          preferences: sessionData?.data.preferences,
+                          sessionId: sessionData?.sessionId as string,
+                          action: i18n.changeLanguage,
+                          setIsLanguageDropdownOpen,
+                        })
+                      }
                     >
                       {lang.name}
                     </span>

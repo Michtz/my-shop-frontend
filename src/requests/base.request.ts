@@ -17,51 +17,24 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(async (request) => {
   try {
-    const userStr = sessionStorage.getItem('user');
-    const token: string = userStr ? JSON.parse(userStr)?.token : null;
-
-    if (token) request.headers.Authorization = `Bearer ${token}`;
-
-    // 🔍 DEBUG: Cookie & Credentials Check
-    console.log('🚀 Outgoing Request:', {
-      url: request.url,
-      method: request.method,
-      withCredentials: request.withCredentials,
-      allCookies: document.cookie,
-      sessionCookie: document.cookie
-        .split(';')
-        .find((c) => c.trim().startsWith('sessionId=')),
-      hasToken: !!token,
-      headers: request.headers,
-    });
+    if (typeof window !== 'undefined') {
+      const userStr = sessionStorage.getItem('user');
+      const token = userStr ? JSON.parse(userStr)?.token : null;
+      if (token) request.headers.Authorization = `Bearer ${token}`;
+    }
   } catch (err) {
     console.warn('Failed to parse session storage data:', err);
   }
-
   return request;
 });
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    // 🔍 DEBUG: Response & Cookie Check
-    console.log('✅ Response received:', {
-      status: response.status,
-      url: response.config.url,
-      setCookieHeaders: response.headers['set-cookie'],
-      cookiesAfterResponse: document.cookie,
-      data: response.data,
-    });
-
-    return response;
-  },
+  (response) => response,
   async (error) => {
-    // 🔍 DEBUG: Error & Cookie Check
-    Logger.error('❌ Request failed:', {
-      status: error.response?.status,
+    Logger.error('API-Error:', {
+      message: error.message || 'Error',
+      code: error.response?.status || 'UNKNOWN_ERROR',
       url: error.config?.url,
-      currentCookies: document.cookie,
-      errorData: error.response?.data,
-      message: error.message,
     });
 
     const returnError = {
@@ -70,7 +43,6 @@ axiosInstance.interceptors.response.use(
       url: error.config?.url,
     };
 
-    Logger.error('API-Error:', returnError);
     return Promise.reject(returnError);
   },
 );
