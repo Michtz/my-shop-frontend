@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { replaceCartItems } from '@/requests/cart.request';
 import NumberStepper from '@/components/system/NumberStepper';
+import { useRouter } from 'next/navigation';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 interface CartListItemProp {
   item: any;
@@ -21,6 +23,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
   mutate,
   review = false,
 }) => {
+  const router: AppRouterInstance = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDeleteItem = async (productId: string) => {
@@ -64,7 +67,10 @@ const CartListItem: React.FC<CartListItemProp> = ({
 
   return (
     <div key={item._id} className={style.cartItemContainer}>
-      <div className={style.productInfo}>
+      <div
+        className={style.productInfo}
+        onClick={() => router.push(`/product/${item.productId}`)}
+      >
         <div className={style.productImage}>
           <Image
             src={item.product.imageUrl || '/placeholder-image.jpg'}

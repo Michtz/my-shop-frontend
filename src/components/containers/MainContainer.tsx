@@ -95,19 +95,19 @@ const MainContainer: React.FC = () => {
     router.push(`/product/${id}`);
   };
 
-  return (
-    <Container
-      flow={'column'}
-      alignItems={'center'}
-      justifyContent={'flex-end'}
-      padding={false}
-      maxWidth={'1150'}
-      gap={'2'}
-    >
-      <Carousel items={slides} controls={false} />
-      <HorizontalScrollContainer>
-        {category === undefined &&
-          articles?.map((product, i: number) => {
+  if (category) {
+    return (
+      <Container
+        flow={'column'}
+        alignItems={'center'}
+        justifyContent={'flex-end'}
+        padding={false}
+        maxWidth={'1150'}
+        gap={'2'}
+      >
+        <h2>{category ? category : ''}</h2>
+        <HorizontalScrollContainer>
+          {articles?.map((product, i: number) => {
             if (i > 4) return;
             return (
               <ProductCard
@@ -122,26 +122,95 @@ const MainContainer: React.FC = () => {
               />
             );
           })}
-      </HorizontalScrollContainer>
-      <CategoryNavigation activeCategory={category} />
-      <CartsContainer>
-        {articles?.map((product) => {
-          return (
-            <ProductCard
-              key={product._id}
-              id={product._id}
-              title={product.name}
-              description={product.description}
-              image={product.imageUrl}
-              price={product.price}
-              onCardClick={() => handleCardClick(product._id)}
-              onIconClick={() => handleAddToCart(product._id)}
-            />
-          );
-        })}
-      </CartsContainer>
-    </Container>
-  );
+        </HorizontalScrollContainer>
+        <Carousel items={slides} controls={false} />
+
+        <HorizontalScrollContainer>
+          {articles?.reverse().map((product) => {
+            return (
+              <ProductCard
+                key={product._id}
+                id={product._id}
+                title={product.name}
+                description={product.description}
+                image={product.imageUrl}
+                price={product.price}
+                onCardClick={() => handleCardClick(product._id)}
+                onIconClick={() => handleAddToCart(product._id)}
+              />
+            );
+          })}
+        </HorizontalScrollContainer>
+
+        <CategoryNavigation activeCategory={category} />
+
+        <CartsContainer>
+          {articles?.map((product) => {
+            return (
+              <ProductCard
+                key={product._id}
+                id={product._id}
+                title={product.name}
+                description={product.description}
+                image={product.imageUrl}
+                price={product.price}
+                onCardClick={() => handleCardClick(product._id)}
+                onIconClick={() => handleAddToCart(product._id)}
+              />
+            );
+          })}
+        </CartsContainer>
+      </Container>
+    );
+  } else {
+    return (
+      <Container
+        flow={'column'}
+        alignItems={'center'}
+        justifyContent={'flex-end'}
+        padding={false}
+        maxWidth={'1150'}
+        gap={'2'}
+      >
+        <Carousel items={slides} controls={false} />
+        <HorizontalScrollContainer>
+          {category === undefined &&
+            articles?.map((product, i: number) => {
+              if (i > 4) return;
+              return (
+                <ProductCard
+                  key={product._id}
+                  id={product._id}
+                  title={product.name}
+                  description={product.description}
+                  image={product.imageUrl}
+                  price={product.price}
+                  onCardClick={() => handleCardClick(product._id)}
+                  onIconClick={() => handleAddToCart(product._id)}
+                />
+              );
+            })}
+        </HorizontalScrollContainer>
+        <CategoryNavigation activeCategory={category} />
+        <CartsContainer>
+          {articles?.map((product) => {
+            return (
+              <ProductCard
+                key={product._id}
+                id={product._id}
+                title={product.name}
+                description={product.description}
+                image={product.imageUrl}
+                price={product.price}
+                onCardClick={() => handleCardClick(product._id)}
+                onIconClick={() => handleAddToCart(product._id)}
+              />
+            );
+          })}
+        </CartsContainer>
+      </Container>
+    );
+  }
 };
 
 export default MainContainer;
