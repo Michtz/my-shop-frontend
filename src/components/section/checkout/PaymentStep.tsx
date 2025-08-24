@@ -136,7 +136,7 @@ const PaymentStep: React.FC = () => {
 
   const handlePaymentMethodReady = () => {
     showFeedback(t('checkout.paymentMethodValidated'), 'success');
-    sessionStorage.setItem('checkoutPayment', 'done');
+    localStorage.setItem('checkoutPayment', 'done');
     router.push('/checkout/review');
   };
 

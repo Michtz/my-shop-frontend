@@ -46,13 +46,13 @@ const AddressStep: React.FC = () => {
         phoneNumber: data?.phoneNumber || userData?.phoneNumber,
       };
 
-      const cart = await updateCartUser(
+      await updateCartUser(
         sessionData?.sessionId as string,
         userInfo,
         guestInfo,
       );
 
-      sessionStorage.setItem('checkoutAddress', 'done');
+      localStorage.setItem('checkoutAddress', 'done');
       router.replace('/checkout/paymentInfo');
       showFeedback(t('checkout.cartUserUpdated'), 'success');
     } catch (e) {

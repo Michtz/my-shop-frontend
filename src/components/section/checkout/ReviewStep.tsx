@@ -16,7 +16,6 @@ const ReviewForm = () => {
   const { showFeedback } = useFeedback();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
-  sessionStorage.setItem('checkoutReview', 'done');
 
   const handleFinalPayment = async () => {
     if (!sessionData?.sessionId) {
@@ -46,7 +45,8 @@ const ReviewForm = () => {
         paymentIntentId,
         paymentMethodId,
       );
-
+      localStorage.removeItem('checkoutPayment');
+      localStorage.removeItem('checkoutAddress');
       localStorage.removeItem('paymentMethodId');
       localStorage.removeItem('paymentIntentId');
 

@@ -325,6 +325,7 @@
   display: flex;
   width: 100%;
   justify-content: space-around;
+  flex-wrap: wrap;
 
   .listItem {
     display: flex;
@@ -336,6 +337,8 @@
       sans-serif;
     font-size: 17px;
     cursor: not-allowed;
+    margin-bottom: 1rem;
+
     &[data-done='true'] {
       cursor: pointer;
     }

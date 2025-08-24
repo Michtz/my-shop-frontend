@@ -26,10 +26,6 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
   const router: AppRouterInstance = useRouter();
   const pathname: string = usePathname();
   const step = pathname.split('/').pop();
-  const showTitle: boolean =
-    step === 'address' ||
-    step === 'paymentInformation' ||
-    step === 'paymentInfo';
 
   const isValidCheckoutStep = (
     step: string | undefined,
@@ -54,9 +50,8 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
     setActiveTab('review');
   };
 
-  const progressAddress = sessionStorage.getItem('checkoutAddress');
-  const progressPayment = sessionStorage.getItem('checkoutPayment');
-  const progressReview = sessionStorage.getItem('checkoutReview');
+  const progressAddress = localStorage.getItem('checkoutAddress');
+  const progressPayment = localStorage.getItem('checkoutPayment');
 
   const options = [
     {
@@ -72,7 +67,7 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
     {
       label: t('checkout.reviewOrder'),
       onClick: handleGoToReview,
-      active: !!progressReview || activeTab === 'review',
+      active: !!progressPayment || activeTab === 'review',
     },
   ];
 
