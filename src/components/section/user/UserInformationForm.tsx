@@ -74,6 +74,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
   useEffect(() => {
     if (userInformation) reset(getFormDefaultValues(userInformation));
     if (!userInformation && !isLoading && hasProfile) router.replace('/login');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInformation, reset, isLoading]);
 
   const onSubmit = async (data: UserProfileFormData) => {

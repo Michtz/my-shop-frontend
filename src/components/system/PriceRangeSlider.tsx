@@ -20,10 +20,6 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
   onPriceChange,
   onClose,
   currency = 'CHF',
-  histogramData = [
-    2, 4, 6, 8, 12, 15, 18, 25, 35, 45, 55, 42, 38, 32, 28, 24, 20, 16, 12, 8,
-    6, 4, 3, 2, 1, 8, 12, 6, 4, 2, 1, 1, 1, 1, 1, 1,
-  ],
 }) => {
   const [minValue, setMinValue] = useState(currentMin);
   const [maxValue, setMaxValue] = useState(currentMax);
@@ -75,8 +71,6 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
     const maxPercent = ((maxValue - minPrice) / (maxPrice - minPrice)) * 100;
     return `linear-gradient(to right, #ddd 0%, #ddd ${minPercent}%, #f1c40f ${minPercent}%, #f1c40f ${maxPercent}%, #ddd ${maxPercent}%, #ddd 100%)`;
   };
-
-  const maxHistogramValue = Math.max(...histogramData);
 
   return (
     <>
@@ -382,10 +376,6 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
         input[type='range']::-moz-range-thumb:hover {
           border-color: #000;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        input[type='range']::-webkit-slider-track {
-          background: transparent;
         }
 
         input[type='range']::-moz-range-track {

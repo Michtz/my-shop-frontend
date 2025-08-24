@@ -71,6 +71,7 @@ const MainContainer: React.FC = () => {
     setArticles(filteredProducts(products, category));
     handleSortArticle();
     handlePriceRangeChange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, category, activeSort]);
 
   const slides: CarouselItem[] = [

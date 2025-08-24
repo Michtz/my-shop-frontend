@@ -26,7 +26,7 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     onClose();
-  }, [path]);
+  }, [path]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   return (
     <>

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import CartList from '@/components/section/cart/CartList';
 import { useTranslation } from 'react-i18next';
+import { Logger } from '@/utils/Logger.class';
 
 const ReviewForm = () => {
   const { t } = useTranslation();
@@ -70,8 +71,9 @@ const ReviewForm = () => {
       } else {
         showFeedback(t('checkout.orderCreationFailed'), 'error');
       }
-    } catch (error) {
+    } catch (e) {
       showFeedback(t('checkout.paymentProcessingFailed'), 'error');
+      Logger.error(e);
     } finally {
       setIsProcessing(false);
     }
