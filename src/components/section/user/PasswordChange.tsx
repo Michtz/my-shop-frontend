@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import style from '@/styles/UserProfileForm.module.scss';
 import { useError } from '@/hooks/ErrorHook';
 import { FormContainer } from '@/components/system/Container';
-import { FormRow } from '@/components/system/Form';
+import { checkIfSamePassword, FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { useFeedback } from '@/hooks/FeedbackHook';
@@ -29,29 +29,11 @@ const PasswordChangeForm: FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     formState: { errors, isSubmitting },
-  } = useForm<PasswordChangeData>();
-
-  const watchedNewPassword = watch('newPassword');
-
-  const validatePasswordMatch = (value: string) => {
-    return (
-      value === watchedNewPassword || t('passwordChange.passwordsDoNotMatch')
-    );
-  };
-
-  const validatePasswordStrength = (password: string) => {
-    if (password.length < 8) return t('passwordChange.passwordTooShort');
-
-    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password))
-      return t('passwordChange.passwordMissingCase');
-
-    if (!/(?=.*\d)/.test(password))
-      return t('passwordChange.passwordMissingNumber');
-
-    return true;
-  };
+  } = useForm<PasswordChangeData>({
+    mode: 'onSubmit',
+  });
 
   const onSubmit = async (data: PasswordChangeData) => {
     try {
@@ -82,11 +64,7 @@ const PasswordChangeForm: FC = () => {
             fullWidth
             placeholder={t('passwordChange.currentPasswordPlaceholder')}
             inputProps={register('currentPassword', {
-              required: t('passwordChange.currentPasswordRequired'),
-              minLength: {
-                value: 1,
-                message: t('passwordChange.currentPasswordRequired'),
-              },
+              required: true,
             })}
             {...transformFieldError(errors.currentPassword)}
           />
@@ -100,8 +78,8 @@ const PasswordChangeForm: FC = () => {
             fullWidth
             placeholder={t('passwordChange.newPasswordPlaceholder')}
             inputProps={register('newPassword', {
-              required: t('passwordChange.newPasswordRequired'),
-              validate: validatePasswordStrength,
+              required: true,
+              minLength: { value: 8, message: 'minLength' },
             })}
             {...transformFieldError(errors.newPassword)}
           />
@@ -115,23 +93,13 @@ const PasswordChangeForm: FC = () => {
             fullWidth
             placeholder={t('passwordChange.confirmPasswordPlaceholder')}
             inputProps={register('confirmNewPassword', {
-              required: t('passwordChange.confirmPasswordRequired'),
-              validate: validatePasswordMatch,
+              required: true,
+              validate: (value) =>
+                checkIfSamePassword(value, getValues().newPassword),
             })}
             {...transformFieldError(errors.confirmNewPassword)}
           />
         </FormRow>
-
-        <div className={style.passwordInfo}>
-          <p className={style.infoText}>
-            {t('passwordChange.passwordRequirements')}
-          </p>
-          <ul className={style.requirementsList}>
-            <li>{t('passwordChange.requirement1')}</li>
-            <li>{t('passwordChange.requirement2')}</li>
-            <li>{t('passwordChange.requirement3')}</li>
-          </ul>
-        </div>
 
         <ButtonContainer>
           <Button
