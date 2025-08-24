@@ -54,24 +54,25 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
     setActiveTab('review');
   };
 
+  const progressAddress = sessionStorage.getItem('checkoutAddress');
+  const progressPayment = sessionStorage.getItem('checkoutPayment');
+  const progressReview = sessionStorage.getItem('checkoutReview');
+
   const options = [
     {
       label: t(t('userProfile.orderInformation')),
       onClick: handleGoToAddress,
-      active:
-        activeTab === 'address' ||
-        activeTab === 'paymentInfo' ||
-        activeTab === 'review',
+      active: !!progressAddress || activeTab === 'address',
     },
     {
       label: t('checkout.paymentInformation'),
       onClick: handleGoToPayment,
-      active: activeTab === 'paymentInfo' || activeTab === 'review',
+      active: !!progressPayment || activeTab === 'paymentInfo',
     },
     {
       label: t('checkout.reviewOrder'),
       onClick: handleGoToReview,
-      active: activeTab === 'review',
+      active: !!progressReview || activeTab === 'review',
     },
   ];
 
@@ -83,6 +84,7 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
             key={obj.label}
             onClick={() => (obj.active ? obj.onClick() : null)}
             className={styles.listItem}
+            data-done={obj.active}
           >
             {obj.label}{' '}
             <span className={styles.icon} data-done={obj.active}>
@@ -100,7 +102,8 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
       flow="column"
       alignItems="center"
     >
-      {showTitle && <h1>{t('checkout.title')}</h1>}
+      <div style={{ marginTop: '4rem' }}></div>
+      {/*{showTitle && <h1>{t('checkout.title')}</h1>}*/}
       {activeTab && <ProgressButtons />}
       <CheckoutContent view={view} />
     </Container>

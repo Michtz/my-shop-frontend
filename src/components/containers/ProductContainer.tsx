@@ -260,23 +260,25 @@ const ProductOverview: FC = () => {
         <InformationContainer />
       </div>
       <Hr />
-      <h1 className={style.addTitle}>{t('product.otherCustomersBought')}</h1>
-      <CartsContainer>
-        {products?.map((product) => {
-          return (
-            <ProductCard
-              key={product._id}
-              id={product._id}
-              title={product.name}
-              description={product.description}
-              image={product.imageUrl}
-              price={product.price}
-              onCardClick={() => handleCardClick(product._id)}
-              onIconClick={() => handleAddToCart(product._id)}
-            />
-          );
-        })}
-      </CartsContainer>
+      <div className={style.overviewContainer}>
+        <h1 className={style.addTitle}>{t('product.otherCustomersBought')}</h1>
+        <CartsContainer>
+          {products?.map((product) => {
+            return (
+              <ProductCard
+                key={product._id}
+                id={product._id}
+                title={product.name}
+                description={product.description}
+                image={product.imageUrl}
+                price={product.price}
+                onCardClick={() => handleCardClick(product._id)}
+                onIconClick={() => handleAddToCart(product._id)}
+              />
+            );
+          })}
+        </CartsContainer>
+      </div>
     </Container>
   );
 };

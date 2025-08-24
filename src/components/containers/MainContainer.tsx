@@ -17,6 +17,10 @@ import { useAuth } from '@/hooks/AuthHook';
 import image1 from '@/assets/Slide2_Homepage.webp';
 import image2 from '@/assets/Homepage_Wellness2.webp';
 import image3 from '@/assets/Firmenangebot.webp';
+import FilterContainer, {
+  FilterType,
+  PriceRangeType,
+} from '@/components/system/FilterContainer';
 
 const filteredProducts = (
   items: IProduct[],
@@ -31,18 +35,43 @@ const MainContainer: React.FC = () => {
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
   const { sessionData, isSessionReady } = useAuth();
+  const [activeSort, setActiveSort] = useState<FilterType>({
+    value: 'Relevanz',
+    code: 'relevance',
+  });
+  const [priceRange, setPriceRange] = useState<PriceRangeType>({
+    max: 99999,
+    min: 0,
+  });
+
   const category: string | undefined = getCategoryName(
     params?.category as string,
   );
   const [articles, setArticles] = useState<IProduct[]>(
     filteredProducts(products, category),
   );
+
+  const handleSortArticle = () => {
+    if (activeSort.code === 'up')
+      setArticles([...articles].sort((a, b) => a.price - b.price));
+    if (activeSort.code === 'down')
+      setArticles([...articles].sort((a, b) => b.price - a.price));
+  };
+
+  const handlePriceRangeChange = () => {
+    articles.filter(
+      (article) =>
+        article.price >= priceRange.min && article.price <= priceRange.max,
+    );
+  };
+
   const router = useRouter();
-  console.log(sessionData);
   useEffect(() => {
+    if (isLoading) return;
     setArticles(filteredProducts(products, category));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, category]);
+    handleSortArticle();
+    handlePriceRangeChange();
+  }, [isLoading, category, activeSort]);
 
   const slides: CarouselItem[] = [
     {
@@ -124,7 +153,12 @@ const MainContainer: React.FC = () => {
           })}
         </HorizontalScrollContainer>
         <Carousel items={slides} controls={false} />
-
+        <FilterContainer
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          setActiveSort={setActiveSort}
+          activeSort={activeSort}
+        />
         <HorizontalScrollContainer>
           {articles?.reverse().map((product) => {
             return (
@@ -192,6 +226,10 @@ const MainContainer: React.FC = () => {
             })}
         </HorizontalScrollContainer>
         <CategoryNavigation activeCategory={category} />
+        <FilterContainer
+          setActiveSort={setActiveSort}
+          activeSort={activeSort}
+        />
         <CartsContainer>
           {articles?.map((product) => {
             return (

@@ -238,6 +238,12 @@
   height: 73px;
 }
 
+@media (max-width: 1150px) {
+  .header {
+    margin-bottom: 0;
+  }
+}
+
 //@media (max-width: 768px) {
 //  .headerLogo {
 //    width: 180px;
@@ -354,6 +360,9 @@
 
   .rightNavContainer {
     gap: 1.5rem;
+    .translationIcon {
+      display: none;
+    }
   }
 }
 

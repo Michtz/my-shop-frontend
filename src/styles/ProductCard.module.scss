@@ -138,8 +138,13 @@
   }
 }
 
+@media (max-width: 560px) {
+  .cardContainer {
+    width: 250px;
+  }
+}
 @media (max-width: 468px) {
   .cardContainer {
-    width: 80%;
+    width: 90%;
   }
 }

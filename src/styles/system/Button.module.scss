@@ -335,8 +335,10 @@
       Josefin Sans,
       sans-serif;
     font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
+    cursor: not-allowed;
+    &[data-done='true'] {
+      cursor: pointer;
+    }
 
     .icon {
       width: 21px;
@@ -346,6 +348,7 @@
 
       &[data-done='true'] {
         background-color: green;
+        cursor: pointer;
       }
     }
   }

@@ -84,3 +84,8 @@
     color: red !important;
   }
 }
+@media (max-width: 525px) {
+  .numberStepper {
+    margin: 16px;
+  }
+}

@@ -15,6 +15,8 @@ import { createPaymentIntent } from '@/requests/payment.request';
 import { useRouter } from 'next/navigation';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useTranslation } from 'react-i18next';
+import Cookies from 'js-cookie';
+import { StripeElementLocale } from '@stripe/stripe-js';
 
 const PaymentForm = ({
   onPaymentMethodReady,
@@ -52,7 +54,7 @@ const PaymentForm = ({
         // Store Payment Method ID and Payment Intent ID for ReviewStep
         const paymentMethodId = paymentIntent.payment_method as string;
         const paymentIntentId = paymentIntent.id;
-        
+
         if (paymentMethodId) {
           localStorage.setItem('paymentMethodId', paymentMethodId);
         }
@@ -62,7 +64,7 @@ const PaymentForm = ({
 
         console.log('💳 Payment setup complete:', {
           paymentMethodId: paymentMethodId ? 'STORED' : 'MISSING',
-          paymentIntentId: paymentIntentId ? 'STORED' : 'MISSING'
+          paymentIntentId: paymentIntentId ? 'STORED' : 'MISSING',
         });
 
         // Payment Method is now attached, proceed to review
@@ -78,21 +80,18 @@ const PaymentForm = ({
   };
 
   return (
-    <Container flow="column">
-      <form onSubmit={handleSubmit}>
-        <PaymentElement />
-
-        <Button
-          type="submit"
-          disabled={!stripe || isProcessing}
-          style={{ width: '100%', marginTop: '1rem' }}
-        >
-          {isProcessing
-            ? t('checkout.settingUpPayment')
-            : t('checkout.continueToReview')}
-        </Button>
-      </form>
-    </Container>
+    <form onSubmit={handleSubmit}>
+      <PaymentElement />
+      <Button
+        type="submit"
+        disabled={!stripe || isProcessing}
+        style={{ width: '84%', margin: '0', marginTop: '1rem' }}
+      >
+        {isProcessing
+          ? t('checkout.settingUpPayment')
+          : t('checkout.continueToReview')}
+      </Button>
+    </form>
   );
 };
 
@@ -103,38 +102,41 @@ const PaymentStep: React.FC = () => {
   const router = useRouter();
   const [clientSecret, setClientSecret] = useState('');
 
+  const [language, setLanguage] = useState<StripeElementLocale>('de');
+
+  useEffect(() => {
+    const cookieLanguage = Cookies.get('language') || 'de';
+    setLanguage(cookieLanguage as StripeElementLocale);
+  }, []);
+
   useEffect(() => {
     if (sessionData?.sessionId) {
-      console.log('💳 Initializing payment with session:', sessionData.sessionId);
       createPaymentIntent(sessionData.sessionId)
         .then((result) => {
-          console.log('💳 Payment intent response:', result);
-          
           // Handle nested response structure
           const data = result?.data || result;
           const clientSecret = data?.clientSecret || data?.client_secret;
-          
-          if (clientSecret && clientSecret.startsWith('pi_') && clientSecret.includes('_secret_')) {
-            console.log('✅ Payment intent created successfully');
-            console.log('💳 Client secret:', clientSecret);
-            console.log('💳 Client secret prefix:', clientSecret.substring(0, 20) + '...');
+
+          if (
+            clientSecret &&
+            clientSecret.startsWith('pi_') &&
+            clientSecret.includes('_secret_')
+          ) {
             setClientSecret(clientSecret);
           } else {
-            console.log('❌ No client secret in response:', result);
             showFeedback(t('checkout.paymentInitFailed'), 'error');
           }
         })
-        .catch((error) => {
-          console.error('💳 Payment intent creation failed:', error);
+        .catch(() => {
           showFeedback(t('checkout.paymentInitFailed'), 'error');
         });
     } else {
-      console.log('❌ No session ID available for payment initialization');
     }
   }, [sessionData?.sessionId, t, showFeedback]);
 
   const handlePaymentMethodReady = () => {
     showFeedback(t('checkout.paymentMethodValidated'), 'success');
+    sessionStorage.setItem('checkoutPayment', 'done');
     router.push('/checkout/review');
   };
 
@@ -144,33 +146,27 @@ const PaymentStep: React.FC = () => {
         <h2>{t('checkout.paymentInformation')}</h2>
         <div>{t('checkout.loadingPayment')}</div>
         <div style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>
-          {sessionData?.sessionId ? 
-            `Session ID: ${sessionData.sessionId}` : 
-            'Warte auf Session...'
-          }
+          {sessionData?.sessionId
+            ? `Session ID: ${sessionData.sessionId}`
+            : 'Warte auf Session...'}
         </div>
       </Container>
     );
   }
 
   return (
-    <Container flow={'column'}>
+    <div style={{ width: 'fit-content' }}>
       <h2>{t('checkout.paymentInformation')}</h2>
-      <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f3f4f6', borderRadius: '8px', fontSize: '12px' }}>
-        <div>🔑 Stripe Key: {process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ? 'SET' : 'MISSING'}</div>
-        <div>💳 Client Secret: {clientSecret ? 'RECEIVED' : 'MISSING'}</div>
-        <div>🏢 API Base URL: {process.env.NEXT_PUBLIC_API_BASE_URL || 'UNDEFINED'}</div>
-        <div>🌍 Environment: {process.env.NODE_ENV}</div>
-      </div>
       <Elements
         key={clientSecret} // Force re-render when clientSecret changes
         stripe={stripePromise}
         options={{
           clientSecret,
+          locale: language,
           appearance: {
             theme: 'flat',
             variables: {
-              colorPrimary: '#efe5d3',
+              colorPrimary: '#c7bda9',
               colorBackground: '#ffffff',
               colorText: '#333230',
               colorDanger: '#dc2626',
@@ -186,6 +182,7 @@ const PaymentStep: React.FC = () => {
                 fontSize: '14px',
                 backgroundColor: '#ffffff',
                 transition: 'all 0.2s ease',
+                width: '100%',
               },
               '.Input:focus': {
                 border: '1px solid #efe5d3',
@@ -202,7 +199,7 @@ const PaymentStep: React.FC = () => {
       >
         <PaymentForm onPaymentMethodReady={handlePaymentMethodReady} />
       </Elements>
-    </Container>
+    </div>
   );
 };
 

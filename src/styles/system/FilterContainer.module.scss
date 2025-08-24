@@ -1,0 +1,54 @@
+.dropdownMenu {
+  position: absolute;
+  top: 115%;
+  left: 20%;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 120px;
+  margin-top: 8px;
+
+  .dropdownItem {
+    display: block;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: #e3c7a5;
+      color: white;
+    }
+
+    &.activeLanguage {
+      background-color: #d4b896;
+      color: white;
+      font-weight: 500;
+    }
+  }
+}
+
+.sortIcon {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sortButton {
+  margin: 0 !important;
+  font-weight: normal !important;
+}
+
+.optionContainer {
+  display: flex;
+  width: 100%;
+  margin-left: 10%;
+  justify-content: flex-start;
+}

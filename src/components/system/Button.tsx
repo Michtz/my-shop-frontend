@@ -73,17 +73,20 @@ interface ButtonContainerProps {
   children: React.ReactNode;
   spread?: boolean;
   className?: string;
+  styles?: React.CSSProperties;
 }
 
 export const ButtonContainer: React.FC<ButtonContainerProps> = ({
   children,
   spread = true,
   className = '',
+  styles,
 }) => (
   <div
     onClick={(e) => e.stopPropagation()}
     className={`${style.buttonContainerContainer} ${className}`}
     data-spread={spread}
+    style={styles}
   >
     {children}
   </div>

@@ -34,12 +34,11 @@ const AddressStep: React.FC = () => {
         houseNumber:
           data?.houseNumber || userData?.addresses?.[0]?.houseNumber || '',
         city: data?.city || userData?.addresses?.[0]?.city || '',
-        state: data?.state || userData?.addresses?.[0]?.state || '',
         zipCode: data?.zipCode || userData?.addresses?.[0]?.zipCode || '',
         country: 'ch',
         isDefault: true,
       };
-      console.log(userInfo);
+
       const guestInfo: UserInformation = {
         email: data?.email || userData?.email,
         firstName: data?.firstName || userData?.firstName,
@@ -52,7 +51,8 @@ const AddressStep: React.FC = () => {
         userInfo,
         guestInfo,
       );
-      console.log(cart);
+
+      sessionStorage.setItem('checkoutAddress', 'done');
       router.replace('/checkout/paymentInfo');
       showFeedback(t('checkout.cartUserUpdated'), 'success');
     } catch (e) {
