@@ -57,7 +57,11 @@ export const FeedbackProvider: React.FC<FeedbackProviderProps> = ({
     hideFeedback,
   };
 
-  return <FeedbackContext.Provider value={value}>{children}</FeedbackContext.Provider>;
+  return (
+    <FeedbackContext.Provider value={value}>
+      {children}
+    </FeedbackContext.Provider>
+  );
 };
 
 export const useFeedback = (): FeedbackContextType => {

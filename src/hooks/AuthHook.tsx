@@ -34,7 +34,7 @@ interface AuthContextType {
     password: string,
     firstName: string,
     lastName: string,
-  ) => Promise<void>;
+  ) => Promise<any>;
   logout: () => Promise<void>;
 }
 
@@ -180,7 +180,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     password: string,
     firstName: string,
     lastName: string,
-  ): Promise<void> => {
+  ): Promise<any> => {
     setIsLoading(true);
 
     try {
@@ -191,8 +191,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const isSuccess = response?.success !== false && registerData;
 
       if (isSuccess && registerData) {
-        console.log('✅ Registration successful, user data:', registerData);
-
         // Handle different response structures for registration
         const userData = registerData.user || registerData;
         setUserSessionData(userData);
@@ -215,6 +213,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log('✅ Registration completed, keeping existing session');
       } else {
         console.log('❌ Registration failed or no data:', response);
+        return response;
       }
     } catch (err: any) {
       Logger.error('Registration error:', err);

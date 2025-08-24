@@ -47,9 +47,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     if (!sessionData?.sessionId) return;
 
     // Use the same base URL as the API
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4200';
+    const backendUrl =
+      process.env.NEXT_PUBLIC_BACKEND_URL ||
+      process.env.NEXT_PUBLIC_API_BASE_URL ||
+      'http://localhost:4200';
     console.log('🔌 Connecting socket to:', backendUrl);
-    
+
     const socketInstance = io(backendUrl, {
       withCredentials: true,
       transports: ['websocket', 'polling'],
@@ -84,7 +87,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       socketInstance.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionData?.sessionId, userSessionData?.user.id]);
+  }, [sessionData?.sessionId, userSessionData?.user?.id]);
 
   // Socket Event Listeners
   const setupSocketEventListeners = (socketInstance: Socket) => {

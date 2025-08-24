@@ -135,11 +135,12 @@ const LoginPage: React.FC<LoginPageProps> = ({
             />
           </FormRow>
 
-          <FormRow direction="row">
-            <Link href="" disabled className={style.forgotPassword}>
-              {t('auth.forgotPassword')}
-            </Link>
-          </FormRow>
+          {/* Todo: add it*/}
+          {/*<FormRow direction="row">*/}
+          {/*  <Link href="" disabled className={style.forgotPassword}>*/}
+          {/*    {t('auth.forgotPassword')}*/}
+          {/*  </Link>*/}
+          {/*</FormRow>*/}
 
           <FormRow>
             <Button type="submit" flex disabled={isLoading}>

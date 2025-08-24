@@ -239,7 +239,9 @@
     "email": "Ungültige E-Mail-Adresse",
     "minLength": "Zu kurz",
     "maxLength": "Zu lang",
-    "toSmall": "Wert ist zu klein"
+    "toSmall": "Wert ist zu klein",
+    "validate": "Keine Valide Mailadresse",
+    "notTheSamePassword": "Passwörter stimmen nicht überein"
   },
   "validation": {
     "required": "Pflichtfeld",

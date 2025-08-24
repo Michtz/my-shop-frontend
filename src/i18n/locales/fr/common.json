@@ -239,7 +239,9 @@
     "email": "Adresse e-mail invalide",
     "minLength": "Trop court",
     "maxLength": "Trop long",
-    "toSmall": "La valeur est trop petite"
+    "toSmall": "La valeur est trop petite",
+    "validate": "Adresse e-mail non valide",
+    "notTheSamePassword": "Les mots de passe ne correspondent pas"
   },
   "validation": {
     "required": "Champ obligatoire",

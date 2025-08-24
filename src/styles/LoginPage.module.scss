@@ -1,4 +1,7 @@
 .loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: #ffffff;
   border-radius: 20px;
   box-shadow:
@@ -19,6 +22,7 @@
 .loginHeader {
   text-align: center;
   margin-bottom: 32px;
+  margin-top: 32px;
 }
 
 .loginTitle {
@@ -55,13 +59,19 @@
 
 .forgotPassword {
   font-size: 14px;
-  color: #2563eb;
+
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
+  color: #64748b;
+
+  a span {
+    color: #64748b;
+  }
 
   &:hover {
-    color: #1d4ed8;
+    color: #2d3748;
+
     text-decoration: underline;
   }
 }
@@ -71,16 +81,20 @@
   margin-bottom: 24px;
   font-size: 14px;
   color: #64748b;
+  a span {
+    color: #2d3748 !important;
+  }
 }
 
 .signupLink {
-  color: #2563eb;
+  color: #2d3748;
+
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
 
   &:hover {
-    color: #1d4ed8;
+    color: #2d3748;
     text-decoration: underline;
   }
 }

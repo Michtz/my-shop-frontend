@@ -31,6 +31,7 @@ axiosInstance.interceptors.request.use(async (request) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    console.log(error.response.data.error);
     Logger.error('API-Error:', {
       message: error.message || 'Error',
       code: error.response?.status || 'UNKNOWN_ERROR',
@@ -38,7 +39,7 @@ axiosInstance.interceptors.response.use(
     });
 
     const returnError = {
-      message: error.message || 'Error',
+      message: error.response.data.error || 'Error',
       code: error.response?.status || 'UNKNOWN_ERROR',
       url: error.config?.url,
     };

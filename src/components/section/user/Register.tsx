@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import style from '@/styles/LoginPage.module.scss';
@@ -12,12 +12,10 @@ import { FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Link from '@/components/system/Link';
 import Button from '@/components/system/Button';
-import { Hr } from '@/components/system/Hr';
 import { Logger } from '@/utils/Logger.class';
 import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
-import Image from 'next/image';
-import logo from '@/assets/myShopLogo.png';
+import Logo from '@/components/icons/Logo';
 
 interface RegisterFormData {
   email: string;
@@ -38,12 +36,15 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
   const { transformFieldError } = useError();
   const router = useRouter();
   const { isLoading, register: _register } = useAuth();
+  const [registerErrors, setRegisterErrors] = useState();
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<RegisterFormData>({
+    mode: 'onSubmit',
     defaultValues: {
       email: '',
       password: '',
@@ -55,14 +56,19 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     try {
-      if (data.password === data.passwordSec) {
-        await _register(
-          data.email,
-          data.password,
-          data.firstName,
-          data.lastName,
-        );
+      const response = await _register(
+        data.email,
+        data.password,
+        data.firstName,
+        data.lastName,
+      );
+
+      if (!response) {
         showFeedback('feedback.login-success', 'success');
+        router.push('/profile');
+      } else {
+        showFeedback('feedback.login-error', 'error');
+        setRegisterErrors(response?.message);
       }
     } catch (err) {
       showFeedback('feedback.login-error', 'error');
@@ -71,26 +77,32 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
   };
 
   const validateEmail = (email: string | undefined) => {
-    if (!email) return t('validation.emailRequired');
+    if (!email) return 'required';
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return emailRegex.test(email) || t('validation.validEmailRequired');
+    return emailRegex.test(email) || 'noValidEmail';
   };
 
   const validatePassword = (password: string | undefined) => {
-    if (!password) return t('validation.passwordRequired');
-    return password.length >= 6 || t('validation.passwordMinLength');
+    if (!password) return 'required';
+    return password.length >= 6 || 'minLength';
+  };
+
+  const checkIfSamePassword = (password: string | undefined) => {
+    const ogPassword: string = getValues().password;
+    if (!password) return 'required';
+    if (password !== ogPassword) return 'notTheSamePassword';
+
+    return password.length >= 6 || 'minLength';
   };
 
   return (
     <div className={style.loginContainer}>
       <span className={style.logo} onClick={() => router.replace('/')}>
-        <Image src={logo} alt={'logo'} height={60} />
+        <Logo color={'gray'} height={60} />
       </span>
       <div className={style.loginHeader}>
-        <h1 className={style.loginTitle}>{t('register.welcome')}</h1>
         <p className={style.loginSubtitle}>{t('register.createAccount')}</p>
       </div>
-      <Hr />
       <FormContainer
         className={style.loginForm}
         onSubmitAction={handleSubmit(onSubmit)}
@@ -104,7 +116,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
             placeholder={t('register.firstNamePlaceholder')}
             clearable
             inputProps={register('firstName', {
-              required: t('validation.firstNameRequired'),
+              required: true,
             })}
             {...transformFieldError(errors.firstName)}
           />
@@ -119,7 +131,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
             placeholder={t('register.lastNamePlaceholder')}
             clearable
             inputProps={register('lastName', {
-              required: t('validation.lastNameRequired'),
+              required: true,
             })}
             {...transformFieldError(errors.lastName)}
           />
@@ -127,14 +139,14 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
 
         <FormRow>
           <Input
-            type="email"
+            type="text" // absichtlich text da sonst browser popup
             label={t('register.emailAddress')}
             required
             fullWidth
             placeholder={t('auth.emailPlaceholder')}
             clearable
             inputProps={register('email', {
-              required: t('validation.emailRequired'),
+              required: true,
               validate: validateEmail,
             })}
             {...transformFieldError(errors.email)}
@@ -150,7 +162,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
             placeholder={t('register.passwordPlaceholder')}
             showPasswordToggle
             inputProps={register('password', {
-              required: t('validation.passwordRequired'),
+              required: true,
               validate: validatePassword,
             })}
             {...transformFieldError(errors.password)}
@@ -166,25 +178,23 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
             placeholder={t('register.passwordPlaceholder')}
             showPasswordToggle
             inputProps={register('passwordSec', {
-              required: t('validation.passwordRequired'),
-              validate: validatePassword,
+              required: true,
+              validate: checkIfSamePassword,
             })}
             {...transformFieldError(errors.passwordSec)}
           />
         </FormRow>
-
-        <FormRow direction="row">
-          <Link href="/register" disabled className={style.forgotPassword}>
-            {t('register.forgotPassword')}
-          </Link>
-        </FormRow>
-
         <FormRow>
           <Button type="submit" flex disabled={isLoading}>
             {t('register.createAccountButton')}
           </Button>
         </FormRow>
       </FormContainer>
+      {registerErrors && (
+        <div style={{ color: 'red', marginBottom: '1rem' }}>
+          {registerErrors}
+        </div>
+      )}
 
       <div className={style.signupPrompt}>
         <span>{t('register.alreadyHaveAccount')} </span>

@@ -94,10 +94,12 @@ export const register = async (
       firstName,
       lastName,
     });
+    console.log(response);
     return response.data;
   } catch (e) {
     Logger.error('Unable to register');
-    throw e;
+    console.log(e);
+    return e;
   }
 };
 export const logout = async (sessionId: string): Promise<any> => {

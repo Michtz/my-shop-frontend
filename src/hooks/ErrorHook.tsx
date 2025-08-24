@@ -19,6 +19,8 @@ const errorMessageKeys: { [key: string]: string } = {
   minLength: 'error.minLength',
   maxLength: 'error.maxLength',
   toSmall: 'error.toSmall',
+  noValidEmail: 'error.validate',
+  notTheSamePassword: 'error.notTheSamePassword',
 };
 
 const ErrorContext = createContext<ErrorHook | undefined>(undefined);
@@ -28,7 +30,8 @@ export const ErrorProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const transformFieldError = (error?: FieldError): TransformedFieldError => {
     if (!error) return { error: false };
-    const errorKey: string | undefined = error.type || error.message;
+    const errorKey: string | undefined = error.message || error.type;
+    console.log(errorKey, error);
     if (errorKey && errorKey in errorMessageKeys)
       return {
         error: true,
