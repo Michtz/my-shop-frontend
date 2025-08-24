@@ -8,7 +8,12 @@ import { useTranslation } from 'react-i18next';
 import { useError } from '@/hooks/ErrorHook';
 import { useRouter } from 'next/navigation';
 import { FormContainer } from '@/components/system/Container';
-import { FormRow } from '@/components/system/Form';
+import {
+  checkIfSamePassword,
+  FormRow,
+  validateEmail,
+  validatePassword,
+} from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Link from '@/components/system/Link';
 import Button from '@/components/system/Button';
@@ -74,25 +79,6 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
       showFeedback('feedback.login-error', 'error');
       Logger.error('Registration failed:', err);
     }
-  };
-
-  const validateEmail = (email: string | undefined) => {
-    if (!email) return 'required';
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return emailRegex.test(email) || 'noValidEmail';
-  };
-
-  const validatePassword = (password: string | undefined) => {
-    if (!password) return 'required';
-    return password.length >= 6 || 'minLength';
-  };
-
-  const checkIfSamePassword = (password: string | undefined) => {
-    const ogPassword: string = getValues().password;
-    if (!password) return 'required';
-    if (password !== ogPassword) return 'notTheSamePassword';
-
-    return password.length >= 6 || 'minLength';
   };
 
   return (
@@ -179,7 +165,8 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
             showPasswordToggle
             inputProps={register('passwordSec', {
               required: true,
-              validate: checkIfSamePassword,
+              validate: (value) =>
+                checkIfSamePassword(value, getValues().password),
             })}
             {...transformFieldError(errors.passwordSec)}
           />

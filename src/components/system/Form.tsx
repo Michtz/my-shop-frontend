@@ -19,6 +19,32 @@ interface FormProps
   onKeyDown?: (event: React.KeyboardEvent<HTMLFormElement>) => void;
 }
 
+export const validateEmail = (email: string | undefined) => {
+  if (!email) return 'required';
+  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  return emailRegex.test(email) || 'noValidEmail';
+};
+
+export const validatePassword = (password: string | undefined) => {
+  if (!password) return 'required';
+  return password.length >= 6 || 'minLength';
+};
+
+export const checkIfSamePassword = (
+  password: string | undefined,
+  ogPassword: string,
+) => {
+  if (!password) return 'required';
+  if (password !== ogPassword) return 'notTheSamePassword';
+
+  return password.length >= 6 || 'minLength';
+};
+
+export const validatePhoneNumber = (phone: string | undefined) => {
+  if (!phone) return true; // Allow empty when not required
+  const phoneRegex = /^[+]?[\d\s\-()]{8,}$/;
+  return phoneRegex.test(phone) || 'invalidPhoneNumber';
+};
 /**
  * Form system component can be used as a wrapper for a form
  */

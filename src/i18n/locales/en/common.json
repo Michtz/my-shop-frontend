@@ -241,6 +241,7 @@
     "maxLength": "Too long",
     "toSmall": "Value is too small",
     "validate": "No valid email address",
+    "invalidPhoneNumber": "This is not a valid phone number.",
     "notTheSamePassword": "Passwords do not match"
   },
   "validation": {

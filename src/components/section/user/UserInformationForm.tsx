@@ -1,7 +1,11 @@
 import React, { FC, useEffect } from 'react';
 import { FormContainer } from '@/components/system/Container';
 import style from '@/styles/UserProfileForm.module.scss';
-import { FormRow } from '@/components/system/Form';
+import {
+  FormRow,
+  validateEmail,
+  validatePhoneNumber,
+} from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Button, {
   ButtonContainer,
@@ -68,6 +72,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
     reset,
     formState: { errors, isSubmitting, isDirty },
   } = useForm<UserProfileFormData>({
+    mode: 'onSubmit',
     defaultValues: getFormDefaultValues(userInformation),
   });
 
@@ -101,18 +106,6 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
     } catch (error) {
       Logger.error('Error updating profile:', error);
     }
-  };
-
-  const validateEmail = (email: string | undefined) => {
-    if (!email) return true; // Allow empty when not required
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return emailRegex.test(email) || t('validation.invalidEmail');
-  };
-
-  const validatePhoneNumber = (phone: string | undefined) => {
-    if (!phone) return true; // Allow empty when not required
-    const phoneRegex = /^[+]?[\d\s\-()]{8,}$/;
-    return phoneRegex.test(phone) || t('validation.invalidPhoneNumber');
   };
 
   const handleLogout = async (): Promise<void> => {
@@ -162,8 +155,8 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
               fullWidth
               placeholder={t('placeholders.enterFirstName')}
               inputProps={register('firstName', {
-                required: t('validation.required'),
-                minLength: { value: 2, message: t('validation.minLength') },
+                required: true,
+                minLength: { value: 2, message: 'minLength' },
               })}
               {...transformFieldError(errors.firstName)}
             />
@@ -176,8 +169,8 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
               fullWidth
               placeholder={t('placeholders.enterLastName')}
               inputProps={register('lastName', {
-                required: t('validation.required'),
-                minLength: { value: 2, message: t('validation.minLength') },
+                required: true,
+                minLength: { value: 2, message: 'minLength' },
               })}
               {...transformFieldError(errors.lastName)}
             />
@@ -191,7 +184,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
               placeholder={t('placeholders.enterEmailAddress')}
               clearable
               inputProps={register('email', {
-                required: t('validation.required'),
+                required: true,
                 validate: validateEmail,
               })}
               {...transformFieldError(errors.email)}
@@ -218,11 +211,8 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
               fullWidth
               placeholder={t('placeholders.enterStreetAddress')}
               inputProps={register('street', {
-                required: t('validation.required'),
-                minLength: {
-                  value: 5,
-                  message: t('validation.streetAddressTooShort'),
-                },
+                required: true,
+                minLength: { value: 5, message: 'minLength' },
               })}
               {...transformFieldError(errors.street)}
             />
@@ -234,7 +224,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
               fullWidth
               placeholder={t('placeholders.enterHouseNumber')}
               inputProps={register('houseNumber', {
-                required: t('validation.required'),
+                required: true,
               })}
               {...transformFieldError(errors.street)}
             />
@@ -246,8 +236,8 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
               fullWidth
               placeholder={t('placeholders.enterCity')}
               inputProps={register('city', {
-                required: t('validation.required'),
-                minLength: { value: 2, message: t('validation.minLength') },
+                required: true,
+                minLength: { value: 2, message: 'minLength' },
               })}
               {...transformFieldError(errors.city)}
             />
@@ -260,9 +250,9 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
               fullWidth
               placeholder={t('placeholders.enterZipCode')}
               inputProps={register('zipCode', {
-                required: t('validation.required'),
-                minLength: 4,
-                maxLength: 4,
+                required: true,
+                minLength: { value: 4, message: 'minLength' },
+                maxLength: { value: 4, message: 'maxLength' },
               })}
               {...transformFieldError(errors.zipCode)}
             />

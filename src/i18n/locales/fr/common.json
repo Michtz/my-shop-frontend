@@ -241,7 +241,9 @@
     "maxLength": "Trop long",
     "toSmall": "La valeur est trop petite",
     "validate": "Adresse e-mail non valide",
-    "notTheSamePassword": "Les mots de passe ne correspondent pas"
+    "notTheSamePassword": "Les mots de passe ne correspondent pas",
+    "invalidPhoneNumber": "Ce n'est pas un numéro de téléphone valide"
+
   },
   "validation": {
     "required": "Champ obligatoire",

@@ -240,8 +240,9 @@
     "minLength": "Zu kurz",
     "maxLength": "Zu lang",
     "toSmall": "Wert ist zu klein",
-    "validate": "Keine Valide Mailadresse",
-    "notTheSamePassword": "Passwörter stimmen nicht überein"
+    "validate": "Keine valide Mailadresse",
+    "notTheSamePassword": "Passwörter stimmen nicht überein",
+    "invalidPhoneNumber": "Das Ist kein valide Telefonnummer"
   },
   "validation": {
     "required": "Pflichtfeld",

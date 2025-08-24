@@ -20,6 +20,7 @@ import {
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';
 import { UserProfileFormData } from '@/components/section/user/UserInformationForm';
+import Cookies from 'js-cookie';
 
 interface AuthContextType {
   userSessionData: User | undefined;
@@ -233,6 +234,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUserSessionData(undefined);
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('session');
+    Cookies.remove('authToken');
 
     const session = await createSession();
     sessionStorage.setItem('session', JSON.stringify(session.data));

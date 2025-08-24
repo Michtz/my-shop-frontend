@@ -21,6 +21,7 @@ const errorMessageKeys: { [key: string]: string } = {
   toSmall: 'error.toSmall',
   noValidEmail: 'error.validate',
   notTheSamePassword: 'error.notTheSamePassword',
+  invalidPhoneNumber: 'error.invalidPhoneNumber',
 };
 
 const ErrorContext = createContext<ErrorHook | undefined>(undefined);
