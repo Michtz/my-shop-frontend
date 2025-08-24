@@ -157,6 +157,9 @@ const PaymentStep: React.FC = () => {
   return (
     <div style={{ width: 'fit-content' }}>
       <h2>{t('checkout.paymentInformation')}</h2>
+      <div style={{ fontSize: '12px', color: 'red', marginTop: '8px' }}>
+        Use 4242 4242 4242 4242 as card number to test
+      </div>
       <Elements
         key={clientSecret} // Force re-render when clientSecret changes
         stripe={stripePromise}
