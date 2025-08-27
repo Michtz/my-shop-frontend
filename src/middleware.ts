@@ -22,7 +22,7 @@ const validateTokenSecure = async (token: string): Promise<boolean> => {
   }
 };
 
-const middleware = (request: NextRequest) => {
+const middleware = async (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;
   const sessionCookie = request.cookies.get('language')?.value || 'de';
   const pathnameIsMissingLocale = ['de', 'en', 'fr'].every(
@@ -54,9 +54,9 @@ const middleware = (request: NextRequest) => {
   }
 
   if (isAdminRoute && token) {
-    const isTokenValid: Promise<boolean> = validateTokenSecure(token);
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
+      const isTokenValid = await validateTokenSecure(token);
       if (!isTokenValid || payload.role !== 'admin') {
         return NextResponse.redirect(new URL('/unauthorized', request.url));
       }
