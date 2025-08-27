@@ -57,6 +57,7 @@ const middleware = async (request: NextRequest) => {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const isTokenValid = await validateTokenSecure(token);
+      console.log('isTokenValid in middleware', isTokenValid);
       if (!isTokenValid || payload.role !== 'admin') {
         return NextResponse.redirect(new URL('/unauthorized', request.url));
       }
