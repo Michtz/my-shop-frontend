@@ -36,17 +36,28 @@ const middleware = async (request: NextRequest) => {
     );
   }
 
-  // Auth protection
-  console.log('All cookies:', request.cookies.getAll());
-  console.log(
-    'Request headers:',
-    Object.fromEntries(request.headers.entries()),
-  );
-  const token = request.cookies.get('authToken')?.value;
+  // Auth protection - mit Fallback auf Vercel Token
+  let token = request.cookies.get('authToken')?.value;
+  let isVercelToken = false;
+
+  // Falls authToken undefined ist, Vercel Token als Fallback verwenden
+  if (!token) {
+    token = request.cookies.get('_vercel_jwt')?.value;
+    isVercelToken = true;
+    console.log(
+      'Using Vercel token as fallback:',
+      token ? 'found' : 'not found',
+    );
+  }
+
   const isAdminRoute = pathname.includes('/admin');
   const isProfileRoute = pathname.includes('/profile');
-  console.log('Cookie exists:', request.cookies.has('authToken'));
-  console.log('token:', token);
+
+  console.log('authToken:', request.cookies.get('authToken')?.value);
+  console.log('vercelToken:', request.cookies.get('_vercel_jwt')?.value);
+  console.log('Using token:', token ? 'found' : 'undefined');
+  console.log('Is Vercel token:', isVercelToken);
+
   if (isAdminRoute && !token) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
@@ -54,7 +65,6 @@ const middleware = async (request: NextRequest) => {
   }
 
   if (isProfileRoute && !token) {
-    console.log('token:', token);
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
@@ -62,13 +72,35 @@ const middleware = async (request: NextRequest) => {
 
   if (isAdminRoute && token) {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const isTokenValid = await validateTokenSecure(token);
-      console.log('isTokenValid in middleware', isTokenValid);
-      if (!isTokenValid || payload.role !== 'admin') {
-        return NextResponse.redirect(new URL('/unauthorized', request.url));
+      // Bei Vercel Token andere Validierung
+      if (isVercelToken) {
+        // Vercel Token hat andere Struktur, einfachere Validierung
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        console.log('Vercel token payload:', payload);
+
+        // Prüfen ob Token noch gültig ist
+        const now = Math.floor(Date.now() / 1000);
+        if (payload.exp && payload.exp < now) {
+          return NextResponse.redirect(new URL('/login', request.url));
+        }
+
+        // Für Admin-Zugang mit Vercel Token - Sie können hier Ihre Logik anpassen
+        // Z.B. bestimmte Vercel-Projekte oder Environments erlauben
+        if (!payload.project || payload.environment !== 'production') {
+          return NextResponse.redirect(new URL('/unauthorized', request.url));
+        }
+      } else {
+        // Normale authToken Validierung
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const isTokenValid = await validateTokenSecure(token);
+        console.log('isTokenValid in middleware', isTokenValid);
+
+        if (!isTokenValid || payload.role !== 'admin') {
+          return NextResponse.redirect(new URL('/unauthorized', request.url));
+        }
       }
-    } catch {
+    } catch (error) {
+      console.log('Token parsing error:', error);
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }
