@@ -40,7 +40,7 @@ const middleware = async (request: NextRequest) => {
   const token = request.cookies.get('authToken')?.value;
   const isAdminRoute = pathname.includes('/admin');
   const isProfileRoute = pathname.includes('/profile');
-
+  console.log('token:', token);
   if (isAdminRoute && !token) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
@@ -48,6 +48,7 @@ const middleware = async (request: NextRequest) => {
   }
 
   if (isProfileRoute && !token) {
+    console.log('token:', token);
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
