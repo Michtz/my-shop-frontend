@@ -37,9 +37,15 @@ const middleware = async (request: NextRequest) => {
   }
 
   // Auth protection
+  console.log('All cookies:', request.cookies.getAll());
+  console.log(
+    'Request headers:',
+    Object.fromEntries(request.headers.entries()),
+  );
   const token = request.cookies.get('authToken')?.value;
   const isAdminRoute = pathname.includes('/admin');
   const isProfileRoute = pathname.includes('/profile');
+  console.log('Cookie exists:', request.cookies.has('authToken'));
   console.log('token:', token);
   if (isAdminRoute && !token) {
     const loginUrl = new URL('/login', request.url);
