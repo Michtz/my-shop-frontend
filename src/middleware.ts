@@ -58,6 +58,12 @@ const middleware = async (request: NextRequest) => {
   console.log('Using token:', token ? 'found' : 'undefined');
   console.log('Is Vercel token:', isVercelToken);
 
+  const authStatus = request.cookies.get('authStatus')?.value;
+  console.log('authStatus:', authStatus); // Should be: "authenticated"
+
+  const isAuthenticated = authStatus === 'authenticated';
+  console.log('isAuthenticated:', isAuthenticated); // Should be: true
+
   if (isAdminRoute && !token) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
@@ -90,7 +96,6 @@ const middleware = async (request: NextRequest) => {
           return NextResponse.redirect(new URL('/unauthorized', request.url));
         }
       } else {
-        // Normale authToken Validierung
         const payload = JSON.parse(atob(token.split('.')[1]));
         const isTokenValid = await validateTokenSecure(token);
         console.log('isTokenValid in middleware', isTokenValid);
