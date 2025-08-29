@@ -17,6 +17,11 @@ body {
     color: var(--font-primare-color);
   }
 
+  a {
+    color: var(--font-primare-color);
+    text-decoration: none;
+  }
+
   h1 {
     font-family: 'Josefin Sans', sans-serif;
     line-height: 43px;
