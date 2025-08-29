@@ -1,10 +1,6 @@
-'use client';
+import React, { FC } from 'react';
+import AdminContainer from '@/components/containers/AdminContainer';
 
-import React from 'react';
-import AdminBlogContainer from '@/components/containers/AdminBlogContainer';
-
-const AdminBlogPage: React.FC = () => {
-  return <AdminBlogContainer />;
-};
+const AdminBlogPage: FC = () => <AdminContainer view={'blog'} />;
 
 export default AdminBlogPage;

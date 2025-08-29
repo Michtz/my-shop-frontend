@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import AdminMainContainer from '@/components/containers/AdminMainContainer';
+import AdminContainer from '@/components/containers/AdminContainer';
 
-const AdminPage: FC = () => <AdminMainContainer />;
+const AdminPage: FC = () => <AdminContainer view={'overview'} />;
 export default AdminPage;

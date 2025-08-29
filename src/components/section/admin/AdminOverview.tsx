@@ -1,12 +1,10 @@
-'use client';
-
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/AuthHook';
 import { Container } from '@/components/system/Container';
 import styles from '@/styles/admin/AdminMain.module.scss';
-import { useAuth } from '@/hooks/AuthHook';
 
-const AdminMainContainer: React.FC = () => {
+const AdminOverview: React.FC = () => {
   const router = useRouter();
   const { userInformation } = useAuth();
 
@@ -58,4 +56,4 @@ const AdminMainContainer: React.FC = () => {
   );
 };
 
-export default AdminMainContainer;
+export default AdminOverview;

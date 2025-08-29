@@ -16,7 +16,6 @@ import {
   logout as _logout,
   getCurrentUser,
   refreshToken,
-  LoginSuccessResponse,
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';
 import { UserProfileFormData } from '@/components/section/user/UserInformationForm';
@@ -29,7 +28,7 @@ interface AuthContextType {
   isLoading: boolean;
   isSessionReady: boolean;
 
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<any>;
   register: (
     email: string,
     password: string,
@@ -140,11 +139,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<any> => {
     try {
       setIsLoading(true);
-      const response: LoginSuccessResponse = await _login(email, password);
+      const response = await _login(email, password);
 
+      //@ts-ignore
       if (response.success) {
         const newSessionData = {
           ...sessionData,
@@ -153,6 +153,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             isAuthenticated: true,
           },
         };
+
         setUserSessionData(response?.data);
         sessionStorage.setItem('user', JSON.stringify(response?.data)); // backup
         sessionStorage.setItem('session', JSON.stringify(newSessionData));
@@ -163,11 +164,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           if (userInfoData) {
             setUserInformation(userInfoData);
           }
+          return response;
         } catch (userErr) {
           Logger.warn('Failed to get user info after login:', userErr);
+          return response;
         }
       } else {
         Logger.log('Login failed or no data:', response);
+        return response;
       }
     } catch (err: any) {
       Logger.error('Login error:', err);

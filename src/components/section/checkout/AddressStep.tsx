@@ -85,7 +85,7 @@ const AddressStep: React.FC = () => {
         !!userData ? (
           <UserInformationForm onCheckout={handleWriteAdresseInCart} />
         ) : (
-          <Login checkout />
+          <Login goTo={null} />
         )
       ) : (
         <UserInformationForm onCheckout={handleWriteAdresseInCart} />

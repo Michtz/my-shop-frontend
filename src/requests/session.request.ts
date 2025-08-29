@@ -56,13 +56,13 @@ interface LoginUser {
 }
 
 export interface LoginSuccessResponse {
-  success: boolean;
+  success?: boolean;
   data?: {
     token: string;
     refreshToken: string;
     user: LoginUser;
   };
-  error?: string;
+  error?: any;
 }
 
 export const login = async (
@@ -77,7 +77,8 @@ export const login = async (
     return response.data as LoginSuccessResponse;
   } catch (e) {
     Logger.error('Unable to login', e);
-    throw e;
+    // @ts-ignore
+    return e?.message as string;
   }
 };
 
@@ -94,7 +95,6 @@ export const register = async (
       firstName,
       lastName,
     });
-    console.log(response);
     return response.data;
   } catch (e) {
     Logger.error('Unable to register');

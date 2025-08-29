@@ -5,12 +5,12 @@ import styles from '@/styles/system/Feedback.module.scss';
 
 const Feedback: React.FC = React.memo(() => {
   const { isVisible, variant, label } = useFeedback();
-
   if (!isVisible) return null;
 
+  const icon: string = variant === 'success' ? 'check' : 'error';
   return (
     <section className={styles.feedbackContainer} data-variant={variant}>
-      <MaterialIcon icon={'check'} color={'white'} />
+      <MaterialIcon icon={icon} color={'white'} />
       <div className={styles.feedbackContent}>{label}</div>
     </section>
   );

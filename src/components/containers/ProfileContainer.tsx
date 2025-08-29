@@ -6,16 +6,21 @@ import Login from '@/components/section/user/Login';
 import Register from '@/components/section/user/Register';
 import UserInformationForm from '@/components/section/user/UserInformationForm';
 import PasswordChange from '@/components/section/user/PasswordChange';
+import { useAuth } from '@/hooks/AuthHook';
 
 interface ProfileContainerProps {
   view: 'login' | 'register' | 'profile' | 'changePw';
 }
 
-const ProfileContainer: FC<ProfileContainerProps> = ({ view }) => (
-  <Container padding={false} flow={'column'}>
-    <ProfileContent view={view} />
-  </Container>
-);
+const ProfileContainer: FC<ProfileContainerProps> = ({ view }) => {
+  const { userInformation } = useAuth();
+  if (!userInformation) view = 'login';
+  return (
+    <Container padding={false} flow={'column'}>
+      <ProfileContent view={view} />
+    </Container>
+  );
+};
 
 const ProfileContent: React.FC<ProfileContainerProps> = ({
   view,

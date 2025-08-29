@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-
 import style from '@/styles/LoginPage.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useError } from '@/hooks/ErrorHook';
@@ -12,12 +11,9 @@ import { FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Link from '@/components/system/Link';
 import Button from '@/components/system/Button';
-import { Hr } from '@/components/system/Hr';
 import { Logger } from '@/utils/Logger.class';
 import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
-import Image from 'next/image';
-import logo from '@/assets/myShopLogo.png';
 
 export interface LoginFormData {
   email: string;
@@ -25,16 +21,10 @@ export interface LoginFormData {
 }
 
 export interface LoginPageProps {
-  withHeader?: boolean;
-  withTitle?: boolean;
-  checkout?: boolean;
+  goTo?: string | null;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({
-  withHeader,
-  withTitle,
-  checkout = false,
-}) => {
+const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
   const { t } = useTranslation();
   const { showFeedback } = useFeedback();
   const { transformFieldError } = useError();
@@ -54,9 +44,10 @@ const LoginPage: React.FC<LoginPageProps> = ({
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
-      await login(data.email, data.password);
-      if (!checkout) router.replace('/profile');
-
+      const response: any = await login(data.email, data.password);
+      if (typeof response === 'string') showFeedback(response, 'error');
+      if (!response.success || goTo === null) return;
+      router.replace(goTo || '/profile');
       showFeedback('feedback.login-success', 'success');
     } catch (err) {
       showFeedback('feedback.login-error', 'error');
@@ -78,27 +69,6 @@ const LoginPage: React.FC<LoginPageProps> = ({
   return (
     <>
       <div className={style.loginContainer}>
-        {withHeader && (
-          <>
-            <span className={style.logo} onClick={() => router.replace('/')}>
-              <Image src={logo} alt={'logo'} height={60} />
-            </span>
-            <div className={style.loginHeader}>
-              <h2 className={style.loginTitle}>{t('auth.welcomeBack')}</h2>
-              <p className={style.loginSubtitle}>
-                {t('auth.signInToContinue')}
-              </p>
-            </div>
-            <Hr />
-          </>
-        )}
-
-        {withTitle && (
-          <div style={{ marginBottom: '2rem' }}>
-            <h2>{t('auth.login')}</h2>
-          </div>
-        )}
-
         <FormContainer
           className={style.loginForm}
           onSubmitAction={handleSubmit(onSubmit)}
