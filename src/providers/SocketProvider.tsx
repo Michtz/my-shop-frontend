@@ -50,7 +50,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const backendUrl =
       process.env.NEXT_PUBLIC_BACKEND_URL ||
       process.env.NEXT_PUBLIC_API_BASE_URL ||
-      'http://localhost:4200';
+      'https://my-shop-backend-usaq.onrender.com';
     console.log('🔌 Connecting socket to:', backendUrl);
 
     const socketInstance = io(backendUrl, {
