@@ -1,5 +1,26 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { authApiUrl, localApiUrl } from '@/config/api.config';
+import { Logger } from '@/utils/Logger.class';
+
+const validateTokenSecure = async (token: string): Promise<boolean> => {
+  try {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || localApiUrl;
+
+    const response = await fetch(`${apiBaseUrl}${authApiUrl}/validate-token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.ok;
+  } catch (error) {
+    Logger.error('Token validation failed:', error);
+    return false;
+  }
+};
 
 const middleware = async (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;
@@ -15,42 +36,33 @@ const middleware = async (request: NextRequest) => {
     );
   }
 
-  // ✅ NEUES AUTH SYSTEM - authStatus Cookie verwenden
-  const authStatus = request.cookies.get('authStatus')?.value;
-  const isAuthenticated = authStatus === 'authenticated';
-
-  console.log('=== AUTH DEBUG ===');
-  console.log('authStatus cookie:', authStatus);
-  console.log('isAuthenticated:', isAuthenticated);
-  console.log('pathname:', pathname);
-  console.log(
-    'all cookies:',
-    request.cookies
-      .getAll()
-      .map((c) => `${c.name}: ${c.value.substring(0, 20)}...`),
-  );
-  console.log('==================');
-
+  // Auth protection
+  const token = request.cookies.get('authToken')?.value;
   const isAdminRoute = pathname.includes('/admin');
   const isProfileRoute = pathname.includes('/profile');
 
-  // Redirect zu Login wenn nicht authentifiziert
-  if ((isAdminRoute || isProfileRoute) && !isAuthenticated) {
-    console.log('🚫 Not authenticated, redirecting to login');
+  if (isAdminRoute && !token) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  // Admin-Route: Zusätzliche Validierung über API
-  if (isAdminRoute && isAuthenticated) {
-    console.log('🔐 Admin route - authenticated, proceeding');
-    // Das httpOnly authToken Cookie wird automatisch bei API-Calls mitgesendet
-    // Echte Validierung erfolgt dann in den API Routes
+  if (isProfileRoute && !token) {
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
-  if (isAuthenticated) {
-    console.log('✅ Authenticated user, proceeding');
+  if (isAdminRoute && token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const isTokenValid = await validateTokenSecure(token);
+      if (!isTokenValid || payload.role !== 'admin') {
+        return NextResponse.redirect(new URL('/unauthorized', request.url));
+      }
+    } catch {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
   }
 
   return NextResponse.next();
