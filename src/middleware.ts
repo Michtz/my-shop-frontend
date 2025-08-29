@@ -38,8 +38,15 @@ const middleware = async (request: NextRequest) => {
 
   // Auth protection
   const token = request.cookies.get('authToken')?.value;
+  const sessionId = request.cookies.get('sessionId')?.value;
+  const sessionIdExists = request.cookies.get('sessionId');
   const isAdminRoute = pathname.includes('/admin');
   const isProfileRoute = pathname.includes('/profile');
+
+  console.log('token:', token);
+  console.log('token:', token);
+  console.log('sessionIdExists:', sessionIdExists);
+  console.log('sessionId:', sessionId);
 
   if (isAdminRoute && !token) {
     const loginUrl = new URL('/login', request.url);
