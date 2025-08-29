@@ -113,9 +113,8 @@ const MainContainer: React.FC = () => {
       }
       await addToCart(sessionData.sessionId, id, 1);
       showFeedback('feedback.add-to-cart-success', 'success');
-    } catch (error) {
+    } catch {
       showFeedback('feedback.data-saved-error', 'error');
-      console.error('Failed to update cart:', error);
     }
   };
 
@@ -123,115 +122,62 @@ const MainContainer: React.FC = () => {
     router.push(`/product/${id}`);
   };
 
-  if (category) {
-    return (
-      <Container
-        flow={'column'}
-        alignItems={'center'}
-        justifyContent={'flex-end'}
-        padding={false}
-        maxWidth={'1150'}
-        gap={'2'}
-      >
-        <h2 style={{ marginTop: '2rem' }}>{category}</h2>
-        <HorizontalScrollContainer>
-          {articles?.map((product, i: number) => {
-            if (i > 3) return;
-            return (
-              <ProductCard
-                key={product._id}
-                id={product._id}
-                title={product.name}
-                description={product.description}
-                image={product.imageUrl}
-                price={product.price}
-                onCardClick={() => handleCardClick(product._id)}
-                onIconClick={() => handleAddToCart(product._id)}
-              />
-            );
-          })}
-        </HorizontalScrollContainer>
-        <Carousel items={slides} controls={false} />
-        <CategoryNavigation activeCategory={category} />
+  return (
+    <Container
+      flow={'column'}
+      alignItems={'center'}
+      justifyContent={'flex-end'}
+      padding={false}
+      maxWidth={'1150'}
+      gap={'2'}
+    >
+      <h2 style={{ marginTop: '2rem' }}>{category}</h2>
+      {!category && <Carousel items={slides} controls={false} />}
+      <HorizontalScrollContainer>
+        {articles?.map((product, i: number) => {
+          if (i > 3) return;
+          return (
+            <ProductCard
+              key={product._id}
+              id={product._id}
+              title={product.name}
+              description={product.description}
+              image={product.imageUrl}
+              price={product.price}
+              onCardClick={() => handleCardClick(product._id)}
+              onIconClick={() => handleAddToCart(product._id)}
+            />
+          );
+        })}
+      </HorizontalScrollContainer>
+      {category && <Carousel items={slides} controls={false} />}
+      <CategoryNavigation activeCategory={category} />
 
-        <FilterContainer
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
-          setActiveSort={setActiveSort}
-          activeSort={activeSort}
-        />
+      <FilterContainer
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        setActiveSort={setActiveSort}
+        activeSort={activeSort}
+      />
 
-        <CartsContainer>
-          {articles?.map((product) => {
-            return (
-              <ProductCard
-                key={product._id}
-                id={product._id}
-                title={product.name}
-                description={product.description}
-                image={product.imageUrl}
-                price={product.price}
-                onCardClick={() => handleCardClick(product._id)}
-                onIconClick={() => handleAddToCart(product._id)}
-              />
-            );
-          })}
-        </CartsContainer>
-      </Container>
-    );
-  } else {
-    return (
-      <Container
-        flow={'column'}
-        alignItems={'center'}
-        justifyContent={'flex-end'}
-        padding={false}
-        maxWidth={'1150'}
-        gap={'2'}
-      >
-        <Carousel items={slides} controls={false} />
-        <HorizontalScrollContainer>
-          {category === undefined &&
-            articles?.map((product, i: number) => {
-              if (i > 4) return;
-              return (
-                <ProductCard
-                  key={product._id}
-                  id={product._id}
-                  title={product.name}
-                  description={product.description}
-                  image={product.imageUrl}
-                  price={product.price}
-                  onCardClick={() => handleCardClick(product._id)}
-                  onIconClick={() => handleAddToCart(product._id)}
-                />
-              );
-            })}
-        </HorizontalScrollContainer>
-        <CategoryNavigation activeCategory={category} />
-        <FilterContainer
-          setActiveSort={setActiveSort}
-          activeSort={activeSort}
-        />
-        <CartsContainer>
-          {articles?.map((product) => {
-            return (
-              <ProductCard
-                key={product._id}
-                id={product._id}
-                title={product.name}
-                description={product.description}
-                image={product.imageUrl}
-                price={product.price}
-                onCardClick={() => handleCardClick(product._id)}
-                onIconClick={() => handleAddToCart(product._id)}
-              />
-            );
-          })}
-        </CartsContainer>
-      </Container>
-    );
-  }
+      <CartsContainer>
+        {articles?.map((product) => {
+          return (
+            <ProductCard
+              key={product._id}
+              id={product._id}
+              title={product.name}
+              description={product.description}
+              image={product.imageUrl}
+              price={product.price}
+              onCardClick={() => handleCardClick(product._id)}
+              onIconClick={() => handleAddToCart(product._id)}
+            />
+          );
+        })}
+      </CartsContainer>
+    </Container>
+  );
 };
 
 export default MainContainer;

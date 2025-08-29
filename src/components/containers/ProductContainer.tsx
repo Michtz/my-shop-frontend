@@ -32,14 +32,7 @@ const getDefaultValues = (): any => {
 
 const ProductOverview: FC = () => {
   const { t } = useTranslation();
-  const {
-    product,
-    isConnected,
-    availableStock,
-    cartCount,
-    isLowStock,
-    isOutOfStock,
-  } = useProduct();
+  const { product, availableStock, isLowStock, isOutOfStock } = useProduct();
   const router = useRouter();
   const { products } = useProducts();
   const { sessionData, isSessionReady } = useAuth();
@@ -131,7 +124,7 @@ const ProductOverview: FC = () => {
 
       await mutate('product', result);
     } catch (error) {
-      console.error('Add to cart error:', error);
+      Logger.error('Add to cart error:', error);
       await mutate('product', cartItems);
     }
   };
@@ -140,21 +133,8 @@ const ProductOverview: FC = () => {
     router.push(`/product/${id}`);
   };
 
-  const ConnectionStatus: FC = () => {
-    if (!isConnected) {
-      return (
-        <div style={{ color: 'orange', fontSize: '12px', marginBottom: '8px' }}>
-          ⚠️ {t('product.connectionLost')}
-        </div>
-      );
-    }
-    return null;
-  };
-
   const StockInfo: FC = () => (
     <div className={style.stockInfo}>
-      <ConnectionStatus />
-
       <div className={style.stockDisplay}>
         {isOutOfStock ? (
           <span style={{ color: 'red', fontWeight: 'bold' }}>
@@ -170,19 +150,6 @@ const ProductOverview: FC = () => {
           </span>
         )}
       </div>
-
-      {cartCount > 0 && (
-        <div style={{ fontSize: '14px', color: '#666', marginTop: '4px' }}>
-          🛒 {t('product.othersInCart', { count: cartCount })}
-        </div>
-      )}
-
-      {/*/!* Stock Conflicts *!/*/}
-      {/*{hasReservationConflicts && (*/}
-      {/*  <div style={{ color: 'red', fontSize: '14px', marginTop: '4px' }}>*/}
-      {/*    ⚠️ {t('product.stockChanged')}*/}
-      {/*  </div>*/}
-      {/*)}*/}
     </div>
   );
 

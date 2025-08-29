@@ -112,13 +112,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 setUserSessionData(undefined);
                 setUserInformation(undefined);
               }
-            } catch (refreshError) {
+            } catch {
               sessionStorage.removeItem('user');
               setUserSessionData(undefined);
               setUserInformation(undefined);
             }
           }
-        } catch (parseError) {
+        } catch {
           sessionStorage.removeItem('user');
           setUserSessionData(undefined);
           setUserInformation(undefined);
