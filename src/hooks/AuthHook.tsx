@@ -144,7 +144,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoading(true);
       const response = await _login(email, password);
 
-      //@ts-ignore
       if (response.success) {
         const newSessionData = {
           ...sessionData,

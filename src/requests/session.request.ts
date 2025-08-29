@@ -77,7 +77,7 @@ export const login = async (
     return response.data as LoginSuccessResponse;
   } catch (e) {
     Logger.error('Unable to login', e);
-    // @ts-ignore
+    // @ts-expect-error Will get fixed soon
     return e?.message as string;
   }
 };
