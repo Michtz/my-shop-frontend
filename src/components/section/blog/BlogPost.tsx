@@ -19,36 +19,10 @@ interface BlogPostProps {
 }
 
 const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
-  const handleShare = (platform: string) => {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(post.title);
-
-    let shareUrl = '';
-    
-    switch (platform) {
-      case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-        break;
-      case 'facebook':
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-        break;
-      case 'linkedin':
-        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-        break;
-      case 'reddit':
-        shareUrl = `https://reddit.com/submit?url=${url}&title=${title}`;
-        break;
-      default:
-        return;
-    }
-
-    window.open(shareUrl, '_blank', 'width=600,height=400');
-  };
-
   return (
     <>
       <BlogSEO post={post} />
-      
+
       <article className={styles.blogPost}>
         <div className={styles.breadcrumb}>
           <Link href="/blog">Blog</Link>
@@ -67,8 +41,8 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
         <header className={styles.header}>
           {post.featured_image && (
             <div className={styles.featuredImageContainer}>
-              <Image 
-                src={post.featured_image} 
+              <Image
+                src={post.featured_image}
                 alt={post.title}
                 className={styles.featuredImage}
                 width={800}
@@ -76,13 +50,15 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
               />
             </div>
           )}
-          
+
           <div className={styles.headerContent}>
             <h1 className={styles.title}>{post.title}</h1>
-            
+
             <div className={styles.meta}>
               <div className={styles.author}>
-                <span>By {`${post.author_id.firstName} ${post.author_id.lastName}`}</span>
+                <span>
+                  By {`${post.author_id.firstName} ${post.author_id.lastName}`}
+                </span>
               </div>
               <div className={styles.date}>
                 <span>{formatDate(post.publishedAt || post.createdAt)}</span>
@@ -95,8 +71,8 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
             {post.tags && post.tags.length > 0 && (
               <div className={styles.tags}>
                 {post.tags.map((tag) => (
-                  <Link 
-                    key={tag} 
+                  <Link
+                    key={tag}
                     href={`/blog/tag/${encodeURIComponent(tag)}`}
                     className={styles.tag}
                   >
@@ -117,14 +93,30 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
                 // Custom link component to handle internal links
                 a: ({ href, children, ...props }) => {
                   if (href?.startsWith('/')) {
-                    return <Link href={href} {...props}>{children}</Link>;
+                    return (
+                      <Link href={href} {...props}>
+                        {children}
+                      </Link>
+                    );
                   }
-                  return <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>;
+                  return (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      {...props}
+                    >
+                      {children}
+                    </a>
+                  );
                 },
                 // Style code blocks
                 code: ({ className, children, ...props }) => {
                   return (
-                    <code className={`${className || ''} ${styles.inlineCode}`} {...props}>
+                    <code
+                      className={`${className || ''} ${styles.inlineCode}`}
+                      {...props}
+                    >
                       {children}
                     </code>
                   );
@@ -145,40 +137,6 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
         </div>
 
         <footer className={styles.footer}>
-          <div className={styles.shareSection}>
-            <h4>Share this post</h4>
-            <div className={styles.shareButtons}>
-              <button 
-                onClick={() => handleShare('twitter')}
-                className={`${styles.shareButton} ${styles.twitter}`}
-                aria-label="Share on Twitter"
-              >
-                Twitter
-              </button>
-              <button 
-                onClick={() => handleShare('facebook')}
-                className={`${styles.shareButton} ${styles.facebook}`}
-                aria-label="Share on Facebook"
-              >
-                Facebook
-              </button>
-              <button 
-                onClick={() => handleShare('linkedin')}
-                className={`${styles.shareButton} ${styles.linkedin}`}
-                aria-label="Share on LinkedIn"
-              >
-                LinkedIn
-              </button>
-              <button 
-                onClick={() => handleShare('reddit')}
-                className={`${styles.shareButton} ${styles.reddit}`}
-                aria-label="Share on Reddit"
-              >
-                Reddit
-              </button>
-            </div>
-          </div>
-
           <div className={styles.authorSection}>
             <h4>About the Author</h4>
             <div className={styles.authorInfo}>
@@ -200,8 +158,8 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
                 {relatedPost.featured_image && (
                   <div className={styles.relatedImage}>
                     <Link href={`/blog/${relatedPost.slug}`}>
-                      <Image 
-                        src={relatedPost.featured_image} 
+                      <Image
+                        src={relatedPost.featured_image}
                         alt={relatedPost.title}
                         width={200}
                         height={150}
@@ -217,7 +175,9 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, relatedPosts = [] }) => {
                   </h4>
                   <p className={styles.relatedExcerpt}>{relatedPost.excerpt}</p>
                   <div className={styles.relatedMeta}>
-                    {formatDate(relatedPost.publishedAt || relatedPost.createdAt)}
+                    {formatDate(
+                      relatedPost.publishedAt || relatedPost.createdAt,
+                    )}
                   </div>
                 </div>
               </div>
