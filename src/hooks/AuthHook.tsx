@@ -94,38 +94,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           } else {
             try {
               const refreshResponse = await refreshToken();
-              console.log('🔄 Token refresh response:', refreshResponse);
 
               // Handle nested response structure
               const refreshedData = refreshResponse?.data;
               if (refreshedData && refreshedData.token) {
-                console.log('✅ Token refreshed successfully');
                 sessionStorage.setItem('user', JSON.stringify(refreshedData));
                 setUserSessionData(refreshedData);
 
                 // Get current user info
                 const userInformation = await getCurrentUser();
-                console.log('👤 Current user response:', userInformation);
                 const userInfoData = userInformation?.data.user;
                 if (userInfoData) {
-                  console.log(userInfoData);
                   setUserInformation(userInfoData);
                 }
               } else {
-                console.log('❌ Token refresh failed or invalid response');
                 sessionStorage.removeItem('user');
                 setUserSessionData(undefined);
                 setUserInformation(undefined);
               }
             } catch (refreshError) {
-              console.log('❌ Token refresh failed:', refreshError);
               sessionStorage.removeItem('user');
               setUserSessionData(undefined);
               setUserInformation(undefined);
             }
           }
         } catch (parseError) {
-          console.log('❌ Failed to parse user data from storage:', parseError);
           sessionStorage.removeItem('user');
           setUserSessionData(undefined);
           setUserInformation(undefined);
