@@ -3,7 +3,7 @@
   justify-content: space-between;
   height: 75px;
   padding: 0 2rem;
-  background-color: #e3c7a5;
+  background-color: var(--foreground);
   color: white;
   border-bottom: 2px solid rgba(239, 232, 220);
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.02);
@@ -111,7 +111,7 @@
               }
 
               &:hover {
-                background-color: #e3c7a5;
+                background-color: var(--foreground);
                 color: white;
               }
 
@@ -187,7 +187,7 @@
             }
 
             &:hover {
-              background-color: #e3c7a5;
+              background-color: var(--foreground);
               color: white;
             }
 
@@ -268,7 +268,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #e3c7a5;
+  background-color: var(--foreground);
   display: flex;
   flex-direction: column;
   gap: 2rem;

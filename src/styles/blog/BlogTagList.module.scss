@@ -1,4 +1,4 @@
-@import '../variables.scss';
+@import '../../app/[locale]/variables';
 @import '../mixins.scss';
 
 .blogTagList {
@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: $spacing-unit * 2;
+  margin-bottom: 8px * 2;
 
   h4 {
     margin: 0;
@@ -20,39 +20,39 @@
 }
 
 .clearAll {
-  padding: $spacing-unit ($spacing-unit * 1.5);
+  padding: 8px (8px * 1.5);
   border: none;
   background: transparent;
-  color: $primary-color;
+  color: var(--foreground);
   font-size: 0.875rem;
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba($primary-color, 0.1);
+    background: rgba(var(--foreground), 0.1);
   }
 }
 
 .tagContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: $spacing-unit;
+  gap: 8px;
 
   &.filter {
-    gap: $spacing-unit;
+    gap: 8px;
   }
 
   &.navigation {
-    gap: $spacing-unit * 1.5;
+    gap: 8px * 1.5;
   }
 }
 
 .tag {
   display: inline-flex;
   align-items: center;
-  gap: $spacing-unit / 2;
-  padding: $spacing-unit ($spacing-unit * 1.5);
+  gap: 8px / 2;
+  padding: 8px (8px * 1.5);
   border-radius: 20px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -66,19 +66,14 @@
     color: #666;
 
     &:hover {
-      border-color: $primary-color;
-      color: $primary-color;
+      border-color: var(--foreground);
+      color: var(--foreground);
     }
 
     &.selected {
-      background: $primary-color;
-      border-color: $primary-color;
+      background: var(--foreground);
+      border-color: var(--foreground);
       color: white;
-
-      &:hover {
-        background: darken($primary-color, 10%);
-        border-color: darken($primary-color, 10%);
-      }
     }
   }
 
@@ -87,7 +82,7 @@
     color: #666;
 
     &:hover {
-      background: $primary-color;
+      background: var(--foreground);
       color: white;
     }
   }
@@ -116,7 +111,7 @@
 .moreTags {
   display: inline-flex;
   align-items: center;
-  padding: $spacing-unit ($spacing-unit * 1.5);
+  padding: 8px (8px * 1.5);
   background: #f0f0f0;
   color: #666;
   border-radius: 20px;
@@ -128,29 +123,29 @@
   .tagHeader {
     flex-direction: column;
     align-items: flex-start;
-    gap: $spacing-unit;
+    gap: 8px;
   }
-  
+
   .tagContainer {
-    gap: $spacing-unit / 2;
+    gap: 8px / 2;
   }
-  
+
   .tag {
-    padding: $spacing-unit / 2 $spacing-unit * 1.25;
+    padding: 8px / 2 8px * 1.25;
     font-size: 0.8rem;
   }
 }
 
 @media (max-width: $mobile) {
   .tag {
-    padding: $spacing-unit / 2 $spacing-unit;
+    padding: 8px / 2 8px;
     font-size: 0.75rem;
   }
-  
+
   .removeIcon {
     width: 14px;
     height: 14px;
-    
+
     svg {
       width: 8px;
       height: 8px;

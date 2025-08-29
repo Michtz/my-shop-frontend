@@ -47,6 +47,7 @@ const MainContainer: React.FC = () => {
   const category: string | undefined = getCategoryName(
     params?.category as string,
   );
+
   const [articles, setArticles] = useState<IProduct[]>(
     filteredProducts(products, category),
   );
@@ -106,14 +107,11 @@ const MainContainer: React.FC = () => {
 
   const handleAddToCart = async (id: string) => {
     try {
-      console.log(sessionData);
       if (!isSessionReady || !sessionData?.sessionId) {
         showFeedback('feedback.session-not-ready', 'error');
         return;
       }
-
-      const result = await addToCart(sessionData.sessionId, id, 1);
-      console.log(result);
+      await addToCart(sessionData.sessionId, id, 1);
       showFeedback('feedback.add-to-cart-success', 'success');
     } catch (error) {
       showFeedback('feedback.data-saved-error', 'error');
@@ -135,10 +133,10 @@ const MainContainer: React.FC = () => {
         maxWidth={'1150'}
         gap={'2'}
       >
-        <h2>{category ? category : ''}</h2>
+        <h2 style={{ marginTop: '2rem' }}>{category}</h2>
         <HorizontalScrollContainer>
           {articles?.map((product, i: number) => {
-            if (i > 4) return;
+            if (i > 3) return;
             return (
               <ProductCard
                 key={product._id}
@@ -154,30 +152,14 @@ const MainContainer: React.FC = () => {
           })}
         </HorizontalScrollContainer>
         <Carousel items={slides} controls={false} />
+        <CategoryNavigation activeCategory={category} />
+
         <FilterContainer
           priceRange={priceRange}
           setPriceRange={setPriceRange}
           setActiveSort={setActiveSort}
           activeSort={activeSort}
         />
-        <HorizontalScrollContainer>
-          {articles?.reverse().map((product) => {
-            return (
-              <ProductCard
-                key={product._id}
-                id={product._id}
-                title={product.name}
-                description={product.description}
-                image={product.imageUrl}
-                price={product.price}
-                onCardClick={() => handleCardClick(product._id)}
-                onIconClick={() => handleAddToCart(product._id)}
-              />
-            );
-          })}
-        </HorizontalScrollContainer>
-
-        <CategoryNavigation activeCategory={category} />
 
         <CartsContainer>
           {articles?.map((product) => {

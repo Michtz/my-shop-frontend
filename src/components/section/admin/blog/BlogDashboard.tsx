@@ -15,6 +15,7 @@ import { formatDate } from '@/functions/common';
 import { Logger } from '@/utils/Logger.class';
 import styles from '@/styles/admin/blog/BlogDashboard.module.scss';
 import { useBlogPosts } from '@/hooks/useBlog';
+import Button, { ButtonContainer } from '@/components/system/Button';
 
 interface BlogDashboardProps {
   onEditPost: (post: IBlogPost) => void;
@@ -331,27 +332,25 @@ const BlogDashboard: React.FC<BlogDashboardProps> = ({
           </div>
 
           {totalPages > 1 && (
-            <div className={styles.pagination}>
-              <button
+            <ButtonContainer className={styles.pagination}>
+              <Button
                 onClick={() => console.log('Previous page - TODO: implement')}
                 disabled={currentPage === 1}
-                className={styles.pageButton}
               >
                 Previous
-              </button>
+              </Button>
 
               <span className={styles.pageInfo}>
                 Page {currentPage} of {totalPages}
               </span>
 
-              <button
+              <Button
                 onClick={() => console.log('Next page - TODO: implement')}
                 disabled={currentPage === totalPages}
-                className={styles.pageButton}
               >
                 Next
-              </button>
-            </div>
+              </Button>
+            </ButtonContainer>
           )}
         </>
       )}

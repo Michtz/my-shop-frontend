@@ -11,6 +11,7 @@ import { FeedbackProvider } from '@/hooks/FeedbackHook';
 import TranslationProvider from '@/providers/TranslationProvider';
 import React, { ReactNode } from 'react';
 import './globals.scss';
+import './variables.scss';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Feedback from '@/components/system/Feedback';

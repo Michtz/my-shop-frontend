@@ -1,9 +1,9 @@
-@import '../../variables.scss';
+@import '../../../app/[locale]/variables';
 @import '../../mixins.scss';
 
 .statusBadge {
   display: inline-block;
-  padding: $spacing-unit / 2 $spacing-unit;
+  padding: 8px / 2 8px;
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 500;

@@ -4,7 +4,7 @@ import Link from './Link';
 import style from '@/styles/system/Button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'error' | 'ghost' | 'icon' | 'clean';
+  variant?: 'primary' | 'secondary' | 'error' | 'ghost' | 'icon';
   size?: 'small' | 'normal' | 'big';
   appearance?: 'button' | 'icon';
   href?: string;

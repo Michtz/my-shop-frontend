@@ -1,4 +1,4 @@
-@import '../variables.scss';
+@import '../../app/[locale]/variables';
 @import '../mixins.scss';
 
 .blogSearch {
@@ -7,7 +7,7 @@
 
 .searchForm {
   display: flex;
-  gap: $spacing-unit;
+  gap: 8px;
   align-items: center;
 }
 
@@ -20,7 +20,7 @@
 
 .searchIcon {
   position: absolute;
-  left: $spacing-unit * 1.5;
+  left: 8px * 1.5;
   z-index: 1;
   color: #666;
   pointer-events: none;
@@ -28,7 +28,7 @@
 
 .searchInput {
   width: 100%;
-  padding: $spacing-unit * 1.5 $spacing-unit * 6 $spacing-unit * 1.5 $spacing-unit * 5;
+  padding: 8px * 1.5 8px * 6 8px * 1.5 8px * 5;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
@@ -37,8 +37,8 @@
 
   &:focus {
     outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    border-color: var(--foreground);
+    box-shadow: 0 0 0 3px rgba(var(--foreground), 0.1);
   }
 
   &::placeholder {
@@ -48,7 +48,7 @@
 
 .clearButton {
   position: absolute;
-  right: $spacing-unit * 6;
+  right: 8px * 6;
   z-index: 1;
   display: flex;
   align-items: center;
@@ -75,7 +75,7 @@
 
 .searchingIndicator {
   position: absolute;
-  right: $spacing-unit * 1.5;
+  right: 8px * 1.5;
   z-index: 1;
   display: flex;
   align-items: center;
@@ -86,21 +86,25 @@
   width: 16px;
   height: 16px;
   border: 2px solid #f3f3f3;
-  border-top: 2px solid $primary-color;
+  border-top: 2px solid var(--foreground);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .searchButton {
-  padding: $spacing-unit * 1.5 $spacing-unit * 3;
+  padding: 8px * 1.5 8px * 3;
   border: none;
   border-radius: 8px;
-  background: $primary-color;
+  background: var(--foreground);
   color: white;
   font-size: 1rem;
   font-weight: 500;
@@ -108,52 +112,48 @@
   transition: background 0.2s ease;
   white-space: nowrap;
 
-  &:hover {
-    background: darken($primary-color, 10%);
-  }
-
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+    box-shadow: 0 0 0 3px rgba(var(--foreground), 0.2);
   }
 }
 
 @media (max-width: $tablet) {
   .searchForm {
     flex-direction: column;
-    gap: $spacing-unit * 1.5;
+    gap: 8px * 1.5;
   }
-  
+
   .searchInputContainer {
     width: 100%;
   }
-  
+
   .searchButton {
     width: 100%;
-    padding: $spacing-unit * 2;
+    padding: 8px * 2;
   }
 }
 
 @media (max-width: $mobile) {
   .searchInput {
-    padding: $spacing-unit * 1.25 $spacing-unit * 5 $spacing-unit * 1.25 $spacing-unit * 4;
+    padding: 8px * 1.25 8px * 5 8px * 1.25 8px * 4;
     font-size: 0.875rem;
   }
-  
+
   .clearButton {
-    right: $spacing-unit * 4.5;
+    right: 8px * 4.5;
     width: 20px;
     height: 20px;
-    
+
     svg {
       width: 12px;
       height: 12px;
     }
   }
-  
+
   .searchIcon {
-    left: $spacing-unit;
-    
+    left: 8px;
+
     svg {
       width: 18px;
       height: 18px;

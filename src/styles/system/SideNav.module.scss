@@ -27,7 +27,7 @@
   left: 0;
   width: 320px;
   height: 100vh;
-  background-color: #e3c7a5;
+  background-color: var(--foreground);
   color: white;
   z-index: 999;
   transform: translateX(-100%);

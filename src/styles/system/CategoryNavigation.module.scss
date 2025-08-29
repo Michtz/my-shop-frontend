@@ -44,11 +44,11 @@
   }
 
   &:hover:not(.active) {
-    background: #e3c7a5;
+    background: var(--foreground);
   }
 
   &.active {
-    background: #e3c7a5;
+    background: var(--foreground);
   }
 }
 

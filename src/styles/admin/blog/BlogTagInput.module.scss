@@ -1,10 +1,10 @@
-@import '../../variables.scss';
+@import '../../../app/[locale]/variables';
 @import '../../mixins.scss';
 
 .tagInput {
   display: flex;
   flex-direction: column;
-  gap: $spacing-unit;
+  gap: 8px;
 }
 
 .label {
@@ -16,8 +16,8 @@
 .tagContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: $spacing-unit / 2;
-  padding: $spacing-unit;
+  gap: 8px / 2;
+  padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
   background: white;
@@ -25,17 +25,17 @@
   align-items: center;
 
   &:focus-within {
-    border-color: $primary-color;
-    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    border-color: var(--foreground);
+    box-shadow: 0 0 0 3px rgba(var(--foreground), 0.1);
   }
 }
 
 .tag {
   display: inline-flex;
   align-items: center;
-  gap: $spacing-unit / 2;
-  padding: $spacing-unit / 2 $spacing-unit;
-  background: $primary-color;
+  gap: 8px / 2;
+  padding: 8px / 2 8px;
+  background: var(--foreground);
   color: white;
   border-radius: 16px;
   font-size: 0.75rem;

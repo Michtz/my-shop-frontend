@@ -20,7 +20,7 @@
   }
 
   .descriptionContainer {
-    color: #2d3748;
+    color: var(--font-primare-color);
     display: flex;
     flex-direction: column;
     gap: 2rem;

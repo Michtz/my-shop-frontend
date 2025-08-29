@@ -2,7 +2,7 @@
   display: flex;
   width: 100%;
 
-  background-color: #fcfaf7;
+  background-color: var(--background);
 
   &[data-flow='column'] {
     flex-direction: column;
@@ -97,10 +97,11 @@
 
 .scrollWrapper {
   display: flex;
+  justify-content: space-evenly;
   overflow-x: auto;
   overflow-y: hidden;
   gap: 2rem;
-  padding: 1rem;
+  padding: 1rem 3rem;
   scroll-behavior: smooth;
 
   scrollbar-width: none;
@@ -148,6 +149,10 @@
 
   .horizontalScrollContainer::after {
     background: linear-gradient(to left, rgba(255, 255, 255, 1), transparent);
+  }
+
+  .scrollWrapper {
+    justify-content: flex-start;
   }
 }
 @media (max-width: 768px) {
