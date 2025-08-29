@@ -1,6 +1,3 @@
-@import '../../app/[locale]/variables';
-@import '../mixins.scss';
-
 .pagination {
   display: flex;
   flex-direction: column;
@@ -84,7 +81,7 @@
   text-align: center;
 }
 
-@media (max-width: $tablet) {
+@media (max-width: 768px) {
   .paginationContainer {
     flex-wrap: wrap;
     justify-content: center;
@@ -106,7 +103,7 @@
   }
 }
 
-@media (max-width: $mobile) {
+@media (max-width: 576px) {
   .pageNumbers {
     gap: 8px / 4;
   }

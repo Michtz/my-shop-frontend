@@ -1,6 +1,3 @@
-@import '../../../app/[locale]/variables';
-@import '../../mixins.scss';
-
 .blogForm {
   max-width: 1400px;
   margin: 0 auto;
@@ -198,7 +195,7 @@
   gap: 8px;
 }
 
-@media (max-width: $desktop) {
+@media (max-width: 1024px) {
   .formContent {
     grid-template-columns: 1fr;
     gap: 8px * 3;
@@ -209,7 +206,7 @@
   }
 }
 
-@media (max-width: $tablet) {
+@media (max-width: 768px) {
   .header {
     flex-direction: column;
     gap: 8px * 2;

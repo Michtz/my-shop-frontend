@@ -1,6 +1,3 @@
-@import '../../app/[locale]/variables';
-@import '../mixins.scss';
-
 .adminMain {
   max-width: 800px;
   margin: 0 auto;
@@ -83,7 +80,7 @@
   transition: transform 0.2s ease;
 }
 
-@media (max-width: $tablet) {
+@media (max-width: 768px) {
   .adminMain {
     padding: 8px * 3;
   }
@@ -102,7 +99,7 @@
   }
 }
 
-@media (max-width: $mobile) {
+@media (max-width: 576px) {
   .adminMain {
     padding: 8px * 2;
   }

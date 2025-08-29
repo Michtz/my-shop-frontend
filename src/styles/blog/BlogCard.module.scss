@@ -1,6 +1,3 @@
-@import '../../app/[locale]/variables';
-@import '../mixins.scss';
-
 .blogCard {
   display: flex;
   flex-direction: column;
@@ -131,7 +128,7 @@
   transition: color 0.2s ease;
 }
 
-@media (max-width: $tablet) {
+@media (max-width: 768px) {
   .blogCard {
     margin-bottom: 8px * 3;
   }

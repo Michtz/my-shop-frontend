@@ -1,6 +1,3 @@
-@import '../../app/[locale]/variables';
-@import '../mixins.scss';
-
 .blogList {
   max-width: 1200px;
   margin: 0 auto;
@@ -99,7 +96,7 @@
   border-radius: 8px;
 }
 
-@media (max-width: $desktop) {
+@media (max-width: 1024px) {
   .blogList {
     padding: 8px * 3;
   }
@@ -110,7 +107,7 @@
   }
 }
 
-@media (max-width: $tablet) {
+@media (max-width: 768px) {
   .blogList {
     padding: 8px * 2;
   }
@@ -135,7 +132,7 @@
   }
 }
 
-@media (max-width: $mobile) {
+@media (max-width: 576px) {
   .blogList {
     padding: 8px * 2;
   }

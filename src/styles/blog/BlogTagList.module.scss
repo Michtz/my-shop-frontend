@@ -1,6 +1,3 @@
-@import '../../app/[locale]/variables';
-@import '../mixins.scss';
-
 .blogTagList {
   width: 100%;
 }
@@ -119,7 +116,7 @@
   font-style: italic;
 }
 
-@media (max-width: $tablet) {
+@media (max-width: 768px) {
   .tagHeader {
     flex-direction: column;
     align-items: flex-start;
@@ -136,7 +133,7 @@
   }
 }
 
-@media (max-width: $mobile) {
+@media (max-width: 576px) {
   .tag {
     padding: 8px / 2 8px;
     font-size: 0.75rem;

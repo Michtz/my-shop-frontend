@@ -1,6 +1,3 @@
-@import '../../app/[locale]/variables';
-@import '../mixins.scss';
-
 .adminContainer {
   width: 100%;
   max-width: 1400px;
@@ -22,7 +19,7 @@
   }
 }
 
-@media (max-width: $tablet) {
+@media (max-width: 768px) {
   .adminContainer {
     padding: 8px * 2;
   }

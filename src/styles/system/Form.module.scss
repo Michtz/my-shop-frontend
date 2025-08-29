@@ -1,11 +1,7 @@
-// FormRow.module.scss
-@import '@/app/[locale]/variables';
-
 .formRow {
   display: flex;
   width: 100%;
 
-  // Direction variants
   &.direction-column {
     flex-direction: column;
   }
@@ -14,7 +10,6 @@
     flex-direction: row;
   }
 
-  // Gap variants
   &.gap-small {
     gap: 8px;
   }
@@ -27,7 +22,6 @@
     gap: 24px;
   }
 
-  // Alignment variants
   &.align-start {
     align-items: flex-start;
   }
@@ -44,11 +38,10 @@
     align-items: stretch;
   }
 
-  // When direction is row, ensure children take equal space
   &.direction-row {
     > * {
       flex: 1;
-      min-width: 0; // Prevent overflow
+      min-width: 0;
     }
   }
 }
