@@ -2,9 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
-  experimental: {
-    appDir: true,
-  },
   images: {
     remotePatterns: [
       {

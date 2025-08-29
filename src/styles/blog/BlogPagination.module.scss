@@ -51,11 +51,6 @@
     background: var(--foreground);
     border-color: var(--foreground);
     color: white;
-
-    &:hover {
-      background: darken(var(--foreground), 5%);
-      border-color: darken(var(--foreground), 5%);
-    }
   }
 
   &.prevNext {
