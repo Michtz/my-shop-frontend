@@ -10,7 +10,7 @@ import {
   HorizontalScrollContainer,
 } from '@/components/system/Container';
 import { addToCart } from '@/requests/cart.request';
-import { IProduct } from '@/types/product.types';
+import { IProduct, transKey } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useAuth } from '@/hooks/AuthHook';
@@ -21,6 +21,7 @@ import FilterContainer, {
   FilterType,
   PriceRangeType,
 } from '@/components/system/FilterContainer';
+import { useTranslation } from 'react-i18next';
 
 const filteredProducts = (
   items: IProduct[],
@@ -34,6 +35,10 @@ const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
+  const { i18n } = useTranslation();
+  const language: string = i18n.language || 'de';
+
+  console.log(params.locale, i18n.language);
   const { sessionData, isSessionReady } = useAuth();
   const [activeSort, setActiveSort] = useState<FilterType>({
     value: 'Relevanz',
@@ -140,8 +145,8 @@ const MainContainer: React.FC = () => {
             <ProductCard
               key={product._id}
               id={product._id}
-              title={product.name}
-              description={product.description}
+              title={product.name?.[language as keyof transKey]}
+              description={product.description?.[language as keyof transKey]}
               image={product.imageUrl}
               price={product.price}
               onCardClick={() => handleCardClick(product._id)}
@@ -166,8 +171,8 @@ const MainContainer: React.FC = () => {
             <ProductCard
               key={product._id}
               id={product._id}
-              title={product.name}
-              description={product.description}
+              title={product.name?.[language as keyof transKey]}
+              description={product.description?.[language as keyof transKey]}
               image={product.imageUrl}
               price={product.price}
               onCardClick={() => handleCardClick(product._id)}

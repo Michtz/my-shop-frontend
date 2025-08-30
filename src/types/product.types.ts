@@ -1,7 +1,14 @@
+export interface transKey {
+  inv: string;
+  en: string;
+  fr: string;
+  de: string;
+}
+
 export interface IProduct {
   _id: string;
-  name: string;
-  description: string;
+  name: transKey;
+  description: transKey;
   price: number;
   stockQuantity: number;
   category: ProductCategoryOptions;
@@ -28,16 +35,16 @@ export interface ProductResponse {
 }
 
 export interface CreateProductRequest {
-  name: string;
-  description: string;
+  name: transKey;
+  description: transKey;
   price: number;
   stockQuantity: number;
   category: string;
 }
 
 export interface UpdateProductRequest {
-  name?: string;
-  description?: string;
+  name?: transKey;
+  description?: transKey;
   price?: number;
   stockQuantity?: number;
   category?: string;
@@ -45,10 +52,4 @@ export interface UpdateProductRequest {
 
 export interface UpdateStockRequest {
   stockQuantity: number;
-}
-
-export interface ProductFilters {
-  isActive?: boolean;
-  category?: string;
-  [key: string]: any;
 }

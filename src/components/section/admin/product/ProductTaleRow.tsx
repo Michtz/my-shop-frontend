@@ -27,7 +27,12 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
       <td className={style.imageCell}>
         <div className={style.productImage}>
           {product?.imageUrl ? (
-            <Image src={product.imageUrl} alt={product.name} width={50} height={50} />
+            <Image
+              src={product.imageUrl}
+              alt={product.name.inv}
+              width={50}
+              height={50}
+            />
           ) : (
             <div className={style.imagePlaceholder}>
               <MaterialIcon icon="image" />
@@ -38,11 +43,11 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
       {product.name && (
         <td className={style.nameCell}>
           <div>
-            <div className={style.productName}>{product.name}</div>
+            <div className={style.productName}>{product.name.inv}</div>
             <div className={style.productDescription}>
-              {product.description && product?.description.length > 60
-                ? `${product.description.substring(0, 60)}...`
-                : product.description}
+              {product.description.inv && product?.description.inv.length > 60
+                ? `${product.description.inv.substring(0, 60)}...`
+                : product.description.inv}
             </div>
           </div>
         </td>

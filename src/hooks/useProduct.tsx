@@ -41,7 +41,7 @@ const useProduct = (): SingleProductResponse => {
       refreshInterval: 60000,
     },
   );
-
+  console.log(data);
   const refreshProduct = () => {
     mutate(uuid);
   };

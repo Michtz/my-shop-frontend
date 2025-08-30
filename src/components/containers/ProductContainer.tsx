@@ -19,6 +19,7 @@ import { useAuth } from '@/hooks/AuthHook';
 import { Logger } from '@/utils/Logger.class';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { useTranslation } from 'react-i18next';
+import { transKey } from '@/types/product.types';
 
 interface FormFields {
   quantity: number;
@@ -31,13 +32,14 @@ const getDefaultValues = (): any => {
 };
 
 const ProductOverview: FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { product, availableStock, isLowStock, isOutOfStock } = useProduct();
   const router = useRouter();
   const { products } = useProducts();
   const { sessionData, isSessionReady } = useAuth();
   const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
+  const language: string = i18n.language || 'de';
 
   const {
     control,
@@ -155,9 +157,9 @@ const ProductOverview: FC = () => {
 
   const DescriptionContainer: FC = () => (
     <div className={style.descriptionContainer}>
-      <h1>{product?.name}</h1>
+      <h1>{product?.name?.[language as keyof transKey]}</h1>
       <div>
-        <p>{product?.description}</p>
+        <p>{product?.description?.[language as keyof transKey]}</p>
         <span className={style.descriptionInfo}>
           <StockInfo />
           <p>{t('product.price', { price: product?.price })}</p>
@@ -217,7 +219,9 @@ const ProductOverview: FC = () => {
           {product?.imageUrl && (
             <Image
               src={product?.imageUrl as string}
-              alt={product?.name || 'Product image'}
+              alt={
+                product?.name?.[language as keyof transKey] || 'Product image'
+              }
               fill
               className={style.productImage}
               priority
@@ -235,8 +239,8 @@ const ProductOverview: FC = () => {
               <ProductCard
                 key={product._id}
                 id={product._id}
-                title={product.name}
-                description={product.description}
+                title={product.name?.[language as keyof transKey]}
+                description={product.description?.[language as keyof transKey]}
                 image={product.imageUrl}
                 price={product.price}
                 onCardClick={() => handleCardClick(product._id)}

@@ -9,7 +9,11 @@ import Input from '@/components/system/Input';
 import MaterialIcon from '@/components/system/MaterialIcon';
 import { createProduct, updateProduct } from '@/requests/products.request';
 import { useFeedback } from '@/hooks/FeedbackHook';
-import { IProduct, ProductCategoryOptions } from '@/types/product.types';
+import {
+  IProduct,
+  ProductCategoryOptions,
+  transKey,
+} from '@/types/product.types';
 import { useError } from '@/hooks/ErrorHook';
 import { FormContainer } from '@/components/system/Container';
 import { FormRow } from '@/components/system/Form';
@@ -24,8 +28,8 @@ interface ProductFormProps {
 }
 
 interface FormField {
-  name: string;
-  description: string;
+  name: transKey;
+  description: transKey;
   price: number;
   stockQuantity: number;
   category: ProductCategoryOptions | string;
@@ -67,8 +71,19 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
     formState: { errors, isLoading, isDirty, isValid },
   } = useForm<FormField>({
     defaultValues: {
-      name: product?.name || '',
-      description: product?.description || '',
+      name: {
+        inv: product?.name?.inv || '',
+        de: product?.name?.de,
+        fr: product?.name?.fr,
+        en: product?.name?.en,
+      },
+
+      description: {
+        inv: product?.description?.inv || '',
+        de: product?.description?.de,
+        fr: product?.description?.fr,
+        en: product?.description?.en,
+      },
       price: product?.price || 0,
       stockQuantity: product?.stockQuantity || 0,
       category: product?.category || '',
@@ -116,8 +131,22 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
   const onSubmit: SubmitHandler<FormField> = async (data) => {
     try {
       const productData = {
-        name: data.name.trim(),
-        description: data.description.trim(),
+        name: {
+          inv: data?.name?.de || data?.name?.fr || data?.name?.en || '',
+          de: data?.name?.de,
+          fr: data?.name?.fr,
+          en: data?.name?.en,
+        },
+        description: {
+          inv:
+            data?.description?.de ||
+            data?.description?.fr ||
+            data?.description?.en ||
+            '',
+          de: data?.description?.de,
+          fr: data?.description?.fr,
+          en: data?.description?.en,
+        },
         price: data.price,
         stockQuantity: data.stockQuantity,
         category: data.category,
@@ -203,38 +232,93 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
             </div>
           </div>
         </FormRow>
-
         <FormRow>
           <Input
-            label="Artikelname"
+            label="Artikelname auf Englisch"
             required
             fullWidth
             readOnly={isLoading}
-            inputProps={register('name', {
+            inputProps={register('name.en', {
               required: 'required',
               minLength: { value: 3, message: 'minLength' },
               maxLength: { value: 126, message: 'minLength' },
             })}
-            {...transformFieldError(errors.name)}
+            {...transformFieldError(errors?.name?.en)}
           />
         </FormRow>
-
         <FormRow>
           <Input
-            label="Beschreibung"
+            label="Artikelname auf Deutsch"
+            required
+            fullWidth
+            readOnly={isLoading}
+            inputProps={register('name.de', {
+              required: 'required',
+              minLength: { value: 3, message: 'minLength' },
+              maxLength: { value: 126, message: 'minLength' },
+            })}
+            {...transformFieldError(errors?.name?.de)}
+          />
+        </FormRow>{' '}
+        <FormRow>
+          <Input
+            label="Artikelname  auf Französisch"
+            required
+            fullWidth
+            readOnly={isLoading}
+            inputProps={register('name.fr', {
+              required: 'required',
+              minLength: { value: 3, message: 'minLength' },
+              maxLength: { value: 126, message: 'minLength' },
+            })}
+            {...transformFieldError(errors?.name?.fr)}
+          />
+        </FormRow>
+        <FormRow>
+          <Input
+            label="Beschreibung  auf Englisch"
             required
             fullWidth
             multiline
             minRows={4}
             readOnly={isLoading}
-            inputProps={register('description', {
+            inputProps={register('description.en', {
               required: 'required',
               minLength: { value: 10, message: 'minLength' },
             })}
-            {...transformFieldError(errors.description)}
+            {...transformFieldError(errors?.description?.en)}
+          />
+        </FormRow>{' '}
+        <FormRow>
+          <Input
+            label="Beschreibung  auf Deutsch"
+            required
+            fullWidth
+            multiline
+            minRows={4}
+            readOnly={isLoading}
+            inputProps={register('description.de', {
+              required: 'required',
+              minLength: { value: 10, message: 'minLength' },
+            })}
+            {...transformFieldError(errors?.description?.de)}
+          />
+        </FormRow>{' '}
+        <FormRow>
+          <Input
+            label="Beschreibung  auf Französisch"
+            required
+            fullWidth
+            multiline
+            minRows={4}
+            readOnly={isLoading}
+            inputProps={register('description.fr', {
+              required: 'required',
+              minLength: { value: 10, message: 'minLength' },
+            })}
+            {...transformFieldError(errors?.description?.fr)}
           />
         </FormRow>
-
         <FormRow direction="row">
           <Input
             type="number"
@@ -263,7 +347,6 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
             {...transformFieldError(errors.stockQuantity)}
           />
         </FormRow>
-
         <FormRow>
           <Controller
             name="category"
@@ -283,7 +366,6 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
             )}
           />
         </FormRow>
-
         <FormRow>
           <Controller
             name="isActive"
@@ -298,7 +380,6 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
             )}
           />
         </FormRow>
-
         <ButtonContainer>
           <Button variant="secondary" onClick={onClose} disabled={isLoading}>
             Abbrechen
