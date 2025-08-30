@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { getProduct } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
@@ -25,7 +25,7 @@ export interface SingleProductResponse {
 const useProduct = (): SingleProductResponse => {
   const params = useParams();
   const uuid = params?.id as string;
-  const { isConnected, isReady, watchProduct, unwatchProduct } = useSocket();
+  const { isConnected } = useSocket();
 
   const [socketData] = useState<ProductSocketData>({
     availableStock: 0,
@@ -50,16 +50,6 @@ const useProduct = (): SingleProductResponse => {
     if (!data || !data.success || !data.data) return null;
     return Array.isArray(data.data) ? data.data[0] : data.data;
   };
-
-  useEffect(() => {
-    if (!isReady || !uuid) return;
-
-    watchProduct(uuid);
-
-    return () => {
-      unwatchProduct(uuid);
-    };
-  }, [isReady, uuid, watchProduct, unwatchProduct]);
 
   const product = extractProduct();
   const availableStock =
