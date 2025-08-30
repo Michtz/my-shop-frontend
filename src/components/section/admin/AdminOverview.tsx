@@ -10,6 +10,7 @@ const AdminOverview: React.FC = () => {
 
   if (userInformation?.role !== 'admin') {
     if (!userInformation) return <div>You are not logged in </div>;
+    router.push('/login');
     return <div>You are no admin or not logged in</div>;
   }
 

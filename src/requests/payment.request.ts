@@ -24,13 +24,6 @@ export const confirmPayment = async (
   paymentMethodId?: string,
 ) => {
   try {
-    console.log('💳 Confirming payment:', {
-      sessionId,
-      paymentIntentId,
-      paymentMethodId: paymentMethodId ? 'PROVIDED' : 'MISSING',
-      url: `${paymentApiUrl}/confirm/${sessionId}`
-    });
-
     const response = await axiosInstance.post(
       `${paymentApiUrl}/confirm/${sessionId}`,
       {
