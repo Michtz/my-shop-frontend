@@ -1,7 +1,6 @@
 export interface CartReservationData {
   productId: string;
   productName: string;
-  reservedQuantity: number;
   availableStock: number;
   cartCount: number;
   sessionId: string;
@@ -32,7 +31,6 @@ export interface ProductStockData {
   productId: string;
   name: string;
   stockQuantity: number;
-  reservedQuantity: number;
   availableQuantity: number;
   lastUpdated: Date;
 }

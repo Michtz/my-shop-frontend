@@ -7,6 +7,7 @@ import { replaceCartItems } from '@/requests/cart.request';
 import NumberStepper from '@/components/system/NumberStepper';
 import { useRouter } from 'next/navigation';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { useContentTranslate } from '@/hooks/ContentTranslationHook';
 
 interface CartListItemProp {
   item: any;
@@ -24,6 +25,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
   review = false,
 }) => {
   const router: AppRouterInstance = useRouter();
+  const { translate } = useContentTranslate();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDeleteItem = async (productId: string) => {
@@ -74,7 +76,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
         <div className={style.productImage}>
           <Image
             src={item.product.imageUrl || '/placeholder-image.jpg'}
-            alt={item.product.name}
+            alt={translate(item.product.name)}
             width={60}
             height={60}
           />
@@ -82,7 +84,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
 
         <div className={style.productDetails}>
           <div className={style.brand}>{item.product.brand || 'BRAND'}</div>
-          <h3 className={style.productName}>{item.product.name}</h3>
+          <h3 className={style.productName}>{translate(item.product.name)}</h3>
           <div className={style.unitPrice}>CHF {item.price?.toFixed(2)}.-</div>
         </div>
       </div>

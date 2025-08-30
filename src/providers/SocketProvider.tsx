@@ -9,27 +9,14 @@ import React, {
 } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { mutate } from 'swr';
-import { useAuth } from '@/hooks/AuthHook';
-import {
-  SocketContextType,
-  CartReservationData,
-  CartUpdateData,
-  CartSyncData,
-  StockConflictData,
-  ProductStockData,
-  ProductReservationInfo,
-  ReservationExpiredData,
-  LowStockAlert,
-  OutOfStockAlert,
-} from '@/types/socket.types';
 
 interface SocketProviderProps {
   children: ReactNode;
 }
 
-const SocketContext = createContext<SocketContextType | null>(null);
+const SocketContext = createContext<any>(null);
 
-export const useSocketContext = (): SocketContextType => {
+export const useSocketContext = () => {
   const context = useContext(SocketContext);
   if (!context) {
     throw new Error('useSocketContext must be used within SocketProvider');
@@ -40,17 +27,13 @@ export const useSocketContext = (): SocketContextType => {
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const { sessionData, userSessionData } = useAuth();
 
-  // Socket Connection
   useEffect(() => {
-    if (!sessionData?.sessionId) return;
-
-    // Use the same base URL as the API
     const backendUrl =
       process.env.NEXT_PUBLIC_BACKEND_URL ||
       process.env.NEXT_PUBLIC_API_BASE_URL ||
       'https://my-shop-backend-usaq.onrender.com';
+
     console.log('🔌 Connecting socket to:', backendUrl);
 
     const socketInstance = io(backendUrl, {
@@ -63,14 +46,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     socketInstance.on('connect', () => {
       console.log('🔌 Socket connected:', socketInstance.id);
       setIsConnected(true);
-
-      // Auto-join session room
-      socketInstance.emit('join_session', sessionData.sessionId);
-
-      // Auto-join user room if logged in
-      if (userSessionData?.user.id) {
-        socketInstance.emit('join_user', userSessionData?.user.id);
-      }
+      // Auto-joins shop_updates room on backend
     });
 
     socketInstance.on('disconnect', () => {
@@ -78,169 +54,39 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       setIsConnected(false);
     });
 
-    // Setup Socket Event Listeners
-    setupSocketEventListeners(socketInstance);
+    socketInstance.on(
+      'products_updated',
+      (data: { productIds: string[]; timestamp: string }) => {
+        console.log('🔄 PRODUCTS UPDATED EVENT:', data);
+        console.log(
+          `📦 ${data.productIds.length} products were updated at ${data.timestamp}`,
+        );
+        console.log('📋 Product IDs:', data.productIds);
+
+        // Mutate SWR cache for products
+        mutate('products');
+        mutate('/api/products');
+
+        // If specific product IDs, mutate them individually
+        if (data.productIds && data.productIds.length > 0) {
+          data.productIds.forEach((productId: string) => {
+            mutate(`product-${productId}`);
+            mutate(`/api/products/${productId}`);
+          });
+        }
+      },
+    );
 
     setSocket(socketInstance);
 
     return () => {
       socketInstance.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionData?.sessionId, userSessionData?.user?.id]);
+  }, []);
 
-  // Socket Event Listeners
-  const setupSocketEventListeners = (socketInstance: Socket) => {
-    // Cart Events
-    socketInstance.on('cart_item_reserved', (data: CartReservationData) => {
-      console.log('🔒 Cart item reserved:', data);
-      mutateCartData(data.sessionId);
-      mutateProductData(data.productId);
-    });
-
-    socketInstance.on('cart_item_released', (data: CartReservationData) => {
-      console.log('🔓 Cart item released:', data);
-      mutateCartData(data.sessionId);
-      mutateProductData(data.productId);
-    });
-
-    socketInstance.on('cart_updated', (data: CartUpdateData) => {
-      console.log('🛒 Cart updated:', data);
-      mutateCartData(data.sessionId);
-    });
-
-    socketInstance.on('cart_synced', (data: CartSyncData) => {
-      console.log('🔄 Cart synced:', data);
-      if (sessionData?.sessionId) {
-        mutateCartData(sessionData.sessionId);
-      }
-    });
-
-    socketInstance.on('cart_stock_conflict', (data: StockConflictData) => {
-      console.log('⚠️ Stock conflict:', data);
-      // TODO: Add user feedback/notification here
-      mutateProductData(data.productId);
-    });
-
-    // Product Events
-    socketInstance.on('product_reserved', (data: ProductReservationInfo) => {
-      console.log('📦 Product reserved:', data);
-      mutateProductData(data.productId);
-    });
-
-    socketInstance.on('product_released', (data: ProductReservationInfo) => {
-      console.log('📦 Product released:', data);
-      mutateProductData(data.productId);
-    });
-
-    socketInstance.on('product_stock_updated', (data: ProductStockData) => {
-      console.log('📊 Product stock updated:', data);
-      mutateProductData(data.productId);
-      mutate('products'); // Update products list
-    });
-
-    socketInstance.on('category_stock_updated', (data: ProductStockData) => {
-      console.log('🏷️ Category stock updated:', data);
-      mutateProductData(data.productId);
-      mutate('products');
-    });
-
-    socketInstance.on('stock_updated', (data: ProductStockData) => {
-      console.log('📈 Stock updated:', data);
-      mutateProductData(data.productId);
-      mutate('products');
-    });
-
-    socketInstance.on('reservation_expired', (data: ReservationExpiredData) => {
-      console.log('⏰ Reservation expired:', data);
-      if (sessionData?.sessionId) {
-        mutateCartData(sessionData.sessionId);
-      }
-      mutateProductData(data.productId);
-    });
-
-    // Stock Alerts
-    socketInstance.on('low_stock_alert', (data: LowStockAlert) => {
-      console.log('🟡 Low stock alert:', data);
-      mutateProductData(data.productId);
-    });
-
-    socketInstance.on('out_of_stock_alert', (data: OutOfStockAlert) => {
-      console.log('🔴 Out of stock alert:', data);
-      mutateProductData(data.productId);
-    });
-  };
-
-  // SWR Cache Mutation Helpers
-  const mutateCartData = (sessionId: string) => {
-    mutate(`cart-${sessionId}`);
-  };
-
-  const mutateProductData = (productId: string) => {
-    mutate(productId); // Single product
-    mutate('products'); // Products list
-  };
-
-  // Room Management Functions
-  const joinSession = (sessionId: string) => {
-    if (socket) {
-      socket.emit('join_session', sessionId);
-    }
-  };
-
-  const leaveSession = (sessionId: string) => {
-    if (socket) {
-      socket.emit('leave_session', sessionId);
-    }
-  };
-
-  const joinUser = (userId: string) => {
-    if (socket) {
-      socket.emit('join_user', userId);
-    }
-  };
-
-  const leaveUser = (userId: string) => {
-    if (socket) {
-      socket.emit('leave_user', userId);
-    }
-  };
-
-  const watchProduct = (productId: string) => {
-    if (socket) {
-      socket.emit('watch_product', productId);
-    }
-  };
-
-  const unwatchProduct = (productId: string) => {
-    if (socket) {
-      socket.emit('unwatch_product', productId);
-    }
-  };
-
-  const watchCategory = (category: string) => {
-    if (socket) {
-      socket.emit('watch_category', category);
-    }
-  };
-
-  const unwatchCategory = (category: string) => {
-    if (socket) {
-      socket.emit('unwatch_category', category);
-    }
-  };
-
-  const contextValue: SocketContextType = {
+  const contextValue = {
     socket,
     isConnected,
-    joinSession,
-    leaveSession,
-    joinUser,
-    leaveUser,
-    watchProduct,
-    unwatchProduct,
-    watchCategory,
-    unwatchCategory,
   };
 
   return (
