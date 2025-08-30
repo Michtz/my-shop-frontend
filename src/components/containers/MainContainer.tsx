@@ -21,7 +21,6 @@ import FilterContainer, {
   FilterType,
   PriceRangeType,
 } from '@/components/system/FilterContainer';
-import { useTranslation } from 'react-i18next';
 
 const filteredProducts = (
   items: IProduct[],
@@ -35,12 +34,13 @@ const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
-  const { i18n } = useTranslation();
-  const [language, setLanguage] = useState<string>(i18n.language || 'de');
-
+  const [language, setLanguage] = useState<string>(
+    (params?.locale as string) || 'de',
+  );
+  console.log(params);
   useEffect(() => {
-    setLanguage(i18n.language);
-  }, [i18n.language]);
+    setLanguage(params?.locale as string);
+  }, [params.locale]);
 
   const { sessionData, isSessionReady } = useAuth();
   const [activeSort, setActiveSort] = useState<FilterType>({

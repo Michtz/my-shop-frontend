@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import useProduct from '@/hooks/useProduct';
 import useCart from '@/hooks/useCart';
 import { addToCart, replaceCartItems } from '@/requests/cart.request';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import style from '@/styles/OverviewProduct.module.scss';
 import { mutate } from 'swr';
 import Image from 'next/image';
@@ -32,18 +32,21 @@ const getDefaultValues = (): any => {
 };
 
 const ProductOverview: FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { product, availableStock, isLowStock, isOutOfStock } = useProduct();
   const router = useRouter();
+  const params = useParams();
   const { products } = useProducts();
   const { sessionData, isSessionReady } = useAuth();
   const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
-  const [language, setLanguage] = useState<string>(i18n.language || 'de');
+  const [language, setLanguage] = useState<string>(
+    (params.locale as string) || 'de',
+  );
 
   useEffect(() => {
-    setLanguage(i18n.language);
-  }, [i18n.language]);
+    setLanguage(params.locale as string);
+  }, [params.locale as string]);
   const {
     control,
     handleSubmit,
