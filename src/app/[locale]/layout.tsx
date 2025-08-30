@@ -16,28 +16,31 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Feedback from '@/components/system/Feedback';
 import { ErrorProvider } from '@/hooks/ErrorHook';
+import { ContentTranslateProvider } from '@/hooks/ContentTranslationHook';
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
   <ThemeRegistry>
     <ErrorProvider>
       <TranslationProvider>
-        <FeedbackProvider>
-          <AuthProvider>
-            <SocketProvider>
-              <html lang="de" suppressHydrationWarning>
-                <head>
-                  <title>myShop</title>
-                </head>
-                <body>
-                  <Header />
-                  <SWRProvider>{children}</SWRProvider>
-                  <Feedback />
-                  <Footer />
-                </body>
-              </html>
-            </SocketProvider>
-          </AuthProvider>
-        </FeedbackProvider>
+        <ContentTranslateProvider>
+          <FeedbackProvider>
+            <AuthProvider>
+              <SocketProvider>
+                <html lang="de" suppressHydrationWarning>
+                  <head>
+                    <title>myShop</title>
+                  </head>
+                  <body>
+                    <Header />
+                    <SWRProvider>{children}</SWRProvider>
+                    <Feedback />
+                    <Footer />
+                  </body>
+                </html>
+              </SocketProvider>
+            </AuthProvider>
+          </FeedbackProvider>
+        </ContentTranslateProvider>
       </TranslationProvider>
     </ErrorProvider>
   </ThemeRegistry>

@@ -10,7 +10,7 @@ import {
   HorizontalScrollContainer,
 } from '@/components/system/Container';
 import { addToCart } from '@/requests/cart.request';
-import { IProduct, transKey } from '@/types/product.types';
+import { IProduct } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useAuth } from '@/hooks/AuthHook';
@@ -21,6 +21,7 @@ import FilterContainer, {
   FilterType,
   PriceRangeType,
 } from '@/components/system/FilterContainer';
+import { useContentTranslate } from '@/hooks/ContentTranslationHook';
 
 const filteredProducts = (
   items: IProduct[],
@@ -34,14 +35,7 @@ const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
-  const [language, setLanguage] = useState<string>(
-    (params?.locale as string) || 'de',
-  );
-  console.log(params);
-  useEffect(() => {
-    setLanguage(params?.locale as string);
-  }, [params.locale]);
-
+  const { translate } = useContentTranslate();
   const { sessionData, isSessionReady } = useAuth();
   const [activeSort, setActiveSort] = useState<FilterType>({
     value: 'Relevanz',
@@ -148,8 +142,8 @@ const MainContainer: React.FC = () => {
             <ProductCard
               key={product._id}
               id={product._id}
-              title={product.name?.[language as keyof transKey]}
-              description={product.description?.[language as keyof transKey]}
+              title={translate(product.name)}
+              description={translate(product.description)}
               image={product.imageUrl}
               price={product.price}
               onCardClick={() => handleCardClick(product._id)}
@@ -174,8 +168,8 @@ const MainContainer: React.FC = () => {
             <ProductCard
               key={product._id}
               id={product._id}
-              title={product.name?.[language as keyof transKey]}
-              description={product.description?.[language as keyof transKey]}
+              title={translate(product.name)}
+              description={translate(product.description)}
               image={product.imageUrl}
               price={product.price}
               onCardClick={() => handleCardClick(product._id)}

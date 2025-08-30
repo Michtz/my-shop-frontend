@@ -3,6 +3,7 @@ export interface transKey {
   en: string;
   fr: string;
   de: string;
+  [key: string]: string | undefined;
 }
 
 export interface IProduct {

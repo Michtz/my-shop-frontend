@@ -1,10 +1,10 @@
 'use client';
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import useProduct from '@/hooks/useProduct';
 import useCart from '@/hooks/useCart';
 import { addToCart, replaceCartItems } from '@/requests/cart.request';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import style from '@/styles/OverviewProduct.module.scss';
 import { mutate } from 'swr';
 import Image from 'next/image';
@@ -19,7 +19,7 @@ import { useAuth } from '@/hooks/AuthHook';
 import { Logger } from '@/utils/Logger.class';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { useTranslation } from 'react-i18next';
-import { transKey } from '@/types/product.types';
+import { useContentTranslate } from '@/hooks/ContentTranslationHook';
 
 interface FormFields {
   quantity: number;
@@ -35,18 +35,11 @@ const ProductOverview: FC = () => {
   const { t } = useTranslation();
   const { product, availableStock, isLowStock, isOutOfStock } = useProduct();
   const router = useRouter();
-  const params = useParams();
   const { products } = useProducts();
   const { sessionData, isSessionReady } = useAuth();
   const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
-  const [language, setLanguage] = useState<string>(
-    (params.locale as string) || 'de',
-  );
-
-  useEffect(() => {
-    setLanguage(params.locale as string);
-  }, [params.locale as string]);
+  const { translate } = useContentTranslate();
   const {
     control,
     handleSubmit,
@@ -163,9 +156,9 @@ const ProductOverview: FC = () => {
 
   const DescriptionContainer: FC = () => (
     <div className={style.descriptionContainer}>
-      <h1>{product?.name?.[language as keyof transKey]}</h1>
+      <h1>{translate(product?.name)}</h1>
       <div>
-        <p>{product?.description?.[language as keyof transKey]}</p>
+        <p>{translate(product?.description)}</p>
         <span className={style.descriptionInfo}>
           <StockInfo />
           <p>{t('product.price', { price: product?.price })}</p>
@@ -225,9 +218,7 @@ const ProductOverview: FC = () => {
           {product?.imageUrl && (
             <Image
               src={product?.imageUrl as string}
-              alt={
-                product?.name?.[language as keyof transKey] || 'Product image'
-              }
+              alt={translate(product?.name) || 'Product image'}
               fill
               className={style.productImage}
               priority
@@ -245,8 +236,8 @@ const ProductOverview: FC = () => {
               <ProductCard
                 key={product._id}
                 id={product._id}
-                title={product.name?.[language as keyof transKey]}
-                description={product.description?.[language as keyof transKey]}
+                title={translate(product.name)}
+                description={translate(product.description)}
                 image={product.imageUrl}
                 price={product.price}
                 onCardClick={() => handleCardClick(product._id)}
