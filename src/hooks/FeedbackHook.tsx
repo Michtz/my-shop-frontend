@@ -8,6 +8,10 @@ import React, {
   ReactNode,
 } from 'react';
 
+/*
+ * this hook is used to show a feedback flag (mostly for easier development)
+ */
+// Todo: implement function to check if production then add a prop for is visible in production
 export type FeedbackVariant = 'error' | 'info' | 'success';
 
 interface FeedbackContextType {

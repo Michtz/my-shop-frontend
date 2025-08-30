@@ -14,7 +14,7 @@ import {
 import { formatDate } from '@/functions/common';
 import { Logger } from '@/utils/Logger.class';
 import styles from '@/styles/admin/blog/BlogDashboard.module.scss';
-import { useBlogPosts } from '@/hooks/useBlog';
+import { useBlogPosts } from '@/hooks/BlogHook';
 import Button, { ButtonContainer } from '@/components/system/Button';
 
 interface BlogDashboardProps {

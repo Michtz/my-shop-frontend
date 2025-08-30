@@ -1,19 +1,15 @@
 import { axiosInstance } from './base.request';
 import { paymentApiUrl } from '@/config/api.config';
+import { Logger } from '@/utils/Logger.class';
 
 export const createPaymentIntent = async (sessionId: string) => {
   try {
-    console.log('💳 Creating payment intent for session:', sessionId);
-    console.log('💳 Payment API URL:', `${paymentApiUrl}/create-intent/${sessionId}`);
-    
     const response = await axiosInstance.post(
       `${paymentApiUrl}/create-intent/${sessionId}`,
     );
-    
-    console.log('💳 Payment intent API response:', response);
     return response.data;
   } catch (error) {
-    console.error('💳 Payment intent API error:', error);
+    Logger.error('💳 Payment intent API error:', error);
     throw error;
   }
 };
@@ -31,11 +27,8 @@ export const confirmPayment = async (
         paymentMethodId,
       },
     );
-
-    console.log('💳 Payment confirmation API response:', response);
     return response.data;
   } catch (error) {
-    console.error('💳 Payment confirmation API error:', error);
-    throw error;
+    Logger.error('💳 Payment confirmation API error:', error);
   }
 };

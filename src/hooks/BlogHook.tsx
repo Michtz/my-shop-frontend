@@ -9,6 +9,7 @@ import {
 } from '@/requests/blog.request';
 import { Logger } from '@/utils/Logger.class';
 
+// This will not get finished until the presentation
 export const useBlogPosts = (filters?: BlogFilters) => {
   const [posts, setPosts] = useState<IBlogPost[]>([]);
   const [isLoading, setLoading] = useState(true);

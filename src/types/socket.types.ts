@@ -110,7 +110,6 @@ export interface SocketContextType {
 
 export interface CartSocketData {
   cartCount: { [productId: string]: number };
-  reservationTimers: { [productId: string]: Date };
   stockConflicts: StockConflictData[];
 }
 

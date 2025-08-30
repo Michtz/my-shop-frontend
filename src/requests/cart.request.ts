@@ -24,17 +24,6 @@ export const getCart = async (
   }
 };
 
-export const updateCart = async (sessionId: string): Promise<any> => {
-  try {
-    return await axiosInstance.get(`${cartApiUrl}/${sessionId}`, {
-      withCredentials: true,
-    });
-  } catch (e) {
-    Logger.error('Unable to get the cart');
-    throw e;
-  }
-};
-
 export const updateCartUser = async (
   sessionId: string,
   userInfo: any,
@@ -55,12 +44,12 @@ export const updateCartUser = async (
       },
     );
   } catch (e) {
-    Logger.error('Unable to get the cart');
+    Logger.error('Unable to update cart user');
     throw e;
   }
 };
 
-export const addToCart = async (
+export const updateCartItem = async (
   sessionId: string,
   productId: string,
   quantity: number | string,
@@ -78,37 +67,12 @@ export const addToCart = async (
       withCredentials: true,
     });
   } catch (e) {
-    Logger.error('Unable to add to cart');
+    Logger.error('Unable to update cart item');
     throw e;
   }
 };
 
-export const updateCartItem = async (
-  sessionId: string,
-  productId: string,
-  quantity: number,
-): Promise<any> => {
-  try {
-    const requestBody = {
-      items: [
-        {
-          quantity: quantity,
-        },
-      ],
-    };
-
-    return await axiosInstance.put(
-      `${cartApiUrl}/${sessionId}/product/${productId}`,
-      requestBody,
-      { withCredentials: true },
-    );
-  } catch (e) {
-    Logger.error('Unable to update the cart item');
-    throw e;
-  }
-};
-
-export const replaceCartItems = async (
+export const updateCartItems = async (
   sessionId: string,
   items: Array<{ productId: string; quantity: number }>,
 ): Promise<any> => {
@@ -126,7 +90,7 @@ export const replaceCartItems = async (
       { withCredentials: true },
     );
   } catch (e) {
-    Logger.error('Unable to replace cart items');
+    Logger.error('Unable to update cart items');
     throw e;
   }
 };

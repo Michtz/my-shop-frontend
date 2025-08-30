@@ -3,6 +3,9 @@ import React, { createContext, PropsWithChildren, useContext } from 'react';
 import { FieldError } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+/*
+ * this hook is used to handle errors in forms
+ */
 interface TransformedFieldError {
   error: boolean;
   helperText?: string;
@@ -32,7 +35,6 @@ export const ErrorProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const transformFieldError = (error?: FieldError): TransformedFieldError => {
     if (!error) return { error: false };
     const errorKey: string | undefined = error.message || error.type;
-    console.log(errorKey, error);
     if (errorKey && errorKey in errorMessageKeys)
       return {
         error: true,

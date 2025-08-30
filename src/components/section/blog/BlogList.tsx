@@ -5,7 +5,7 @@ import BlogCard from './BlogCard';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import styles from '@/styles/blog/BlogList.module.scss';
-import { useBlogPosts } from '@/hooks/useBlog';
+import { useBlogPosts } from '@/hooks/BlogHook';
 
 interface BlogListProps {
   selectedTag?: string;
@@ -75,7 +75,9 @@ const BlogList: React.FC<BlogListProps> = ({ selectedTag }) => {
       ) : (
         <>
           <div className={styles.postsGrid}>
-            {posts?.map((post) => <BlogCard key={post._id} post={post} />)}
+            {posts?.map((post) => (
+              <BlogCard key={post._id} post={post} />
+            ))}
           </div>
 
           {/*{totalPages > 1 && (*/}

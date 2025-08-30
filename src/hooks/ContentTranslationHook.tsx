@@ -9,6 +9,10 @@ import { transKey } from '@/types/product.types';
 import { useParams } from 'next/navigation';
 import { Params } from 'next/dist/server/request/params';
 
+/*
+ * This is used to translate the content of products and later blogs (Blogs will not get finished until the presentation)
+ */
+
 interface ContentTranslateHook {
   translate: (values?: string | transKey, dynamic?: boolean) => string;
   locale: string;

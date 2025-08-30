@@ -8,6 +8,10 @@ import React, {
 import { v4 } from 'uuid';
 import Modal from '@/components/system/Modal';
 
+/*
+ * this hook is used to handle modal locig
+ */
+
 export interface ModalConfig {
   element: React.ReactElement;
   title?: string;

@@ -6,8 +6,12 @@ import { getProduct } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
 import { useParams } from 'next/navigation';
 import { IProduct, ProductResponse } from '@/types/product.types';
-import useSocket from '@/hooks/useSocket';
+import useSocket from '@/hooks/SocketHook';
 import { ProductSocketData } from '@/types/socket.types';
+
+/*
+ * this hook is used to handle data of one product
+ */
 
 export interface SingleProductResponse {
   product: IProduct | null;
@@ -33,18 +37,15 @@ const useProduct = (): SingleProductResponse => {
     lastStockUpdate: new Date(),
   });
 
-  const { data, error, isLoading } = useSWR<ProductResponse, RequestError>(
-    uuid,
-    () => getProduct(uuid),
-    {
-      suspense: false,
-      refreshInterval: 60000,
-    },
-  );
-  console.log(data);
-  const refreshProduct = () => {
-    mutate(uuid);
-  };
+  const { data, error, isLoading } = useSWR<
+    ProductResponse | undefined,
+    RequestError
+  >(uuid, () => getProduct(uuid), {
+    suspense: false,
+    refreshInterval: 60000,
+  });
+
+  const refreshProduct = () => mutate(uuid);
 
   const extractProduct = (): IProduct | null => {
     if (!data || !data.success || !data.data) return null;

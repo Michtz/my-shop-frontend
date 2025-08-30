@@ -3,7 +3,7 @@
 import style from '@/styles/system/CartListItem.module.scss';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { replaceCartItems } from '@/requests/cart.request';
+import { updateCartItems } from '@/requests/cart.request';
 import NumberStepper from '@/components/system/NumberStepper';
 import { useRouter } from 'next/navigation';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
@@ -35,7 +35,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
     );
 
     try {
-      await replaceCartItems(sessionId, updatedItems);
+      await updateCartItems(sessionId, updatedItems);
       mutate();
     } catch (error) {
       console.error('Failed to delete item:', error);
@@ -57,7 +57,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
     );
 
     try {
-      await replaceCartItems(sessionId, updatedItems);
+      await updateCartItems(sessionId, updatedItems);
       mutate();
     } catch (error) {
       console.error('Failed to update quantity:', error);

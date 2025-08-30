@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { getCart } from '@/requests/cart.request';
 import { RequestError } from '@/types/request.types';
 import { useAuth } from '@/hooks/AuthHook';
-import useSocket from '@/hooks/useSocket';
+import useSocket from '@/hooks/SocketHook';
 import { CartSocketData } from '@/types/socket.types';
 
 interface CartAPIResponse {
@@ -13,24 +13,21 @@ interface CartAPIResponse {
   data: any;
 }
 
-interface CartItemWithReservation {
+interface CartItem {
   productId: string;
   quantity: number;
   price: number;
-  reservedUntil?: Date;
-  reservationTimeLeft?: number; // sec
   product?: any;
 }
 
 interface CartResponse {
   cart: any | null;
-  cartItems: CartItemWithReservation[] | null;
+  cartItems: CartItem[] | null;
   isLoading: boolean;
   error: string | null;
   mutate: any;
   isConnected: boolean;
   cartCount: { [productId: string]: number };
-  hasReservationConflicts: boolean;
 }
 
 const useCart = (): CartResponse => {
@@ -38,27 +35,18 @@ const useCart = (): CartResponse => {
   const { isConnected } = useSocket();
   const [socketData] = useState<CartSocketData>({
     cartCount: {},
-    reservationTimers: {},
     stockConflicts: [],
   });
 
   const cartKey = sessionData?.sessionId;
   const shouldFetch = isSessionReady && cartKey && cartKey !== 'undefined';
-  
-  console.log('🛒 useCart Debug:', { 
-    isSessionReady, 
-    cartKey, 
-    shouldFetch,
-    sessionData 
-  });
-  
+
   const { data, error, isLoading, mutate } = useSWR<
     CartAPIResponse,
     RequestError
   >(
     shouldFetch ? `cart-${cartKey}` : null,
     () => {
-      console.log('🛒 Fetching cart for session:', cartKey);
       return getCart(cartKey!, userSessionData?.user?.id);
     },
     {
@@ -67,41 +55,14 @@ const useCart = (): CartResponse => {
     },
   );
 
-  const processCartItems = (): CartItemWithReservation[] | null => {
-    console.log('🛒 Processing cart items, data:', data);
-    
-    // Handle nested data structure: data.data.data.items
+  const processCartItems = (): CartItem[] | null => {
     const items = data?.data?.data?.items || data?.data?.items;
-    
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      console.log('🛒 No cart items found, items:', items);
-      return null;
-    }
-
-    console.log('🛒 Processing', items.length, 'cart items');
-    return items.map((item: any) => {
-      const reservedUntil = item.reservedUntil
-        ? new Date(item.reservedUntil)
-        : null;
-      const now = new Date();
-      const reservationTimeLeft = reservedUntil
-        ? Math.max(
-            0,
-            Math.floor((reservedUntil.getTime() - now.getTime()) / 1000),
-          )
-        : 0;
-
-      return {
-        ...item,
-        reservedUntil,
-        reservationTimeLeft,
-      };
-    });
+    if (!items || !Array.isArray(items) || items.length === 0) return null;
+    return items;
   };
 
   useEffect(() => {
     if (!data?.data?.items) return;
-
     const interval = setInterval(() => {
       mutate();
     }, 1000);
@@ -109,7 +70,7 @@ const useCart = (): CartResponse => {
     return () => clearInterval(interval);
   }, [data?.data?.items, mutate]);
 
-  const result = {
+  return {
     cart: data?.data || null,
     cartItems: processCartItems(),
     isLoading,
@@ -117,11 +78,7 @@ const useCart = (): CartResponse => {
     mutate: mutate,
     isConnected,
     cartCount: socketData.cartCount,
-    hasReservationConflicts: socketData.stockConflicts.length > 0,
   };
-  
-  console.log('🛒 useCart returning:', result);
-  return result;
 };
 
 export default useCart;

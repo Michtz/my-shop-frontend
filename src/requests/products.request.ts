@@ -5,7 +5,6 @@ import {
   ProductResponse,
   CreateProductRequest,
   UpdateProductRequest,
-  UpdateStockRequest,
   IProduct,
 } from '@/types/product.types';
 
@@ -40,7 +39,9 @@ export const getProducts = async (): Promise<ProductResponse> => {
   }
 };
 
-export const getProduct = async (uuid: string): Promise<ProductResponse> => {
+export const getProduct = async (
+  uuid: string,
+): Promise<ProductResponse | undefined> => {
   try {
     const response = await axiosInstance.get(`${productsApiUrl}/${uuid}`, {
       withCredentials: true,
@@ -68,20 +69,18 @@ export const getProduct = async (uuid: string): Promise<ProductResponse> => {
     return {
       success: false,
       error: 'Product not found',
-    } as ProductResponse;
+    };
   } catch (e) {
-    Logger.error('Unable to get product');
-    throw e;
+    Logger.error('Unable to get product', e);
   }
 };
 
 export const createProduct = async (
   productData: CreateProductRequest,
   imageFile?: File,
-): Promise<ProductResponse> => {
+): Promise<ProductResponse | undefined> => {
   try {
     if (imageFile) {
-      // Mit Bild - FormData verwenden
       const formData = new FormData();
       formData.append('data', JSON.stringify(productData));
       formData.append('image', imageFile);
@@ -94,7 +93,6 @@ export const createProduct = async (
       });
       return response.data;
     } else {
-      // Ohne Bild - JSON verwenden
       const response = await axiosInstance.post(
         `${productsApiUrl}`,
         productData,
@@ -108,8 +106,7 @@ export const createProduct = async (
       return response.data;
     }
   } catch (e) {
-    Logger.error('Unable to create product');
-    throw e;
+    Logger.error('Unable to create product', e);
   }
 };
 
@@ -117,10 +114,9 @@ export const updateProduct = async (
   uuid: string,
   updateData: UpdateProductRequest,
   imageFile?: File,
-): Promise<ProductResponse> => {
+): Promise<ProductResponse | undefined> => {
   try {
     if (imageFile) {
-      // Mit Bild - FormData verwenden
       const formData = new FormData();
       formData.append('data', JSON.stringify(updateData));
       formData.append('image', imageFile);
@@ -137,7 +133,6 @@ export const updateProduct = async (
       );
       return response.data;
     } else {
-      // Ohne Bild - JSON verwenden
       const response = await axiosInstance.put(
         `${productsApiUrl}/${uuid}`,
         updateData,
@@ -151,41 +146,19 @@ export const updateProduct = async (
       return response.data;
     }
   } catch (e) {
-    Logger.error('Unable to update product');
-    throw e;
+    Logger.error('Unable to update product', e);
   }
 };
 
-export const updateStock = async (
+export const deleteProduct = async (
   uuid: string,
-  stockData: UpdateStockRequest,
-): Promise<ProductResponse> => {
-  try {
-    const response = await axiosInstance.patch(
-      `${productsApiUrl}/${uuid}/stock`,
-      stockData,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          withCredentials: true,
-        },
-      },
-    );
-    return response.data;
-  } catch (e) {
-    Logger.error('Unable to update product stock');
-    throw e;
-  }
-};
-
-export const deleteProduct = async (uuid: string): Promise<ProductResponse> => {
+): Promise<ProductResponse | undefined> => {
   try {
     const response = await axiosInstance.delete(`${productsApiUrl}/${uuid}`, {
       withCredentials: true,
     });
     return response.data;
   } catch (e) {
-    Logger.error('Unable to delete product');
-    throw e;
+    Logger.error('Unable to delete product', e);
   }
 };

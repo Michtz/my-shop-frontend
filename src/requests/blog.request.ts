@@ -10,6 +10,8 @@ import {
   IBlogPost,
 } from '@/types/blog.types';
 
+// This will not get finished until the presentation
+
 export const getPublishedPosts = async (
   page?: number,
   limit?: number,

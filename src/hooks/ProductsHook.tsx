@@ -5,7 +5,11 @@ import useSWR from 'swr';
 import { getProducts } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
 import { IProduct, ProductResponse } from '@/types/product.types';
-import useSocket from '@/hooks/useSocket';
+import useSocket from '@/hooks/SocketHook';
+
+/*
+ * this hook is used to handle data of all products
+ */
 
 interface ProductWithSocketData extends IProduct {
   cartCount?: number;
@@ -66,7 +70,7 @@ const useProducts = (): ProductsResponse => {
 
   const errorMessage: string | null =
     error?.message ||
-    (data && !data.success ? data.error || 'Unbekannter Fehler' : null);
+    (data && !data.success ? data.error || 'unknown error' : null);
 
   return {
     products: processedProducts,

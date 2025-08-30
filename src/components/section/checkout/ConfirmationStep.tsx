@@ -9,7 +9,7 @@ import { Logger } from '@/utils/Logger.class';
 import { useTranslation } from 'react-i18next';
 import CartListItem from '@/components/section/cart/CartListItem';
 import { Hr } from '@/components/system/Hr';
-import useCart from '@/hooks/useCart';
+import useCart from '@/hooks/CartHook';
 import { useAuth } from '@/hooks/AuthHook';
 import CartSummary from '@/components/section/cart/CartSummaryContainer';
 

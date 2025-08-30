@@ -182,34 +182,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const response = await _register(email, password, firstName, lastName);
-
-      // Handle nested response structure
       const registerData = response.data;
       const isSuccess = response?.success !== false && registerData;
 
       if (isSuccess && registerData) {
-        // Handle different response structures for registration
         const userData = registerData.user || registerData;
         setUserSessionData(userData);
         sessionStorage.setItem('user', JSON.stringify(registerData));
 
-        // Try to get user information after registration
         try {
           const userInfo = await getCurrentUser();
-          console.log('👤 User info after registration:', userInfo);
           const userInfoData = userInfo?.data?.user;
           if (userInfoData) {
             setUserInformation(userInfoData);
           }
         } catch (userErr) {
-          console.warn('Failed to get user info after registration:', userErr);
+          Logger.warn('Failed to get user info after registration:', userErr);
         }
-
-        // After successful registration, we don't need to refresh the session
-        // The existing session continues to work and the user is now authenticated
-        console.log('✅ Registration completed, keeping existing session');
       } else {
-        console.log('❌ Registration failed or no data:', response);
+        Logger.log('❌ Registration failed or no data:', response);
         return response;
       }
     } catch (err: any) {

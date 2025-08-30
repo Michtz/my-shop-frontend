@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useProducts from '@/hooks/useProducts';
+import useProducts from '@/hooks/ProductsHook';
 import { useParams, useRouter } from 'next/navigation';
 import CategoryNavigation from '@/components/system/CategoryNavigation';
 import Carousel, { CarouselItem } from '@/components/system/Carousel';
@@ -9,7 +9,7 @@ import {
   Container,
   HorizontalScrollContainer,
 } from '@/components/system/Container';
-import { addToCart } from '@/requests/cart.request';
+import { updateCartItem } from '@/requests/cart.request';
 import { IProduct } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
 import { useFeedback } from '@/hooks/FeedbackHook';
@@ -113,7 +113,7 @@ const MainContainer: React.FC = () => {
         showFeedback('feedback.session-not-ready', 'error');
         return;
       }
-      await addToCart(sessionData.sessionId, id, 1);
+      await updateCartItem(sessionData.sessionId, id, 1);
       showFeedback('feedback.add-to-cart-success', 'success');
     } catch {
       showFeedback('feedback.data-saved-error', 'error');

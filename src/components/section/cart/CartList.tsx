@@ -1,7 +1,7 @@
 'use client';
 
 import { Container } from '@/components/system/Container';
-import useCart from '@/hooks/useCart';
+import useCart from '@/hooks/CartHook';
 import CartListItem from '@/components/section/cart/CartListItem';
 import CartSummary from '@/components/section/cart/CartSummaryContainer';
 import style from '@/styles/CartList.module.scss';

@@ -140,6 +140,7 @@ export const validateToken = async (): Promise<any> => {
     throw e;
   }
 };
+
 export const refreshToken = async (): Promise<any> => {
   try {
     const user = JSON.parse(sessionStorage.getItem('user') as any);

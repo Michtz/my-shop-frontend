@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { useModal } from '@/hooks/ModalProvide';
 import { createConfirmModal } from '@/components/modals/ConfirmModal';
-import useProducts from '@/hooks/useProducts';
+import useProducts from '@/hooks/ProductsHook';
 import { deleteProduct } from '@/requests/products.request';
 import { useFeedback } from '@/hooks/FeedbackHook';
-import { IProduct, ProductResponse } from '@/types/product.types';
+import { IProduct } from '@/types/product.types';
 import style from '@/styles/admin/AdminProductList.module.scss';
 import { ProductTable } from './ProductTable';
 import { useTranslation } from 'react-i18next';
@@ -70,11 +70,10 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
 
       if (!confirmed) return;
 
-      const result: ProductResponse = await deleteProduct(product._id);
+      const result = await deleteProduct(product._id);
       showFeedback('feedback.data-saved-success', 'success');
       await mutate('product', result);
-    } catch (e) {
-      console.error('Failed to delete product:', e);
+    } catch {
       showFeedback('feedback.data-saved-error', 'error');
     }
   };

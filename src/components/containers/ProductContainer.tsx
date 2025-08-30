@@ -1,9 +1,9 @@
 'use client';
 
 import React, { FC } from 'react';
-import useProduct from '@/hooks/useProduct';
-import useCart from '@/hooks/useCart';
-import { addToCart, replaceCartItems } from '@/requests/cart.request';
+import useProduct from '@/hooks/ProductHook';
+import useCart from '@/hooks/CartHook';
+import { updateCartItem, updateCartItems } from '@/requests/cart.request';
 import { useRouter } from 'next/navigation';
 import style from '@/styles/OverviewProduct.module.scss';
 import { mutate } from 'swr';
@@ -13,7 +13,7 @@ import { Container, FormContainer } from '@/components/system/Container';
 import { Controller, useForm } from 'react-hook-form';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
-import useProducts from '@/hooks/useProducts';
+import useProducts from '@/hooks/ProductsHook';
 import { Hr } from '@/components/system/Hr';
 import { useAuth } from '@/hooks/AuthHook';
 import { Logger } from '@/utils/Logger.class';
@@ -74,7 +74,7 @@ const ProductOverview: FC = () => {
         return;
       }
 
-      const result = await addToCart(
+      const result = await updateCartItem(
         sessionData.sessionId,
         product?._id as string,
         data.quantity,
@@ -118,7 +118,7 @@ const ProductOverview: FC = () => {
         updatedItems = [...cartItems, newItem];
       }
 
-      const result = await replaceCartItems(
+      const result = await updateCartItems(
         sessionData.sessionId,
         updatedItems as { productId: string; quantity: number }[],
       );
