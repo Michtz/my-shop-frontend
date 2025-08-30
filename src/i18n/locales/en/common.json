@@ -74,7 +74,14 @@
     "cancel": "Cancel",
     "save": "Save",
     "back": "Back",
-    "clearAll": "Clear All"
+    "clearAll": "Clear All",
+    "up": "Price Ascending",
+    "down": "Price Descending",
+    "sort": "Sort",
+    "abc": "Ascending (A–Z)",
+    "cba": "Descending (Z–A)"
+
+
   },
   "products": {
     "categories": {

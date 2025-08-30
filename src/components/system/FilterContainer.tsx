@@ -1,46 +1,84 @@
 'use client';
-import { FC, useRef, useState } from 'react';
+import { FC, useState } from 'react';
 import style from '@/styles/system/FilterContainer.module.scss';
-import * as React from 'react';
 import Button from '@/components/system/Button';
+import { IProduct, transKey } from '@/types/product.types';
+import { useTranslation } from 'react-i18next';
+import { useContentTranslate } from '@/hooks/ContentTranslationHook';
+import useProducts from '@/hooks/ProductsHook';
+
+/*
+ * sort button with locig
+ */
 
 export type FilterType = { value: string; code: FilterOptionCode };
-type FilterOptionCode = 'relevance' | 'down' | 'up';
-export type PriceRangeType = { max: number; min: number };
-interface FilterContainerProps {
-  setActiveSort: (value: FilterType) => void;
-  activeSort: FilterType;
-  setPriceRange?: ({ max, min }: PriceRangeType) => void;
-  priceRange?: PriceRangeType;
-}
-const FilterContainer: FC<FilterContainerProps> = ({
-  setActiveSort,
-  activeSort,
-  // setPriceRange,
-  // priceRange,
-}) => {
-  const sortRefDropdown = useRef<HTMLLIElement>(null);
-  // const priceRangeRef = useRef<HTMLLIElement>(null);
-  const [isSortOpen, setIsSortOpen] = useState(false);
-  // const [isPriceRangeOpen, setIsPriceRangeOpen] = useState(false);
 
-  const handleSort = (opt: FilterType) => {
-    setActiveSort(opt);
-    setIsSortOpen(false);
+export type FilterOptionCode = 'relevance' | 'down' | 'up' | 'abc' | 'cba';
+
+interface FilterContainerProps {
+  items: IProduct[];
+  setItems: (items: IProduct[]) => void;
+  sortCode: FilterOptionCode;
+  setSortCode: (code: FilterOptionCode) => void;
+}
+
+const handleSortArticle = (
+  activeSortCode: string,
+  sortedArticles: IProduct[],
+  setSortedArticles: (items: IProduct[]) => void,
+  products: IProduct[],
+  translate: (values?: string | transKey, dynamic?: boolean) => string,
+) => {
+  const sorters: Record<string, (a: IProduct, b: IProduct) => number> = {
+    up: (a, b) => a.price - b.price,
+    down: (a, b) => b.price - a.price,
+    abc: (a, b) => translate(a?.name).localeCompare(translate(b?.name)),
+    cba: (a, b) => translate(b?.name).localeCompare(translate(a?.name)),
   };
 
-  const CATEGORIES: FilterType[] = [
-    { value: 'Relevanz', code: 'relevance' },
-    { value: 'Preis absteigend', code: 'down' },
-    { value: 'Preis aufsteigend', code: 'up' },
+  if (activeSortCode === 'relevance') {
+    setSortedArticles(products);
+    return;
+  }
+
+  const sorter = sorters[activeSortCode];
+  if (sorter) {
+    setSortedArticles([...sortedArticles].sort(sorter));
+  }
+};
+
+// Todo: add price sort when time
+const FilterContainer: FC<FilterContainerProps> = ({
+  items,
+  setItems,
+  sortCode,
+  setSortCode,
+}) => {
+  const { t } = useTranslation();
+  const { products } = useProducts();
+  const { translate } = useContentTranslate();
+  const [wasSortTriggert, setWasSortTriggert] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+
+  const handleSort = (opt: FilterType) => {
+    handleSortArticle(opt.code, items, setItems, products, translate);
+    setSortCode(opt.code);
+    setIsSortOpen(false);
+    if (!wasSortTriggert) setWasSortTriggert(true);
+  };
+
+  const filterTypes: FilterType[] = [
+    { value: t('common.relevance'), code: 'relevance' },
+    { value: t('common.down'), code: 'down' },
+    { value: t('common.up'), code: 'up' },
+    { value: t('common.abc'), code: 'abc' },
+    { value: t('common.cba'), code: 'cba' },
   ];
+
   return (
     <>
       <div className={style.optionContainer}>
-        <span
-          className={`${style.navItem} ${style.languageDropdown}`}
-          ref={sortRefDropdown}
-        >
+        <span className={`${style.navItem} ${style.languageDropdown}`}>
           <span
             onClick={() => setIsSortOpen(!isSortOpen)}
             className={style.sortIcon}
@@ -51,15 +89,17 @@ const FilterContainer: FC<FilterContainerProps> = ({
               value={'ghost'}
               icon={'filter_list'}
             >
-              Sortieren
+              {wasSortTriggert
+                ? filterTypes.find((type) => type.code === sortCode)?.value
+                : t('common.sort')}
             </Button>
           </span>
           {isSortOpen && (
             <div className={style.dropdownMenu}>
-              {CATEGORIES.map((opt) => (
+              {filterTypes.map((opt) => (
                 <span
                   key={opt.code}
-                  className={`${style.dropdownItem} ${activeSort.code === opt.code ? style.activeLanguage : ''}`}
+                  className={`${style.dropdownItem} ${sortCode === opt.code ? style.activeLanguage : ''}`}
                   onClick={() => handleSort(opt)}
                 >
                   {opt.value}
@@ -68,28 +108,6 @@ const FilterContainer: FC<FilterContainerProps> = ({
             </div>
           )}
         </span>
-        {/* Todo: finish price range filter option*/}
-        {/*<span*/}
-        {/*  className={`${style.navItem} ${style.languageDropdown}`}*/}
-        {/*  ref={sortRefDropdown}*/}
-        {/*>*/}
-        {/*  <span*/}
-        {/*    onClick={() => setIsPriceRangeOpen(!isPriceRangeOpen)}*/}
-        {/*    className={style.sortIcon}*/}
-        {/*  >*/}
-        {/*    <MaterialIcon icon={'euro'} /> Preisspanne*/}
-        {/*  </span>*/}
-
-        {/*  {isPriceRangeOpen && (*/}
-        {/*    <div className={style.dropdownMenu}>*/}
-        {/*      <PriceRangeSlider*/}
-        {/*        minPrice={priceRange?.min}*/}
-        {/*        maxPrice={priceRange?.max}*/}
-        {/*        onClose={() => setIsPriceRangeOpen(false)}*/}
-        {/*      />*/}
-        {/*    </div>*/}
-        {/*  )}*/}
-        {/*</span>*/}
       </div>
     </>
   );

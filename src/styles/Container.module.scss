@@ -73,6 +73,9 @@
   &[data-gap='2'] {
     gap: 2rem;
   }
+  &[data-gap='4'] {
+    gap: 4rem;
+  }
 
   &[data-padding='true'] {
     padding: 10%;

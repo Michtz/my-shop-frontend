@@ -18,8 +18,7 @@ import image1 from '@/assets/Slide2_Homepage.webp';
 import image2 from '@/assets/Homepage_Wellness2.webp';
 import image3 from '@/assets/Firmenangebot.webp';
 import FilterContainer, {
-  FilterType,
-  PriceRangeType,
+  FilterOptionCode,
 } from '@/components/system/FilterContainer';
 import { useContentTranslate } from '@/hooks/ContentTranslationHook';
 
@@ -37,14 +36,7 @@ const MainContainer: React.FC = () => {
   const params: Params = useParams();
   const { translate } = useContentTranslate();
   const { sessionData, isSessionReady } = useAuth();
-  const [activeSort, setActiveSort] = useState<FilterType>({
-    value: 'Relevanz',
-    code: 'relevance',
-  });
-  const [priceRange, setPriceRange] = useState<PriceRangeType>({
-    max: 99999,
-    min: 0,
-  });
+  const [activeSort, setActiveSort] = useState<FilterOptionCode>('relevance');
 
   const category: string | undefined = getCategoryName(
     params?.category as string,
@@ -53,29 +45,22 @@ const MainContainer: React.FC = () => {
   const [articles, setArticles] = useState<IProduct[]>(
     filteredProducts(products, category),
   );
-
-  const handleSortArticle = () => {
-    if (activeSort.code === 'up')
-      setArticles([...articles].sort((a, b) => a.price - b.price));
-    if (activeSort.code === 'down')
-      setArticles([...articles].sort((a, b) => b.price - a.price));
-  };
-
-  const handlePriceRangeChange = () => {
-    articles.filter(
-      (article) =>
-        article.price >= priceRange.min && article.price <= priceRange.max,
-    );
-  };
+  const [sortedArticles, setSortedArticles] = useState<IProduct[]>(
+    filteredProducts(products, category),
+  );
 
   const router = useRouter();
+
   useEffect(() => {
     if (isLoading) return;
-    setArticles(filteredProducts(products, category));
-    handleSortArticle();
-    handlePriceRangeChange();
+    const filteredProductsState: IProduct[] = filteredProducts(
+      products,
+      category,
+    );
+    setSortedArticles(filteredProductsState);
+    setArticles(filteredProductsState);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, category, activeSort]);
+  }, [isLoading, category]);
 
   const slides: CarouselItem[] = [
     {
@@ -156,14 +141,14 @@ const MainContainer: React.FC = () => {
       <CategoryNavigation activeCategory={category} />
 
       <FilterContainer
-        priceRange={priceRange}
-        setPriceRange={setPriceRange}
-        setActiveSort={setActiveSort}
-        activeSort={activeSort}
+        items={sortedArticles}
+        setItems={setSortedArticles}
+        sortCode={activeSort}
+        setSortCode={(newCode: FilterOptionCode) => setActiveSort(newCode)}
       />
 
       <CartsContainer>
-        {articles?.map((product) => {
+        {sortedArticles?.map((product) => {
           return (
             <ProductCard
               key={product._id}

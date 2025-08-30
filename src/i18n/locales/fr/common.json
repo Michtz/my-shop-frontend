@@ -74,7 +74,14 @@
     "cancel": "Annuler",
     "save": "Enregistrer",
     "back": "Retour",
-    "clearAll": "Tout effacer"
+    "clearAll": "Tout effacer",
+      "relevance": "Pertinence",
+    "up": "Prix croissant",
+    "down": "Prix décroissant",
+    "sort": "Trier",
+    "abc": "Croissant (A–Z)",
+    "cba": "Décroissant (Z–A)"
+
   },
   "products": {
     "categories": {

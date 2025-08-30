@@ -1,12 +1,11 @@
 'use client';
 
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import useProduct from '@/hooks/ProductHook';
 import useCart from '@/hooks/CartHook';
 import { updateCartItem, updateCartItems } from '@/requests/cart.request';
 import { useRouter } from 'next/navigation';
 import style from '@/styles/OverviewProduct.module.scss';
-import { mutate } from 'swr';
 import Image from 'next/image';
 import NumberStepper from '@/components/system/NumberStepper';
 import { Container, FormContainer } from '@/components/system/Container';
@@ -20,24 +19,22 @@ import { Logger } from '@/utils/Logger.class';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { useTranslation } from 'react-i18next';
 import { useContentTranslate } from '@/hooks/ContentTranslationHook';
+import FilterContainer, {
+  FilterOptionCode,
+} from '@/components/system/FilterContainer';
+import { IProduct } from '@/types/product.types';
 
 interface FormFields {
   quantity: number;
 }
 
-const getDefaultValues = (): any => {
-  return {
-    quantity: 1,
-  };
-};
-
 const ProductOverview: FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation([]);
   const { product, availableStock, isLowStock, isOutOfStock } = useProduct();
   const router = useRouter();
   const { products } = useProducts();
   const { sessionData, isSessionReady } = useAuth();
-  const { cart, cartItems } = useCart();
+  const { cart, cartItems, mutate } = useCart();
   const { showFeedback } = useFeedback();
   const { translate } = useContentTranslate();
   const {
@@ -47,15 +44,22 @@ const ProductOverview: FC = () => {
     formState: { isSubmitting },
   } = useForm<FormFields>({
     mode: 'onChange',
-    defaultValues: getDefaultValues(),
+    defaultValues: {
+      quantity: 1,
+    },
   });
 
+  const [activeSort, setActiveSort] = useState<FilterOptionCode>('relevance');
+  const [sortedArticles, setSortedArticles] = useState<IProduct[]>(products);
   const watchedQuantity = watch('quantity', 1);
+
+  useEffect(() => {
+    setSortedArticles(products);
+  }, []);
 
   const submit = async (data: any) => {
     try {
-      console.log(sessionData);
-
+      mutate(data); // to get the correct quantity
       if (isOutOfStock) {
         showFeedback(t('product.outOfStock'), 'error');
         return;
@@ -68,7 +72,6 @@ const ProductOverview: FC = () => {
         );
         return;
       }
-      console.log(!sessionData?.sessionId, !isSessionReady);
       if (!isSessionReady || !sessionData?.sessionId) {
         showFeedback('feedback.session-not-ready', 'error');
         return;
@@ -91,7 +94,7 @@ const ProductOverview: FC = () => {
   const handleAddToCart = async (id: string) => {
     try {
       if (!cartItems || !isSessionReady || !sessionData?.sessionId) {
-        console.warn('Cart items or session not available');
+        Logger.warn('Cart items or session not available');
         return;
       }
 
@@ -146,9 +149,7 @@ const ProductOverview: FC = () => {
             {t('product.onlyXLeft', { count: availableStock })}
           </span>
         ) : (
-          <span style={{ color: 'green' }}>
-            {t('product.xAvailable', { count: availableStock })}
-          </span>
+          <span>{t('product.xAvailable', { count: availableStock })}</span>
         )}
       </div>
     </div>
@@ -212,26 +213,45 @@ const ProductOverview: FC = () => {
   };
 
   return (
-    <Container flow={'column'} padding={false} maxWidth={'1150'}>
-      <div className={style.overviewContainer}>
-        <span className={style.imageContainer}>
-          {product?.imageUrl && (
-            <Image
-              src={product?.imageUrl as string}
-              alt={translate(product?.name) || 'Product image'}
-              fill
-              className={style.productImage}
-              priority
-            />
-          )}
-        </span>
-        <InformationContainer />
-      </div>
-      <Hr />
-      <div className={style.overviewContainer}>
-        <h1 className={style.addTitle}>{t('product.otherCustomersBought')}</h1>
+    <>
+      <Container flow={'column'} padding={false} maxWidth={'1150'}>
+        <>
+          <div className={style.overviewContainer}>
+            <span className={style.imageContainer}>
+              {product?.imageUrl && (
+                <Image
+                  src={product?.imageUrl as string}
+                  alt={translate(product?.name) || 'Product image'}
+                  fill
+                  className={style.productImage}
+                  priority
+                />
+              )}
+            </span>
+            <InformationContainer />
+          </div>
+          <Hr />
+        </>
+      </Container>
+
+      <Container
+        alignItems={'center'}
+        padding={false}
+        flow={'column'}
+        gap={'4'}
+        maxWidth={'1150'}
+      >
+        <h2 style={{ marginTop: '2rem' }}>
+          {t('product.otherCustomersBought')}
+        </h2>
+        <FilterContainer
+          items={sortedArticles}
+          setItems={setSortedArticles}
+          sortCode={activeSort}
+          setSortCode={(newCode: FilterOptionCode) => setActiveSort(newCode)}
+        />
         <CartsContainer>
-          {products?.map((product) => {
+          {sortedArticles?.map((product) => {
             return (
               <ProductCard
                 key={product._id}
@@ -246,8 +266,8 @@ const ProductOverview: FC = () => {
             );
           })}
         </CartsContainer>
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 };
 

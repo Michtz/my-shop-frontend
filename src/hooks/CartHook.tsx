@@ -51,7 +51,6 @@ const useCart = (): CartResponse => {
     },
     {
       suspense: false,
-      refreshInterval: 30000,
     },
   );
 
