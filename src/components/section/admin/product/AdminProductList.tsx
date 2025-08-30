@@ -21,7 +21,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   onEditProduct,
   onCreateProduct,
 }) => {
-  const { products, isLoading, error } = useProducts();
+  const { products, isLoading, error } = useProducts(); // Todo: use admin product fetch herer to fetch not activeitems as well (coming soon)
   const { awaitModalResult } = useModal();
   const { showFeedback } = useFeedback();
   const { t } = useTranslation();
