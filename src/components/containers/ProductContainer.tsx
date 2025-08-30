@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import useProduct from '@/hooks/useProduct';
 import useCart from '@/hooks/useCart';
 import { addToCart, replaceCartItems } from '@/requests/cart.request';
@@ -39,8 +39,11 @@ const ProductOverview: FC = () => {
   const { sessionData, isSessionReady } = useAuth();
   const { cart, cartItems } = useCart();
   const { showFeedback } = useFeedback();
-  const language: string = i18n.language || 'de';
+  const [language, setLanguage] = useState<string>(i18n.language || 'de');
 
+  useEffect(() => {
+    setLanguage(i18n.language);
+  }, [i18n.language]);
   const {
     control,
     handleSubmit,

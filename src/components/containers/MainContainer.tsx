@@ -36,9 +36,12 @@ const MainContainer: React.FC = () => {
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
   const { i18n } = useTranslation();
-  const language: string = i18n.language || 'de';
+  const [language, setLanguage] = useState<string>(i18n.language || 'de');
 
-  console.log(params.locale, i18n.language);
+  useEffect(() => {
+    setLanguage(i18n.language);
+  }, [i18n.language]);
+
   const { sessionData, isSessionReady } = useAuth();
   const [activeSort, setActiveSort] = useState<FilterType>({
     value: 'Relevanz',
