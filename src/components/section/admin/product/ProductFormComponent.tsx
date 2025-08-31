@@ -3,6 +3,7 @@
 import style from '@/styles/admin/ProductForm.module.scss';
 import { useState, DragEvent, ChangeEvent } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 
 import Input from '@/components/system/Input';
@@ -58,6 +59,7 @@ const validateStock = (stock: number | undefined) => {
 const ProductForm = ({ onClose, product }: ProductFormProps) => {
   const { showFeedback } = useFeedback();
   const { transformFieldError } = useError();
+  const { t } = useTranslation();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | undefined>(
     product?.imageUrl,
@@ -155,15 +157,15 @@ const ProductForm = ({ onClose, product }: ProductFormProps) => {
 
       if (product?._id) {
         await updateProduct(product._id, productData, imageFile || undefined);
-        showFeedback('Produkt erfolgreich aktualisiert!', 'success');
+        showFeedback(t('feedback.product-updated-success'), 'success');
       } else {
         await createProduct(productData, imageFile || undefined);
-        showFeedback('Produkt erfolgreich erstellt!', 'success');
+        showFeedback(t('feedback.product-created-success'), 'success');
       }
       onClose();
     } catch (error: any) {
       Logger.error('Operation failed:', error);
-      showFeedback('Fehler bei der Operation!', 'error');
+      showFeedback(t('feedback.operation-error'), 'error');
     }
   };
 

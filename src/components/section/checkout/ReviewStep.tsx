@@ -20,7 +20,7 @@ const ReviewForm = () => {
 
   const handleFinalPayment = async () => {
     if (!sessionData?.sessionId) {
-      showFeedback('Session not available', 'error');
+      showFeedback(t('feedback.session-not-available'), 'error');
       return;
     }
 
@@ -30,7 +30,7 @@ const ReviewForm = () => {
       const paymentMethodId = localStorage.getItem('paymentMethodId');
       if (!paymentMethodId) {
         showFeedback(
-          'Payment method not found. Please go back to payment step.',
+          t('feedback.payment-method-not-found'),
           'error',
         );
         setIsProcessing(false);
@@ -64,7 +64,7 @@ const ReviewForm = () => {
           router.push(`/checkout/${orderNumber}`);
         } else {
           showFeedback(
-            'Order created but order number missing. Check console for details.',
+            t('feedback.order-number-missing'),
             'error',
           );
         }

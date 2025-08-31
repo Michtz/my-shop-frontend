@@ -76,8 +76,8 @@
     "back": "Zurück",
     "clearAll": "Alle löschen",
     "relevance": "Relevanz",
-      "up": "Preis Aufsteigend",
-      "down": "Preis Absteigend",
+    "up": "Preis Aufsteigend",
+    "down": "Preis Absteigend",
     "sort": "Sortieren",
     "abc": "Aufsteigend (A–Z)",
     "cba": "Absteigend (Z–A)"
@@ -310,9 +310,16 @@
     "profileUpdatedSuccess": "Profil erfolgreich aktualisiert!",
     "logoutSuccess": "Erfolgreich abgemeldet",
     "logoutError": "Fehler beim Abmelden",
-    "add-to-cart-success": "Produkt erfolgreich hinzugefügt",
+    "add-to-cart-success": "Produkt wurde Ihrem Warenkorb hinzugefügt",
     "login-success": "Erfolgreich angemeldet",
-    "login-error": "Anmeldung fehlgeschlagen"
+    "login-error": "Anmeldung fehlgeschlagen",
+    "session-not-ready": "Sitzung hat ein Problem bitte laden sie die Seite neu",
+    "session-not-available": "Sitzung hat ein Problem bitte laden sie die Seite neu",
+    "payment-method-not-found": "Zahlungsmethode nicht gefunden. Bitte kehren Sie zum Zahlungsschritt zurück.",
+    "order-number-missing": "Bestellung erstellt, aber Bestellnummer fehlt. Überprüfen Sie die Konsole für Details.",
+    "product-updated-success": "Produkt erfolgreich aktualisiert!",
+    "product-created-success": "Produkt erfolgreich erstellt!",
+    "operation-error": "Fehler bei der Operation!"
   },
   "footer": {
     "navigation": {

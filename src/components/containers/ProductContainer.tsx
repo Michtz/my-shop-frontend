@@ -92,7 +92,7 @@ const ProductOverview: FC = () => {
         return;
       }
       if (!isSessionReady || !sessionData?.sessionId) {
-        showFeedback('feedback.session-not-ready', 'error');
+        showFeedback(t('feedback.session-not-ready'), 'error');
         return;
       }
 
@@ -102,9 +102,9 @@ const ProductOverview: FC = () => {
         data.quantity,
       );
       await mutate('cart', result);
-      showFeedback('feedback.add-to-cart-success', 'success');
+      showFeedback(t('feedback.add-to-cart-success'), 'success');
     } catch (error) {
-      showFeedback('feedback.data-saved-error', 'error');
+      showFeedback(t('feedback.data-saved-error'), 'error');
       Logger.error('Failed to update cart:', error);
       await mutate('cart', cart);
     }

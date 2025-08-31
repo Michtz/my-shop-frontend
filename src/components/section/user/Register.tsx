@@ -69,14 +69,14 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
       );
 
       if (!response) {
-        showFeedback('feedback.login-success', 'success');
+        showFeedback(t('feedback.login-success'), 'success');
         router.push('/profile');
       } else {
-        showFeedback('feedback.login-error', 'error');
+        showFeedback(t('feedback.login-error'), 'error');
         setRegisterErrors(response?.message);
       }
     } catch (err) {
-      showFeedback('feedback.login-error', 'error');
+      showFeedback(t('feedback.login-error'), 'error');
       Logger.error('Registration failed:', err);
     }
   };

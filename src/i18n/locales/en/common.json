@@ -75,6 +75,7 @@
     "save": "Save",
     "back": "Back",
     "clearAll": "Clear All",
+    "relevance": "Relevance",
     "up": "Price Ascending",
     "down": "Price Descending",
     "sort": "Sort",
@@ -313,7 +314,14 @@
     "logoutError": "Error during logout",
     "add-to-cart-success": "Product added successfully",
     "login-success": "Successfully logged in",
-    "login-error": "Login failed"
+    "login-error": "Login failed",
+    "session-not-ready": "Session not ready",
+    "session-not-available": "Session not available",
+    "payment-method-not-found": "Payment method not found. Please go back to payment step.",
+    "order-number-missing": "Order created but order number missing. Check console for details.",
+    "product-updated-success": "Product updated successfully!",
+    "product-created-success": "Product created successfully!",
+    "operation-error": "Operation failed!"
   },
   "footer": {
     "navigation": {

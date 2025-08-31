@@ -71,10 +71,10 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
       if (!confirmed) return;
 
       const result = await deleteProduct(product._id);
-      showFeedback('feedback.data-saved-success', 'success');
+      showFeedback(t('feedback.data-saved-success'), 'success');
       await mutate('product', result);
     } catch {
-      showFeedback('feedback.data-saved-error', 'error');
+      showFeedback(t('feedback.data-saved-error'), 'error');
     }
   };
 

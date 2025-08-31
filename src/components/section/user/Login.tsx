@@ -48,9 +48,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
       if (typeof response === 'string') showFeedback(response, 'error');
       if (!response.success || goTo === null) return;
       router.replace(goTo || '/profile');
-      showFeedback('feedback.login-success', 'success');
+      showFeedback(t('feedback.login-success'), 'success');
     } catch (err) {
-      showFeedback('feedback.login-error', 'error');
+      showFeedback(t('feedback.login-error'), 'error');
       Logger.error('Login failed:', err);
     }
   };

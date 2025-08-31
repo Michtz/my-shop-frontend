@@ -75,7 +75,7 @@
     "save": "Enregistrer",
     "back": "Retour",
     "clearAll": "Tout effacer",
-      "relevance": "Pertinence",
+    "relevance": "Pertinence",
     "up": "Prix croissant",
     "down": "Prix décroissant",
     "sort": "Trier",
@@ -314,7 +314,14 @@
     "logoutError": "Erreur lors de la déconnexion",
     "add-to-cart-success": "Produit ajouté avec succès",
     "login-success": "Connexion réussie",
-    "login-error": "Échec de la connexion"
+    "login-error": "Échec de la connexion",
+    "session-not-ready": "Session non disponible",
+    "session-not-available": "Session non disponible",
+    "payment-method-not-found": "Méthode de paiement introuvable. Veuillez retourner à l'étape de paiement.",
+    "order-number-missing": "Commande créée mais numéro de commande manquant. Vérifiez la console pour les détails.",
+    "product-updated-success": "Produit mis à jour avec succès !",
+    "product-created-success": "Produit créé avec succès !",
+    "operation-error": "Échec de l'opération !"
   },
   "footer": {
     "navigation": {

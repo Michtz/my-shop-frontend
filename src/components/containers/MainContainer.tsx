@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import useProducts from '@/hooks/ProductsHook';
 import { useParams, useRouter } from 'next/navigation';
 import CategoryNavigation from '@/components/system/CategoryNavigation';
@@ -36,6 +37,7 @@ const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
   const { cartItems } = useCart();
   const { showFeedback } = useFeedback();
+  const { t } = useTranslation();
   const params: Params = useParams();
   const { translate } = useContentTranslate();
   const { sessionData, isSessionReady } = useAuth();
@@ -98,13 +100,13 @@ const MainContainer: React.FC = () => {
   const handleAddToCart = async (id: string) => {
     try {
       if (!isSessionReady || !sessionData?.sessionId) {
-        showFeedback('feedback.session-not-ready', 'error');
+        showFeedback(t('feedback.session-not-ready'), 'error');
         return;
       }
       await updateCartItem(sessionData.sessionId, id, 1);
-      showFeedback('feedback.add-to-cart-success', 'success');
+      showFeedback(t('feedback.add-to-cart-success'), 'success');
     } catch {
-      showFeedback('feedback.data-saved-error', 'error');
+      showFeedback(t('feedback.data-saved-error'), 'error');
     }
   };
 
