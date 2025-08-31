@@ -1,6 +1,6 @@
 'use client';
 
-import { Container } from '@/components/system/Container';
+import { Container, Title } from '@/components/system/Container';
 import useCart from '@/hooks/CartHook';
 import CartListItem from '@/components/section/cart/CartListItem';
 import CartSummary from '@/components/section/cart/CartSummaryContainer';
@@ -48,6 +48,7 @@ const CartList: FC<Props> = ({ review }) => {
 
       <div className={style.summContainerSkeleton}>
         <Skeleton width="100%" height="200px" borderRadius="8px" />
+        {/* only a backup now the overly handles the laoding view*/}
       </div>
     </>
   );
@@ -85,7 +86,7 @@ const CartList: FC<Props> = ({ review }) => {
       alignItems={'center'}
       maxWidth={'1150'}
     >
-      {!review && <h2>{t('cart.title')}</h2>}
+      {!review && <Title>{t('cart.title')}</Title>}
       {isLoading ? skeleton : list}
     </Container>
   );

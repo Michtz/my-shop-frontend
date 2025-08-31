@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Container } from '@/components/system/Container';
+import { Container, Title } from '@/components/system/Container';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { useAuth } from '@/hooks/AuthHook';
 import { confirmPayment } from '@/requests/payment.request';
@@ -99,7 +99,7 @@ const ReviewStep: React.FC = () => {
 
   return (
     <Container flow={'column'} padding={false} alignItems={'center'}>
-      <h2>{t('checkout.reviewOrder')}</h2>
+      <Title>{t('checkout.reviewOrder')}</Title>
       <CartList review />
       <ReviewForm />
     </Container>

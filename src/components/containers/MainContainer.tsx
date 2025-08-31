@@ -8,6 +8,7 @@ import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
 import {
   Container,
   HorizontalScrollContainer,
+  Title,
 } from '@/components/system/Container';
 import { updateCartItem } from '@/requests/cart.request';
 import { IProduct } from '@/types/product.types';
@@ -111,6 +112,7 @@ const MainContainer: React.FC = () => {
     router.push(`/product/${id}`);
   };
 
+  let previewItemsCount: number = 3;
   return (
     <Container
       flow={'column'}
@@ -120,11 +122,14 @@ const MainContainer: React.FC = () => {
       maxWidth={'1150'}
       gap={'2'}
     >
-      <h2 style={{ marginTop: '2rem' }}>{category}</h2>
+      <Title>{category}</Title>
       {!category && <Carousel items={slides} controls={false} />}
       <HorizontalScrollContainer>
         {articles?.map((product, i: number) => {
-          if (i > 3) return;
+          if (i > previewItemsCount) return;
+          if (product.stockQuantity === 0) {
+            previewItemsCount = previewItemsCount++;
+          }
           const matchingItem = cartItems?.find(
             (item) => item?.productId === product._id,
           );

@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import style from '@/styles/OverviewProduct.module.scss';
 import Image from 'next/image';
 import NumberStepper from '@/components/system/NumberStepper';
-import { Container, FormContainer } from '@/components/system/Container';
+import { Container, FormContainer, Title } from '@/components/system/Container';
 import { Controller, useForm } from 'react-hook-form';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
@@ -23,6 +23,7 @@ import FilterContainer, {
   FilterOptionCode,
 } from '@/components/system/FilterContainer';
 import { IProduct } from '@/types/product.types';
+import LoadingSpinner from '@/components/system/LoadingSpinner';
 
 interface FormFields {
   quantity: number;
@@ -53,6 +54,9 @@ const ProductOverview: FC = () => {
   const [activeSort, setActiveSort] = useState<FilterOptionCode>('relevance');
   const [sortedArticles, setSortedArticles] = useState<IProduct[]>(products);
   const [article, setArticle] = useState<IProduct>(product as IProduct);
+  const [imageUrl, setImageUrl] = useState<string | undefined>(
+    product?.imageUrl,
+  );
   const watchedQuantity = watch('quantity', 1);
   const matchingItem = cartItems?.find(
     (item) => item?.productId === article?._id,
@@ -63,11 +67,13 @@ const ProductOverview: FC = () => {
 
   useEffect(() => {
     setSortedArticles(products);
-  }, []);
+  }, [products !== sortedArticles && products?.length > 0]);
 
   useEffect(() => {
     if (!product) return;
     setArticle(product);
+    if (!product.imageUrl) return;
+    setImageUrl(product.imageUrl);
   }, [product]);
 
   const submit = async (data: any) => {
@@ -150,7 +156,12 @@ const ProductOverview: FC = () => {
     router.push(`/product/${id}`);
   };
 
-  if (isLoading) return <>loading</>;
+  if (isLoading)
+    return (
+      <Container alignItems={'center'}>
+        <LoadingSpinner color={'gray'} />
+      </Container>
+    );
 
   const StockInfo: FC = () => (
     <div className={style.stockInfo}>
@@ -237,11 +248,12 @@ const ProductOverview: FC = () => {
         <>
           <div className={style.overviewContainer}>
             <span className={style.imageContainer}>
-              {article?.imageUrl && (
+              {imageUrl && (
                 <Image
-                  src={article?.imageUrl as string}
+                  src={imageUrl as string}
                   alt={translate(article?.name) || 'Product image'}
                   fill
+                  loading={'eager'}
                   className={style.productImage}
                   priority
                 />
@@ -260,9 +272,7 @@ const ProductOverview: FC = () => {
         gap={'4'}
         maxWidth={'1150'}
       >
-        <h2 style={{ marginTop: '2rem' }}>
-          {t('product.otherCustomersBought')}
-        </h2>
+        <Title>{t('product.otherCustomersBought')}</Title>
         <FilterContainer
           items={sortedArticles}
           setItems={setSortedArticles}

@@ -69,3 +69,6 @@ export const HorizontalScrollContainer: FC<ContainerProps> = ({ children }) => (
     <div className={style.scrollWrapper}>{children}</div>
   </div>
 );
+export const Title: FC<ContainerProps> = ({ children }) => (
+  <h2 className={style.title}>{children}</h2>
+);

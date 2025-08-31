@@ -8,7 +8,7 @@ import {
   PaymentElement,
 } from '@stripe/react-stripe-js';
 import { stripePromise } from '@/lib/stripe';
-import { Container } from '@/components/system/Container';
+import { Container, Title } from '@/components/system/Container';
 import Button from '@/components/system/Button';
 import { useAuth } from '@/hooks/AuthHook';
 import { createPaymentIntent } from '@/requests/payment.request';
@@ -143,7 +143,7 @@ const PaymentStep: React.FC = () => {
   if (!clientSecret) {
     return (
       <Container flow={'column'}>
-        <h2>{t('checkout.paymentInformation')}</h2>
+        <Title>{t('checkout.paymentInformation')}</Title>
         <div>{t('checkout.loadingPayment')}</div>
         <div style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>
           {sessionData?.sessionId
@@ -156,7 +156,7 @@ const PaymentStep: React.FC = () => {
 
   return (
     <div style={{ width: 'fit-content' }}>
-      <h2>{t('checkout.paymentInformation')}</h2>
+      <Title>{t('checkout.paymentInformation')}</Title>
       <div style={{ fontSize: '12px', color: 'red', marginTop: '8px' }}>
         Use 4242 4242 4242 4242 as card number to test
       </div>

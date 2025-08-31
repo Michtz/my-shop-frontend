@@ -3,6 +3,7 @@ import style from '@/styles/CartSummaryContainer.module.scss';
 import Button from '@/components/system/Button';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { Title } from '@/components/system/Container';
 
 interface CartSummaryProps {
   subtotal: number;
@@ -34,7 +35,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
   return (
     <div className={style.summaryContainerContainer}>
       <div className={style.summaryContainer}>
-        <h2 className={style.title}>{t('cart.summary')}</h2>
+        <Title>{t('cart.summary')}</Title>
 
         <div className={style.summaryRow}>
           <span>{t('cart.subtotal')}</span>

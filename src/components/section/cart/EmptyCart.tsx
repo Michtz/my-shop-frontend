@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { Container } from '@/components/system/Container';
+import { Container, Title } from '@/components/system/Container';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,7 @@ const EmptyCart: FC = () => {
 
   return (
     <Container flow={'column'}>
-      <h2>{t('cart.emptyTitle')}</h2>
+      <Title>{t('cart.emptyTitle')}</Title>
       <ButtonContainer>
         <Button onClick={() => router.replace('/')}>
           {t('cart.continueShopping')}

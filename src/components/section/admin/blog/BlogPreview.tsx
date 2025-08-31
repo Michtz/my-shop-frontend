@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import BlogPost from '@/components/section/blog/BlogPost';
 import { IBlogPost } from '@/types/blog.types';
 import styles from '@/styles/admin/blog/BlogPreview.module.scss';
+import { Title } from '@/components/system/Container';
 
 interface BlogPreviewProps {
   post: IBlogPost;
@@ -19,7 +20,7 @@ const BlogPreview: React.FC<BlogPreviewProps> = ({ post, onBack, onEdit }) => {
     <div className={styles.blogPreview}>
       <div className={styles.previewHeader}>
         <div className={styles.previewInfo}>
-          <h2>{t('admin.preview', 'Preview')}</h2>
+          <Title>{t('admin.preview', 'Preview')}</Title>
           <p className={styles.previewNote}>
             {t(
               'admin.previewNote',

@@ -13,6 +13,7 @@ import useSocket from '@/hooks/SocketHook';
 
 interface ProductsResponse {
   products: IProduct[];
+  allProducts: IProduct[];
   isLoading: boolean;
   error: string | null;
   isConnected: boolean;
@@ -34,12 +35,32 @@ const useProducts = (): ProductsResponse => {
     },
   );
 
+  const processAvailableProducts = (): IProduct[] => {
+    if (!data?.data) return [];
+
+    return (data.data as IProduct[])
+      .filter((product) => (product.isActive = true))
+      .filter((product) => product.stockQuantity > 0)
+
+      .map((product) => {
+        const availableStock = product.stockQuantity ?? 0;
+        const isLowStock = availableStock > 0 && availableStock <= 5;
+        const isOutOfStock = availableStock <= 0;
+
+        return {
+          ...product,
+          cartCount: cartCounts[product._id] || 0,
+          isLowStock,
+          isOutOfStock,
+          lastStockUpdate: new Date(),
+        };
+      });
+  };
   const processProducts = (): IProduct[] => {
     if (!data?.data) return [];
 
     return (data.data as IProduct[]).map((product) => {
-      const availableStock =
-        product.availableQuantity ?? product.stockQuantity ?? 0;
+      const availableStock = product.stockQuantity ?? 0;
       const isLowStock = availableStock > 0 && availableStock <= 5;
       const isOutOfStock = availableStock <= 0;
 
@@ -53,7 +74,8 @@ const useProducts = (): ProductsResponse => {
     });
   };
 
-  const processedProducts = processProducts();
+  const processedProductsAll = processProducts();
+  const processedProducts = processAvailableProducts();
   const lowStockProducts = processedProducts.filter((p) => p.isLowStock);
   const outOfStockProducts = processedProducts.filter((p) => p.isOutOfStock);
   const totalCartCount = Object.values(cartCounts).reduce(
@@ -67,6 +89,7 @@ const useProducts = (): ProductsResponse => {
 
   return {
     products: processedProducts,
+    allProducts: processedProductsAll,
     isLoading,
     error: errorMessage,
     isConnected,

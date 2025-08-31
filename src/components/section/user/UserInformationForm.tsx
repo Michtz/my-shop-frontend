@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { FormContainer } from '@/components/system/Container';
+import { FormContainer, Title } from '@/components/system/Container';
 import style from '@/styles/UserProfileForm.module.scss';
 import {
   FormRow,
@@ -144,9 +144,9 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
         {!onCheckout && <ButtonGroup options={options} />}
         <section className={style.section}>
           {onCheckout ? (
-            <h2>{t('userProfile.orderInformation')}</h2>
+            <Title>{t('userProfile.orderInformation')}</Title>
           ) : (
-            <h2>{t('userProfile.userInformation')}</h2>
+            <Title>{t('userProfile.userInformation')}</Title>
           )}
           <FormRow>
             <Input
