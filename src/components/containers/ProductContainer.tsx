@@ -30,7 +30,8 @@ interface FormFields {
 
 const ProductOverview: FC = () => {
   const { t } = useTranslation([]);
-  const { product, availableStock, isLowStock, isOutOfStock } = useProduct();
+  const { product, availableStock, isLowStock, isOutOfStock, isLoading } =
+    useProduct();
   const router = useRouter();
   const { products } = useProducts();
   const { sessionData, isSessionReady } = useAuth();
@@ -148,6 +149,8 @@ const ProductOverview: FC = () => {
   const handleCardClick = (id: string) => {
     router.push(`/product/${id}`);
   };
+
+  if (isLoading) return <>loading</>;
 
   const StockInfo: FC = () => (
     <div className={style.stockInfo}>
