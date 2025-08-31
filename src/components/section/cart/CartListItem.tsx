@@ -15,6 +15,7 @@ interface CartListItemProp {
   sessionId: string;
   mutate: () => void;
   review?: boolean;
+  isMax?: boolean;
 }
 
 const CartListItem: React.FC<CartListItemProp> = ({
@@ -23,6 +24,7 @@ const CartListItem: React.FC<CartListItemProp> = ({
   sessionId,
   mutate,
   review = false,
+  isMax = false,
 }) => {
   const router: AppRouterInstance = useRouter();
   const { translate } = useContentTranslate();
@@ -99,7 +101,8 @@ const CartListItem: React.FC<CartListItemProp> = ({
             onDelete={() => handleDeleteItem(item.productId)}
             disabled={isLoading}
             min={1}
-            max={99}
+            max={999}
+            isMax={isMax}
           />
         )}
         <div className={style.totalPrice}>

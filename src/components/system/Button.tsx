@@ -13,6 +13,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   className?: string;
   flex?: boolean;
+  visability?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -29,6 +30,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className = '',
       onClick,
       flex = false,
+      visability = true,
       ...props
     },
     ref,
@@ -44,7 +46,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const buttonElement = (
       <button
         ref={ref}
-        disabled={disabled || loading}
+        disabled={disabled || loading || !visability}
         onClick={onClick}
         className={`${style.buttonContainer} ${className}`}
         data-variant={variant}
@@ -52,6 +54,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         data-appearance={appearance}
         data-flex={flex}
         data-loading={loading}
+        data-visability={visability}
         {...props}
       >
         {buttonContent}

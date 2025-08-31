@@ -159,6 +159,7 @@
     }
   },
   "product": {
+    "toManyInCart": "All available article in cart",
     "outOfStock": "Produit en rupture de stock",
     "onlyXAvailable": "Plus que {{count}} en stock disponible",
     "connectionLost": "Connexion perdue - Les données peuvent ne pas être mises à jour en temps réel",

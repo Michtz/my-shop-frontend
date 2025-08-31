@@ -158,6 +158,7 @@
     }
   },
   "product": {
+    "toManyInCart": "Bereits alle verfügbaren im Warenkorb",
     "outOfStock": "Produkt ist ausverkauft",
     "onlyXAvailable": "Nur noch {{count}} auf Lager verfügbar",
     "connectionLost": "Verbindung unterbrochen - Daten werden möglicherweise nicht live aktualisiert",

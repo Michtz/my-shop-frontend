@@ -9,6 +9,7 @@ interface NumberStepperProps {
   disabled?: boolean;
   min?: number;
   max?: number;
+  isMax?: boolean;
 }
 
 export const NumberStepper: React.FC<NumberStepperProps> = ({
@@ -18,6 +19,7 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
   disabled = false,
   min = 1,
   max = 999,
+  isMax = false,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(quantity.toString());
@@ -88,10 +90,10 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
       inputRef.current.focus();
       inputRef.current.select();
     }
-  }, [isEditing]);
+  }, [isEditing, isMax]);
 
   const isDecrementDisabled = disabled || quantity <= min;
-  const isIncrementDisabled = disabled || quantity >= max;
+  const isIncrementDisabled = disabled || quantity >= max || isMax;
 
   return (
     <div className={style.numberStepper}>

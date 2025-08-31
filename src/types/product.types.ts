@@ -19,6 +19,10 @@ export interface IProduct {
   createdAt: string;
   updatedAt: string;
   availableQuantity: number;
+  cartCount?: number;
+  isLowStock?: boolean;
+  isOutOfStock?: boolean;
+  lastStockUpdate?: Date;
 }
 
 export type ProductCategoryOptions =

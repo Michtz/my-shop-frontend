@@ -159,6 +159,7 @@
     }
   },
   "product": {
+    "toManyInCart": "All available article in cart",
     "outOfStock": "Product is out of stock",
     "onlyXAvailable": "Only {{count}} left in stock",
     "connectionLost": "Connection lost - Data may not be updated in real time",

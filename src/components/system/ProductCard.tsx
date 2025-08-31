@@ -10,6 +10,7 @@ interface ProductCardProps {
   title?: string;
   description?: string;
   price?: string | number;
+  disabled?: boolean;
   onCardClick: (id: string) => void;
   onIconClick?: (id: string) => Promise<void>;
 }
@@ -20,6 +21,7 @@ const ProductCard: FC<ProductCardProps> = ({
   description,
   title,
   price,
+  disabled,
   onCardClick,
   onIconClick,
 }) => (
@@ -44,6 +46,7 @@ const ProductCard: FC<ProductCardProps> = ({
           <Button
             variant={'ghost'}
             appearance={'icon'}
+            visability={!disabled}
             onClick={() => onIconClick(id)}
           >
             <MaterialIcon icon={'shopping_basket'} />

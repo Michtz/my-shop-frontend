@@ -53,6 +53,12 @@ const ProductOverview: FC = () => {
   const [sortedArticles, setSortedArticles] = useState<IProduct[]>(products);
   const [article, setArticle] = useState<IProduct>(product as IProduct);
   const watchedQuantity = watch('quantity', 1);
+  const matchingItem = cartItems?.find(
+    (item) => item?.productId === article?._id,
+  );
+  const disabled = matchingItem
+    ? matchingItem.quantity >= article.stockQuantity
+    : false;
 
   useEffect(() => {
     setSortedArticles(products);
@@ -209,9 +215,13 @@ const ProductOverview: FC = () => {
             size={'big'}
             flex
             type={'submit'}
-            disabled={isOutOfStock || isQuantityTooHigh}
+            disabled={isOutOfStock || isQuantityTooHigh || disabled}
           >
-            {isOutOfStock ? t('product.soldOut') : t('product.addToCart')}
+            {isOutOfStock
+              ? t('product.soldOut')
+              : disabled
+                ? t('product.toManyInCart')
+                : t('product.addToCart')}
           </Button>
         </ButtonContainer>
       </FormContainer>
@@ -258,6 +268,12 @@ const ProductOverview: FC = () => {
         />
         <CartsContainer>
           {sortedArticles?.map((product) => {
+            const matchingItem = cartItems?.find(
+              (item) => item?.productId === product._id,
+            );
+            const disabled = matchingItem
+              ? matchingItem.quantity >= product.stockQuantity
+              : false;
             return (
               <ProductCard
                 key={product._id}
@@ -266,6 +282,7 @@ const ProductOverview: FC = () => {
                 description={translate(product.description)}
                 image={product.imageUrl}
                 price={product.price}
+                disabled={disabled}
                 onCardClick={() => handleCardClick(product._id)}
                 onIconClick={() => handleAddToCart(product._id)}
               />

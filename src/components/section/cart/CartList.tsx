@@ -11,6 +11,7 @@ import Skeleton from '@/components/system/Skeleton';
 import CartItemSkeleton from '@/components/section/cart/CartListItemSkleton';
 import { useAuth } from '@/hooks/AuthHook';
 import { useTranslation } from 'react-i18next';
+import useProducts from '@/hooks/ProductsHook';
 
 interface Props {
   review?: boolean;
@@ -19,7 +20,14 @@ interface Props {
 const CartList: FC<Props> = ({ review }) => {
   const { t } = useTranslation();
   const { cartItems, mutate, isLoading } = useCart();
+  const { products } = useProducts();
   const { sessionData } = useAuth();
+
+  const isMax = (quantity: number, id: string): boolean => {
+    const matchingProduct = products?.find((product) => product?._id === id);
+    if (!matchingProduct) return false;
+    return quantity >= matchingProduct.stockQuantity;
+  };
 
   const subtotal: number =
     cartItems?.reduce(
@@ -46,18 +54,21 @@ const CartList: FC<Props> = ({ review }) => {
 
   const list = (
     <>
-      {cartItems?.map((item: any) => (
-        <React.Fragment key={item.productId}>
-          <CartListItem
-            item={item}
-            items={cartItems}
-            sessionId={sessionData?.sessionId as string}
-            mutate={mutate}
-            review={review}
-          />
-          <Hr />
-        </React.Fragment>
-      ))}
+      {cartItems?.map((item: any) => {
+        return (
+          <React.Fragment key={item.productId}>
+            <CartListItem
+              item={item}
+              items={cartItems}
+              sessionId={sessionData?.sessionId as string}
+              mutate={mutate}
+              review={review}
+              isMax={isMax(item.quantity, item.productId)}
+            />
+            <Hr />
+          </React.Fragment>
+        );
+      })}
       <CartSummary
         subtotal={subtotal}
         shipping={shipping}

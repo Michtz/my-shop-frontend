@@ -21,6 +21,7 @@ import FilterContainer, {
   FilterOptionCode,
 } from '@/components/system/FilterContainer';
 import { useContentTranslate } from '@/hooks/ContentTranslationHook';
+import useCart from '@/hooks/CartHook';
 
 const filteredProducts = (
   items: IProduct[],
@@ -32,6 +33,7 @@ const filteredProducts = (
 
 const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
+  const { cartItems } = useCart();
   const { showFeedback } = useFeedback();
   const params: Params = useParams();
   const { translate } = useContentTranslate();
@@ -123,6 +125,12 @@ const MainContainer: React.FC = () => {
       <HorizontalScrollContainer>
         {articles?.map((product, i: number) => {
           if (i > 3) return;
+          const matchingItem = cartItems?.find(
+            (item) => item?.productId === product._id,
+          );
+          const disabled = matchingItem
+            ? matchingItem.quantity >= product.stockQuantity
+            : false;
           return (
             <ProductCard
               key={product._id}
@@ -131,6 +139,7 @@ const MainContainer: React.FC = () => {
               description={translate(product.description)}
               image={product.imageUrl}
               price={product.price}
+              disabled={disabled}
               onCardClick={() => handleCardClick(product._id)}
               onIconClick={() => handleAddToCart(product._id)}
             />
@@ -146,9 +155,14 @@ const MainContainer: React.FC = () => {
         sortCode={activeSort}
         setSortCode={(newCode: FilterOptionCode) => setActiveSort(newCode)}
       />
-
       <CartsContainer>
         {sortedArticles?.map((product) => {
+          const matchingItem = cartItems?.find(
+            (item) => item?.productId === product._id,
+          );
+          const disabled = matchingItem
+            ? matchingItem.quantity >= product.stockQuantity
+            : false;
           return (
             <ProductCard
               key={product._id}
@@ -157,6 +171,7 @@ const MainContainer: React.FC = () => {
               description={translate(product.description)}
               image={product.imageUrl}
               price={product.price}
+              disabled={disabled}
               onCardClick={() => handleCardClick(product._id)}
               onIconClick={() => handleAddToCart(product._id)}
             />

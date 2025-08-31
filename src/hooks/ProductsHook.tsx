@@ -11,20 +11,13 @@ import useSocket from '@/hooks/SocketHook';
  * this hook is used to handle data of all products
  */
 
-interface ProductWithSocketData extends IProduct {
-  cartCount?: number;
-  isLowStock?: boolean;
-  isOutOfStock?: boolean;
-  lastStockUpdate?: Date;
-}
-
 interface ProductsResponse {
-  products: ProductWithSocketData[];
+  products: IProduct[];
   isLoading: boolean;
   error: string | null;
   isConnected: boolean;
-  lowStockProducts: ProductWithSocketData[];
-  outOfStockProducts: ProductWithSocketData[];
+  lowStockProducts: IProduct[];
+  outOfStockProducts: IProduct[];
   totalCartCount: number;
 }
 
@@ -41,7 +34,7 @@ const useProducts = (): ProductsResponse => {
     },
   );
 
-  const processProducts = (): ProductWithSocketData[] => {
+  const processProducts = (): IProduct[] => {
     if (!data?.data) return [];
 
     return (data.data as IProduct[]).map((product) => {
