@@ -1,5 +1,3 @@
-'use client';
-
 import React, {
   createContext,
   useContext,
@@ -9,6 +7,7 @@ import React, {
 } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { mutate } from 'swr';
+import { getCurrentSession } from '@/requests/session.request';
 
 interface SocketProviderProps {
   children: ReactNode;
@@ -27,61 +26,72 @@ export const useSocketContext = () => {
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
-
   useEffect(() => {
-    const backendUrl =
-      process.env.NEXT_PUBLIC_BACKEND_URL ||
-      process.env.NEXT_PUBLIC_API_BASE_URL ||
-      'https://my-shop-backend-usaq.onrender.com';
+    const initializeSocket = async () => {
+      const backendUrl =
+        process.env.NEXT_PUBLIC_BACKEND_URL ||
+        process.env.NEXT_PUBLIC_API_BASE_URL ||
+        'https://my-shop-backend-usaq.onrender.com';
 
-    console.log('🔌 Connecting socket to:', backendUrl);
+      const userInformation = await getCurrentSession();
+      const sessionId = userInformation.data.sessionId || null;
+      const socketInstance = io(backendUrl, {
+        withCredentials: true,
+        transports: ['websocket', 'polling'],
+        timeout: 20000,
+      });
 
-    const socketInstance = io(backendUrl, {
-      withCredentials: true,
-      transports: ['websocket', 'polling'],
-      timeout: 20000,
-    });
+      // Connection Events
+      socketInstance.on('connect', () => {
+        console.log('🔌 Socket connected:', socketInstance.id);
+        setIsConnected(true);
 
-    // Connection Events
-    socketInstance.on('connect', () => {
-      console.log('🔌 Socket connected:', socketInstance.id);
-      setIsConnected(true);
-      // Auto-joins shop_updates room on backend
-    });
+        socketInstance.emit('join_session', sessionId);
+        console.log(`🏠 Joined session room: session_${sessionId}`);
+        // Auto-joins shop_updates room on backend
+      });
 
-    socketInstance.on('disconnect', () => {
-      console.log('🔌 Socket disconnected');
-      setIsConnected(false);
-    });
+      socketInstance.on('disconnect', () => {
+        console.log('🔌 Socket disconnected');
+        setIsConnected(false);
+      });
 
-    socketInstance.on(
-      'products_updated',
-      (data: { productIds: string[]; timestamp: string }) => {
-        console.log('🔄 PRODUCTS UPDATED EVENT:', data);
-        console.log(
-          `📦 ${data.productIds.length} products were updated at ${data.timestamp}`,
-        );
-        console.log('📋 Product IDs:', data.productIds);
+      socketInstance.on(
+        // ToDo: check what is still in use and whats old
+        'products_updated',
+        (data: { productIds: string[]; timestamp: string }) => {
+          console.log('🔄 PRODUCTS UPDATED EVENT:', data);
 
-        // Mutate SWR cache for products
-        mutate('products');
-        mutate('/api/products');
-
-        // If specific product IDs, mutate them individually
-        if (data.productIds && data.productIds.length > 0) {
+          mutate('products');
+          mutate('/api/products');
           data.productIds.forEach((productId: string) => {
-            mutate(`product-${productId}`);
-            mutate(`/api/products/${productId}`);
+            mutate(productId);
           });
-        }
-      },
-    );
 
-    setSocket(socketInstance);
+          // If specific product IDs, mutate them individually
+          if (data.productIds && data.productIds.length > 0) {
+            data.productIds.forEach((productId: string) => {
+              mutate(`product-${productId}`);
+              mutate(`/api/products/${productId}`);
+            });
+          }
+        },
+      );
 
-    return () => {
-      socketInstance.disconnect();
+      socketInstance.on(
+        'cart_updated',
+        (data: { productId: string; timestamp: string }) => {
+          mutate(`cart-${sessionId}`);
+        },
+      );
+
+      setSocket(socketInstance);
+
+      return () => {
+        socketInstance.disconnect();
+      };
     };
+    initializeSocket();
   }, []);
 
   const contextValue = {
