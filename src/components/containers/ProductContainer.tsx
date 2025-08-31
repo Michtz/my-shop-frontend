@@ -51,11 +51,17 @@ const ProductOverview: FC = () => {
 
   const [activeSort, setActiveSort] = useState<FilterOptionCode>('relevance');
   const [sortedArticles, setSortedArticles] = useState<IProduct[]>(products);
+  const [article, setArticle] = useState<IProduct>(product as IProduct);
   const watchedQuantity = watch('quantity', 1);
 
   useEffect(() => {
     setSortedArticles(products);
   }, []);
+
+  useEffect(() => {
+    if (!product) return;
+    setArticle(product);
+  }, [product]);
 
   const submit = async (data: any) => {
     try {
@@ -218,10 +224,10 @@ const ProductOverview: FC = () => {
         <>
           <div className={style.overviewContainer}>
             <span className={style.imageContainer}>
-              {product?.imageUrl && (
+              {article?.imageUrl && (
                 <Image
-                  src={product?.imageUrl as string}
-                  alt={translate(product?.name) || 'Product image'}
+                  src={article?.imageUrl as string}
+                  alt={translate(article?.name) || 'Product image'}
                   fill
                   className={style.productImage}
                   priority

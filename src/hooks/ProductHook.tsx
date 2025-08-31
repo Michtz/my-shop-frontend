@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { getProduct } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
@@ -53,10 +53,14 @@ const useProduct = (): SingleProductResponse => {
   };
 
   const product = extractProduct();
-  const availableStock =
+  let availableStock =
     product?.availableQuantity ?? product?.stockQuantity ?? 0;
   const isLowStock = availableStock > 0 && availableStock <= 5;
   const isOutOfStock = availableStock <= 0;
+
+  useEffect(() => {
+    availableStock = product?.stockQuantity ?? 0;
+  }, [data]);
 
   return {
     product,
