@@ -21,7 +21,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   onEditProduct,
   onCreateProduct,
 }) => {
-  const { products, isLoading, error } = useProducts(); // Todo: use admin product fetch herer to fetch not activeitems as well (coming soon)
+  const { allProducts, isLoading, error } = useProducts(); // Todo: use admin product fetch herer to fetch not activeitems as well (coming soon)
   const { awaitModalResult } = useModal();
   const { showFeedback } = useFeedback();
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   });
 
   const sortedProducts = useMemo(() => {
-    const sortableItems = [...products];
+    const sortableItems = [...allProducts];
     if (sortConfig.key !== null) {
       sortableItems.sort((a, b) => {
         const aValue = a[sortConfig.key!];
@@ -54,7 +54,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
       });
     }
     return sortableItems;
-  }, [products, sortConfig]);
+  }, [allProducts, sortConfig]);
 
   const handleDeleteProduct = async (product: IProduct) => {
     try {
@@ -122,12 +122,12 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   return (
     <div className={style.productList}>
       <ProductListHeader
-        productCount={products.length}
+        productCount={allProducts.length}
         onCreateProduct={onCreateProduct}
       />
 
       <div className={style.tableContainer}>
-        {products.length > 0 ? (
+        {allProducts.length > 0 ? (
           <ProductTable
             products={sortedProducts}
             handleSort={handleSort}

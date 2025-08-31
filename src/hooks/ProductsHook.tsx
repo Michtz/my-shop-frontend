@@ -39,14 +39,13 @@ const useProducts = (): ProductsResponse => {
     if (!data?.data) return [];
 
     return (data.data as IProduct[])
-      .filter((product) => (product.isActive = true))
+      .filter((product) => product.isActive)
       .filter((product) => product.stockQuantity > 0)
 
       .map((product) => {
         const availableStock = product.stockQuantity ?? 0;
         const isLowStock = availableStock > 0 && availableStock <= 5;
         const isOutOfStock = availableStock <= 0;
-
         return {
           ...product,
           cartCount: cartCounts[product._id] || 0,
@@ -82,7 +81,7 @@ const useProducts = (): ProductsResponse => {
     (sum, count) => sum + count,
     0,
   );
-
+  console.log(processedProducts, processedProductsAll);
   const errorMessage: string | null =
     error?.message ||
     (data && !data.success ? data.error || 'unknown error' : null);

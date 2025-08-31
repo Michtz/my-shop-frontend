@@ -23,7 +23,7 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
   const stockStatus = getStockStatus(product.stockQuantity);
 
   return (
-    <tr key={product._id} className={style.productRow}>
+    <tr key={product._id}>
       <td className={style.imageCell}>
         <div className={style.productImage}>
           {product?.imageUrl ? (
@@ -40,54 +40,40 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
           )}
         </div>
       </td>
-      {product.name && (
-        <td className={style.nameCell}>
-          <div>
-            <div className={style.productName}>{product.name.inv}</div>
-            <div className={style.productDescription}>
-              {product.description.inv && product?.description.inv.length > 60
-                ? `${product.description.inv.substring(0, 60)}...`
-                : product.description.inv}
-            </div>
+      <td className={style.nameCell}>
+        <div>
+          <div className={style.productName}>{product.name.inv}</div>
+          <div className={style.productDescription}>
+            {product.description.inv && product?.description.inv.length > 60
+              ? `${product.description.inv.substring(0, 60)}...`
+              : product.description.inv}
           </div>
-        </td>
-      )}
-      {product.category && (
-        <td>
-          <span className={style.categoryBadge}>{product.category}</span>
-        </td>
-      )}
-      {product.price && (
-        <td className={style.priceCell}>CHF {product.price.toFixed(2)}</td>
-      )}
-      {product.stockQuantity && (
-        <td className={style.stockCell}>
-          <div className={style.stockInfo}>
-            <span className={style.stockNumber}>{product.stockQuantity}</span>
-            <span
-              className={`${style.stockStatus} ${style[stockStatus.class]}`}
-            >
-              {stockStatus.text}
-            </span>
-          </div>
-        </td>
-      )}
-      {product.isActive && (
-        <td>
-          <span
-            className={`${style.statusBadge} ${product.isActive ? style.active : style.inactive}`}
-          >
-            {product.isActive
-              ? t('adminProducts.activeStatus')
-              : t('adminProducts.inactiveStatus')}
+        </div>
+      </td>
+      <td>
+        <span className={style.categoryBadge}>{product.category}</span>
+      </td>
+      <td className={style.priceCell}>CHF {product.price.toFixed(2)}</td>
+      <td className={style.stockCell}>
+        <div className={style.stockInfo}>
+          <span className={style.stockNumber}>{product.stockQuantity}</span>
+          <span className={`${style.stockStatus} ${style[stockStatus.class]}`}>
+            {stockStatus.text}
           </span>
-        </td>
-      )}
-      {product.lastUpdated && (
-        <td className={style.dateCell}>
-          {new Date(product.lastUpdated).toLocaleDateString('de-CH')}
-        </td>
-      )}
+        </div>
+      </td>
+      <td>
+        <span
+          className={`${style.statusBadge} ${product?.isActive ? style.active : style.inactive}`}
+        >
+          {product.isActive
+            ? t('adminProducts.activeStatus')
+            : t('adminProducts.inactiveStatus')}
+        </span>
+      </td>
+      <td className={style.dateCell}>
+        {new Date(product.lastUpdated).toLocaleDateString('de-CH')}
+      </td>
       <td className={style.actionsCell}>
         <div className={style.actionButtons}>
           <Button
