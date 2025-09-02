@@ -1,4 +1,5 @@
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import MaterialIcon from './MaterialIcon';
 import Link from './Link';
 import style from '@/styles/system/Button.module.scss';
@@ -35,11 +36,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
+    const { t } = useTranslation();
     const buttonContent = (
       <>
         {!loading && children}
         {icon && !loading && <MaterialIcon icon={icon} iconSize={size} />}
-        {loading && <span>Loading...</span>}
+        {loading && <span>{t('ui.loading')}</span>}
       </>
     );
 

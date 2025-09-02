@@ -82,6 +82,46 @@
     "abc": "Aufsteigend (A–Z)",
     "cba": "Absteigend (Z–A)"
   },
+  "ui": {
+    "buttons": {
+      "confirm": "Bestätigen",
+      "cancel": "Abbrechen", 
+      "delete": "Löschen",
+      "edit": "Bearbeiten",
+      "save": "Speichern",
+      "retry": "Erneut versuchen",
+      "proceed": "Fortfahren",
+      "stay": "Bleiben",
+      "remove": "Entfernen",
+      "apply": "Anwenden",
+      "delete-all": "Alle löschen"
+    },
+    "loading": "Lädt...",
+    "preview": "Vorschau",
+    "generic": {
+      "items": "Elemente"
+    }
+  },
+  "modals": {
+    "confirm-delete": "Löschen bestätigen",
+    "bulk-delete": "Mehrere Elemente löschen",
+    "irreversible-action": "Diese Aktion kann nicht rückgängig gemacht werden.",
+    "unsaved-changes": "Ungespeicherte Änderungen",
+    "unsaved-changes-message": "Sie haben ungespeicherte Änderungen. Möchten Sie wirklich fortfahren?",
+    "elements": "Elemente"
+  },
+  "categories": {
+    "tampers": "Tamper",
+    "milk-jugs": "Milchkännchen",
+    "tools": "Werkzeuge",
+    "coffee-cups": "Kaffeetassen",
+    "scales": "Waagen",
+    "cleaning-tools": "Reinigungstools"
+  },
+  "units": {
+    "pieces": "Stk.",
+    "currency-per-piece": "CHF {{price}} / Stk."
+  },
   "products": {
     "categories": {
       "tamper": "Tamper",
@@ -237,7 +277,14 @@
     "netTotal": "Nettobetrag",
     "vatIncluded": "zzgl. {{vatRate}}% MwSt.",
     "priceDisclaimer": "*Preise inkl. MwSt. zzgl. Versandkosten",
-    "checkout": "Zur Kasse"
+    "checkout": "Zur Kasse",
+    "unit-price": "CHF {{price}}.-",
+    "quantity-total": "{{quantity}} Stück für insgesamt",
+    "subtotal-amount": "{{amount}} CHF*",
+    "shipping-amount": "{{amount}} CHF*",
+    "total-amount": "{{amount}} CHF*", 
+    "net-total-amount": "{{amount}} CHF",
+    "vat-amount": "{{amount}} CHF"
   },
   "error": {
     "error": "Ein Fehler ist aufgetreten",

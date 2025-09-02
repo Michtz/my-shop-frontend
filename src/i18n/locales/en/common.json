@@ -84,6 +84,46 @@
 
 
   },
+  "ui": {
+    "buttons": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "save": "Save",
+      "retry": "Retry",
+      "proceed": "Proceed",
+      "stay": "Stay",
+      "remove": "Remove",
+      "apply": "Apply",
+      "delete-all": "Delete All"
+    },
+    "loading": "Loading...",
+    "preview": "Preview",
+    "generic": {
+      "items": "Items"
+    }
+  },
+  "modals": {
+    "confirm-delete": "Confirm Delete",
+    "bulk-delete": "Delete Multiple Items",
+    "irreversible-action": "This action cannot be undone.",
+    "unsaved-changes": "Unsaved Changes",
+    "unsaved-changes-message": "You have unsaved changes. Do you really want to proceed?",
+    "elements": "Elements"
+  },
+  "categories": {
+    "tampers": "Tampers",
+    "milk-jugs": "Milk Jugs",
+    "tools": "Tools",
+    "coffee-cups": "Coffee Cups",
+    "scales": "Scales",
+    "cleaning-tools": "Cleaning Tools"
+  },
+  "units": {
+    "pieces": "pcs.",
+    "currency-per-piece": "CHF {{price}} / pcs."
+  },
   "products": {
     "categories": {
       "tamper": "Tamper",
@@ -239,7 +279,14 @@
     "netTotal": "Net Total",
     "vatIncluded": "plus {{vatRate}}% VAT",
     "priceDisclaimer": "*Prices incl. VAT plus shipping costs",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "unit-price": "CHF {{price}}.-",
+    "quantity-total": "{{quantity}} pcs. for a total of",
+    "subtotal-amount": "{{amount}} CHF*",
+    "shipping-amount": "{{amount}} CHF*", 
+    "total-amount": "{{amount}} CHF*",
+    "net-total-amount": "{{amount}} CHF",
+    "vat-amount": "{{amount}} CHF"
   },
   "error": {
     "error": "An error occurred",

@@ -17,8 +17,6 @@ interface ProductsResponse {
   isLoading: boolean;
   error: string | null;
   isConnected: boolean;
-  lowStockProducts: IProduct[];
-  outOfStockProducts: IProduct[];
   totalCartCount: number;
 }
 
@@ -75,13 +73,11 @@ const useProducts = (): ProductsResponse => {
 
   const processedProductsAll = processProducts();
   const processedProducts = processAvailableProducts();
-  const lowStockProducts = processedProducts.filter((p) => p.isLowStock);
-  const outOfStockProducts = processedProducts.filter((p) => p.isOutOfStock);
   const totalCartCount = Object.values(cartCounts).reduce(
     (sum, count) => sum + count,
     0,
   );
-  console.log(processedProducts, processedProductsAll);
+
   const errorMessage: string | null =
     error?.message ||
     (data && !data.success ? data.error || 'unknown error' : null);
@@ -92,8 +88,6 @@ const useProducts = (): ProductsResponse => {
     isLoading,
     error: errorMessage,
     isConnected,
-    lowStockProducts,
-    outOfStockProducts,
     totalCartCount,
   };
 };

@@ -52,7 +52,6 @@ const CartList: FC<Props> = ({ review }) => {
       </div>
     </>
   );
-
   const list = (
     <>
       {cartItems?.map((item: any) => {
@@ -60,7 +59,6 @@ const CartList: FC<Props> = ({ review }) => {
           <React.Fragment key={item.productId}>
             <CartListItem
               item={item}
-              items={cartItems}
               sessionId={sessionData?.sessionId as string}
               mutate={mutate}
               review={review}

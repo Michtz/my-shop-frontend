@@ -7,6 +7,7 @@ import { RequestError } from '@/types/request.types';
 import { useAuth } from '@/hooks/AuthHook';
 import useSocket from '@/hooks/SocketHook';
 import { CartSocketData } from '@/types/socket.types';
+import { IProduct } from '@/types/product.types';
 
 interface CartAPIResponse {
   success: boolean;
@@ -17,7 +18,7 @@ export interface CartItem {
   productId: string;
   quantity: number;
   price: number;
-  product?: any;
+  product?: IProduct[];
 }
 
 interface CartResponse {
@@ -38,16 +39,17 @@ const useCart = (): CartResponse => {
     stockConflicts: [],
   });
 
-  const cartKey = sessionData?.sessionId;
+  const cartKey = userSessionData?.user?.id || sessionData?.sessionId;
   const shouldFetch = isSessionReady && cartKey && cartKey !== 'undefined';
 
   const { data, error, isLoading, mutate } = useSWR<
     CartAPIResponse,
     RequestError
   >(
-    shouldFetch ? `cart-${cartKey}` : null,
+    shouldFetch ? `cart` : null,
     () => {
-      return getCart(cartKey!, userSessionData?.user?.id);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+      return getCart(sessionData?.sessionId!, userSessionData?.user?.id);
     },
     {
       suspense: false,
@@ -59,7 +61,6 @@ const useCart = (): CartResponse => {
     if (!items || !Array.isArray(items) || items.length === 0) return null;
     return items;
   };
-
   useEffect(() => {
     if (!data?.data?.items) return;
     const interval = setInterval(() => {
@@ -67,7 +68,8 @@ const useCart = (): CartResponse => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [data?.data?.items, mutate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.data?.items]);
 
   return {
     cart: data?.data || null,

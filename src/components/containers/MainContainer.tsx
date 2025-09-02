@@ -11,7 +11,7 @@ import {
   HorizontalScrollContainer,
   Title,
 } from '@/components/system/Container';
-import { updateCartItem } from '@/requests/cart.request';
+import { getCart, updateCartItem } from '@/requests/cart.request';
 import { IProduct } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
 import { useFeedback } from '@/hooks/FeedbackHook';
@@ -23,7 +23,7 @@ import FilterContainer, {
   FilterOptionCode,
 } from '@/components/system/FilterContainer';
 import { useContentTranslate } from '@/hooks/ContentTranslationHook';
-import useCart from '@/hooks/CartHook';
+import useCart, { CartItem } from '@/hooks/CartHook';
 
 const filteredProducts = (
   items: IProduct[],
@@ -35,12 +35,12 @@ const filteredProducts = (
 
 const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
-  const { cartItems } = useCart();
+  const { cartItems, mutate } = useCart();
   const { showFeedback } = useFeedback();
   const { t } = useTranslation();
   const params: Params = useParams();
   const { translate } = useContentTranslate();
-  const { sessionData, isSessionReady } = useAuth();
+  const { sessionData, isSessionReady, userSessionData } = useAuth();
   const [activeSort, setActiveSort] = useState<FilterOptionCode>('relevance');
 
   const category: string | undefined = getCategoryName(
@@ -103,7 +103,29 @@ const MainContainer: React.FC = () => {
         showFeedback(t('feedback.session-not-ready'), 'error');
         return;
       }
-      await updateCartItem(sessionData.sessionId, id, 1);
+
+      let quantity: number = 1;
+      let cartItem: CartItem | undefined = cartItems?.find(
+        (item) => item.productId === id,
+      );
+
+      if (!cartItem) {
+        const response = await getCart(
+          sessionData.sessionId,
+          userSessionData?.user.id,
+        );
+        cartItem = response?.data.data.items?.find(
+          (item: CartItem) => item.productId === id,
+        );
+      }
+      if (cartItem) quantity = cartItem.quantity + 1;
+      await updateCartItem(
+        sessionData.sessionId,
+        id,
+        quantity,
+        userSessionData?.user?.id || '',
+      );
+      mutate('cart');
       showFeedback(t('feedback.add-to-cart-success'), 'success');
     } catch {
       showFeedback(t('feedback.data-saved-error'), 'error');

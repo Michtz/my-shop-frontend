@@ -33,15 +33,11 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
   }, [quantity, isEditing]);
 
   const handleIncrement = () => {
-    if (quantity < max) {
-      onQuantityChange(quantity + 1);
-    }
+    if (quantity < max) onQuantityChange(quantity + 1);
   };
 
   const handleDecrement = () => {
-    if (quantity > min) {
-      onQuantityChange(quantity - 1);
-    }
+    if (quantity > min) onQuantityChange(quantity - 1);
   };
 
   const handleSpanClick = () => {
@@ -53,7 +49,7 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
 
   const handleInputBlur = () => {
     setIsEditing(false);
-    const newValue = parseInt(inputValue, 10);
+    const newValue = parseInt(inputValue);
 
     if (
       !isNaN(newValue) &&
@@ -69,6 +65,7 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      onQuantityChange(parseInt(inputValue));
       inputRef.current?.blur();
     } else if (e.key === 'Escape') {
       setInputValue(quantity.toString());

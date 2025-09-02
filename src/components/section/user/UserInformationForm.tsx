@@ -21,6 +21,7 @@ import { useFeedback } from '@/hooks/FeedbackHook';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { useSocketContext } from '@/providers/SocketProvider';
 
 export interface UserProfileFormData {
   type: string;
@@ -59,10 +60,11 @@ interface UserInformationFormProps {
 const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
   const { t } = useTranslation();
   const { transformFieldError } = useError();
-  const { userInformation, isLoading } = useAuth();
+  const { userInformation, userSessionData, isLoading } = useAuth();
   const { showFeedback } = useFeedback();
   const { logout } = useAuth();
   const router: AppRouterInstance = useRouter();
+  const { leaveUserRoom } = useSocketContext();
   const pathname = usePathname();
   const hasProfile = pathname.includes('/profile');
 
@@ -111,6 +113,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
   const handleLogout = async (): Promise<void> => {
     try {
       await logout();
+      leaveUserRoom(userSessionData?.user.id as string);
       router.replace('/login');
       showFeedback(t('feedback.logoutSuccess'), 'success');
     } catch (e) {

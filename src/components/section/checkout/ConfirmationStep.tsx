@@ -188,7 +188,6 @@ const ConfirmationStep: React.FC = () => {
           <React.Fragment key={item.productId}>
             <CartListItem
               item={item}
-              items={orderData.items}
               sessionId={sessionData?.sessionId as string}
               mutate={mutate}
               review={true}

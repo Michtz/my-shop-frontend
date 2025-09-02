@@ -53,8 +53,10 @@ export const updateCartItem = async (
   sessionId: string,
   productId: string,
   quantity: number | string,
+  userId?: string,
 ): Promise<any> => {
   try {
+    const url: string = userId ? `${sessionId}/${userId}` : sessionId;
     const requestBody = {
       items: [
         {
@@ -63,7 +65,7 @@ export const updateCartItem = async (
         },
       ],
     };
-    return await axiosInstance.put(`${cartApiUrl}/${sessionId}`, requestBody, {
+    return await axiosInstance.put(`${cartApiUrl}/${url}`, requestBody, {
       withCredentials: true,
     });
   } catch (e) {
@@ -91,6 +93,28 @@ export const updateCartItems = async (
     );
   } catch (e) {
     Logger.error('Unable to update cart items');
+    throw e;
+  }
+};
+
+export const deleteCartItem = async (
+  sessionId: string,
+  productId: string,
+): Promise<any> => {
+  try {
+    const requestBody = {
+      items: [
+        {
+          productId: productId,
+        },
+      ],
+    };
+
+    return await axiosInstance.delete(`${cartApiUrl}/${sessionId}`, {
+      data: requestBody,
+    });
+  } catch (e) {
+    Logger.error('Unable to delete cart item');
     throw e;
   }
 };

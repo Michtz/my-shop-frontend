@@ -2,8 +2,12 @@
 
 import React, { FC, useEffect, useState } from 'react';
 import useProduct from '@/hooks/ProductHook';
-import useCart from '@/hooks/CartHook';
-import { updateCartItem, updateCartItems } from '@/requests/cart.request';
+import useCart, { CartItem } from '@/hooks/CartHook';
+import {
+  getCart,
+  updateCartItem,
+  updateCartItems,
+} from '@/requests/cart.request';
 import { useRouter } from 'next/navigation';
 import style from '@/styles/OverviewProduct.module.scss';
 import Image from 'next/image';
@@ -35,7 +39,7 @@ const ProductOverview: FC = () => {
     useProduct();
   const router = useRouter();
   const { products } = useProducts();
-  const { sessionData, isSessionReady } = useAuth();
+  const { sessionData, isSessionReady, userSessionData } = useAuth();
   const { cart, cartItems, mutate } = useCart();
   const { showFeedback } = useFeedback();
   const { translate } = useContentTranslate();
@@ -67,6 +71,7 @@ const ProductOverview: FC = () => {
 
   useEffect(() => {
     setSortedArticles(products);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products !== sortedArticles && products?.length > 0]);
 
   useEffect(() => {
@@ -78,29 +83,35 @@ const ProductOverview: FC = () => {
 
   const submit = async (data: any) => {
     try {
-      mutate(data); // to get the correct quantity
-      if (isOutOfStock) {
-        showFeedback(t('product.outOfStock'), 'error');
-        return;
-      }
-
-      if (availableStock < data.quantity) {
-        showFeedback(
-          t('product.onlyXAvailable', { count: availableStock }),
-          'error',
-        );
-        return;
-      }
+      mutate(data);
       if (!isSessionReady || !sessionData?.sessionId) {
         showFeedback(t('feedback.session-not-ready'), 'error');
         return;
       }
 
+      let quantity: number = 1;
+      let cartItem: CartItem | undefined = cartItems?.find(
+        (item) => item.productId === product?.id,
+      );
+
+      if (!cartItem) {
+        const response = await getCart(
+          sessionData.sessionId,
+          userSessionData?.user.id,
+        );
+        cartItem = response?.data.data.items?.find(
+          (item: CartItem) => item.productId === product?.id,
+        );
+      }
+      if (cartItem) quantity = cartItem.quantity + data.quantity;
+
       const result = await updateCartItem(
         sessionData.sessionId,
         product?._id as string,
-        data.quantity,
+        quantity,
+        userSessionData?.user?.id || '',
       );
+
       await mutate('cart', result);
       showFeedback(t('feedback.add-to-cart-success'), 'success');
     } catch (error) {

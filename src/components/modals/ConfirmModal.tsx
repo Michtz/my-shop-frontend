@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import MaterialIcon from '@/components/system/MaterialIcon';
 import style from '@/styles/modals/ConfirmModal.module.scss';
@@ -15,13 +16,16 @@ interface ConfirmModalProps {
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
   description,
-  confirmText = 'Bestätigen',
-  cancelText = 'Abbrechen',
+  confirmText,
+  cancelText,
   variant = 'primary',
   icon,
   destructive = false,
 }) => {
+  const { t } = useTranslation();
   const { onCallback } = useModalContent();
+  const defaultConfirmText = confirmText || t('ui.buttons.confirm');
+  const defaultCancelText = cancelText || t('ui.buttons.cancel');
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -89,7 +93,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           {destructive && (
             <div className={style.warningNote}>
               <MaterialIcon icon="info" iconSize="small" />
-              <span>Diese Aktion kann nicht rückgängig gemacht werden.</span>
+              <span>{t('modals.irreversible-action')}</span>
             </div>
           )}
         </div>
@@ -97,14 +101,14 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
       <ButtonContainer spread={false} className={style.actionButtons}>
         <Button variant="secondary" onClick={handleCancel}>
-          {cancelText}
+          {defaultCancelText}
         </Button>
         <Button
           ref={confirmButtonRef}
           variant={variant === 'error' ? 'error' : 'primary'}
           onClick={handleConfirm}
         >
-          {confirmText}
+          {defaultConfirmText}
         </Button>
       </ButtonContainer>
     </div>

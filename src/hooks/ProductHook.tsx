@@ -53,12 +53,12 @@ const useProduct = (): SingleProductResponse => {
   };
 
   const product = extractProduct();
-  let availableStock =
-    product?.availableQuantity ?? product?.stockQuantity ?? 0;
+  let availableStock = product?.stockQuantity ?? 0;
   const isLowStock = availableStock > 0 && availableStock <= 5;
   const isOutOfStock = availableStock <= 0;
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     availableStock = product?.stockQuantity ?? 0;
   }, [data]);
 

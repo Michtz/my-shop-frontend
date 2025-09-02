@@ -83,6 +83,46 @@
     "cba": "Décroissant (Z–A)"
 
   },
+  "ui": {
+    "buttons": {
+      "confirm": "Confirmer",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "save": "Enregistrer",
+      "retry": "Réessayer",
+      "proceed": "Continuer",
+      "stay": "Rester",
+      "remove": "Retirer",
+      "apply": "Appliquer",
+      "delete-all": "Supprimer tout"
+    },
+    "loading": "Chargement...",
+    "preview": "Aperçu",
+    "generic": {
+      "items": "Éléments"
+    }
+  },
+  "modals": {
+    "confirm-delete": "Confirmer la suppression",
+    "bulk-delete": "Supprimer plusieurs éléments",
+    "irreversible-action": "Cette action ne peut pas être annulée.",
+    "unsaved-changes": "Modifications non enregistrées",
+    "unsaved-changes-message": "Vous avez des modifications non enregistrées. Voulez-vous vraiment continuer ?",
+    "elements": "Éléments"
+  },
+  "categories": {
+    "tampers": "Tampers",
+    "milk-jugs": "Pichets à lait",
+    "tools": "Outils",
+    "coffee-cups": "Tasses à café",
+    "scales": "Balances",
+    "cleaning-tools": "Outils de nettoyage"
+  },
+  "units": {
+    "pieces": "pcs.",
+    "currency-per-piece": "CHF {{price}} / pcs."
+  },
   "products": {
     "categories": {
       "tamper": "Tamper",
@@ -238,7 +278,14 @@
     "netTotal": "Total net",
     "vatIncluded": "plus {{vatRate}}% TVA",
     "priceDisclaimer": "*Prix TTC plus frais de livraison",
-    "checkout": "Commander"
+    "checkout": "Commander",
+    "unit-price": "CHF {{price}}.-",
+    "quantity-total": "{{quantity}} pcs. pour un total de",
+    "subtotal-amount": "{{amount}} CHF*",
+    "shipping-amount": "{{amount}} CHF*",
+    "total-amount": "{{amount}} CHF*",
+    "net-total-amount": "{{amount}} CHF", 
+    "vat-amount": "{{amount}} CHF"
   },
   "error": {
     "error": "Une erreur s'est produite",

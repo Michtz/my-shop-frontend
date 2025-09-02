@@ -71,9 +71,6 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
             : t('adminProducts.inactiveStatus')}
         </span>
       </td>
-      <td className={style.dateCell}>
-        {new Date(product.lastUpdated).toLocaleDateString('de-CH')}
-      </td>
       <td className={style.actionsCell}>
         <div className={style.actionButtons}>
           <Button

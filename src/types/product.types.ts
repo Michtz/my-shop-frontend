@@ -8,6 +8,7 @@ export interface transKey {
 
 export interface IProduct {
   _id: string;
+  id: string;
   name: transKey;
   description: transKey;
   price: number;
@@ -15,14 +16,8 @@ export interface IProduct {
   category: ProductCategoryOptions;
   isActive: boolean;
   imageUrl?: string;
-  lastUpdated: string;
   createdAt: string;
   updatedAt: string;
-  availableQuantity: number;
-  cartCount?: number;
-  isLowStock?: boolean;
-  isOutOfStock?: boolean;
-  lastStockUpdate?: Date;
 }
 
 export type ProductCategoryOptions =

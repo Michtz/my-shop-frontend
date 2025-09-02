@@ -3,15 +3,17 @@
 import style from '@/styles/system/CartListItem.module.scss';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { updateCartItems } from '@/requests/cart.request';
+import { deleteCartItem, updateCartItem } from '@/requests/cart.request';
 import NumberStepper from '@/components/system/NumberStepper';
 import { useRouter } from 'next/navigation';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useContentTranslate } from '@/hooks/ContentTranslationHook';
+import { useAuth } from '@/hooks/AuthHook';
+import { useFeedback } from '@/hooks/FeedbackHook';
+import { useTranslation } from 'react-i18next';
 
 interface CartListItemProp {
   item: any;
-  items: any[];
   sessionId: string;
   mutate: () => void;
   review?: boolean;
@@ -20,24 +22,23 @@ interface CartListItemProp {
 
 const CartListItem: React.FC<CartListItemProp> = ({
   item,
-  items,
   sessionId,
   mutate,
   review = false,
   isMax = false,
 }) => {
   const router: AppRouterInstance = useRouter();
+  const { t } = useTranslation([]);
+  const { sessionData, userSessionData, isSessionReady } = useAuth();
   const { translate } = useContentTranslate();
+  const { showFeedback } = useFeedback();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDeleteItem = async (productId: string) => {
     setIsLoading(true);
-    const updatedItems = items.filter(
-      (cartItem: any) => cartItem.productId !== productId,
-    );
 
     try {
-      await updateCartItems(sessionId, updatedItems);
+      await deleteCartItem(sessionId, productId);
       mutate();
     } catch (error) {
       console.error('Failed to delete item:', error);
@@ -51,15 +52,19 @@ const CartListItem: React.FC<CartListItemProp> = ({
     newQuantity: number,
   ) => {
     setIsLoading(true);
-
-    const updatedItems = items.map((cartItem: any) =>
-      cartItem.productId === productId
-        ? { ...cartItem, quantity: newQuantity }
-        : cartItem,
-    );
-
     try {
-      await updateCartItems(sessionId, updatedItems);
+      if (!isSessionReady || !sessionData?.sessionId) {
+        showFeedback(t('feedback.session-not-ready'), 'error');
+        return;
+      }
+
+      await updateCartItem(
+        sessionData.sessionId,
+        productId,
+        newQuantity,
+        userSessionData?.user?.id || '',
+      );
+
       mutate();
     } catch (error) {
       console.error('Failed to update quantity:', error);
@@ -76,14 +81,15 @@ const CartListItem: React.FC<CartListItemProp> = ({
         onClick={() => router.push(`/product/${item.productId}`)}
       >
         <div className={style.productImage}>
-          <Image
-            src={item.product.imageUrl || '/placeholder-image.jpg'}
-            alt={translate(item.product.name)}
-            width={60}
-            height={60}
-          />
+          {item && (
+            <Image
+              src={item.product.imageUrl || '/placeholder-image.jpg'}
+              alt={translate(item.product.name)}
+              width={60}
+              height={60}
+            />
+          )}
         </div>
-
         <div className={style.productDetails}>
           <div className={style.brand}>{item.product.brand || 'BRAND'}</div>
           <h3 className={style.productName}>{translate(item.product.name)}</h3>

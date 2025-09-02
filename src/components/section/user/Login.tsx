@@ -14,6 +14,7 @@ import Button from '@/components/system/Button';
 import { Logger } from '@/utils/Logger.class';
 import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
+import { useSocketContext } from '@/providers/SocketProvider';
 
 export interface LoginFormData {
   email: string;
@@ -30,6 +31,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
   const { transformFieldError } = useError();
   const router = useRouter();
   const { isLoading, login } = useAuth();
+  const { joinUserRoom } = useSocketContext();
 
   const {
     register,
@@ -48,6 +50,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
       if (typeof response === 'string') showFeedback(response, 'error');
       if (!response.success || goTo === null) return;
       router.replace(goTo || '/profile');
+      joinUserRoom(response?.data.user.id);
       showFeedback(t('feedback.login-success'), 'success');
     } catch (err) {
       showFeedback(t('feedback.login-error'), 'error');

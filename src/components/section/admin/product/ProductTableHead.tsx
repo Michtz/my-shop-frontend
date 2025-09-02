@@ -51,15 +51,6 @@ export const ProductTableHead: React.FC<ProductTableHeadProps> = ({
           </Container>
         </th>
         <th>{t('table.headers.status')}</th>
-        <th
-          className={style.sortableHeader}
-          onClick={() => handleSort('lastUpdated')}
-        >
-          <Container padding={false}>
-            {t('table.headers.lastUpdated')}
-            <MaterialIcon icon={getSortIcon('lastUpdated')} iconSize="small" />
-          </Container>
-        </th>
         <th>{t('table.headers.actions')}</th>
       </tr>
     </thead>
