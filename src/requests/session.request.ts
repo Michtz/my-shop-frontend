@@ -141,6 +141,24 @@ export const validateToken = async (): Promise<any> => {
   }
 };
 
+export const getAdminUsers = async () => {
+  try {
+    const response = await axiosInstance.get(`${authApiUrl}/admin/users`, {
+      headers: {},
+      withCredentials: true,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      throw new Error('Authentication required');
+    } else if (error.response?.status === 403) {
+      throw new Error('Admin access required');
+    }
+    throw error;
+  }
+};
+
 export const refreshToken = async (): Promise<any> => {
   try {
     const user = JSON.parse(sessionStorage.getItem('user') as any);

@@ -1,12 +1,16 @@
 'use client';
 
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Container } from '@/components/system/Container';
 import { useAuth } from '@/hooks/AuthHook';
 import Login from '@/components/section/user/Login';
 import AdminProductsContainer from '@/components/section/admin/product/AdminProductsContainer';
 import AdminBlogContainer from '@/components/section/admin/blog/AdminBlogContainer';
 import AdminOverview from '@/components/section/admin/AdminOverview';
+import { getAdminUsers } from '@/requests/session.request';
+import { Logger } from '@/utils/Logger.class';
+import { useRouter } from 'next/navigation';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 interface AdminContainerProps {
   view: 'overview' | 'login' | 'products' | 'blog';
@@ -14,6 +18,32 @@ interface AdminContainerProps {
 
 const AdminContainer: FC<AdminContainerProps> = ({ view }) => {
   const { userInformation } = useAuth();
+  const router: AppRouterInstance = useRouter();
+  const [isValidToken, setIsValidToken] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const result = await getAdminUsers();
+        setIsValidToken(result.success);
+      } catch (err: any) {
+        setIsValidToken(false);
+        Logger.warn('Admin access granted:', err);
+        if (err.message === 'Authentication required') {
+          window.location.href = '/login';
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+  if (userInformation?.role === 'admin' && !isValidToken) {
+    console.log('tüdelü madafaga 😉 not with me'); // log if someone try to manipulate the user data
+  }
+  if (!loading && !isValidToken) router.push('/');
   if (!userInformation) view = 'login';
   return (
     <Container padding={false} alignItems={'center'} flow={'column'}>
