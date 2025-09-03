@@ -9,7 +9,7 @@ import React, { FC } from 'react';
 import { Hr } from '@/components/system/Hr';
 import Skeleton from '@/components/system/Skeleton';
 import CartItemSkeleton from '@/components/section/cart/CartListItemSkleton';
-import { useAuth } from '@/hooks/AuthHook';
+
 import { useTranslation } from 'react-i18next';
 import useProducts from '@/hooks/ProductsHook';
 
@@ -21,7 +21,6 @@ const CartList: FC<Props> = ({ review }) => {
   const { t } = useTranslation();
   const { cartItems, mutate, isLoading } = useCart();
   const { products } = useProducts();
-  const { sessionData } = useAuth();
 
   const isMax = (quantity: number, id: string): boolean => {
     const matchingProduct = products?.find((product) => product?._id === id);
@@ -59,7 +58,6 @@ const CartList: FC<Props> = ({ review }) => {
           <React.Fragment key={item.productId}>
             <CartListItem
               item={item}
-              sessionId={sessionData?.sessionId as string}
               mutate={mutate}
               review={review}
               isMax={isMax(item.quantity, item.productId)}

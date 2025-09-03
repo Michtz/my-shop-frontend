@@ -225,7 +225,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const session = await createSession();
     sessionStorage.setItem('session', JSON.stringify(session.data));
-    setSessionData(session);
+    setSessionData(session.data);
     setIsLoading(false);
   };
 

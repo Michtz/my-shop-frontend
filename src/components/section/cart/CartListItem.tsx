@@ -11,18 +11,16 @@ import { useContentTranslate } from '@/hooks/ContentTranslationHook';
 import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useTranslation } from 'react-i18next';
+import { Logger } from '@/utils/Logger.class';
 
 interface CartListItemProp {
   item: any;
-  sessionId: string;
   mutate: () => void;
   review?: boolean;
   isMax?: boolean;
 }
-
 const CartListItem: React.FC<CartListItemProp> = ({
   item,
-  sessionId,
   mutate,
   review = false,
   isMax = false,
@@ -33,15 +31,16 @@ const CartListItem: React.FC<CartListItemProp> = ({
   const { translate } = useContentTranslate();
   const { showFeedback } = useFeedback();
   const [isLoading, setIsLoading] = useState(false);
+  const sessionId = sessionData?.sessionId as string;
+  const userId = userSessionData?.user?.id;
 
   const handleDeleteItem = async (productId: string) => {
-    setIsLoading(true);
-
     try {
-      await deleteCartItem(sessionId, productId);
+      setIsLoading(true);
+      await deleteCartItem(sessionId, productId, userId);
       mutate();
     } catch (error) {
-      console.error('Failed to delete item:', error);
+      Logger.warn('Failed to delete item:', error);
     } finally {
       setIsLoading(false);
     }

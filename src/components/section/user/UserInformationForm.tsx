@@ -121,6 +121,7 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
       Logger.error('error while logout', e);
     }
   };
+
   const handlePWChange = async (): Promise<void> => {
     router.replace('/changePassword');
   };

@@ -100,8 +100,10 @@ export const updateCartItems = async (
 export const deleteCartItem = async (
   sessionId: string,
   productId: string,
+  userId?: string,
 ): Promise<any> => {
   try {
+    const url: string = userId ? `${sessionId}/${userId}` : sessionId;
     const requestBody = {
       items: [
         {
@@ -110,7 +112,7 @@ export const deleteCartItem = async (
       ],
     };
 
-    return await axiosInstance.delete(`${cartApiUrl}/${sessionId}`, {
+    return await axiosInstance.delete(`${cartApiUrl}/${url}`, {
       data: requestBody,
     });
   } catch (e) {

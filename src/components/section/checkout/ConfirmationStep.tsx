@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import CartListItem from '@/components/section/cart/CartListItem';
 import { Hr } from '@/components/system/Hr';
 import useCart from '@/hooks/CartHook';
-import { useAuth } from '@/hooks/AuthHook';
 import CartSummary from '@/components/section/cart/CartSummaryContainer';
 
 interface OrderData {
@@ -48,7 +47,6 @@ const ConfirmationStep: React.FC = () => {
   const { t } = useTranslation();
   const { orderNumber } = useParams();
   const { cartItems, mutate } = useCart();
-  const { sessionData } = useAuth();
   const router = useRouter();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -69,6 +67,7 @@ const ConfirmationStep: React.FC = () => {
   }, [orderNumber]);
 
   const fetchOrderDetails = async (orderNum: string) => {
+    // Todo: ref
     try {
       console.log('🔍 Fetching order details for:', orderNum);
       const response = await axiosInstance.get(`/api/order/${orderNum}`);
@@ -186,12 +185,7 @@ const ConfirmationStep: React.FC = () => {
       <span style={{ width: '100%', marginBottom: '5rem' }}>
         {orderData.items?.map((item: any) => (
           <React.Fragment key={item.productId}>
-            <CartListItem
-              item={item}
-              sessionId={sessionData?.sessionId as string}
-              mutate={mutate}
-              review={true}
-            />
+            <CartListItem item={item} mutate={mutate} review />
             <Hr />
           </React.Fragment>
         ))}

@@ -32,21 +32,21 @@ interface CartResponse {
 }
 
 const useCart = (): CartResponse => {
-  const { sessionData, userSessionData, isSessionReady } = useAuth();
+  const { sessionData, userSessionData } = useAuth();
   const { isConnected } = useSocket();
   const [socketData] = useState<CartSocketData>({
     cartCount: {},
     stockConflicts: [],
   });
 
-  const cartKey = userSessionData?.user?.id || sessionData?.sessionId;
-  const shouldFetch = isSessionReady && cartKey && cartKey !== 'undefined';
+  const sessionId = sessionData?.sessionId as string;
+  const userId = userSessionData?.user?.id;
 
   const { data, error, isLoading, mutate } = useSWR<
     CartAPIResponse,
     RequestError
   >(
-    shouldFetch ? `cart` : null,
+    userId ? `cart-${userId}` : `cart-${sessionId}`,
     () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       return getCart(sessionData?.sessionId!, userSessionData?.user?.id);
@@ -63,13 +63,9 @@ const useCart = (): CartResponse => {
   };
   useEffect(() => {
     if (!data?.data?.items) return;
-    const interval = setInterval(() => {
-      mutate();
-    }, 1000);
-
-    return () => clearInterval(interval);
+    mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.data?.items]);
+  }, [data?.data?.items, userSessionData]);
 
   return {
     cart: data?.data || null,
