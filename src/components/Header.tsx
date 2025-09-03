@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import style from '@/styles/Header.module.scss';
@@ -15,11 +15,13 @@ import LoadingSpinner from '@/components/system/LoadingSpinner';
 import Cookies from 'js-cookie';
 import { handleLanguageChange, languagesOptions } from '@/i18n/client';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { Params } from 'next/dist/server/request/params';
 
 const ResponsiveAppBar = () => {
   const { t, i18n } = useTranslation();
   const router: AppRouterInstance = useRouter();
   const path = usePathname();
+  const params: Params = useParams();
   const { userSessionData, sessionData, isLoading } = useAuth();
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
@@ -137,7 +139,7 @@ const ResponsiveAppBar = () => {
                   {languagesOptions.map((lang) => (
                     <span
                       key={lang.code}
-                      className={`${style.dropdownItem} ${Cookies.get('language') === lang.code ? style.activeLanguage : ''}`}
+                      className={`${style.dropdownItem} ${params.locale === lang.code ? style.activeLanguage : ''}`}
                       onClick={() =>
                         handleLanguageChange({
                           language: lang.code,

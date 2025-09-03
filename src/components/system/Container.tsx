@@ -1,6 +1,13 @@
 'use client';
 
-import { FC, FormEvent, PropsWithChildren, ReactNode } from 'react';
+import {
+  FC,
+  FormEvent,
+  PropsWithChildren,
+  ReactNode,
+  useEffect,
+  useRef,
+} from 'react';
 import style from '@/styles/Container.module.scss';
 
 interface ContainerProps extends PropsWithChildren {
@@ -64,11 +71,40 @@ export const CardContainer: FC<ContainerProps> = ({ children }) => (
   <div className={style.cartContainer}>{children}</div>
 );
 
-export const HorizontalScrollContainer: FC<ContainerProps> = ({ children }) => (
-  <div className={style.horizontalScrollContainer}>
-    <div className={style.scrollWrapper}>{children}</div>
-  </div>
-);
+export const HorizontalScrollContainer: FC<ContainerProps> = ({ children }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      // Verhindere das vertikale Scrollen der Seite
+      e.preventDefault();
+
+      // Scrolle horizontal basierend auf dem vertikalen Scroll-Delta
+      // Optional: Multipliziere mit einem Faktor für schnelleres Scrollen
+      const scrollSpeed = 2; // Anpassen nach Bedarf (1.5 für schneller, 0.5 für langsamer)
+      scrollContainer.scrollLeft += e.deltaY * scrollSpeed;
+    };
+
+    // Event Listener nur auf dem Container
+    scrollContainer.addEventListener('wheel', handleWheel, { passive: false });
+
+    // Cleanup beim Unmount
+    return () => {
+      scrollContainer.removeEventListener('wheel', handleWheel);
+    };
+  }, []);
+
+  return (
+    <div className={style.horizontalScrollContainer}>
+      <div ref={scrollRef} className={style.scrollWrapper}>
+        {children}
+      </div>
+    </div>
+  );
+};
 export const Title: FC<ContainerProps> = ({ children }) => (
   <h2 className={style.title}>{children}</h2>
 );

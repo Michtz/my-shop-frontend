@@ -146,8 +146,10 @@ const MainContainer: React.FC = () => {
       maxWidth={'1150'}
       gap={'2'}
     >
-      <Title>{category}</Title>
-      {!category && <Carousel items={slides} controls={false} />}
+      {category && <Title>{category}</Title>}
+      {!category && (
+        <Carousel items={slides} controls={false} interval={7000} indicators />
+      )}
       <HorizontalScrollContainer>
         {articles?.map((product, i: number) => {
           if (i > previewItemsCount) return;
