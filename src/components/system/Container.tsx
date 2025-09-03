@@ -7,6 +7,7 @@ import {
   ReactNode,
   useEffect,
   useRef,
+  useState,
 } from 'react';
 import style from '@/styles/Container.module.scss';
 
@@ -73,13 +74,22 @@ export const CardContainer: FC<ContainerProps> = ({ children }) => (
 
 export const HorizontalScrollContainer: FC<ContainerProps> = ({ children }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isMobileView, setIsMobileView] = useState(false);
+
+  useEffect(() => {
+    const checkViewport = () => setIsMobileView(window.innerWidth <= 1000);
+    checkViewport();
+    window.addEventListener('resize', checkViewport);
+    return () => {
+      window.removeEventListener('resize', checkViewport);
+    };
+  }, []);
 
   useEffect(() => {
     const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
+    if (!scrollContainer || !isMobileView) return;
 
     const handleWheel = (e: WheelEvent) => {
-      // Verhindere das vertikale Scrollen der Seite
       e.preventDefault();
 
       // Scrolle horizontal basierend auf dem vertikalen Scroll-Delta
@@ -88,14 +98,12 @@ export const HorizontalScrollContainer: FC<ContainerProps> = ({ children }) => {
       scrollContainer.scrollLeft += e.deltaY * scrollSpeed;
     };
 
-    // Event Listener nur auf dem Container
     scrollContainer.addEventListener('wheel', handleWheel, { passive: false });
 
-    // Cleanup beim Unmount
     return () => {
       scrollContainer.removeEventListener('wheel', handleWheel);
     };
-  }, []);
+  }, [isMobileView]);
 
   return (
     <div className={style.horizontalScrollContainer}>
@@ -105,6 +113,7 @@ export const HorizontalScrollContainer: FC<ContainerProps> = ({ children }) => {
     </div>
   );
 };
+
 export const Title: FC<ContainerProps> = ({ children }) => (
   <h2 className={style.title}>{children}</h2>
 );
