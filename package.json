@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "check-translations": "node check-translations.js"
+    "check-translations": "node check-translations.js",
+    "sort-translations": "node sort-translations.js",
+    "check-missing-translations": "node check-missing-translations.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
