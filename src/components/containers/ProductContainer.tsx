@@ -264,7 +264,7 @@ const ProductOverview: FC = () => {
                   src={imageUrl as string}
                   alt={translate(article?.name) || 'Product image'}
                   fill
-                  loading={'eager'}
+                  sizes={'(max-width: 1200px) calc(100vw - 8rem), 620px'}
                   className={style.productImage}
                   priority
                 />

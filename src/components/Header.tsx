@@ -16,13 +16,14 @@ import Cookies from 'js-cookie';
 import { handleLanguageChange, languagesOptions } from '@/i18n/client';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Params } from 'next/dist/server/request/params';
+import AdminIcon from '@/components/icons/AdminIcon';
 
 const ResponsiveAppBar = () => {
   const { t, i18n } = useTranslation();
   const router: AppRouterInstance = useRouter();
   const path = usePathname();
   const params: Params = useParams();
-  const { userSessionData, sessionData, isLoading } = useAuth();
+  const { userSessionData, sessionData, isLoading, isAdmin } = useAuth();
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const languageDropdownRef = useRef<HTMLLIElement>(null);
@@ -117,14 +118,18 @@ const ResponsiveAppBar = () => {
         <span
           className={`${style.rightNavContainer} ${!isLoading ? style.fadeIn : style.fadeOut}`}
         >
+          <div className={style.cartIcon} data-hidden={!isAdmin}>
+            <AdminIcon onClick={() => router.replace('/admin')} />
+          </div>
+
           <div className={style.cartIcon}>
             <CartIcon onClick={() => router.replace('/cart')} />
           </div>
           <div className={style.cartIcon}>
             <ProfileIcon onClick={handleUserClick} />
           </div>
-          <ul className={style.translationIcon}>
-            <li
+          <div className={style.translationIcon}>
+            <span
               className={`${style.navItem} ${style.languageDropdown}`}
               ref={languageDropdownRef}
             >
@@ -157,8 +162,8 @@ const ResponsiveAppBar = () => {
                   ))}
                 </div>
               )}
-            </li>
-          </ul>
+            </span>
+          </div>
         </span>
       </header>
 

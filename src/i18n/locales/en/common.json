@@ -209,7 +209,7 @@
     "xAvailable": "{{count}} available",
     "othersInCart": "{{count}} others have this in cart",
     "stockChanged": "Stock has changed",
-    "price": "Price: €{{price}}",
+    "price": "CHF {{price}}.-",
     "onlyXAvailableShort": "Only {{count}} available",
     "addToCart": "Add to cart",
     "otherCustomersBought": "Other customers bought"

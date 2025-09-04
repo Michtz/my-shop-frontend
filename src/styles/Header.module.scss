@@ -226,6 +226,10 @@
       cursor: pointer;
       transition: all 0.2s ease-in-out;
 
+      &[data-hidden='true'] {
+        opacity: 0;
+      }
+
       &:hover {
         transform: scale(1.05);
       }

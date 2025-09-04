@@ -1,14 +1,14 @@
 .dropdownMenu {
   position: absolute;
-  top: 75%;
-  left: 20%;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  background-color: var(--background);
+  border: 1px solid var(--disabled);
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(131, 131, 131, 0.4);
   z-index: 1000;
   min-width: 120px;
   margin-top: 8px;
+  overflow: hidden;
 
   .dropdownItem {
     display: block;
@@ -39,6 +39,7 @@
 .sortIcon {
   display: flex;
   gap: 0.5rem;
+  position: relative;
 }
 
 .sortButton {

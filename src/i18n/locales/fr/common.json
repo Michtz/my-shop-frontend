@@ -208,7 +208,7 @@
     "xAvailable": "{{count}} disponible",
     "othersInCart": "{{count}} autres l'ont dans le panier",
     "stockChanged": "Le stock a changé",
-    "price": "Prix : €{{price}}",
+    "price": "CHF {{price}}.-",
     "onlyXAvailableShort": "Seulement {{count}} disponible",
     "addToCart": "Ajouter au panier",
     "otherCustomersBought": "Autres clients ont acheté"

@@ -27,6 +27,7 @@ interface AuthContextType {
   userInformation: UserInformation | undefined;
   isLoading: boolean;
   isSessionReady: boolean;
+  isAdmin: boolean;
 
   login: (email: string, password: string) => Promise<any>;
   register: (
@@ -52,6 +53,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [sessionData, setSessionData] = useState<SessionData>();
   const [isLoading, setIsLoading] = useState(true);
   const [isSessionReady, setIsSessionReady] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const resetToDefault = () => {
+    sessionStorage.removeItem('user');
+    setUserSessionData(undefined);
+    setUserInformation(undefined);
+    setIsAdmin(false);
+  };
 
   useEffect(() => {
     initializeAuth();
@@ -88,9 +97,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const user = JSON.parse(userStr);
 
           if (!user.token || !user.refreshToken) {
-            sessionStorage.removeItem('user');
-            setUserSessionData(undefined);
-            setUserInformation(undefined);
+            resetToDefault();
           } else {
             try {
               const refreshResponse = await refreshToken();
@@ -100,6 +107,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               if (refreshedData && refreshedData.token) {
                 sessionStorage.setItem('user', JSON.stringify(refreshedData));
                 setUserSessionData(refreshedData);
+                setIsAdmin(refreshedData.user.role === 'admin');
 
                 // Get current user info
                 const userInformation = await getCurrentUser();
@@ -108,20 +116,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                   setUserInformation(userInfoData);
                 }
               } else {
-                sessionStorage.removeItem('user');
-                setUserSessionData(undefined);
-                setUserInformation(undefined);
+                resetToDefault();
               }
             } catch {
-              sessionStorage.removeItem('user');
-              setUserSessionData(undefined);
-              setUserInformation(undefined);
+              resetToDefault();
             }
           }
         } catch {
-          sessionStorage.removeItem('user');
-          setUserSessionData(undefined);
-          setUserInformation(undefined);
+          resetToDefault();
         }
       }
     } catch (err) {
@@ -147,6 +149,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         };
 
         setUserSessionData(response?.data);
+        setIsAdmin(response?.data?.user.role === 'admin');
         sessionStorage.setItem('user', JSON.stringify(response?.data)); // backup
         sessionStorage.setItem('session', JSON.stringify(newSessionData));
 
@@ -188,6 +191,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (isSuccess && registerData) {
         const userData = registerData.user || registerData;
         setUserSessionData(userData);
+        setIsAdmin(userData.user.role === 'admin');
         sessionStorage.setItem('user', JSON.stringify(registerData));
 
         try {
@@ -218,6 +222,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       Logger.error('Logout request failed:', err);
     }
 
+    setIsAdmin(false);
     setUserSessionData(undefined);
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('session');
@@ -238,6 +243,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     register,
     logout,
+    isAdmin,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

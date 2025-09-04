@@ -207,7 +207,7 @@
     "xAvailable": "{{count}} verfügbar",
     "othersInCart": "{{count}} andere haben das im Warenkorb",
     "stockChanged": "Lagerbestand hat sich geändert",
-    "price": "Preis: €{{price}}",
+    "price": "CHF {{price}}.-",
     "onlyXAvailableShort": "Nur {{count}} verfügbar",
     "addToCart": "In den Warenkorb",
     "otherCustomersBought": "Das kauften andere Kunden"

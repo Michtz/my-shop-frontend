@@ -103,6 +103,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       // User-spezifische Events
       socketInstance.on('order_status_updated', (data: any) => {
         console.log('📦 Order status updated:', data);
+
         // Hier kannst du deine Order UI aktualisieren
         mutate('orders');
         mutate('/api/orders');
@@ -113,36 +114,35 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
       socketInstance.on('notification', (data: any) => {
         console.log('🔔 New notification:', data);
-        // Hier kannst du Notifications anzeigen
-        // z.B. toast notification, notification state update etc.
+        // todo: if time add a banner for something like a new product so all user can see a notification or something like this
       });
 
-      // Bestehende Events
       socketInstance.on(
         'products_updated',
         (data: { productIds: string[]; timestamp: string }) => {
           console.log('🔄 PRODUCTS UPDATED EVENT:', data);
-
-          mutate('products');
-          mutate('/api/products');
+          mutate('products'); // for card list view update
           data.productIds.forEach((productId: string) => {
-            mutate(productId);
+            mutate(productId); // Für for single product update
           });
-
-          if (data.productIds && data.productIds.length > 0) {
-            data.productIds.forEach((productId: string) => {
-              mutate(`product-${productId}`);
-              mutate(`/api/products/${productId}`);
-            });
-          }
         },
       );
 
       socketInstance.on(
         'cart_updated',
-        (data: { productId: string; timestamp: string }) => {
+        (data: {
+          productId: string;
+          timestamp: string;
+          sessionId: string;
+          userId?: string;
+        }) => {
           console.log('user cart updated:', data);
-          //    mutate(`cart`);
+
+          if (data.userId) {
+            mutate(`cart-${data.userId}`);
+          } else {
+            mutate(`cart-${data.sessionId}`);
+          }
         },
       );
 
