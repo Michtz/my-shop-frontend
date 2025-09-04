@@ -152,9 +152,3 @@
     grid-template-rows: 2.2fr 0.5fr 1fr 0.5fr;
   }
 }
-
-@media (hover: none) and (pointer: coarse) {
-  .cartContainer {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-}
