@@ -25,14 +25,6 @@ import FilterContainer, {
 import { useContentTranslate } from '@/hooks/ContentTranslationHook';
 import useCart, { CartItem } from '@/hooks/CartHook';
 
-const filteredProducts = (
-  items: IProduct[],
-  category: string | undefined,
-): IProduct[] => {
-  if (!category) return items;
-  return items.filter((product) => product.category === category);
-};
-
 const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
   const { cartItems, mutate } = useCart();
@@ -47,23 +39,16 @@ const MainContainer: React.FC = () => {
     params?.category as string,
   );
 
-  const [articles, setArticles] = useState<IProduct[]>(
-    filteredProducts(products, category),
-  );
-  const [sortedArticles, setSortedArticles] = useState<IProduct[]>(
-    filteredProducts(products, category),
-  );
+  const [articles, setArticles] = useState<IProduct[]>(products);
+  const [sortedArticles, setSortedArticles] = useState<IProduct[]>(products);
 
   const router = useRouter();
 
   useEffect(() => {
     if (isLoading) return;
-    const filteredProductsState: IProduct[] = filteredProducts(
-      products,
-      category,
-    );
-    setSortedArticles(filteredProductsState);
-    setArticles(filteredProductsState);
+
+    setSortedArticles(products);
+    setArticles(products);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, category]);
 
@@ -181,7 +166,6 @@ const MainContainer: React.FC = () => {
       <CategoryNavigation activeCategory={category} />
 
       <FilterContainer
-        items={sortedArticles}
         setItems={setSortedArticles}
         sortCode={activeSort}
         setSortCode={(newCode: FilterOptionCode) => setActiveSort(newCode)}

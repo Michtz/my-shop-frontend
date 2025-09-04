@@ -6,6 +6,9 @@ import { getProducts } from '@/requests/products.request';
 import { RequestError } from '@/types/request.types';
 import { IProduct, ProductResponse } from '@/types/product.types';
 import useSocket from '@/hooks/SocketHook';
+import { Params } from 'next/dist/server/request/params';
+import { useParams } from 'next/navigation';
+import { getCategoryName } from '@/functions/common';
 
 /*
  * this hook is used to handle data of all products
@@ -20,9 +23,22 @@ interface ProductsResponse {
   totalCartCount: number;
 }
 
+const filteredProducts = (
+  items: IProduct[],
+  category: string | undefined,
+): IProduct[] => {
+  if (!category) return items;
+  return items.filter((product) => product.category === category);
+};
+
 const useProducts = (): ProductsResponse => {
   const { isConnected } = useSocket();
   const [cartCounts] = useState<{ [productId: string]: number }>({});
+  const params: Params = useParams();
+
+  const category: string | undefined = getCategoryName(
+    params?.category as string,
+  );
 
   const { data, error, isLoading } = useSWR<ProductResponse, RequestError>(
     'products',
@@ -83,7 +99,7 @@ const useProducts = (): ProductsResponse => {
     (data && !data.success ? data.error || 'unknown error' : null);
 
   return {
-    products: processedProducts,
+    products: filteredProducts(processedProducts, category),
     allProducts: processedProductsAll,
     isLoading,
     error: errorMessage,

@@ -3,9 +3,11 @@
 import React from 'react';
 import { Container } from '@/components/system/Container';
 import style from '@/styles/LegalContainer.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const PrivacyContainer: React.FC = () => {
-  // bewusst nicht übersetzt da nur example für ev privat Kunden
+  const { t } = useTranslation();
+
   return (
     <Container
       flow="column"
@@ -16,74 +18,203 @@ const PrivacyContainer: React.FC = () => {
       gap="2"
     >
       <div className={style.legalContainer}>
-        <h1 className={style.title}>Datenschutzerklärung</h1>
+        <h1 className={style.title}>{t('privacy.title')}</h1>
+        <p className={style.lastUpdate}>
+          {t('privacy.lastUpdate')}: 04.09.2025
+        </p>
 
         <div className={style.content}>
           <div className={style.section}>
             <h2 className={style.sectionTitle}>
-              1. Datenschutz auf einen Blick
+              {t('privacy.overview.title')}
             </h2>
-            <p className={style.paragraph}>
-              Die folgenden Hinweise geben einen einfachen Überblick darüber,
-              was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere
-              Website besuchen. Personenbezogene Daten sind alle Daten, mit
-              denen Sie persönlich identifiziert werden können.
-            </p>
+            <p className={style.paragraph}>{t('privacy.overview.intro')}</p>
+
+            <div className={style.infoBox}>
+              <h3>{t('privacy.overview.dataCollection')}</h3>
+              <p>{t('privacy.overview.dataCollectionDesc')}</p>
+            </div>
+
+            <div className={style.infoBox}>
+              <h3>{t('privacy.overview.dataUse')}</h3>
+              <p>{t('privacy.overview.dataUseDesc')}</p>
+            </div>
+
+            <div className={style.infoBox}>
+              <h3>{t('privacy.overview.dataProtection')}</h3>
+              <p>{t('privacy.overview.dataProtectionDesc')}</p>
+            </div>
           </div>
 
           <div className={style.section}>
             <h2 className={style.sectionTitle}>
-              3. Allgemeine Hinweise und Pflichtinformationen
+              {t('privacy.responsible.title')}
             </h2>
-            <h3 className={style.sectionTitle}>Datenschutz</h3>
-            <p className={style.paragraph}>
-              Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen
-              Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten
-              vertraulich und entsprechend der gesetzlichen
-              Datenschutzvorschriften sowie dieser Datenschutzerklärung.
-            </p>
+            <p className={style.paragraph}>{t('privacy.responsible.text')}</p>
+            <div className={style.contactInfo}>
+              <p>
+                <strong>Barista Accessoire</strong>
+                <br />
+                MusterStrasse 420
+                <br />
+                8000
+                <br />
+                Schweiz
+              </p>
+              <p>
+                <strong>E-Mail:</strong> kontakt@barista-accessoire.ch
+                <br />
+              </p>
+            </div>
           </div>
 
           <div className={style.section}>
             <h2 className={style.sectionTitle}>
-              4. Datenerfassung auf unserer Website
+              {t('privacy.visitData.title')}
             </h2>
-            <h3 className={style.sectionTitle}>Cookies</h3>
-            <p className={style.paragraph}>
-              Die Internetseiten verwenden teilweise so genannte Cookies.
-              Cookies richten auf Ihrem Rechner keinen Schaden an und enthalten
-              keine Viren. Cookies dienen dazu, unser Angebot
-              nutzerfreundlicher, effektiver und sicherer zu machen. Zum
-              Beispiel es Ihnen ermöglichen mehrere Tabs mit dem selben
-              Warenkorb offen zu haben.
-            </p>
-          </div>
 
-          <div className={style.section}>
-            <h2 className={style.sectionTitle}>5. Ihre Rechte</h2>
+            <h3 className={style.subsectionTitle}>
+              {t('privacy.visitData.serverLogs.title')}
+            </h3>
             <p className={style.paragraph}>
-              Sie haben jederzeit das Recht unentgeltlich Auskunft über
-              Herkunft, Empfänger und Zweck Ihrer gespeicherten
-              personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht,
-              die Berichtigung, Sperrung oder Löschung dieser Daten zu
-              verlangen.
+              {t('privacy.visitData.serverLogs.desc')}
             </p>
             <ul className={style.list}>
-              <li>Recht auf Auskunft</li>
-              <li>Recht auf Berichtigung</li>
-              <li>Recht auf Löschung</li>
-              <li>Recht auf Einschränkung der Verarbeitung</li>
-              <li>Recht auf Datenübertragbarkeit</li>
-              <li>Widerspruchsrecht</li>
+              <li>{t('privacy.visitData.serverLogs.browserType')}</li>
+              <li>{t('privacy.visitData.serverLogs.os')}</li>
+              <li>{t('privacy.visitData.serverLogs.referrer')}</li>
+              <li>{t('privacy.visitData.serverLogs.timestamp')}</li>
+              <li>{t('privacy.visitData.serverLogs.ip')}</li>
+              <li>{t('privacy.account.registration.language')}</li>
             </ul>
+            <p className={style.paragraph}>
+              {t('privacy.visitData.serverLogs.purpose')}
+            </p>
           </div>
 
           <div className={style.section}>
-            <h2 className={style.sectionTitle}>6. Kontakt</h2>
+            <h2 className={style.sectionTitle}>{t('privacy.account.title')}</h2>
+
+            <h3 className={style.subsectionTitle}>
+              {t('privacy.account.registration.title')}
+            </h3>
             <p className={style.paragraph}>
-              Wenn Sie Fragen zum Datenschutz haben, schreiben Sie uns bitte
-              eine E-Mail.
+              {t('privacy.account.registration.desc')}
             </p>
+            <ul className={style.list}>
+              <li>{t('privacy.account.registration.email')}</li>
+              <li>{t('privacy.account.registration.password')}</li>
+              <li>{t('privacy.account.registration.name')}</li>
+              <li>{t('privacy.account.orders.deliveryAddress')}</li>
+            </ul>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.legalBasis')}:</strong>{' '}
+              {t('privacy.account.registration.legalBasis')}
+            </p>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.retention')}:</strong>{' '}
+              {t('privacy.account.registration.retention')}
+            </p>
+
+            <h3 className={style.subsectionTitle}>
+              {t('privacy.account.orders.title')}
+            </h3>
+            <p className={style.paragraph}>
+              {t('privacy.account.orders.desc')}
+            </p>
+            <ul className={style.list}>
+              <li>{t('privacy.account.orders.orderHistory')}</li>
+              <li>{t('privacy.account.orders.transactionId')}</li>
+              <li>{t('privacy.account.orders.paymentStatus')}</li>
+            </ul>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.legalBasis')}:</strong>{' '}
+              {t('privacy.account.orders.legalBasis')}
+            </p>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.retention')}:</strong>{' '}
+              {t('privacy.account.orders.retention')}
+            </p>
+          </div>
+
+          <div className={style.section}>
+            <h2 className={style.sectionTitle}>{t('privacy.payment.title')}</h2>
+
+            <h3 className={style.subsectionTitle}>Stripe</h3>
+            <p className={style.paragraph}>
+              {t('privacy.payment.stripe.desc')}
+            </p>
+            <p className={style.paragraph}>
+              {t('privacy.payment.stripe.data')}
+            </p>
+            <ul className={style.list}>
+              <li>{t('privacy.payment.stripe.cardNumber')}</li>
+              <li>{t('privacy.payment.stripe.expiry')}</li>
+              <li>{t('privacy.payment.stripe.cvv')}</li>
+              <li>{t('privacy.payment.stripe.name')}</li>
+              <li>{t('privacy.payment.stripe.address')}</li>
+            </ul>
+            <p className={style.paragraph}>
+              {t('privacy.payment.stripe.storage')}
+            </p>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.payment.stripe.provider')}:</strong>
+              <br />
+              Stripe, Inc.
+              <br />
+              510 Townsend Street
+              <br />
+              San Francisco, CA 94103
+              <br />
+              USA
+            </p>
+            <p className={style.paragraph}>
+              {t('privacy.payment.stripe.privacy')}:{' '}
+              <a
+                href="https://stripe.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={style.link}
+              >
+                https://stripe.com/privacy
+              </a>
+            </p>
+          </div>
+
+          {/* Datensicherheit */}
+          <div className={style.section}>
+            <h2 className={style.sectionTitle}>
+              {t('privacy.security.title')}
+            </h2>
+            <p className={style.paragraph}>{t('privacy.security.measures')}</p>
+            <ul className={style.list}>
+              <li>{t('privacy.security.ssl')}</li>
+              <li>{t('privacy.security.encryption')}</li>
+              <li>{t('privacy.security.access')}</li>
+              <li>{t('privacy.security.monitoring')}</li>
+              <li>{t('privacy.security.updates')}</li>
+            </ul>
+            <p className={style.paragraph}>
+              {t('privacy.security.disclaimer')}
+            </p>
+          </div>
+
+          {/* Keine Weitergabe */}
+          <div className={style.section}>
+            <h2 className={style.sectionTitle}>
+              {t('privacy.noSharing.title')}
+            </h2>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.noSharing.statement')}</strong>
+            </p>
+            <p className={style.paragraph}>
+              {t('privacy.noSharing.exceptions')}
+            </p>
+            <ul className={style.list}>
+              <li>{t('privacy.noSharing.legal')}</li>
+              <li>{t('privacy.noSharing.delivery')}</li>
+              <li>{t('privacy.noSharing.payment')}</li>
+            </ul>
           </div>
         </div>
       </div>

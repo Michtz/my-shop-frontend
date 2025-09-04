@@ -17,6 +17,8 @@ import Header from '@/components/Header';
 import Feedback from '@/components/system/Feedback';
 import { ErrorProvider } from '@/hooks/ErrorHook';
 import { ContentTranslateProvider } from '@/hooks/ContentTranslationHook';
+import CookieBanner from '@/components/system/CookieBanner';
+import { CookieProvider } from '@/hooks/CookieHook';
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -24,23 +26,26 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       <ErrorProvider>
         <TranslationProvider>
           <ContentTranslateProvider>
-            <FeedbackProvider>
-              <AuthProvider>
-                <SocketProvider>
-                  <html lang="de" suppressHydrationWarning>
-                    <head>
-                      <title>Barista Accessoire</title>
-                    </head>
-                    <body>
-                      <Header />
-                      <SWRProvider>{children}</SWRProvider>
-                      <Feedback />
-                      <Footer />
-                    </body>
-                  </html>
-                </SocketProvider>
-              </AuthProvider>
-            </FeedbackProvider>
+            <CookieProvider>
+              <FeedbackProvider>
+                <AuthProvider>
+                  <SocketProvider>
+                    <html lang="de" suppressHydrationWarning>
+                      <head>
+                        <title>Barista Accessoire</title>
+                      </head>
+                      <body>
+                        <Header />
+                        <SWRProvider>{children}</SWRProvider>
+                        <Feedback />
+                        <CookieBanner />
+                        <Footer />
+                      </body>
+                    </html>
+                  </SocketProvider>
+                </AuthProvider>
+              </FeedbackProvider>
+            </CookieProvider>
           </ContentTranslateProvider>
         </TranslationProvider>
       </ErrorProvider>

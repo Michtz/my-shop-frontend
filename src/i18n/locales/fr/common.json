@@ -80,8 +80,32 @@
     "down": "Prix décroissant",
     "sort": "Trier",
     "abc": "Croissant (A–Z)",
-    "cba": "Décroissant (Z–A)"
+    "cba": "Décroissant (Z–A)",
+    "priceRange": "Fourchette de prix",
+  "min": "Minimum",
+  "max": "Maximum",
+  "reset": "Réinitialiser",
+  "apply": "Appliquer",
+    "year": "année",
+    "days": "jours"
 
+  },
+  "cookies": {
+    "banner": {
+      "title": "Paramètres des cookies",
+      "description": "Nous n'utilisons que des cookies essentiels nécessaires au fonctionnement de ce site web. Ces cookies ne stockent aucune donnée personnelle et sont nécessaires pour les fonctions de base comme l'authentification.",
+      "accept": "Accepter",
+      "reject": "Essentiels uniquement",
+      "learnMore": "Politique de confidentialité"
+    },
+    "settings": {
+      "title": "Paramètres des cookies",
+      "essential": {
+        "title": "Cookies essentiels",
+        "description": "Ces cookies sont nécessaires au fonctionnement de base du site web et ne peuvent pas être désactivés."
+      },
+      "resetConsent": "Réinitialiser les paramètres de cookies"
+    }
   },
   "ui": {
     "buttons": {
@@ -519,6 +543,104 @@
       "description": "Si vous avez des questions qui ne sont pas répondues ici, veuillez nous contacter :",
       "phone": "Téléphone",
       "email": "E-mail"
+    }
+  },
+
+  "privacy": {
+    "title": "Politique de Confidentialité",
+    "lastUpdate": "Dernière mise à jour",
+    "legalBasis": "Base légale",
+    "retention": "Durée de conservation",
+
+    "overview": {
+      "title": "1. Aperçu de la Protection des Données",
+      "intro": "Les informations suivantes donnent un aperçu simple de ce qui arrive à vos données personnelles lorsque vous visitez et utilisez notre boutique en ligne.",
+      "dataCollection": "Quelles données sont collectées ?",
+      "dataCollectionDesc": "Nous ne collectons que les données nécessaires au fonctionnement de la boutique en ligne : données de compte (email, nom), données de commande (adresse de livraison, adresse de facturation), statut de paiement et paramètres linguistiques.",
+      "dataUse": "Comment utilisons-nous vos données ?",
+      "dataUseDesc": "Vos données sont utilisées exclusivement pour traiter vos commandes, gérer votre compte client et améliorer votre expérience d'achat.",
+      "dataProtection": "Comment protégeons-nous vos données ?",
+      "dataProtectionDesc": "Nous utilisons le cryptage SSL, des serveurs sécurisés et ne vendons jamais vos données à des tiers. Les données de paiement sont traitées directement par Stripe et ne sont pas stockées sur nos serveurs."
+    },
+
+    "responsible": {
+      "title": "2. Responsable du Traitement",
+      "text": "Le responsable du traitement des données sur ce site est :"
+    },
+
+    "visitData": {
+      "title": "3. Collecte de Données lors de la Visite du Site",
+      "serverLogs": {
+        "title": "Fichiers Journaux du Serveur",
+        "desc": "Le fournisseur collecte et stocke automatiquement des informations dans les fichiers journaux du serveur transmises par votre navigateur :",
+        "browserType": "Type et version du navigateur",
+        "os": "Système d'exploitation utilisé",
+        "referrer": "URL de référence",
+        "timestamp": "Heure de la requête du serveur",
+        "ip": "Adresse IP (anonymisée)",
+        "purpose": "Ces données sont utilisées uniquement pour l'analyse statistique et pour garantir le bon fonctionnement du site. Ces données ne sont pas fusionnées avec d'autres sources de données."
+      }
+    },
+
+    "account": {
+      "title": "4. Compte Utilisateur et Données de Commande",
+      "registration": {
+        "title": "Inscription",
+        "desc": "Lors de la création d'un compte utilisateur, nous collectons les données suivantes :",
+        "email": "Adresse email",
+        "password": "Mot de passe (stocké crypté)",
+        "name": "Prénom et nom",
+        "language": "Préférence linguistique",
+        "legalBasis": "Art. 6(1)(b) RGPD (Exécution du contrat)",
+        "retention": "Jusqu'à la suppression du compte par l'utilisateur"
+      },
+      "orders": {
+        "title": "Données de Commande",
+        "desc": "Lors d'une commande, nous stockons en plus :",
+        "deliveryAddress": "Adresse de livraison",
+        "billingAddress": "Adresse de facturation",
+        "orderHistory": "Historique des commandes",
+        "transactionId": "ID de transaction",
+        "paymentStatus": "Statut de paiement",
+        "legalBasis": "Art. 6(1)(b) RGPD (Exécution du contrat) et Art. 6(1)(c) RGPD (Obligation légale)",
+        "retention": "10 ans selon les obligations légales de conservation (droit fiscal)"
+      }
+    },
+
+    "payment": {
+      "title": "5. Traitement des Paiements",
+      "stripe": {
+        "desc": "Nous utilisons le prestataire de services de paiement Stripe pour le traitement des paiements. Vos données de paiement sont saisies directement via la connexion cryptée à Stripe.",
+        "data": "Les données suivantes sont transmises à Stripe :",
+        "cardNumber": "Numéro de carte",
+        "expiry": "Date d'expiration",
+        "cvv": "Code CVV/CVC",
+        "name": "Nom du titulaire de la carte",
+        "address": "Adresse de facturation",
+        "storage": "Nous ne stockons aucune donnée de carte de crédit. Nous ne recevons de Stripe qu'un ID de transaction et le statut de paiement.",
+        "provider": "Fournisseur",
+        "privacy": "Politique de Confidentialité de Stripe"
+      }
+    },
+
+    "security": {
+      "title": "6. Sécurité des Données",
+      "measures": "Nous mettons en œuvre les mesures de sécurité suivantes pour protéger vos données :",
+      "ssl": "Cryptage SSL/TLS pour toutes les transmissions de données",
+      "encryption": "Stockage crypté des données sensibles",
+      "access": "Contrôle d'accès à nos systèmes",
+      "monitoring": "Surveillance de sécurité régulière",
+      "updates": "Mises à jour logicielles régulières",
+      "disclaimer": "Malgré toutes les mesures de sécurité, une sécurité absolue ne peut être garantie pour la transmission de données sur Internet."
+    },
+
+    "noSharing": {
+      "title": "7. Aucun Partage avec des Tiers",
+      "statement": "Nous ne vendons, louons ou partageons jamais vos données personnelles avec des tiers à des fins marketing.",
+      "exceptions": "Les données ne sont partagées que dans les cas suivants :",
+      "legal": "Lorsque la loi l'exige",
+      "delivery": "Aux prestataires de livraison pour livrer votre commande",
+      "payment": "À Stripe pour le traitement des paiements"
     }
   }
 }

@@ -80,12 +80,36 @@
     "down": "Preis Absteigend",
     "sort": "Sortieren",
     "abc": "Aufsteigend (A–Z)",
-    "cba": "Absteigend (Z–A)"
+    "cba": "Absteigend (Z–A)",
+    "priceRange": "Preisspanne",
+    "min": "Minimum",
+    "max": "Maximum",
+    "reset": "Zurücksetzen",
+    "apply": "Anwenden",
+    "year": "Jahr",
+    "days": "Tage"
+  },
+  "cookies": {
+    "banner": {
+      "title": "Cookie-Einstellungen",
+      "description": "Wir verwenden nur essenzielle Cookies, die für den Betrieb dieser Website notwendig sind. Diese Cookies speichern keine persönlichen Daten und sind für grundlegende Funktionen wie die Anmeldung erforderlich.",
+      "accept": "Akzeptieren",
+      "reject": "Nur Notwendige",
+      "learnMore": "Datenschutzerklärung"
+    },
+    "settings": {
+      "title": "Cookie-Einstellungen",
+      "essential": {
+        "title": "Essenzielle Cookies",
+        "description": "Diese Cookies sind für die Grundfunktionen der Website erforderlich und können nicht deaktiviert werden."
+      },
+      "resetConsent": "Cookie-Einstellungen zurücksetzen"
+    }
   },
   "ui": {
     "buttons": {
       "confirm": "Bestätigen",
-      "cancel": "Abbrechen", 
+      "cancel": "Abbrechen",
       "delete": "Löschen",
       "edit": "Bearbeiten",
       "save": "Speichern",
@@ -282,7 +306,7 @@
     "quantity-total": "{{quantity}} Stück für insgesamt",
     "subtotal-amount": "{{amount}} CHF*",
     "shipping-amount": "{{amount}} CHF*",
-    "total-amount": "{{amount}} CHF*", 
+    "total-amount": "{{amount}} CHF*",
     "net-total-amount": "{{amount}} CHF",
     "vat-amount": "{{amount}} CHF"
   },
@@ -517,6 +541,101 @@
       "description": "Falls Sie Fragen haben, die hier nicht beantwortet werden, kontaktieren Sie uns bitte:",
       "phone": "Telefon",
       "email": "E-Mail"
+    }
+  },
+
+
+
+
+
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "lastUpdate": "Stand",
+    "legalBasis": "Rechtsgrundlage",
+    "retention": "Speicherdauer",
+    "overview": {
+      "title": "1. Datenschutz auf einen Blick",
+      "intro": "Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unseren Online-Shop besuchen und nutzen.",
+      "dataCollection": "Welche Daten werden erfasst?",
+      "dataCollectionDesc": "Wir erfassen nur die für den Betrieb des Online-Shops notwendigen Daten: Kontodaten (E-Mail, Name), Bestelldaten (Lieferadresse, Rechnungsadresse), Zahlungsstatus und Spracheinstellungen.",
+      "dataUse": "Wofür nutzen wir Ihre Daten?",
+      "dataUseDesc": "Ihre Daten werden ausschließlich zur Abwicklung Ihrer Bestellungen, zur Verwaltung Ihres Kundenkontos und zur Verbesserung Ihrer Einkaufserfahrung verwendet.",
+      "dataProtection": "Wie schützen wir Ihre Daten?",
+      "dataProtectionDesc": "Wir verwenden SSL-Verschlüsselung, sichere Server und verkaufen Ihre Daten niemals an Dritte. Zahlungsdaten werden direkt von Stripe verarbeitet und nicht auf unseren Servern gespeichert."
+    },
+    "responsible": {
+      "title": "2. Verantwortlicher",
+      "text": "Verantwortlich für die Datenverarbeitung auf dieser Website ist:"
+    },
+    "visitData": {
+      "title": "3. Datenerfassung beim Websitebesuch",
+      "serverLogs": {
+        "title": "Server-Log-Dateien",
+        "desc": "Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch übermittelt:",
+        "browserType": "Browsertyp und Browserversion",
+        "os": "Verwendetes Betriebssystem",
+        "referrer": "Referrer URL",
+        "timestamp": "Uhrzeit der Serveranfrage",
+        "ip": "IP-Adresse (anonymisiert)",
+        "purpose": "Diese Daten werden nur zur statistischen Auswertung und zur Gewährleistung eines störungsfreien Betriebs der Website verwendet. Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen."
+      }
+    },
+    "account": {
+      "title": "4. Benutzerkonto und Bestelldaten",
+      "registration": {
+        "title": "Registrierung",
+        "desc": "Bei der Erstellung eines Benutzerkontos erfassen wir folgende Daten:",
+        "email": "E-Mail-Adresse",
+        "password": "Passwort (verschlüsselt gespeichert)",
+        "name": "Vor- und Nachname",
+        "language": "Sprachpräferenz",
+        "legalBasis": "Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)",
+        "retention": "Bis zur Löschung des Kontos durch den Nutzer"
+      },
+      "orders": {
+        "title": "Bestelldaten",
+        "desc": "Bei einer Bestellung speichern wir zusätzlich:",
+        "deliveryAddress": "Lieferadresse",
+        "billingAddress": "Rechnungsadresse",
+        "orderHistory": "Bestellhistorie",
+        "transactionId": "Transaktions-ID",
+        "paymentStatus": "Zahlungsstatus",
+        "legalBasis": "Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) und Art. 6 Abs. 1 lit. c DSGVO (rechtliche Verpflichtung)",
+        "retention": "10 Jahre gemäß gesetzlicher Aufbewahrungspflichten (Steuerrecht)"
+      }
+    },
+    "payment": {
+      "title": "5. Zahlungsverarbeitung",
+      "stripe": {
+        "desc": "Für die Zahlungsabwicklung nutzen wir den Zahlungsdienstleister Stripe. Die Eingabe Ihrer Zahlungsdaten erfolgt direkt über die verschlüsselte Verbindung zu Stripe.",
+        "data": "Folgende Daten werden an Stripe übertragen:",
+        "cardNumber": "Kartennummer",
+        "expiry": "Ablaufdatum",
+        "cvv": "CVV/CVC-Code",
+        "name": "Name des Karteninhabers",
+        "address": "Rechnungsadresse",
+        "storage": "Wir speichern keine Kreditkartendaten. Wir erhalten von Stripe lediglich eine Transaktions-ID und den Zahlungsstatus.",
+        "provider": "Anbieter",
+        "privacy": "Datenschutzerklärung von Stripe"
+      }
+    },
+    "security": {
+      "title": "6. Datensicherheit",
+      "measures": "Wir treffen folgende Sicherheitsmaßnahmen zum Schutz Ihrer Daten:",
+      "ssl": "SSL/TLS-Verschlüsselung für alle Datenübertragungen",
+      "encryption": "Verschlüsselte Speicherung sensibler Daten",
+      "access": "Zugangskontrolle zu unseren Systemen",
+      "monitoring": "Regelmäßige Sicherheitsüberwachung",
+      "updates": "Regelmäßige Software-Updates",
+      "disclaimer": "Trotz aller Sicherheitsmaßnahmen kann eine absolute Sicherheit bei der Datenübertragung im Internet nicht garantiert werden."
+    },
+    "noSharing": {
+      "title": "7. Keine Weitergabe an Dritte",
+      "statement": "Wir verkaufen, vermieten oder teilen Ihre persönlichen Daten niemals mit Dritten zu Marketingzwecken.",
+      "exceptions": "Eine Weitergabe erfolgt nur in folgenden Fällen:",
+      "legal": "Bei gesetzlicher Verpflichtung",
+      "delivery": "An Versanddienstleister zur Lieferung Ihrer Bestellung",
+      "payment": "An Stripe zur Zahlungsabwicklung"
     }
   }
 }

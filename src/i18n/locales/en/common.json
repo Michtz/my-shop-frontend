@@ -80,9 +80,32 @@
     "down": "Price Descending",
     "sort": "Sort",
     "abc": "Ascending (A–Z)",
-    "cba": "Descending (Z–A)"
+    "cba": "Descending (Z–A)",
+    "priceRange": "Price Range",
+  "min": "Minimum",
+  "max": "Maximum",
+  "reset": "Reset",
+  "apply": "Apply",
+    "year": "year",
+    "days": "days"
 
-
+  },
+  "cookies": {
+    "banner": {
+      "title": "Cookie Settings",
+      "description": "We only use essential cookies that are necessary for the operation of this website. These cookies do not store any personal data and are required for basic functions like authentication.",
+      "accept": "Accept",
+      "reject": "Essential Only",
+      "learnMore": "Privacy Policy"
+    },
+    "settings": {
+      "title": "Cookie Settings",
+      "essential": {
+        "title": "Essential Cookies",
+        "description": "These cookies are required for the basic functionality of the website and cannot be disabled."
+      },
+      "resetConsent": "Reset Cookie Settings"
+    }
   },
   "ui": {
     "buttons": {
@@ -519,6 +542,105 @@
       "description": "If you have questions that are not answered here, please contact us:",
       "phone": "Phone",
       "email": "Email"
+    }
+  },
+
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdate": "Last updated",
+    "legalBasis": "Legal basis",
+    "retention": "Retention period",
+
+    "overview": {
+      "title": "1. Privacy at a Glance",
+      "intro": "The following information provides a simple overview of what happens to your personal data when you visit and use our online shop.",
+      "dataCollection": "What data is collected?",
+      "dataCollectionDesc": "We only collect data necessary for operating the online shop: account data (email, name), order data (delivery address, billing address), payment status and language settings.",
+      "dataUse": "How do we use your data?",
+      "dataUseDesc": "Your data is used exclusively for processing your orders, managing your customer account and improving your shopping experience.",
+      "dataProtection": "How do we protect your data?",
+      "dataProtectionDesc": "We use SSL encryption, secure servers and never sell your data to third parties. Payment data is processed directly by Stripe and not stored on our servers."
+    },
+
+    "responsible": {
+      "title": "2. Data Controller",
+      "text": "The data controller for this website is:"
+    },
+
+    "visitData": {
+      "title": "3. Data Collection When Visiting the Website",
+      "serverLogs": {
+        "title": "Server Log Files",
+        "desc": "The provider automatically collects and stores information in server log files that your browser transmits:",
+        "browserType": "Browser type and version",
+        "os": "Operating system used",
+        "referrer": "Referrer URL",
+        "timestamp": "Time of server request",
+        "ip": "IP address (anonymized)",
+        "purpose": "This data is only used for statistical analysis and to ensure trouble-free operation of the website. This data is not merged with other data sources."
+      }
+    },
+
+
+    "account": {
+      "title": "4. User Account and Order Data",
+      "registration": {
+        "title": "Registration",
+        "desc": "When creating a user account, we collect the following data:",
+        "email": "Email address",
+        "password": "Password (stored encrypted)",
+        "name": "First and last name",
+        "language": "Language preference",
+        "legalBasis": "Art. 6(1)(b) GDPR (Contract fulfillment)",
+        "retention": "Until deletion of the account by the user"
+      },
+      "orders": {
+        "title": "Order Data",
+        "desc": "When placing an order, we additionally store:",
+        "deliveryAddress": "Delivery address",
+        "billingAddress": "Billing address",
+        "orderHistory": "Order history",
+        "transactionId": "Transaction ID",
+        "paymentStatus": "Payment status",
+        "legalBasis": "Art. 6(1)(b) GDPR (Contract fulfillment) and Art. 6(1)(c) GDPR (Legal obligation)",
+        "retention": "10 years according to legal retention obligations (tax law)"
+      }
+    },
+
+    "payment": {
+      "title": "5. Payment Processing",
+      "stripe": {
+        "desc": "We use the payment service provider Stripe for payment processing. Your payment data is entered directly via the encrypted connection to Stripe.",
+        "data": "The following data is transmitted to Stripe:",
+        "cardNumber": "Card number",
+        "expiry": "Expiry date",
+        "cvv": "CVV/CVC code",
+        "name": "Cardholder name",
+        "address": "Billing address",
+        "storage": "We do not store any credit card data. We only receive a transaction ID and payment status from Stripe.",
+        "provider": "Provider",
+        "privacy": "Stripe's Privacy Policy"
+      }
+    },
+
+    "security": {
+      "title": "6. Data Security",
+      "measures": "We implement the following security measures to protect your data:",
+      "ssl": "SSL/TLS encryption for all data transmissions",
+      "encryption": "Encrypted storage of sensitive data",
+      "access": "Access control to our systems",
+      "monitoring": "Regular security monitoring",
+      "updates": "Regular software updates",
+      "disclaimer": "Despite all security measures, absolute security cannot be guaranteed for data transmission on the Internet."
+    },
+
+    "noSharing": {
+      "title": "7. No Sharing with Third Parties",
+      "statement": "We never sell, rent or share your personal data with third parties for marketing purposes.",
+      "exceptions": "Data is only shared in the following cases:",
+      "legal": "When legally required",
+      "delivery": "To shipping providers for delivering your order",
+      "payment": "To Stripe for payment processing"
     }
   }
 }

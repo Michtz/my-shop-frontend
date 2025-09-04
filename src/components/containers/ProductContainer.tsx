@@ -285,7 +285,6 @@ const ProductOverview: FC = () => {
       >
         <Title>{t('product.otherCustomersBought')}</Title>
         <FilterContainer
-          items={sortedArticles}
           setItems={setSortedArticles}
           sortCode={activeSort}
           setSortCode={(newCode: FilterOptionCode) => setActiveSort(newCode)}
