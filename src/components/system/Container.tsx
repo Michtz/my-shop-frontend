@@ -68,10 +68,6 @@ export const FormContainer: FC<ContainerFormProps> = ({
   </form>
 );
 
-export const CardContainer: FC<ContainerProps> = ({ children }) => (
-  <div className={style.cartContainer}>{children}</div>
-);
-
 export const HorizontalScrollContainer: FC<ContainerProps> = ({ children }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isMobileView, setIsMobileView] = useState(false);
