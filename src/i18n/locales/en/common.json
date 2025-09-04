@@ -82,13 +82,12 @@
     "abc": "Ascending (A–Z)",
     "cba": "Descending (Z–A)",
     "priceRange": "Price Range",
-  "min": "Minimum",
-  "max": "Maximum",
-  "reset": "Reset",
-  "apply": "Apply",
+    "min": "Minimum",
+    "max": "Maximum",
+    "reset": "Reset",
+    "apply": "Apply",
     "year": "year",
     "days": "days"
-
   },
   "cookies": {
     "banner": {
@@ -306,7 +305,7 @@
     "unit-price": "CHF {{price}}.-",
     "quantity-total": "{{quantity}} pcs. for a total of",
     "subtotal-amount": "{{amount}} CHF*",
-    "shipping-amount": "{{amount}} CHF*", 
+    "shipping-amount": "{{amount}} CHF*",
     "total-amount": "{{amount}} CHF*",
     "net-total-amount": "{{amount}} CHF",
     "vat-amount": "{{amount}} CHF"
@@ -581,7 +580,6 @@
       }
     },
 
-
     "account": {
       "title": "4. User Account and Order Data",
       "registration": {
@@ -641,6 +639,30 @@
       "legal": "When legally required",
       "delivery": "To shipping providers for delivering your order",
       "payment": "To Stripe for payment processing"
+    },
+
+
+    "externalServices": {
+      "title": "8. External Services and Third Parties",
+      "provider": "Provider",
+
+      "googleFonts": {
+        "title": "Google Fonts and Material Icons",
+        "desc": "This website uses Google Fonts and Material Icons for uniform display of fonts. When you access a page, your browser loads the required fonts into your browser cache to display texts and icons correctly.",
+        "legalBasis": "Art. 6(1)(f) GDPR (Legitimate interest in uniform presentation of our website)",
+        "privacy": "Privacy Policy"
+      },
+
+      "cloudinary": {
+        "title": "Cloudinary (Image Hosting)",
+        "desc": "For optimized display and delivery of product images, we use the cloud service Cloudinary. When loading images, the following data is transmitted to Cloudinary:",
+        "data": "Transmitted data:",
+        "ip": "User's IP address",
+        "browser": "Browser information",
+        "timestamp": "Access timestamp",
+        "legalBasis": "Art. 6(1)(f) GDPR (Legitimate interest in fast and optimized image delivery)",
+        "privacy": "Privacy Policy"
+      }
     }
   }
 }

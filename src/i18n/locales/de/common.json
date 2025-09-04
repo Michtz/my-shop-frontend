@@ -544,10 +544,6 @@
     }
   },
 
-
-
-
-
   "privacy": {
     "title": "Datenschutzerklärung",
     "lastUpdate": "Stand",
@@ -636,6 +632,42 @@
       "legal": "Bei gesetzlicher Verpflichtung",
       "delivery": "An Versanddienstleister zur Lieferung Ihrer Bestellung",
       "payment": "An Stripe zur Zahlungsabwicklung"
+    },
+    "cookies": {
+      "title": "4. Cookies",
+      "intro": "Unsere Website verwendet ausschließlich technisch notwendige Cookies, die für den Betrieb des Online-Shops erforderlich sind:",
+      "essential": {
+        "title": "Essenzielle Cookies",
+        "desc": "Diese Cookies sind für die Grundfunktionen unseres Shops notwendig:"
+      },
+      "consentDesc": "Speichert Ihre Cookie-Einstellungen",
+      "sessionDesc": "Speichert Ihre Sitzungsdaten",
+      "authDesc": "Speichert Ihren Anmeldestatus",
+      "languageDesc": "Speichert Ihre Spracheinstellung",
+      "legalBasis": "Art. 6 Abs. 1 lit. f DSGVO (Berechtigtes Interesse)"
+    },
+
+    "externalServices": {
+      "title": "8. Externe Dienste und Drittanbieter",
+      "provider": "Anbieter",
+
+      "googleFonts": {
+        "title": "Google Fonts und Material Icons",
+        "desc": "Diese Website nutzt zur einheitlichen Darstellung von Schriftarten Google Fonts und Material Icons. Beim Aufruf einer Seite lädt Ihr Browser die benötigten Schriften in ihren Browsercache, um Texte und Icons korrekt anzuzeigen.",
+        "legalBasis": "Art. 6 Abs. 1 lit. f DSGVO (Berechtigtes Interesse an der einheitlichen Darstellung unserer Website)",
+        "privacy": "Datenschutzerklärung"
+      },
+
+      "cloudinary": {
+        "title": "Cloudinary (Bildhosting)",
+        "desc": "Für die optimierte Darstellung und Auslieferung von Produktbildern nutzen wir den Cloud-Dienst Cloudinary. Beim Laden der Bilder werden folgende Daten an Cloudinary übertragen:",
+        "data": "Übertragene Daten:",
+        "ip": "IP-Adresse des Nutzers",
+        "browser": "Browser-Informationen",
+        "timestamp": "Zeitstempel des Zugriffs",
+        "legalBasis": "Art. 6 Abs. 1 lit. f DSGVO (Berechtigtes Interesse an schneller und optimierter Bildauslieferung)",
+        "privacy": "Datenschutzerklärung"
+      }
     }
   }
 }

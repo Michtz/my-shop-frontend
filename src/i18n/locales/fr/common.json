@@ -82,13 +82,12 @@
     "abc": "Croissant (A–Z)",
     "cba": "Décroissant (Z–A)",
     "priceRange": "Fourchette de prix",
-  "min": "Minimum",
-  "max": "Maximum",
-  "reset": "Réinitialiser",
-  "apply": "Appliquer",
+    "min": "Minimum",
+    "max": "Maximum",
+    "reset": "Réinitialiser",
+    "apply": "Appliquer",
     "year": "année",
     "days": "jours"
-
   },
   "cookies": {
     "banner": {
@@ -308,7 +307,7 @@
     "subtotal-amount": "{{amount}} CHF*",
     "shipping-amount": "{{amount}} CHF*",
     "total-amount": "{{amount}} CHF*",
-    "net-total-amount": "{{amount}} CHF", 
+    "net-total-amount": "{{amount}} CHF",
     "vat-amount": "{{amount}} CHF"
   },
   "error": {
@@ -322,7 +321,6 @@
     "validate": "Adresse e-mail non valide",
     "notTheSamePassword": "Les mots de passe ne correspondent pas",
     "invalidPhoneNumber": "Ce n'est pas un numéro de téléphone valide"
-
   },
   "validation": {
     "required": "Champ obligatoire",
@@ -641,6 +639,42 @@
       "legal": "Lorsque la loi l'exige",
       "delivery": "Aux prestataires de livraison pour livrer votre commande",
       "payment": "À Stripe pour le traitement des paiements"
+    },
+    "cookies": {
+      "title": "4. Cookies",
+      "intro": "Notre site web utilise exclusivement des cookies techniquement nécessaires au fonctionnement de la boutique en ligne :",
+      "essential": {
+        "title": "Cookies Essentiels",
+        "desc": "Ces cookies sont nécessaires aux fonctions de base de notre boutique :"
+      },
+      "consentDesc": "Stocke vos paramètres de cookies",
+      "sessionDesc": "Stocke vos données de session",
+      "authDesc": "Stocke votre statut de connexion",
+      "languageDesc": "Stocke votre préférence linguistique",
+      "legalBasis": "Art. 6(1)(f) RGPD (Intérêt légitime)"
+    },
+
+    "externalServices": {
+      "title": "8. Services Externes et Tiers",
+      "provider": "Fournisseur",
+
+      "googleFonts": {
+        "title": "Google Fonts et Material Icons",
+        "desc": "Ce site utilise Google Fonts et Material Icons pour l'affichage uniforme des polices. Lorsque vous accédez à une page, votre navigateur charge les polices requises dans son cache pour afficher correctement les textes et les icônes.",
+        "legalBasis": "Art. 6(1)(f) RGPD (Intérêt légitime pour une présentation uniforme de notre site)",
+        "privacy": "Politique de Confidentialité"
+      },
+
+      "cloudinary": {
+        "title": "Cloudinary (Hébergement d'Images)",
+        "desc": "Pour l'affichage et la livraison optimisés des images de produits, nous utilisons le service cloud Cloudinary. Lors du chargement des images, les données suivantes sont transmises à Cloudinary :",
+        "data": "Données transmises :",
+        "ip": "Adresse IP de l'utilisateur",
+        "browser": "Informations du navigateur",
+        "timestamp": "Horodatage de l'accès",
+        "legalBasis": "Art. 6(1)(f) RGPD (Intérêt légitime pour une livraison d'images rapide et optimisée)",
+        "privacy": "Politique de Confidentialité"
+      }
     }
   }
 }

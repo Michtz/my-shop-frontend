@@ -2,11 +2,11 @@
 
 import React, { FC } from 'react';
 import { Container } from '@/components/system/Container';
-import ImprintContainer from '@/components/section/legalPlacholders/ImprintContainer';
-import PrivacyContainer from '@/components/section/legalPlacholders/PrivacyContainer';
-import ReturnsContainer from '@/components/section/legalPlacholders/ReturnsContainer';
-import ShippingContainer from '@/components/section/legalPlacholders/ShippingContainer';
-import TermsContainer from '@/components/section/legalPlacholders/TermsContainer';
+import ImprintContainer from '@/components/section/legal/ImprintContainer';
+import PrivacyContainer from '@/components/section/legal/PrivacyContainer';
+import ReturnsContainer from '@/components/section/legal/ReturnsContainer';
+import ShippingContainer from '@/components/section/legal/ShippingContainer';
+import TermsContainer from '@/components/section/legal/TermsContainer';
 interface LegalInformationContainerProps {
   view: 'imprint' | 'privacy' | 'returns' | 'shipping' | 'terms';
 }

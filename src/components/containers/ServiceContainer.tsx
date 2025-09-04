@@ -2,9 +2,9 @@
 
 import React, { FC } from 'react';
 import { Container } from '@/components/system/Container';
-import ContactContainer from '@/components/section/legalPlacholders/ContactContainer';
-import CustomerServiceContainer from '@/components/section/legalPlacholders/CustomerServiceContainer';
-import FAQContainer from '@/components/section/legalPlacholders/FAQContainer';
+import ContactContainer from '@/components/section/legal/ContactContainer';
+import CustomerServiceContainer from '@/components/section/legal/CustomerServiceContainer';
+import FAQContainer from '@/components/section/legal/FAQContainer';
 interface ServiceContainerProps {
   view: 'contact' | 'customerService' | 'faq';
 }

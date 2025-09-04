@@ -45,7 +45,6 @@ const PrivacyContainer: React.FC = () => {
               <p>{t('privacy.overview.dataProtectionDesc')}</p>
             </div>
           </div>
-
           <div className={style.section}>
             <h2 className={style.sectionTitle}>
               {t('privacy.responsible.title')}
@@ -67,7 +66,6 @@ const PrivacyContainer: React.FC = () => {
               </p>
             </div>
           </div>
-
           <div className={style.section}>
             <h2 className={style.sectionTitle}>
               {t('privacy.visitData.title')}
@@ -91,7 +89,6 @@ const PrivacyContainer: React.FC = () => {
               {t('privacy.visitData.serverLogs.purpose')}
             </p>
           </div>
-
           <div className={style.section}>
             <h2 className={style.sectionTitle}>{t('privacy.account.title')}</h2>
 
@@ -136,7 +133,6 @@ const PrivacyContainer: React.FC = () => {
               {t('privacy.account.orders.retention')}
             </p>
           </div>
-
           <div className={style.section}>
             <h2 className={style.sectionTitle}>{t('privacy.payment.title')}</h2>
 
@@ -181,7 +177,6 @@ const PrivacyContainer: React.FC = () => {
             </p>
           </div>
 
-          {/* Datensicherheit */}
           <div className={style.section}>
             <h2 className={style.sectionTitle}>
               {t('privacy.security.title')}
@@ -199,7 +194,6 @@ const PrivacyContainer: React.FC = () => {
             </p>
           </div>
 
-          {/* Keine Weitergabe */}
           <div className={style.section}>
             <h2 className={style.sectionTitle}>
               {t('privacy.noSharing.title')}
@@ -215,6 +209,82 @@ const PrivacyContainer: React.FC = () => {
               <li>{t('privacy.noSharing.delivery')}</li>
               <li>{t('privacy.noSharing.payment')}</li>
             </ul>
+          </div>
+
+          <div className={style.section}>
+            <h2 className={style.sectionTitle}>
+              {t('privacy.externalServices.title')}
+            </h2>
+
+            <h3 className={style.subsectionTitle}>
+              {t('privacy.externalServices.googleFonts.title')}
+            </h3>
+            <p className={style.paragraph}>
+              {t('privacy.externalServices.googleFonts.desc')}
+            </p>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.externalServices.provider')}:</strong>
+              <br />
+              Google Ireland Limited
+              <br />
+              Gordon House, Barrow Street
+              <br />
+              Dublin 4, Irland
+            </p>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.legalBasis')}:</strong>{' '}
+              {t('privacy.externalServices.googleFonts.legalBasis')}
+            </p>
+            <p className={style.paragraph}>
+              {t('privacy.externalServices.googleFonts.privacy')}:{' '}
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={style.link}
+              >
+                https://policies.google.com/privacy
+              </a>
+            </p>
+
+            <h3 className={style.subsectionTitle}>
+              {t('privacy.externalServices.cloudinary.title')}
+            </h3>
+            <p className={style.paragraph}>
+              {t('privacy.externalServices.cloudinary.desc')}
+            </p>
+            <p className={style.paragraph}>
+              {t('privacy.externalServices.cloudinary.data')}
+            </p>
+            <ul className={style.list}>
+              <li>{t('privacy.externalServices.cloudinary.ip')}</li>
+              <li>{t('privacy.externalServices.cloudinary.browser')}</li>
+              <li>{t('privacy.externalServices.cloudinary.timestamp')}</li>
+            </ul>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.externalServices.provider')}:</strong>
+              <br />
+              Cloudinary Ltd.
+              <br />
+              111 W Evelyn Ave, Suite 206
+              <br />
+              Sunnyvale, CA 94086, USA
+            </p>
+            <p className={style.paragraph}>
+              <strong>{t('privacy.legalBasis')}:</strong>{' '}
+              {t('privacy.externalServices.cloudinary.legalBasis')}
+            </p>
+            <p className={style.paragraph}>
+              {t('privacy.externalServices.cloudinary.privacy')}:{' '}
+              <a
+                href="https://cloudinary.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={style.link}
+              >
+                https://cloudinary.com/privacy
+              </a>
+            </p>
           </div>
         </div>
       </div>
