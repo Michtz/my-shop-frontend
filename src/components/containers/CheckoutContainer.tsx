@@ -98,7 +98,6 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
       alignItems="center"
     >
       <div style={{ marginTop: '4rem' }}></div>
-      {/*{showTitle && <h1>{t('checkout.title')}</h1>}*/}
       {activeTab && <ProgressButtons />}
       <CheckoutContent view={view} />
     </Container>

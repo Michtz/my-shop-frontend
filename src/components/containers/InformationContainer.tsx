@@ -7,17 +7,30 @@ import PrivacyContainer from '@/components/section/legal/PrivacyContainer';
 import ReturnsContainer from '@/components/section/legal/ReturnsContainer';
 import ShippingContainer from '@/components/section/legal/ShippingContainer';
 import TermsContainer from '@/components/section/legal/TermsContainer';
+import ContactContainer from '@/components/section/legal/ContactContainer';
+import CustomerServiceContainer from '@/components/section/legal/CustomerServiceContainer';
+import FAQContainer from '@/components/section/legal/FAQContainer';
+import AboutContainer from '@/components/containers/AboutContainer';
 interface LegalInformationContainerProps {
-  view: 'imprint' | 'privacy' | 'returns' | 'shipping' | 'terms';
+  view:
+    | 'imprint'
+    | 'privacy'
+    | 'returns'
+    | 'shipping'
+    | 'terms'
+    | 'contact'
+    | 'customerService'
+    | 'faq'
+    | 'about';
 }
 
-const LegalContainer: FC<LegalInformationContainerProps> = ({ view }) => (
+const InformationContainer: FC<LegalInformationContainerProps> = ({ view }) => (
   <Container padding={false} flow={'column'}>
-    <LegalContent view={view} />
+    <InformationContent view={view} />
   </Container>
 );
 
-const LegalContent: React.FC<LegalInformationContainerProps> = ({
+const InformationContent: React.FC<LegalInformationContainerProps> = ({
   view,
 }): React.ReactElement => {
   const getCurrentView = (): React.ReactElement => {
@@ -32,6 +45,14 @@ const LegalContent: React.FC<LegalInformationContainerProps> = ({
         return <ShippingContainer />;
       case 'terms':
         return <TermsContainer />;
+      case 'contact':
+        return <ContactContainer />;
+      case 'customerService':
+        return <CustomerServiceContainer />;
+      case 'faq':
+        return <FAQContainer />;
+      case 'about':
+        return <AboutContainer />;
       default:
         return <></>;
     }
@@ -39,4 +60,4 @@ const LegalContent: React.FC<LegalInformationContainerProps> = ({
   return <Container justifyContent={'center'}>{getCurrentView()}</Container>;
 };
 
-export default LegalContainer;
+export default InformationContainer;
