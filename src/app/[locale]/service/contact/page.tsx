@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import ServiceContainer from '@/components/containers/ServiceContainer';
+import InformationContainer from '@/components/containers/InformationContainer';
 
-const ContactPage: FC = () => <ServiceContainer view={'contact'} />;
+const ContactPage: FC = () => <InformationContainer view={'contact'} />;
 
 export default ContactPage;

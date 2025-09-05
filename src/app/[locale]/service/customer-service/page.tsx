@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import ServiceContainer from '@/components/containers/ServiceContainer';
+import InformationContainer from '@/components/containers/InformationContainer';
 
 const CustomerServicePage: FC = () => (
-  <ServiceContainer view={'customerService'} />
+  <InformationContainer view={'customerService'} />
 );
 
 export default CustomerServicePage;

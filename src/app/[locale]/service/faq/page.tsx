@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import ServiceContainer from '@/components/containers/ServiceContainer';
+import InformationContainer from '@/components/containers/InformationContainer';
 
-const FAQPage: FC = () => <ServiceContainer view={'faq'} />;
+const FAQPage: FC = () => <InformationContainer view={'faq'} />;
 
 export default FAQPage;

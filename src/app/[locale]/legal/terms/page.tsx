@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import LegalContainer from '@/components/containers/LegalContainer';
+import InformationContainer from '@/components/containers/InformationContainer';
 
-const TermsPage: FC = () => <LegalContainer view={'terms'} />;
+const TermsPage: FC = () => <InformationContainer view={'terms'} />;
 
 export default TermsPage;
