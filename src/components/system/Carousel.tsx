@@ -1,5 +1,5 @@
 'use client';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Carousel as _Carousel } from 'react-bootstrap';
 import Image, { StaticImageData } from 'next/image';
 import style from '@/styles/system/Carousel.module.scss';
@@ -18,7 +18,21 @@ interface CarouselProps {
   indicators?: boolean;
   fade?: boolean;
   pause?: 'hover' | false;
+  startIndex?: number;
 }
+const useRotatedArray = <T,>(items: T[], startIndex: number): T[] => {
+  return useMemo(() => {
+    if (!items || items.length === 0) return items;
+
+    const normalizedIndex =
+      ((startIndex % items.length) + items.length) % items.length;
+
+    return [
+      ...items.slice(normalizedIndex),
+      ...items.slice(0, normalizedIndex),
+    ];
+  }, [items, startIndex]);
+};
 
 const Carousel: FC<CarouselProps> = ({
   items,
@@ -27,7 +41,9 @@ const Carousel: FC<CarouselProps> = ({
   indicators = false,
   fade = false,
   pause = 'hover',
+  startIndex = 0,
 }) => {
+  const rotatedItems: CarouselItem[] = useRotatedArray(items, startIndex);
   if (!items || items.length === 0) return null;
 
   return (
@@ -39,7 +55,7 @@ const Carousel: FC<CarouselProps> = ({
       pause={pause}
       className={style.carousel}
     >
-      {items.map((item, index) => (
+      {rotatedItems.map((item, index) => (
         <_Carousel.Item
           key={(item.image as string) + index}
           className={style.carouselItem}

@@ -4,7 +4,7 @@ import useProducts from '@/hooks/ProductsHook';
 import { useParams, useRouter } from 'next/navigation';
 import CategoryNavigation from '@/components/system/CategoryNavigation';
 import Carousel, { CarouselItem } from '@/components/system/Carousel';
-import { getCategoryName } from '@/functions/common';
+import { getCategoryIndex, getCategoryName } from '@/functions/common';
 import ProductCard, { CartsContainer } from '@/components/system/ProductCard';
 import {
   Container,
@@ -16,9 +16,14 @@ import { IProduct } from '@/types/product.types';
 import { Params } from 'next/dist/server/request/params';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useAuth } from '@/hooks/AuthHook';
-import image1 from '@/assets/Slide2_Homepage.webp';
-import image2 from '@/assets/Homepage_Wellness2.webp';
-import image3 from '@/assets/Firmenangebot.webp';
+import MainImage from '@/assets/Slide2_Homepage.webp';
+import CleaningImage from '@/assets/Homepage_Wellness2.webp';
+import CoffeeCupsImage from '@/assets/CoffeCupsMainImage.webp';
+import ScalesImage from '@/assets/ScalesMainImage.webp';
+import MichJugsImage from '@/assets/MilchJugsMainImage.webp';
+import ToolsMainImage from '@/assets/ToolsMainImage.webp';
+import TamperImage from '@/assets/TamperMainImages.webp';
+
 import FilterContainer, {
   FilterOptionCode,
 } from '@/components/system/FilterContainer';
@@ -46,7 +51,6 @@ const MainContainer: React.FC = () => {
 
   useEffect(() => {
     if (isLoading) return;
-
     setSortedArticles(products);
     setArticles(products);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,19 +58,44 @@ const MainContainer: React.FC = () => {
 
   const slides: CarouselItem[] = [
     {
-      image: image1,
+      image: MainImage,
       alt: 'vf',
       title: '',
       description: '',
     },
     {
-      image: image2,
-      alt: 'def',
+      image: TamperImage,
+      alt: 'abcd',
       title: '',
       description: '',
     },
     {
-      image: image3,
+      image: MichJugsImage,
+      alt: 'abcd',
+      title: '',
+      description: '',
+    },
+    {
+      image: ToolsMainImage,
+      alt: 'abcd',
+      title: '',
+      description: '',
+    },
+    {
+      image: CoffeeCupsImage,
+      alt: 'abcd',
+      title: '',
+      description: '',
+    },
+    {
+      image: CleaningImage,
+      alt: 'def',
+      title: '',
+      description: '',
+    },
+
+    {
+      image: ScalesImage,
       alt: 'abcd',
       title: '',
       description: '',
@@ -162,7 +191,15 @@ const MainContainer: React.FC = () => {
           );
         })}
       </HorizontalScrollContainer>
-      {category && <Carousel items={slides} controls={false} />}
+      {category && (
+        <Carousel
+          startIndex={getCategoryIndex(params?.category as string)}
+          items={slides}
+          controls={false}
+          interval={7000}
+          indicators
+        />
+      )}
       <CategoryNavigation activeCategory={category} />
 
       <FilterContainer
@@ -171,25 +208,39 @@ const MainContainer: React.FC = () => {
         setSortCode={(newCode: FilterOptionCode) => setActiveSort(newCode)}
       />
       <CartsContainer>
-        {sortedArticles?.map((product) => {
+        {sortedArticles?.map((product: IProduct, i: number) => {
           const matchingItem = cartItems?.find(
+            // todo: move to hook
             (item) => item?.productId === product._id,
           );
           const disabled = matchingItem
             ? matchingItem.quantity >= product.stockQuantity
             : false;
+
           return (
-            <ProductCard
-              key={product._id}
-              id={product._id}
-              title={translate(product.name)}
-              description={translate(product.description)}
-              image={product.imageUrl}
-              price={product.price}
-              disabled={disabled}
-              onCardClick={() => handleCardClick(product._id)}
-              onIconClick={() => handleAddToCart(product._id)}
-            />
+            <React.Fragment key={product._id}>
+              <ProductCard
+                id={product._id}
+                title={translate(product.name)}
+                description={translate(product.description)}
+                image={product.imageUrl}
+                price={product.price}
+                disabled={disabled}
+                onCardClick={() => handleCardClick(product._id)}
+                onIconClick={() => handleAddToCart(product._id)}
+              />
+              {/* show after 15 items */}
+              {(i + 1) % 15 === 0 && (
+                <Carousel
+                  key={`carousel-${i}`}
+                  items={slides} // Todo: add more pictures for the slides
+                  controls={false} // Todo: add a link for the fotos (maybe for categories or brands some times)
+                  interval={7000}
+                  indicators
+                  startIndex={i * 0.1}
+                />
+              )}
+            </React.Fragment>
           );
         })}
       </CartsContainer>

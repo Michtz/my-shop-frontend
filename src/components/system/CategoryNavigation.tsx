@@ -30,7 +30,7 @@ const CategoryNavigation: React.FC<
   ];
 
   const handleItemClick = (iconName: string) => {
-    router.push(`/${iconName}`);
+    router.push(`/${iconName}`, { scroll: false });
   };
   return (
     <div className={style.categoryNavigationContainer}>
