@@ -1,13 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import useSWR from 'swr';
-import { getCart } from '@/requests/cart.request';
+import { getCart, updateCartItem } from '@/requests/cart.request';
 import { RequestError } from '@/types/request.types';
 import { useAuth } from '@/hooks/AuthHook';
 import useSocket from '@/hooks/SocketHook';
 import { CartSocketData } from '@/types/socket.types';
 import { IProduct } from '@/types/product.types';
+import { validateCartStock } from '@/functions/common';
+import useProducts from '@/hooks/ProductsHook';
 
 interface CartAPIResponse {
   success: boolean;
@@ -19,11 +21,13 @@ export interface CartItem {
   quantity: number;
   price: number;
   product?: IProduct[];
+  stockLowAt?: number;
 }
 
 interface CartResponse {
   cart: any | null;
   cartItems: CartItem[] | null;
+  reviewedCartItems: CartItem[] | null;
   isLoading: boolean;
   error: string | null;
   mutate: any;
@@ -33,11 +37,17 @@ interface CartResponse {
 
 const useCart = (): CartResponse => {
   const { sessionData, userSessionData } = useAuth();
+  const { products } = useProducts();
   const { isConnected } = useSocket();
   const [socketData] = useState<CartSocketData>({
     cartCount: {},
     stockConflicts: [],
   });
+  const [processedItems, setProcessedItems] = useState<Set<string>>(new Set());
+  const [stockIssues, setStockIssues] = useState<Map<string, number>>(
+    new Map(),
+  );
+  const lastErrorsRef = useRef<string>('');
 
   const sessionId = sessionData?.sessionId as string;
   const userId = userSessionData?.user?.id;
@@ -61,6 +71,112 @@ const useCart = (): CartResponse => {
     if (!items || !Array.isArray(items) || items.length === 0) return null;
     return items;
   };
+
+  const cartItems = processCartItems();
+
+  // Separater useEffect um Stock Issues zu tracken - mit Vergleich
+  useEffect(() => {
+    if (!cartItems || !products || products.length === 0) return;
+
+    const validation = validateCartStock(products, cartItems);
+    const errorMap = new Map(validation.errors.map((e) => [e.productId, e]));
+
+    // Erstelle einen String zum Vergleichen
+    const currentErrors = Array.from(errorMap.keys()).sort().join(',');
+
+    // Nur updaten wenn sich die Fehler geändert haben
+    if (currentErrors !== lastErrorsRef.current) {
+      lastErrorsRef.current = currentErrors;
+
+      if (errorMap.size > 0) {
+        setStockIssues((prev) => {
+          const newMap = new Map(prev);
+          errorMap.forEach((error, productId) => {
+            if (!prev.has(productId)) {
+              newMap.set(productId, Date.now());
+            }
+          });
+          return newMap;
+        });
+      }
+    }
+  }, [cartItems, products]);
+
+  // UseMemo für reviewedCartItems
+  const reviewedCartItems = useMemo(() => {
+    if (!cartItems || !products || products.length === 0) return null;
+
+    const validation = validateCartStock(products, cartItems);
+    const errorMap = new Map(validation.errors.map((e) => [e.productId, e]));
+
+    return cartItems
+      .map((item) => {
+        const error = errorMap.get(item.productId);
+        const stockLowAt =
+          stockIssues.get(item.productId) || (error ? Date.now() : undefined);
+
+        return error
+          ? { ...item, quantity: error.available, stockLowAt }
+          : { ...item, stockLowAt };
+      })
+      .filter((item) => item.quantity > 0);
+  }, [cartItems, products, stockIssues]);
+
+  // Auto-update cart items with stock issues individually
+  useEffect(() => {
+    if (!reviewedCartItems || !sessionData?.sessionId) return;
+
+    const itemsWithStockIssues = reviewedCartItems.filter(
+      (item) =>
+        item.stockLowAt &&
+        !processedItems.has(`${item.productId}-${item.quantity}`),
+    );
+
+    if (itemsWithStockIssues.length === 0) return;
+
+    itemsWithStockIssues.forEach(async (item) => {
+      const key = `${item.productId}-${item.quantity}`;
+
+      try {
+        await updateCartItem(
+          sessionData.sessionId,
+          item.productId,
+          item.quantity,
+          userSessionData?.user?.id || '',
+        );
+
+        setProcessedItems((prev) => new Set([...prev, key]));
+      } catch (error) {
+        console.error(`Failed to update cart item ${item.productId}:`, error);
+      }
+    });
+
+    setTimeout(() => mutate(), 500);
+  }, [
+    reviewedCartItems,
+    sessionData?.sessionId,
+    userSessionData?.user?.id,
+    processedItems,
+    mutate,
+  ]);
+
+  // Reset processed items when cart items change significantly
+  useEffect(() => {
+    setProcessedItems(new Set());
+  }, [cartItems?.length]);
+
+  // Clear stock issues after 30 seconds
+  useEffect(() => {
+    if (stockIssues.size === 0) return;
+
+    const timer = setTimeout(() => {
+      setStockIssues(new Map());
+      lastErrorsRef.current = '';
+    }, 30000);
+
+    return () => clearTimeout(timer);
+  }, [stockIssues.size]);
+
   useEffect(() => {
     if (!data?.data?.items) return;
     mutate();
@@ -69,11 +185,12 @@ const useCart = (): CartResponse => {
 
   return {
     cart: data?.data || null,
-    cartItems: processCartItems(),
-    isLoading,
+    cartItems: cartItems,
+    reviewedCartItems,
     error: error?.message ? error.message : null,
     mutate: mutate,
     isConnected,
+    isLoading,
     cartCount: socketData.cartCount,
   };
 };

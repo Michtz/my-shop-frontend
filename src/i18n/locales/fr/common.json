@@ -101,8 +101,10 @@
     "netTotal": "Total net",
     "priceDisclaimer": "*Prix TTC plus frais de livraison",
     "quantity-total": "{{quantity}} pcs. pour un total de",
+    "review_total": "{{quantity}} pièces pour un total de",
     "shipping": "Livraison",
     "shipping-amount": "{{amount}} CHF*",
+    "stock_warning": "Nous n'avons actuellement que {{quantity}} en stock et avons dû ajuster votre panier",
     "subtotal": "Sous-total",
     "subtotal-amount": "{{amount}} CHF*",
     "summary": "RÉSUMÉ",
@@ -181,6 +183,9 @@
     "sort": "Trier",
     "up": "Prix croissant",
     "year": "année"
+  },
+  "currency": {
+    "chf": "CHF"
   },
   "cookies": {
     "banner": {
@@ -300,6 +305,7 @@
   },
   "feedback": {
     "add-to-cart-success": "Produit ajouté avec succès",
+    "cart-stock-not-valid": "La quantité demandée n'est plus disponible",
     "data-saved-error": "Erreur lors de l'enregistrement des données",
     "data-saved-success": "Données enregistrées avec succès",
     "login-error": "Échec de la connexion",
@@ -530,6 +536,7 @@
   },
   "product": {
     "addToCart": "Ajouter au panier",
+    "brand_placeholder": "MARQUE",
     "connectionLost": "Connexion perdue - Les données peuvent ne pas être mises à jour en temps réel",
     "onlyXAvailable": "Plus que {{count}} en stock disponible",
     "onlyXAvailableShort": "Seulement {{count}} disponible",

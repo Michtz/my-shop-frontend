@@ -10,10 +10,15 @@ import { useFeedback } from '@/hooks/FeedbackHook';
 import CartList from '@/components/section/cart/CartList';
 import { useTranslation } from 'react-i18next';
 import { Logger } from '@/utils/Logger.class';
+import useProducts from '@/hooks/ProductsHook';
+import useCart, { CartItem } from '@/hooks/CartHook';
+import { validateCartStock } from '@/functions/common';
 
 const ReviewForm = () => {
   const { t } = useTranslation();
   const { sessionData } = useAuth();
+  const { cartItems } = useCart();
+  const { products } = useProducts();
   const { showFeedback } = useFeedback();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -23,16 +28,22 @@ const ReviewForm = () => {
       showFeedback(t('feedback.session-not-available'), 'error');
       return;
     }
+    const isOrderStockValid = validateCartStock(
+      products,
+      cartItems as CartItem[],
+    );
+    if (isOrderStockValid.errors) {
+      showFeedback(t('feedback.cart-stock-not-valid'), 'error');
+
+      throw isOrderStockValid.errors;
+    }
 
     setIsProcessing(true);
 
     try {
       const paymentMethodId = localStorage.getItem('paymentMethodId');
       if (!paymentMethodId) {
-        showFeedback(
-          t('feedback.payment-method-not-found'),
-          'error',
-        );
+        showFeedback(t('feedback.payment-method-not-found'), 'error');
         setIsProcessing(false);
         return;
       }
@@ -63,10 +74,7 @@ const ReviewForm = () => {
           showFeedback(t('checkout.orderPlacedSuccess'), 'success');
           router.push(`/checkout/${orderNumber}`);
         } else {
-          showFeedback(
-            t('feedback.order-number-missing'),
-            'error',
-          );
+          showFeedback(t('feedback.order-number-missing'), 'error');
         }
       } else {
         showFeedback(t('checkout.orderCreationFailed'), 'error');

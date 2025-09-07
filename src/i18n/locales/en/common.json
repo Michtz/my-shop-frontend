@@ -101,8 +101,10 @@
     "netTotal": "Net Total",
     "priceDisclaimer": "*Prices incl. VAT plus shipping costs",
     "quantity-total": "{{quantity}} pcs. for a total of",
+    "review_total": "{{quantity}} pcs. for a total of",
     "shipping": "Shipping",
     "shipping-amount": "{{amount}} CHF*",
+    "stock_warning": "We currently only have {{quantity}} in stock and had to adjust your cart",
     "subtotal": "Subtotal",
     "subtotal-amount": "{{amount}} CHF*",
     "summary": "SUMMARY",
@@ -181,6 +183,9 @@
     "sort": "Sort",
     "up": "Price Ascending",
     "year": "year"
+  },
+  "currency": {
+    "chf": "CHF"
   },
   "cookies": {
     "banner": {
@@ -300,6 +305,7 @@
   },
   "feedback": {
     "add-to-cart-success": "Product added successfully",
+    "cart-stock-not-valid": "The requested quantity is no longer available",
     "data-saved-error": "Error saving data",
     "data-saved-success": "Data saved successfully",
     "login-error": "Login failed",
@@ -517,6 +523,7 @@
   },
   "product": {
     "addToCart": "Add to cart",
+    "brand_placeholder": "BRAND",
     "connectionLost": "Connection lost - Data may not be updated in real time",
     "onlyXAvailable": "Only {{count}} left in stock",
     "onlyXAvailableShort": "Only {{count}} available",

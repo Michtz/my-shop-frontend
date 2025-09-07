@@ -18,12 +18,14 @@ interface CartListItemProp {
   mutate: () => void;
   review?: boolean;
   isMax?: boolean;
+  stockLow?: boolean;
 }
 const CartListItem: React.FC<CartListItemProp> = ({
   item,
   mutate,
   review = false,
   isMax = false,
+  stockLow = false,
 }) => {
   const router: AppRouterInstance = useRouter();
   const { t } = useTranslation([]);
@@ -90,9 +92,9 @@ const CartListItem: React.FC<CartListItemProp> = ({
           )}
         </div>
         <div className={style.productDetails}>
-          <div className={style.brand}>{item.product.brand || 'BRAND'}</div>
+          <div className={style.brand}>{item.product.brand || t('product.brand_placeholder')}</div>
           <h3 className={style.productName}>{translate(item.product.name)}</h3>
-          <div className={style.unitPrice}>CHF {item.price?.toFixed(2)}.-</div>
+          <div className={style.unitPrice}>{t('currency.chf')} {item.price?.toFixed(2)}.-</div>
         </div>
       </div>
 
@@ -111,8 +113,12 @@ const CartListItem: React.FC<CartListItemProp> = ({
           />
         )}
         <div className={style.totalPrice}>
-          {review && `${item.quantity} Stück für insgesamt`} CHF{' '}
+          {review && t('cart.review_total', { quantity: item.quantity })} {t('currency.chf')}{' '}
           {itemTotal.toFixed(2)}.-
+        </div>
+        <div className={style.warningStock}>
+          {stockLow &&
+            t('cart.stock_warning', { quantity: item.quantity })}
         </div>
       </div>
     </div>

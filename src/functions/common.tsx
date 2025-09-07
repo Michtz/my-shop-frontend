@@ -1,3 +1,6 @@
+import { IProduct } from '@/types/product.types';
+import { CartItem } from '@/hooks/CartHook';
+
 export const getCategoryName = (category: string): string | undefined => {
   switch (category) {
     case 'tampers':
@@ -43,4 +46,52 @@ export const formatDate = (dateString: string): string => {
     month: 'long',
     day: 'numeric',
   }).format(date);
+};
+
+export interface StockValidationResult {
+  isValid: boolean;
+  errors: Array<{
+    productId: string;
+    productName?: string;
+    requested: number;
+    available: number;
+    shortage: number;
+  }>;
+}
+export const validateCartStock = (
+  products: IProduct[],
+  cartItems: CartItem[],
+): StockValidationResult => {
+  const errors: StockValidationResult['errors'] = [];
+
+  for (const cartItem of cartItems) {
+    const product = products.find(
+      (p) => p._id === cartItem.productId || p.id === cartItem.productId,
+    );
+
+    if (!product) {
+      errors.push({
+        productId: cartItem.productId,
+        requested: cartItem.quantity,
+        available: 0,
+        shortage: cartItem.quantity,
+      });
+      continue;
+    }
+
+    if (product.stockQuantity < cartItem.quantity) {
+      errors.push({
+        productId: cartItem.productId,
+        productName: product.name.inv,
+        requested: cartItem.quantity,
+        available: product.stockQuantity,
+        shortage: cartItem.quantity - product.stockQuantity,
+      });
+    }
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+  };
 };

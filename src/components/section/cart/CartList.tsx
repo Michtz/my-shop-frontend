@@ -19,9 +19,9 @@ interface Props {
 
 const CartList: FC<Props> = ({ review }) => {
   const { t } = useTranslation();
-  const { cartItems, mutate, isLoading } = useCart();
+  const { mutate, isLoading, reviewedCartItems } = useCart();
   const { products } = useProducts();
-
+  console.log(reviewedCartItems);
   const isMax = (quantity: number, id: string): boolean => {
     const matchingProduct = products?.find((product) => product?._id === id);
     if (!matchingProduct) return false;
@@ -29,7 +29,7 @@ const CartList: FC<Props> = ({ review }) => {
   };
 
   const subtotal: number =
-    cartItems?.reduce(
+    reviewedCartItems?.reduce(
       (sum: number, item: any) => sum + item.quantity * item.price,
       0,
     ) || 0;
@@ -53,7 +53,8 @@ const CartList: FC<Props> = ({ review }) => {
   );
   const list = (
     <>
-      {cartItems?.map((item: any) => {
+      {reviewedCartItems?.map((item: any) => {
+        console.log(item.lowStock);
         return (
           <React.Fragment key={item.productId}>
             <CartListItem
@@ -61,6 +62,7 @@ const CartList: FC<Props> = ({ review }) => {
               mutate={mutate}
               review={review}
               isMax={isMax(item.quantity, item.productId)}
+              stockLow={Date.now() - item.stockLowAt < 5 * 60 * 1000}
             />
             <Hr />
           </React.Fragment>
