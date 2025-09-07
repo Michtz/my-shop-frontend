@@ -77,7 +77,7 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
         return (
           <li
             key={obj.label}
-            onClick={() => (obj.active ? obj.onClick() : null)}
+            onClick={() => obj.onClick()}
             className={styles.listItem}
             data-done={obj.active}
           >
