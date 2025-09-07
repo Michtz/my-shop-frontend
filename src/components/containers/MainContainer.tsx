@@ -164,33 +164,35 @@ const MainContainer: React.FC = () => {
       {!category && (
         <Carousel items={slides} controls={false} interval={7000} indicators />
       )}
-      <HorizontalScrollContainer>
-        {articles?.map((product, i: number) => {
-          if (i > previewItemsCount) return;
-          if (product.stockQuantity === 0) {
-            previewItemsCount = previewItemsCount++;
-          }
-          const matchingItem = cartItems?.find(
-            (item) => item?.productId === product._id,
-          );
-          const disabled = matchingItem
-            ? matchingItem.quantity >= product.stockQuantity
-            : false;
-          return (
-            <ProductCard
-              key={product._id}
-              id={product._id}
-              title={translate(product.name)}
-              description={translate(product.description)}
-              image={product.imageUrl}
-              price={product.price}
-              disabled={disabled}
-              onCardClick={() => handleCardClick(product._id)}
-              onIconClick={() => handleAddToCart(product._id)}
-            />
-          );
-        })}
-      </HorizontalScrollContainer>
+      {!category && (
+        <HorizontalScrollContainer>
+          {articles?.map((product, i: number) => {
+            if (i > previewItemsCount) return;
+            if (product.stockQuantity === 0) {
+              previewItemsCount = previewItemsCount++;
+            }
+            const matchingItem = cartItems?.find(
+              (item) => item?.productId === product._id,
+            );
+            const disabled = matchingItem
+              ? matchingItem.quantity >= product.stockQuantity
+              : false;
+            return (
+              <ProductCard
+                key={product._id}
+                id={product._id}
+                title={translate(product.name)}
+                description={translate(product.description)}
+                image={product.imageUrl}
+                price={product.price}
+                disabled={disabled}
+                onCardClick={() => handleCardClick(product._id)}
+                onIconClick={() => handleAddToCart(product._id)}
+              />
+            );
+          })}
+        </HorizontalScrollContainer>
+      )}
       {category && (
         <Carousel
           startIndex={getCategoryIndex(params?.category as string)}
