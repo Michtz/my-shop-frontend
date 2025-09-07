@@ -18,9 +18,8 @@ export const getCart = async (
     return await axiosInstance.get(url, {
       withCredentials: true,
     });
-  } catch (e) {
-    Logger.error('Unable to get the cart');
-    throw e;
+  } catch {
+    // Logger.error('Unable to get the cart'); commented to remove error logs when no cart was created ( todo: change locig oder bakend responce for it)
   }
 };
 
