@@ -81,7 +81,7 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
             className={styles.listItem}
             data-done={obj.active}
           >
-            {obj.label}{' '}
+            {obj.label}
             <span className={styles.icon} data-done={obj.active}>
               <MaterialIcon icon={'check'} />
             </span>

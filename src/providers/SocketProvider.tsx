@@ -62,8 +62,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         'https://my-shop-backend-usaq.onrender.com';
 
       const userInformation = await getCurrentSession();
-      const sessionId = userInformation.data.sessionId || null;
-      const userId = userInformation.data.userId || null; // Falls du user ID in session hast
+      const sessionId = userInformation?.data?.sessionId || null;
+      const userId = userInformation?.data?.userId || null; // Falls du user ID in session hast
 
       const socketInstance = io(backendUrl, {
         withCredentials: true,
@@ -138,6 +138,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         }) => {
           console.log('user cart updated:', data);
 
+          console.log('user cart updated:', data, userId, sessionId);
           if (data.userId) {
             mutate(`cart-${data.userId}`);
           } else {

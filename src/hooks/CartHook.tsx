@@ -48,6 +48,7 @@ const useCart = (): CartResponse => {
   >(
     userId ? `cart-${userId}` : `cart-${sessionId}`,
     () => {
+      console.log(userId, `cart-${userId}`, `cart-${sessionId}`);
       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       return getCart(sessionData?.sessionId!, userSessionData?.user?.id);
     },
