@@ -19,37 +19,40 @@ import { ContentTranslateProvider } from '@/hooks/ContentTranslationHook';
 import CookieBanner from '@/components/system/CookieBanner';
 import { CookieProvider } from '@/hooks/CookieHook';
 import { SideCartProvider } from '@/hooks/SideCartHook';
+import ThemeRegistry from '@/providers/ThemeRegistry';
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <ErrorProvider>
-      <TranslationProvider>
-        <ContentTranslateProvider>
-          <CookieProvider>
-            <FeedbackProvider>
-              <AuthProvider>
-                <SocketProvider>
-                  <SideCartProvider>
-                    <html lang="de" suppressHydrationWarning>
-                      <head>
-                        <title>Barista Accessoire</title>
-                      </head>
-                      <body>
-                        <Header />
-                        <SWRProvider>{children}</SWRProvider>
-                        <Feedback />
-                        <CookieBanner />
-                        <Footer />
-                      </body>
-                    </html>
-                  </SideCartProvider>
-                </SocketProvider>
-              </AuthProvider>
-            </FeedbackProvider>
-          </CookieProvider>
-        </ContentTranslateProvider>
-      </TranslationProvider>
-    </ErrorProvider>
+    <ThemeRegistry>
+      <ErrorProvider>
+        <TranslationProvider>
+          <ContentTranslateProvider>
+            <CookieProvider>
+              <FeedbackProvider>
+                <AuthProvider>
+                  <SocketProvider>
+                    <SideCartProvider>
+                      <html lang="de" suppressHydrationWarning>
+                        <head>
+                          <title>Barista Accessoire</title>
+                        </head>
+                        <body>
+                          <Header />
+                          <SWRProvider>{children}</SWRProvider>
+                          <Feedback />
+                          <CookieBanner />
+                          <Footer />
+                        </body>
+                      </html>
+                    </SideCartProvider>
+                  </SocketProvider>
+                </AuthProvider>
+              </FeedbackProvider>
+            </CookieProvider>
+          </ContentTranslateProvider>
+        </TranslationProvider>
+      </ErrorProvider>
+    </ThemeRegistry>
   );
 };
 
