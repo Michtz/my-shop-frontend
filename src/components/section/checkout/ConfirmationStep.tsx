@@ -4,43 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Container } from '@/components/system/Container';
 import Button, { ButtonContainer } from '@/components/system/Button';
-import { axiosInstance } from '@/requests/base.request';
 import { Logger } from '@/utils/Logger.class';
 import { useTranslation } from 'react-i18next';
 import CartListItem from '@/components/section/cart/CartListItem';
 import { Hr } from '@/components/system/Hr';
 import useCart from '@/hooks/CartHook';
 import CartSummary from '@/components/section/cart/CartSummaryContainer';
-
-interface OrderData {
-  orderNumber: string;
-  status: string;
-  total: number;
-  items: Array<{
-    productId: string;
-    quantity: number;
-    price: number;
-    product?: {
-      name: string;
-      _id: string;
-    };
-  }>;
-  customerInfo?: {
-    guestInfo?: {
-      email: string;
-      firstName: string;
-      lastName: string;
-    };
-    selectedAddress?: {
-      street: string;
-      houseNumber: string;
-      city: string;
-      zipCode: string;
-      country: string;
-    };
-  };
-  paidAt: string;
-}
+import { OrderData } from '@/types/order.types';
+import { getOrder } from '@/requests/cart.request';
 
 // Todo: refactor completely
 const ConfirmationStep: React.FC = () => {
@@ -70,7 +41,7 @@ const ConfirmationStep: React.FC = () => {
     // Todo: ref
     try {
       console.log('🔍 Fetching order details for:', orderNum);
-      const response = await axiosInstance.get(`/api/order/${orderNum}`);
+      const response = await getOrder(orderNum);
       console.log('📋 Order API response:', response);
 
       // Handle nested response structure

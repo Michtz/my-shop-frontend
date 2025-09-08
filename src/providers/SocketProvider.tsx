@@ -36,7 +36,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
-  // Funktion um User Room zu joinen
   const joinUserRoom = (userId: string) => {
     if (socket && userId) {
       socket.emit('user_login', userId);
@@ -45,7 +44,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     }
   };
 
-  // Funktion um User Room zu verlassen
   const leaveUserRoom = (userId: string) => {
     if (socket && userId) {
       socket.emit('user_logout', userId);
@@ -63,7 +61,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
       const userInformation = await getCurrentSession();
       const sessionId = userInformation?.data?.sessionId || null;
-      const userId = userInformation?.data?.userId || null; // Falls du user ID in session hast
+      const userId = userInformation?.data?.userId || null;
 
       const socketInstance = io(backendUrl, {
         withCredentials: true,
@@ -100,11 +98,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         setCurrentUserId(data.userId);
       });
 
-      // User-spezifische Events
+      // User Events
       socketInstance.on('order_status_updated', (data: any) => {
         console.log('📦 Order status updated:', data);
-
-        // Hier kannst du deine Order UI aktualisieren
         mutate('orders');
         mutate('/api/orders');
         if (data.orderId) {
@@ -123,7 +119,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
           console.log('🔄 PRODUCTS UPDATED EVENT:', data);
           mutate('products'); // for card list view update
           data.productIds.forEach((productId: string) => {
-            mutate(productId); // Für for single product update
+            mutate(productId); // for single product update
           });
         },
       );
@@ -150,7 +146,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       setSocket(socketInstance);
 
       return () => {
-        // Cleanup beim Unmount
+        // Cleanup on unmount
         if (userId) {
           socketInstance.emit('user_logout', userId);
         }

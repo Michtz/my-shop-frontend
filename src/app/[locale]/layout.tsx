@@ -1,6 +1,5 @@
 'use client';
 
-import ThemeRegistry from '@/providers/ThemeRegistry';
 import SWRProvider from '@/providers/SWRProvider';
 import { SocketProvider } from '@/providers/SocketProvider';
 import { AuthProvider } from '@/hooks/AuthHook';
@@ -23,36 +22,34 @@ import { SideCartProvider } from '@/hooks/SideCartHook';
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <ThemeRegistry>
-      <ErrorProvider>
-        <TranslationProvider>
-          <ContentTranslateProvider>
-            <CookieProvider>
-              <FeedbackProvider>
-                <AuthProvider>
-                  <SocketProvider>
-                    <SideCartProvider>
-                      <html lang="de" suppressHydrationWarning>
-                        <head>
-                          <title>Barista Accessoire</title>
-                        </head>
-                        <body>
-                          <Header />
-                          <SWRProvider>{children}</SWRProvider>
-                          <Feedback />
-                          <CookieBanner />
-                          <Footer />
-                        </body>
-                      </html>
-                    </SideCartProvider>
-                  </SocketProvider>
-                </AuthProvider>
-              </FeedbackProvider>
-            </CookieProvider>
-          </ContentTranslateProvider>
-        </TranslationProvider>
-      </ErrorProvider>
-    </ThemeRegistry>
+    <ErrorProvider>
+      <TranslationProvider>
+        <ContentTranslateProvider>
+          <CookieProvider>
+            <FeedbackProvider>
+              <AuthProvider>
+                <SocketProvider>
+                  <SideCartProvider>
+                    <html lang="de" suppressHydrationWarning>
+                      <head>
+                        <title>Barista Accessoire</title>
+                      </head>
+                      <body>
+                        <Header />
+                        <SWRProvider>{children}</SWRProvider>
+                        <Feedback />
+                        <CookieBanner />
+                        <Footer />
+                      </body>
+                    </html>
+                  </SideCartProvider>
+                </SocketProvider>
+              </AuthProvider>
+            </FeedbackProvider>
+          </CookieProvider>
+        </ContentTranslateProvider>
+      </TranslationProvider>
+    </ErrorProvider>
   );
 };
 

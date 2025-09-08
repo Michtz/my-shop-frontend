@@ -119,3 +119,12 @@ export const deleteCartItem = async (
     throw e;
   }
 };
+
+export const getOrder = async (orderNumber: string): Promise<any> => {
+  try {
+    return await axiosInstance.get(`/api/order/${orderNumber}`);
+  } catch (e) {
+    Logger.error('Unable to delete cart item');
+    throw e;
+  }
+};

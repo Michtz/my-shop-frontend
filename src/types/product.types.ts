@@ -49,7 +49,3 @@ export interface UpdateProductRequest {
   stockQuantity?: number;
   category?: string;
 }
-
-export interface UpdateStockRequest {
-  stockQuantity: number;
-}
