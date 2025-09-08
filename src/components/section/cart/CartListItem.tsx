@@ -14,7 +14,7 @@ import { Logger } from '@/utils/Logger.class';
 interface CartListItemProp {
   item: any;
   mutate: () => void;
-  onClick: () => void;
+  onClick?: () => void;
   review?: boolean;
   isMax?: boolean;
   stockLow?: boolean;
@@ -79,7 +79,10 @@ const CartListItem: React.FC<CartListItemProp> = ({
 
   return (
     <div key={item._id} className={style.cartItemContainer}>
-      <div className={style.productInfo} onClick={() => onClick()}>
+      <div
+        className={style.productInfo}
+        onClick={() => (!!onClick ? onClick() : null)}
+      >
         <div className={style.productImage}>
           {item && !noImage && (
             <Image
