@@ -3,16 +3,27 @@ import { Container, Title } from '@/components/system/Container';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSideCart } from '@/hooks/SideCartHook';
 
-const EmptyCart: FC = () => {
+interface EmptyCartProps {
+  transparent?: boolean;
+}
+const EmptyCart: FC<EmptyCartProps> = ({ transparent = false }) => {
   const { t } = useTranslation();
   const router = useRouter();
-
+  const { closeSideCart } = useSideCart();
+  const handleClick = () => {
+    if (transparent) {
+      closeSideCart();
+    } else {
+      router.replace('/');
+    }
+  };
   return (
-    <Container flow={'column'}>
+    <Container transparent={transparent} flow={'column'}>
       <Title>{t('cart.emptyTitle')}</Title>
       <ButtonContainer>
-        <Button onClick={() => router.replace('/')}>
+        <Button onClick={() => handleClick()}>
           {t('cart.continueShopping')}
         </Button>
       </ButtonContainer>
