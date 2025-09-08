@@ -16,6 +16,8 @@ import Cookies from 'js-cookie';
 import { handleLanguageChange, languagesOptions } from '@/i18n/client';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Params } from 'next/dist/server/request/params';
+import SideCart from '@/components/system/SideCart';
+import { useSideCart } from '@/hooks/SideCartHook';
 
 const ResponsiveAppBar = () => {
   const { t, i18n } = useTranslation();
@@ -23,6 +25,7 @@ const ResponsiveAppBar = () => {
   const path = usePathname();
   const params: Params = useParams();
   const { userSessionData, sessionData, isLoading, isAdmin } = useAuth();
+  const { isSideCartOpen, closeSideCart } = useSideCart();
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const languageDropdownRef = useRef<HTMLLIElement>(null);
@@ -156,6 +159,7 @@ const ResponsiveAppBar = () => {
       </header>
 
       <SideNav isOpen={isSideNavOpen} onClose={closeSideNav} />
+      <SideCart isOpen={isSideCartOpen} onClose={() => closeSideCart()} />
     </>
   );
 };

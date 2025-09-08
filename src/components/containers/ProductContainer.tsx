@@ -29,6 +29,7 @@ import FilterContainer, {
 import { IProduct } from '@/types/product.types';
 import LoadingSpinner from '@/components/system/LoadingSpinner';
 import FormContainer from '@/components/system/Form';
+import { useSideCart } from '@/hooks/SideCartHook';
 
 interface FormFields {
   quantity: number;
@@ -44,6 +45,7 @@ const ProductOverview: FC = () => {
   const { cart, cartItems, mutate } = useCart();
   const { showFeedback } = useFeedback();
   const { translate } = useContentTranslate();
+  const { openSideCart } = useSideCart();
   const {
     control,
     handleSubmit,
@@ -114,7 +116,8 @@ const ProductOverview: FC = () => {
       );
 
       await mutate('cart', result);
-      showFeedback(t('feedback.add-to-cart-success'), 'success');
+      openSideCart();
+      // showFeedback(t('feedback.add-to-cart-success'), 'success');
     } catch (error) {
       showFeedback(t('feedback.data-saved-error'), 'error');
       Logger.error('Failed to update cart:', error);
@@ -158,6 +161,7 @@ const ProductOverview: FC = () => {
       );
 
       await mutate('product', result);
+      openSideCart();
     } catch (error) {
       Logger.error('Add to cart error:', error);
       await mutate('product', cartItems);

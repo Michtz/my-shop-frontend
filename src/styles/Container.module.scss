@@ -11,6 +11,9 @@
   &[data-align-items='center'] {
     align-items: center;
   }
+  &[data-transparent='true'] {
+    background-color: transparent;
+  }
 
   &[data-align-items='flex-end'] {
     align-items: flex-end;

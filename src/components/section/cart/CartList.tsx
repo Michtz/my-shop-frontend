@@ -9,23 +9,37 @@ import React, { FC } from 'react';
 import { Hr } from '@/components/system/Hr';
 import Skeleton from '@/components/system/Skeleton';
 import CartItemSkeleton from '@/components/section/cart/CartListItemSkleton';
-
 import { useTranslation } from 'react-i18next';
 import useProducts from '@/hooks/ProductsHook';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { useRouter } from 'next/navigation';
+import { useSideCart } from '@/hooks/SideCartHook';
 
 interface Props {
   review?: boolean;
+  sideNav?: boolean;
 }
 
-const CartList: FC<Props> = ({ review }) => {
+const CartList: FC<Props> = ({ review, sideNav }) => {
   const { t } = useTranslation();
+  const router: AppRouterInstance = useRouter();
   const { mutate, isLoading, reviewedCartItems } = useCart();
+  const { closeSideCart } = useSideCart();
   const { products } = useProducts();
-  console.log(reviewedCartItems);
+
   const isMax = (quantity: number, id: string): boolean => {
     const matchingProduct = products?.find((product) => product?._id === id);
     if (!matchingProduct) return false;
     return quantity >= matchingProduct.stockQuantity;
+  };
+
+  const handleOpenCart = (productId: string) => {
+    if (sideNav) {
+      closeSideCart();
+      router.push(`/cart`);
+    } else {
+      router.push(`/product/${productId}`);
+    }
   };
 
   const subtotal: number =
@@ -54,7 +68,6 @@ const CartList: FC<Props> = ({ review }) => {
   const list = (
     <>
       {reviewedCartItems?.map((item: any) => {
-        console.log(item.lowStock);
         return (
           <React.Fragment key={item.productId}>
             <CartListItem
@@ -63,17 +76,21 @@ const CartList: FC<Props> = ({ review }) => {
               review={review}
               isMax={isMax(item.quantity, item.productId)}
               stockLow={Date.now() - item.stockLowAt < 5 * 60 * 1000}
+              noImage={sideNav}
+              onClick={() => handleOpenCart(item.productId)}
             />
-            <Hr />
+            {!sideNav && <Hr />}
           </React.Fragment>
         );
       })}
-      <CartSummary
-        subtotal={subtotal}
-        shipping={shipping}
-        total={total}
-        checkoutButton={!review}
-      />
+      {!sideNav && (
+        <CartSummary
+          subtotal={subtotal}
+          shipping={shipping}
+          total={total}
+          checkoutButton={!review}
+        />
+      )}
     </>
   );
 
@@ -83,6 +100,7 @@ const CartList: FC<Props> = ({ review }) => {
       padding={false}
       alignItems={'center'}
       maxWidth={'1150'}
+      transparent={sideNav}
     >
       {!review && <Title>{t('cart.title')}</Title>}
       {isLoading ? skeleton : list}

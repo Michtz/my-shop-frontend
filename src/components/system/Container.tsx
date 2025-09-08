@@ -24,6 +24,7 @@ interface ContainerProps extends PropsWithChildren {
   padding?: boolean;
   maxWidth?: string;
   gap?: string;
+  transparent?: boolean;
 }
 
 export const Container: FC<ContainerProps> = ({
@@ -34,6 +35,7 @@ export const Container: FC<ContainerProps> = ({
   padding = true,
   maxWidth,
   gap,
+  transparent,
 }) => (
   <div
     data-flow={flow}
@@ -42,6 +44,7 @@ export const Container: FC<ContainerProps> = ({
     data-padding={padding}
     data-max-width={maxWidth}
     data-gap={gap}
+    data-transparent={transparent}
     className={style.container}
   >
     {children}

@@ -29,11 +29,13 @@ import FilterContainer, {
 } from '@/components/system/FilterContainer';
 import { useContentTranslate } from '@/hooks/ContentTranslationHook';
 import useCart, { CartItem } from '@/hooks/CartHook';
+import { useSideCart } from '@/hooks/SideCartHook';
 
 const MainContainer: React.FC = () => {
   const { products, isLoading } = useProducts();
   const { cartItems, mutate } = useCart();
   const { showFeedback } = useFeedback();
+  const { openSideCart } = useSideCart();
   const { t } = useTranslation();
   const params: Params = useParams();
   const { translate } = useContentTranslate();
@@ -140,7 +142,8 @@ const MainContainer: React.FC = () => {
         userSessionData?.user?.id || '',
       );
       mutate('cart');
-      showFeedback(t('feedback.add-to-cart-success'), 'success');
+      openSideCart();
+      // showFeedback(t('feedback.add-to-cart-success'), 'success');
     } catch {
       showFeedback(t('feedback.data-saved-error'), 'error');
     }

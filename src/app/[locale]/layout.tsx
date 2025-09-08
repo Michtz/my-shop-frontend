@@ -19,6 +19,7 @@ import { ErrorProvider } from '@/hooks/ErrorHook';
 import { ContentTranslateProvider } from '@/hooks/ContentTranslationHook';
 import CookieBanner from '@/components/system/CookieBanner';
 import { CookieProvider } from '@/hooks/CookieHook';
+import { SideCartProvider } from '@/hooks/SideCartHook';
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -30,18 +31,20 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
               <FeedbackProvider>
                 <AuthProvider>
                   <SocketProvider>
-                    <html lang="de" suppressHydrationWarning>
-                      <head>
-                        <title>Barista Accessoire</title>
-                      </head>
-                      <body>
-                        <Header />
-                        <SWRProvider>{children}</SWRProvider>
-                        <Feedback />
-                        <CookieBanner />
-                        <Footer />
-                      </body>
-                    </html>
+                    <SideCartProvider>
+                      <html lang="de" suppressHydrationWarning>
+                        <head>
+                          <title>Barista Accessoire</title>
+                        </head>
+                        <body>
+                          <Header />
+                          <SWRProvider>{children}</SWRProvider>
+                          <Feedback />
+                          <CookieBanner />
+                          <Footer />
+                        </body>
+                      </html>
+                    </SideCartProvider>
                   </SocketProvider>
                 </AuthProvider>
               </FeedbackProvider>

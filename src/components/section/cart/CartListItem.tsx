@@ -5,8 +5,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { deleteCartItem, updateCartItem } from '@/requests/cart.request';
 import NumberStepper from '@/components/system/NumberStepper';
-import { useRouter } from 'next/navigation';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useContentTranslate } from '@/hooks/ContentTranslationHook';
 import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
@@ -16,18 +14,22 @@ import { Logger } from '@/utils/Logger.class';
 interface CartListItemProp {
   item: any;
   mutate: () => void;
+  onClick: () => void;
   review?: boolean;
   isMax?: boolean;
   stockLow?: boolean;
+  noImage?: boolean;
 }
+
 const CartListItem: React.FC<CartListItemProp> = ({
   item,
   mutate,
   review = false,
   isMax = false,
   stockLow = false,
+  noImage = false,
+  onClick,
 }) => {
-  const router: AppRouterInstance = useRouter();
   const { t } = useTranslation([]);
   const { sessionData, userSessionData, isSessionReady } = useAuth();
   const { translate } = useContentTranslate();
@@ -77,12 +79,9 @@ const CartListItem: React.FC<CartListItemProp> = ({
 
   return (
     <div key={item._id} className={style.cartItemContainer}>
-      <div
-        className={style.productInfo}
-        onClick={() => router.push(`/product/${item.productId}`)}
-      >
+      <div className={style.productInfo} onClick={() => onClick()}>
         <div className={style.productImage}>
-          {item && (
+          {item && !noImage && (
             <Image
               src={item.product.imageUrl || '/placeholder-image.jpg'}
               alt={translate(item.product.name)}
@@ -92,9 +91,13 @@ const CartListItem: React.FC<CartListItemProp> = ({
           )}
         </div>
         <div className={style.productDetails}>
-          <div className={style.brand}>{item.product.brand || t('product.brand_placeholder')}</div>
+          <div className={style.brand}>
+            {item.product.brand || t('product.brand_placeholder')}
+          </div>
           <h3 className={style.productName}>{translate(item.product.name)}</h3>
-          <div className={style.unitPrice}>{t('currency.chf')} {item.price?.toFixed(2)}.-</div>
+          <div className={style.unitPrice}>
+            {t('currency.chf')} {item.price?.toFixed(2)}.-
+          </div>
         </div>
       </div>
 
@@ -113,12 +116,11 @@ const CartListItem: React.FC<CartListItemProp> = ({
           />
         )}
         <div className={style.totalPrice}>
-          {review && t('cart.review_total', { quantity: item.quantity })} {t('currency.chf')}{' '}
-          {itemTotal.toFixed(2)}.-
+          {review && t('cart.review_total', { quantity: item.quantity })}{' '}
+          {t('currency.chf')} {itemTotal.toFixed(2)}.-
         </div>
         <div className={style.warningStock}>
-          {stockLow &&
-            t('cart.stock_warning', { quantity: item.quantity })}
+          {stockLow && t('cart.stock_warning', { quantity: item.quantity })}
         </div>
       </div>
     </div>
