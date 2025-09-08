@@ -1,23 +1,6 @@
 'use client';
-import React, {
-  FC,
-  JSX,
-  MutableRefObject,
-  PropsWithChildren,
-  ReactNode,
-  useRef,
-} from 'react';
+import React, { FC, FormEvent, JSX, PropsWithChildren, ReactNode } from 'react';
 import style from '@/styles/system/Form.module.scss';
-
-interface FormProps
-  extends React.DetailedHTMLProps<
-    React.FormHTMLAttributes<HTMLFormElement>,
-    HTMLFormElement
-  > {
-  className?: string;
-  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
-  onKeyDown?: (event: React.KeyboardEvent<HTMLFormElement>) => void;
-}
 
 export const validateEmail = (email: string | undefined) => {
   if (!email) return 'required';
@@ -49,37 +32,24 @@ export const validatePhoneNumber = (phone: string | undefined) => {
  * Form system component can be used as a wrapper for a form
  */
 
-const Form: React.FC<FormProps> = ({
-  className = '',
-  onSubmit,
-  onKeyDown,
-  ...props
-}): JSX.Element => {
-  const locked: MutableRefObject<number> = useRef<number>(0);
+interface ContainerFormProps {
+  className: string;
+  children?: ReactNode;
+  onSubmitAction: (data: FormEvent) => Promise<void>;
+}
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    // This prevents the form from being submitted on enter press
-    // When the enter key was pressed less than 10ms before the submit event
-    // then the submit event was caused by this key-event and should be
-    // prevented
-    if (Date.now() - locked.current <= 10) event.preventDefault();
-    else if (onSubmit) onSubmit(event);
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>): void => {
-    if (event.code === 'Enter') locked.current = Date.now();
-    if (onKeyDown) onKeyDown(event);
-  };
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      onKeyDown={handleKeyDown}
-      className={className}
-      {...props}
-    />
-  );
-};
+export const FormContainer: FC<ContainerFormProps> = ({
+  children,
+  onSubmitAction,
+}) => (
+  <form
+    onSubmit={onSubmitAction}
+    style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}
+    className={style.formContainer}
+  >
+    {children}
+  </form>
+);
 
 /**
  * FormRow system component which can be used to specify a row in a form. Rows defined
@@ -134,4 +104,4 @@ export const FormTitle: React.FC<FormTitleProps> = ({
   );
 };
 
-export default Form;
+export default FormContainer;

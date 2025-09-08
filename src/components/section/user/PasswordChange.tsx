@@ -3,8 +3,11 @@ import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import style from '@/styles/UserProfileForm.module.scss';
 import { useError } from '@/hooks/ErrorHook';
-import { FormContainer } from '@/components/system/Container';
-import { checkIfSamePassword, FormRow } from '@/components/system/Form';
+import {
+  checkIfSamePassword,
+  FormContainer,
+  FormRow,
+} from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Button, { ButtonContainer } from '@/components/system/Button';
 import { useFeedback } from '@/hooks/FeedbackHook';

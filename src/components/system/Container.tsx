@@ -2,7 +2,6 @@
 
 import {
   FC,
-  FormEvent,
   PropsWithChildren,
   ReactNode,
   useEffect,
@@ -47,25 +46,6 @@ export const Container: FC<ContainerProps> = ({
   >
     {children}
   </div>
-);
-
-interface ContainerFormProps {
-  className: string;
-  children?: ReactNode;
-  onSubmitAction: (data: FormEvent) => Promise<void>;
-}
-
-export const FormContainer: FC<ContainerFormProps> = ({
-  children,
-  onSubmitAction,
-}) => (
-  <form
-    onSubmit={onSubmitAction}
-    style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}
-    className={style.formContainer}
-  >
-    {children}
-  </form>
 );
 
 export const HorizontalScrollContainer: FC<ContainerProps> = ({ children }) => {

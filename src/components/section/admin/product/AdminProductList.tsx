@@ -22,7 +22,7 @@ const AdminProductList: React.FC<AdminProductListProps> = ({
   onCreateProduct,
 }) => {
   const { allProducts, isLoading, error } = useProducts(); // Todo: use admin product fetch herer to fetch not activeitems as well (coming soon)
-  const { awaitModalResult } = useModal();
+  const { awaitModalResult } = useModal(); // Todo: restyle modals
   const { showFeedback } = useFeedback();
   const { t } = useTranslation();
   const [sortConfig, setSortConfig] = useState<{

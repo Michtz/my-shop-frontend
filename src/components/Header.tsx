@@ -16,7 +16,6 @@ import Cookies from 'js-cookie';
 import { handleLanguageChange, languagesOptions } from '@/i18n/client';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Params } from 'next/dist/server/request/params';
-import AdminIcon from '@/components/icons/AdminIcon';
 
 const ResponsiveAppBar = () => {
   const { t, i18n } = useTranslation();
@@ -27,18 +26,6 @@ const ResponsiveAppBar = () => {
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const languageDropdownRef = useRef<HTMLLIElement>(null);
-
-  // useEffect(() => {
-  //   // Simuliere Ladezeit (kannst du durch echte Daten-Loading ersetzen)
-  //   const timer = setTimeout(() => {
-  //     // Kurz warten, dann Content einblenden
-  //     setTimeout(() => {
-  //       setShowContent(true);
-  //     }, 300);
-  //   }, 2000); // 2 Sekunden Ladezeit
-  //
-  //   return () => clearTimeout(timer);
-  // }, []);
 
   const toggleSideNav = () => {
     setIsSideNavOpen(!isSideNavOpen);
@@ -105,6 +92,11 @@ const ResponsiveAppBar = () => {
             <li className={style.navItem}>
               <Link href={'/blog'}>{t('nav.blog')}</Link>
             </li>
+            {isAdmin && (
+              <li className={style.navItem}>
+                <Link href={'/admin'}>{t('nav.admin')}</Link>
+              </li>
+            )}
           </ul>
         </div>
 
@@ -118,10 +110,6 @@ const ResponsiveAppBar = () => {
         <span
           className={`${style.rightNavContainer} ${!isLoading ? style.fadeIn : style.fadeOut}`}
         >
-          <div className={style.cartIcon} data-hidden={!isAdmin}>
-            <AdminIcon onClick={() => router.replace('/admin')} />
-          </div>
-
           <div className={style.cartIcon}>
             <CartIcon onClick={() => router.replace('/cart')} />
           </div>

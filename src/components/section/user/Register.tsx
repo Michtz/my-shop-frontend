@@ -7,9 +7,9 @@ import style from '@/styles/LoginPage.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useError } from '@/hooks/ErrorHook';
 import { useRouter } from 'next/navigation';
-import { FormContainer } from '@/components/system/Container';
 import {
   checkIfSamePassword,
+  FormContainer,
   FormRow,
   validateEmail,
   validatePassword,

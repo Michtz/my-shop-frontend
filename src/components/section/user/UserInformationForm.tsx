@@ -1,7 +1,8 @@
 import React, { FC, useEffect } from 'react';
-import { FormContainer, Title } from '@/components/system/Container';
+import { Title } from '@/components/system/Container';
 import style from '@/styles/UserProfileForm.module.scss';
 import {
+  FormContainer,
   FormRow,
   validateEmail,
   validatePhoneNumber,

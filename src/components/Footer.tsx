@@ -26,11 +26,6 @@ const Footer: FC = () => {
                   {t('footer.navigation.faqHelp')}
                 </Link>
               </li>
-              <li>
-                <Link href="/service/customer-service">
-                  {t('footer.navigation.customerSupport')}
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -47,9 +42,6 @@ const Footer: FC = () => {
                 <Link href="/legal/imprint">{t('footer.legal.imprint')}</Link>
               </li>
               <li>
-                <Link href="/legal/shipping">{t('footer.legal.shipping')}</Link>
-              </li>
-              <li>
                 <Link href="/legal/returns">{t('footer.legal.returns')}</Link>
               </li>
             </ul>
@@ -60,21 +52,6 @@ const Footer: FC = () => {
             <ul className={style.linkList}>
               <li>
                 <Link href="/about">{t('footer.company.aboutUs')}</Link>
-              </li>
-              <li>
-                <Link href="#" external>
-                  {t('footer.company.careers')}
-                </Link>
-              </li>
-              <li>
-                <Link href="#" external>
-                  {t('footer.company.sustainability')}
-                </Link>
-              </li>
-              <li>
-                <Link href="#" external>
-                  {t('footer.company.corporate')}
-                </Link>
               </li>
             </ul>
           </div>

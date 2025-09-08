@@ -1,4 +1,4 @@
-import React, { HTMLProps, PropsWithChildren } from 'react';
+import React, { HTMLProps } from 'react';
 import style from '@/styles/system/MaterialIcon.module.scss';
 import Link from '@/components/system/Link';
 import { ComponentSize } from '@/components/system/AssetIcon';
@@ -35,12 +35,6 @@ const MaterialIcon: React.FC<MaterialIconProps> = ({
       {href ? <Link href={href}>{icon}</Link> : icon}
     </span>
   );
-};
-
-export const IconContainer: React.FC<PropsWithChildren> = ({
-  children,
-}): React.ReactElement => {
-  return <div className={style['icons-container']}>{children}</div>;
 };
 
 export default MaterialIcon;

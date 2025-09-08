@@ -10,6 +10,7 @@ interface SkeletonProps {
   className?: string;
 }
 
+// Todo: add for all items if time
 export const Skeleton: React.FC<SkeletonProps> = ({
   width = '100%',
   height = '1rem',
@@ -29,7 +30,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
       case 'circular':
         return {
           borderRadius: '50%',
-          width: height,
+          width: width,
           height: height,
         };
       case 'rectangular':
