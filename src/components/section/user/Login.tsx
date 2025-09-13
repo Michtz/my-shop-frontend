@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import style from '@/styles/LoginPage.module.scss';
 import { useTranslation } from 'react-i18next';
@@ -35,14 +35,95 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
   const { joinUserRoom } = useSocketContext();
 
   const googleButtonRef = useRef<HTMLDivElement>(null);
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+
+  useEffect(() => {
+    console.log('🔍 Starting to look for Google button...');
+
+    // Check ob Google Button geladen ist
+    const checkInterval = setInterval(() => {
+      console.log('⏰ Checking for Google button...');
+      console.log('Ref current:', googleButtonRef.current);
+
+      // Versuche verschiedene Selektoren
+      const btn1 = googleButtonRef.current?.querySelector('button');
+      const btn2 = googleButtonRef.current?.querySelector('[role="button"]');
+      const btn3 = googleButtonRef.current?.querySelector('div[role="button"]');
+      const btn4 = googleButtonRef.current?.querySelector(
+        '.nsm7Bb-HzV7m-LgbsSe',
+      );
+
+      console.log('Found selectors:', {
+        button: btn1,
+        '[role="button"]': btn2,
+        'div[role="button"]': btn3,
+        '.nsm7Bb-HzV7m-LgbsSe': btn4,
+        'all divs': googleButtonRef.current?.querySelectorAll('div'),
+        innerHTML: googleButtonRef.current?.innerHTML?.substring(0, 200),
+      });
+
+      const googleBtn = btn1 || btn2 || btn3 || btn4;
+
+      if (googleBtn) {
+        console.log('✅ Google button found!', googleBtn);
+        setIsGoogleLoaded(true);
+        clearInterval(checkInterval);
+      } else {
+        console.log('❌ Google button not found yet');
+      }
+    }, 500); // Check alle 500ms
+
+    // Stop checking nach 10 Sekunden
+    const timeout = setTimeout(() => {
+      console.error('⚠️ Google button could not be loaded after 10 seconds');
+      clearInterval(checkInterval);
+    }, 10000);
+
+    // Cleanup
+    return () => {
+      clearInterval(checkInterval);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   const handleCustomGoogleClick = () => {
-    // it is a bit hacky i know but was a last time decision to implement google login
-    const googleBtn =
-      googleButtonRef.current?.querySelector('button') ||
-      googleButtonRef.current?.querySelector('[role="button"]');
+    console.log('🖱️ Custom button clicked');
+    console.log('Is Google loaded?', isGoogleLoaded);
+    console.log('Ref current:', googleButtonRef.current);
+
+    if (!isGoogleLoaded) {
+      console.warn('⚠️ Google button not loaded yet!');
+      showFeedback('Google Login lädt noch...', 'info');
+      return;
+    }
+
+    // Versuche alle möglichen Selektoren
+    const selectors = [
+      'button',
+      '[role="button"]',
+      'div[role="button"]',
+      '.nsm7Bb-HzV7m-LgbsSe',
+      '[data-type="icon"]',
+      'iframe',
+    ];
+
+    let googleBtn = null;
+    for (const selector of selectors) {
+      googleBtn = googleButtonRef.current?.querySelector(selector);
+      if (googleBtn) {
+        console.log(`✅ Found button with selector: ${selector}`, googleBtn);
+        break;
+      }
+    }
+
     if (googleBtn) {
+      console.log('🎯 Clicking Google button...');
       (googleBtn as HTMLElement).click();
+      console.log('✅ Google button clicked!');
+    } else {
+      console.error('❌ Google button not found!');
+      console.log('Current ref HTML:', googleButtonRef.current?.innerHTML);
+      showFeedback('Google Login konnte nicht gestartet werden', 'error');
     }
   };
 
@@ -86,25 +167,40 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
     <>
       <div className={style.loginContainer}>
         <>
-          <Button onClick={handleCustomGoogleClick}>
+          <Button
+            onClick={handleCustomGoogleClick}
+            disabled={!isGoogleLoaded}
+            variant={isGoogleLoaded ? 'primary' : 'secondary'}
+          >
             <GoogleGIcon width={20} height={20} />
-            Mit Google anmelden
+            {isGoogleLoaded ? 'Mit Google anmelden' : 'Google lädt...'}
           </Button>
 
-          <div ref={googleButtonRef} style={{ opacity: '0' }}>
+          {/* Debug: Mache es temporär sichtbar */}
+          <div
+            ref={googleButtonRef}
+            style={{
+              opacity: '0.3', // Leicht sichtbar zum Debuggen
+              border: '2px solid red', // Roter Rahmen zum Debuggen
+              marginTop: '10px',
+            }}
+          >
             <GoogleLogin
               onSuccess={async (response) => {
+                console.log('🎉 Google login success!', response);
                 if (response.credential) {
                   const result = await loginWithGoogle(response.credential);
                   if (result?.success) router.replace(goTo || '/profile');
                 }
               }}
               onError={() => {
+                console.error('❌ Google login error');
                 showFeedback(t('feedback.login-error'), 'error');
               }}
             />
           </div>
         </>
+
         <FormContainer
           className={style.loginForm}
           onSubmitAction={handleSubmit(onSubmit)}
@@ -140,13 +236,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
               {...transformFieldError(errors.password)}
             />
           </FormRow>
-
-          {/* Todo: add it*/}
-          {/*<FormRow direction="row">*/}
-          {/*  <Link href="" disabled className={style.forgotPassword}>*/}
-          {/*    {t('auth.forgotPassword')}*/}
-          {/*  </Link>*/}
-          {/*</FormRow>*/}
 
           <FormRow>
             <Button type="submit" flex disabled={isLoading}>
