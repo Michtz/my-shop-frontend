@@ -59,6 +59,81 @@
     "productManagement": "Product Management",
     "productsCount": "Products ({{count}})"
   },
+  "about": {
+    "title": "About this Project",
+    "subtitle": "A Web Engineering Project at IBAW",
+    "project": {
+      "title": "The Project",
+      "description": "This online shop was created as part of my Web Engineer training at IBAW. The project was developed completely from scratch and demonstrates the practical application of modern web technologies."
+    },
+    "technical": {
+      "title": "Technical Implementation",
+      "frontend": {
+        "title": "Frontend (React/Next.js)",
+        "react": "Complete React application with Next.js 14",
+        "i18n": "Multilingual support (i18n) with German, English and French",
+        "scss": "Responsive design with SCSS Modules",
+        "socket": "Real-time updates with Socket.io",
+        "oauth": "Google OAuth integration for social login"
+      },
+      "backend": {
+        "title": "Backend (Node.js/Express)",
+        "api": "RESTful API with Express.js",
+        "mongodb": "MongoDB database with Mongoose",
+        "jwt": "JWT authentication system",
+        "session": "Session management with cart persistence",
+        "stripe": "Stripe payment integration"
+      }
+    },
+    "features": {
+      "title": "Implemented Features",
+      "user": {
+        "title": "User System",
+        "desc": "Registration, login, profile management"
+      },
+      "admin": {
+        "title": "Admin Panel",
+        "desc": "Product and blog management"
+      },
+      "shop": {
+        "title": "Shop Functions",
+        "desc": "Product catalog, shopping cart, checkout process"
+      },
+      "payment": {
+        "title": "Payment",
+        "desc": "Secure payment via Stripe"
+      },
+      "blog": {
+        "title": "Blog System",
+        "desc": "Create and manage articles"
+      },
+      "realtime": {
+        "title": "Real-time Features",
+        "desc": "Live updates via WebSockets"
+      },
+      "google": {
+        "title": "Google Login",
+        "desc": "OAuth 2.0 integration"
+      }
+    },
+    "deployment": {
+      "title": "Deployment",
+      "frontend": "Vercel",
+      "backend": "Render",
+      "database": "MongoDB Atlas"
+    },
+    "scope": {
+      "title": "Project Scope",
+      "description": "This project includes over 100 custom-written components and several thousand lines of code. Everything from the database structure to the API to the frontend was developed independently.",
+      "period": "Development Period",
+      "periodValue": "2024-2025",
+      "developer": "Developer",
+      "developerName": "Simon Hagmann",
+      "education": "Education",
+      "educationValue": "Web Engineer IBAW"
+    },
+    "disclaimer": "This is a learning project for demonstration purposes."
+  },
   "auth": {
     "createAccount": "Create one here",
     "emailAddress": "Email Address",

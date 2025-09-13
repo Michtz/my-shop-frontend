@@ -59,6 +59,81 @@
     "productManagement": "Produktverwaltung",
     "productsCount": "Produkte ({{count}})"
   },
+  "about": {
+    "title": "Über dieses Projekt",
+    "subtitle": "Ein Web Engineering Projekt der IBAW",
+    "project": {
+      "title": "Das Projekt",
+      "description": "Dieser Online-Shop ist im Rahmen meiner Ausbildung zum Web Engineer an der IBAW entstanden. Das Projekt wurde komplett von Grund auf selbst entwickelt und zeigt die praktische Anwendung moderner Web-Technologien."
+    },
+    "technical": {
+      "title": "Technische Umsetzung",
+      "frontend": {
+        "title": "Frontend (React/Next.js)",
+        "react": "Vollständige React-Applikation mit Next.js 14",
+        "i18n": "Mehrsprachigkeit (i18n) mit Deutsch, Englisch und Französisch",
+        "scss": "Responsive Design mit SCSS Modules",
+        "socket": "Real-time Updates mit Socket.io",
+        "oauth": "Google OAuth Integration für Social Login"
+      },
+      "backend": {
+        "title": "Backend (Node.js/Express)",
+        "api": "RESTful API mit Express.js",
+        "mongodb": "MongoDB Datenbank mit Mongoose",
+        "jwt": "JWT Authentication System",
+        "session": "Session Management mit Warenkorb-Persistenz",
+        "stripe": "Stripe Payment Integration"
+      }
+    },
+    "features": {
+      "title": "Implementierte Features",
+      "user": {
+        "title": "Benutzer-System",
+        "desc": "Registrierung, Login, Profilverwaltung"
+      },
+      "admin": {
+        "title": "Admin-Bereich",
+        "desc": "Produkt- und Blog-Verwaltung"
+      },
+      "shop": {
+        "title": "Shop-Funktionen",
+        "desc": "Produktkatalog, Warenkorb, Checkout-Prozess"
+      },
+      "payment": {
+        "title": "Payment",
+        "desc": "Sichere Zahlung über Stripe"
+      },
+      "blog": {
+        "title": "Blog-System",
+        "desc": "Artikel erstellen und verwalten"
+      },
+      "realtime": {
+        "title": "Real-time Features",
+        "desc": "Live-Updates über WebSockets"
+      },
+      "google": {
+        "title": "Google Login",
+        "desc": "OAuth 2.0 Integration"
+      }
+    },
+    "deployment": {
+      "title": "Deployment",
+      "frontend": "Vercel",
+      "backend": "Render",
+      "database": "MongoDB Atlas"
+    },
+    "scope": {
+      "title": "Projektumfang",
+      "description": "Dieses Projekt umfasst über 100 selbst geschriebene Components und mehrere tausend Zeilen Code. Von der Datenbankstruktur über die API bis zum Frontend wurde alles eigenständig entwickelt.",
+      "period": "Entwicklungszeitraum",
+      "periodValue": "2024-2025",
+      "developer": "Entwickler",
+      "developerName": "Simon Hagmann",
+      "education": "Ausbildung",
+      "educationValue": "Web Engineer IBAW"
+    },
+    "disclaimer": "Dies ist ein Lernprojekt und dient zu Demonstrationszwecken."
+  },
   "auth": {
     "createAccount": "Hier erstellen",
     "emailAddress": "E-Mail-Adresse",

@@ -59,6 +59,82 @@
     "productManagement": "Gestion des produits",
     "productsCount": "Produits ({{count}})"
   },
+  "about": {
+    "title": "À propos de ce projet",
+    "subtitle": "Un projet d'ingénierie Web à l'IBAW",
+    "project": {
+      "title": "Le Projet",
+      "description": "Cette boutique en ligne a été créée dans le cadre de ma formation d'ingénieur Web à l'IBAW. Le projet a été entièrement développé à partir de zéro et démontre l'application pratique des technologies Web modernes."
+    },
+    "technical": {
+      "title": "Implémentation Technique",
+      "frontend": {
+        "title": "Frontend (React/Next.js)",
+        "react": "Application React complète avec Next.js 14",
+        "i18n": "Support multilingue (i18n) avec allemand, anglais et français",
+        "scss": "Design responsive avec modules SCSS",
+        "socket": "Mises à jour en temps réel avec Socket.io",
+        "oauth": "Intégration Google OAuth pour connexion sociale"
+      },
+      "backend": {
+        "title": "Backend (Node.js/Express)",
+        "api": "API RESTful avec Express.js",
+        "mongodb": "Base de données MongoDB avec Mongoose",
+        "jwt": "Système d'authentification JWT",
+        "session": "Gestion de session avec persistance du panier",
+        "stripe": "Intégration de paiement Stripe"
+      }
+    },
+    "features": {
+      "title": "Fonctionnalités Implémentées",
+      "user": {
+        "title": "Système Utilisateur",
+        "desc": "Inscription, connexion, gestion du profil"
+      },
+      "admin": {
+        "title": "Panneau Admin",
+        "desc": "Gestion des produits et du blog"
+      },
+      "shop": {
+        "title": "Fonctions Boutique",
+        "desc": "Catalogue de produits, panier, processus de commande"
+      },
+      "payment": {
+        "title": "Paiement",
+        "desc": "Paiement sécurisé via Stripe"
+      },
+      "blog": {
+        "title": "Système de Blog",
+        "desc": "Créer et gérer des articles"
+      },
+      "realtime": {
+        "title": "Fonctionnalités Temps Réel",
+        "desc": "Mises à jour en direct via WebSockets"
+      },
+      "google": {
+        "title": "Connexion Google",
+        "desc": "Intégration OAuth 2.0"
+      }
+    },
+    "deployment": {
+      "title": "Déploiement",
+      "frontend": "Vercel",
+      "backend": "Render",
+      "database": "MongoDB Atlas"
+    },
+    "scope": {
+      "title": "Portée du Projet",
+      "description": "Ce projet comprend plus de 100 composants écrits sur mesure et plusieurs milliers de lignes de code. Tout, de la structure de la base de données à l'API en passant par le frontend, a été développé de manière indépendante.",
+      "period": "Période de Développement",
+      "periodValue": "2024-2025",
+      "developer": "Développeur",
+      "developerName": "Simon Hagmann",
+      "education": "Formation",
+      "educationValue": "Ingénieur Web IBAW"
+    },
+    "disclaimer": "Ceci est un projet d'apprentissage à des fins de démonstration."
+  }
+,
   "auth": {
     "createAccount": "Créer un ici",
     "emailAddress": "Adresse e-mail",
