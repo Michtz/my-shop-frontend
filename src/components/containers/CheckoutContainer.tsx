@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddressStep from '@/components/section/checkout/AddressStep';
 import PaymentStep from '../section/checkout/PaymentStep';
 import ConfirmationStep from '@/components/section/checkout/ConfirmationStep';
@@ -26,6 +26,28 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
   const router: AppRouterInstance = useRouter();
   const pathname: string = usePathname();
   const step = pathname.split('/').pop();
+  const [progressAddress, setProgressAddress] = useState<string | null>(null);
+  const [progressPayment, setProgressPayment] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Nur im Browser ausführen
+    const storedAddress = localStorage.getItem('checkoutAddress');
+    const storedPayment = localStorage.getItem('checkoutPayment');
+
+    if (storedAddress === null) {
+      localStorage.setItem('checkoutAddress', 'pending');
+      setProgressAddress('pending');
+    } else {
+      setProgressAddress(storedAddress);
+    }
+
+    if (storedPayment === null) {
+      localStorage.setItem('checkoutPayment', 'pending');
+      setProgressPayment('pending');
+    } else {
+      setProgressPayment(storedPayment);
+    }
+  }, []);
 
   const isValidCheckoutStep = (
     step: string | undefined,
@@ -49,9 +71,6 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
     router.push('/checkout/review');
     setActiveTab('review');
   };
-
-  const progressAddress = localStorage.getItem('checkoutAddress');
-  const progressPayment = localStorage.getItem('checkoutPayment');
 
   const options = [
     {

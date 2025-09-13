@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import style from '@/styles/LoginPage.module.scss';
 import { useTranslation } from 'react-i18next';
@@ -9,13 +9,12 @@ import { useRouter } from 'next/navigation';
 import { FormContainer, FormRow } from '@/components/system/Form';
 import Input from '@/components/system/Input';
 import Link from '@/components/system/Link';
-import Button from '@/components/system/Button';
+import Button, { ButtonContainer } from '@/components/system/Button';
 import { Logger } from '@/utils/Logger.class';
 import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useSocketContext } from '@/providers/SocketProvider';
 import { GoogleLogin } from '@react-oauth/google';
-import GoogleGIcon from '@/components/icons/GoogleGIcon';
 
 export interface LoginFormData {
   email: string;
@@ -33,85 +32,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
   const router = useRouter();
   const { isLoading, login, loginWithGoogle } = useAuth();
   const { joinUserRoom } = useSocketContext();
-
-  const googleButtonRef = useRef<HTMLDivElement>(null);
-  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
-
-  useEffect(() => {
-    console.log('🔍 Starting to look for Google button...');
-
-    // Check ob Google Button geladen ist
-    const checkInterval = setInterval(() => {
-      console.log('⏰ Checking for Google button...');
-      console.log('Ref current:', googleButtonRef.current);
-
-      // Versuche verschiedene Selektoren
-      const btn1 = googleButtonRef.current?.querySelector('button');
-      const btn2 = googleButtonRef.current?.querySelector('[role="button"]');
-      const btn3 = googleButtonRef.current?.querySelector('div[role="button"]');
-      const btn4 = googleButtonRef.current?.querySelector(
-        '.nsm7Bb-HzV7m-LgbsSe',
-      );
-
-      console.log('Found selectors:', {
-        button: btn1,
-        '[role="button"]': btn2,
-        'div[role="button"]': btn3,
-        '.nsm7Bb-HzV7m-LgbsSe': btn4,
-        'all divs': googleButtonRef.current?.querySelectorAll('div'),
-        innerHTML: googleButtonRef.current?.innerHTML?.substring(0, 200),
-      });
-
-      const googleBtn = btn1 || btn2 || btn3 || btn4;
-
-      if (googleBtn) {
-        console.log('✅ Google button found!', googleBtn);
-        setIsGoogleLoaded(true);
-        clearInterval(checkInterval);
-      } else {
-        console.log('❌ Google button not found yet');
-      }
-    }, 500); // Check alle 500ms
-
-    // Stop checking nach 10 Sekunden
-    const timeout = setTimeout(() => {
-      console.error('⚠️ Google button could not be loaded after 10 seconds');
-      clearInterval(checkInterval);
-    }, 10000);
-
-    // Cleanup
-    return () => {
-      clearInterval(checkInterval);
-      clearTimeout(timeout);
-    };
-  }, []);
-
-  const handleCustomGoogleClick = () => {
-    console.log('🖱️ Custom button clicked');
-
-    const attempts = [
-      // 1. Container mit Klasse
-      () => googleButtonRef.current?.querySelector('.S9gUrf-YoZ4jf'),
-      // 2. Erstes Kind-Element
-      () => googleButtonRef.current?.firstElementChild,
-      // 3. Das div mit height="40px"
-      () => googleButtonRef.current?.querySelector('div[style*="height:40px"]'),
-      // 4. Parent des iframes
-      () => googleButtonRef.current?.querySelector('iframe')?.parentElement,
-    ];
-
-    for (const attempt of attempts) {
-      const element = attempt() as HTMLElement;
-      if (element) {
-        console.log('✅ Found clickable element:', element);
-        element.click();
-        return;
-      }
-    }
-
-    console.error('❌ Could not find Google button to click');
-  };
-
   const {
     register,
     handleSubmit,
@@ -151,41 +71,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
   return (
     <>
       <div className={style.loginContainer}>
-        <>
-          <Button
-            onClick={handleCustomGoogleClick}
-            disabled={!isGoogleLoaded}
-            variant={isGoogleLoaded ? 'primary' : 'secondary'}
-          >
-            <GoogleGIcon width={20} height={20} />
-            {isGoogleLoaded ? 'Mit Google anmelden' : 'Google lädt...'}
-          </Button>
-
-          {/* Debug: Mache es temporär sichtbar */}
-          <div
-            ref={googleButtonRef}
-            style={{
-              opacity: '0.3', // Leicht sichtbar zum Debuggen
-              border: '2px solid red', // Roter Rahmen zum Debuggen
-              marginTop: '10px',
-            }}
-          >
-            <GoogleLogin
-              onSuccess={async (response) => {
-                console.log('🎉 Google login success!', response);
-                if (response.credential) {
-                  const result = await loginWithGoogle(response.credential);
-                  if (result?.success) router.replace(goTo || '/profile');
-                }
-              }}
-              onError={() => {
-                console.error('❌ Google login error');
-                showFeedback(t('feedback.login-error'), 'error');
-              }}
-            />
-          </div>
-        </>
-
         <FormContainer
           className={style.loginForm}
           onSubmitAction={handleSubmit(onSubmit)}
@@ -223,9 +108,27 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
           </FormRow>
 
           <FormRow>
-            <Button type="submit" flex disabled={isLoading}>
-              {t('auth.loginButton')}
-            </Button>
+            <ButtonContainer styles={{ marginBottom: '1rem' }}>
+              <GoogleLogin
+                onSuccess={async (response) => {
+                  if (response.credential) {
+                    const result = await loginWithGoogle(response.credential);
+                    if (result?.success) router.replace(goTo || '/profile');
+                  }
+                }}
+                onError={() => {
+                  showFeedback(t('feedback.login-error'), 'error');
+                }}
+              />
+              <Button
+                style={{ margin: '0' }}
+                type="submit"
+                flex
+                disabled={isLoading}
+              >
+                {t('auth.loginButton')}
+              </Button>
+            </ButtonContainer>
           </FormRow>
         </FormContainer>
 

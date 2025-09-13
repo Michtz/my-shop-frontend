@@ -24,8 +24,7 @@
   &.focused {
     .input,
     .inputWrapper {
-      border-color: #2563eb;
-      outline: 2px solid #eff6ff;
+      border-color: var(--disabled);
       outline-offset: -1px;
     }
   }

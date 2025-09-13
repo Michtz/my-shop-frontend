@@ -56,9 +56,13 @@ const getFormDefaultValues = (userInfo: any): UserProfileFormData => {
 
 interface UserInformationFormProps {
   onCheckout?: (data: UserProfileFormData) => Promise<void>;
+  noDefaultValue?: boolean;
 }
 
-const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
+const UserInformationForm: FC<UserInformationFormProps> = ({
+  onCheckout,
+  noDefaultValue = false,
+}) => {
   const { t } = useTranslation();
   const { transformFieldError } = useError();
   const { userInformation, userSessionData, isLoading } = useAuth();
@@ -76,11 +80,12 @@ const UserInformationForm: FC<UserInformationFormProps> = ({ onCheckout }) => {
     formState: { errors, isSubmitting, isDirty },
   } = useForm<UserProfileFormData>({
     mode: 'onSubmit',
-    defaultValues: getFormDefaultValues(userInformation),
+    defaultValues: getFormDefaultValues(noDefaultValue ? {} : userInformation),
   });
 
   useEffect(() => {
-    if (userInformation) reset(getFormDefaultValues(userInformation));
+    if (userInformation)
+      reset(getFormDefaultValues(noDefaultValue ? {} : userInformation));
     if (!userInformation && !isLoading && hasProfile) router.replace('/login');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInformation, reset, isLoading]);

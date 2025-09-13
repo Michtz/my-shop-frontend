@@ -7,7 +7,7 @@ import React, {
   useState,
   ReactNode,
 } from 'react';
-import { User, SessionData, UserInformation } from '@/types/auth';
+import { User, SessionData, UserInformation, UserInfo } from '@/types/auth';
 import {
   createSession,
   getCurrentSession,
@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (userStr) {
         try {
           const user = JSON.parse(userStr);
-
+          console.log(user);
           if (!user.token || !user.refreshToken) {
             resetToDefault();
           } else {
@@ -230,8 +230,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             isAuthenticated: true,
           },
         };
+        console.log(response?.data, credential);
 
-        setUserSessionData(response?.data);
+        setUserSessionData({
+          refreshToken: response?.data?.refreshToken as string,
+          token: credential,
+          user: response?.data?.user as UserInfo,
+        });
         setIsAdmin(false); // no google admin for now
         sessionStorage.setItem('user', JSON.stringify(response?.data));
         sessionStorage.setItem('session', JSON.stringify(newSessionData));

@@ -74,12 +74,7 @@ const AddressStep: React.FC = () => {
   ];
 
   return (
-    <Container
-      justifyContent={'center'}
-      maxWidth={'456'}
-      padding={false}
-      flow={'column'}
-    >
+    <Container justifyContent={'center'} padding={false} flow={'column'}>
       <ButtonGroup options={options} />
       {activeTab === 'login' ? (
         !!userData ? (
@@ -88,7 +83,10 @@ const AddressStep: React.FC = () => {
           <Login goTo={null} />
         )
       ) : (
-        <UserInformationForm onCheckout={handleWriteAdresseInCart} />
+        <UserInformationForm
+          noDefaultValue
+          onCheckout={handleWriteAdresseInCart}
+        />
       )}
     </Container>
   );
