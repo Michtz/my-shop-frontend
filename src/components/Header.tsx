@@ -18,10 +18,12 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.share
 import { Params } from 'next/dist/server/request/params';
 import SideCart from '@/components/system/SideCart';
 import { useSideCart } from '@/hooks/SideCartHook';
+import useCart from '@/hooks/CartHook';
 
 const ResponsiveAppBar = () => {
   const { t, i18n } = useTranslation();
   const router: AppRouterInstance = useRouter();
+  const { cartItems } = useCart();
   const path = usePathname();
   const params: Params = useParams();
   const { userSessionData, sessionData, isLoading, isAdmin } = useAuth();
@@ -63,6 +65,7 @@ const ResponsiveAppBar = () => {
     };
   }, []);
 
+  // @ts-ignore
   return (
     <>
       {/* Loading Overlay */}
@@ -115,6 +118,7 @@ const ResponsiveAppBar = () => {
         >
           <div className={style.cartIcon}>
             <CartIcon onClick={() => router.replace('/cart')} />
+            {cartItems && cartItems?.length}
           </div>
           <div className={style.cartIcon}>
             <ProfileIcon onClick={handleUserClick} />
