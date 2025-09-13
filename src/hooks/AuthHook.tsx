@@ -16,6 +16,7 @@ import {
   logout as _logout,
   getCurrentUser,
   refreshToken,
+  googleLogin as _googleLogin,
 } from '@/requests/session.request';
 import { Logger } from '@/utils/Logger.class';
 import { UserProfileFormData } from '@/components/section/user/UserInformationForm';
@@ -30,6 +31,7 @@ interface AuthContextType {
   isAdmin: boolean;
 
   login: (email: string, password: string) => Promise<any>;
+  loginWithGoogle: (credential: string) => Promise<any>;
   register: (
     email: string,
     password: string,
@@ -215,6 +217,48 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const loginWithGoogle = async (credential: string): Promise<any> => {
+    try {
+      setIsLoading(true);
+      const response = await _googleLogin(credential);
+
+      if (response.success) {
+        const newSessionData = {
+          ...sessionData,
+          data: {
+            ...sessionData?.data,
+            isAuthenticated: true,
+          },
+        };
+
+        setUserSessionData(response?.data);
+        setIsAdmin(false); // no google admin for now
+        sessionStorage.setItem('user', JSON.stringify(response?.data));
+        sessionStorage.setItem('session', JSON.stringify(newSessionData));
+
+        try {
+          const userInfo = await getCurrentUser();
+          const userInfoData = userInfo?.data?.user;
+          if (userInfoData) {
+            setUserInformation(userInfoData);
+          }
+          return response;
+        } catch (userErr) {
+          Logger.warn('Failed to get user info after Google login:', userErr);
+          return response;
+        }
+      } else {
+        Logger.log('Google login failed or no data:', response);
+        return response;
+      }
+    } catch (err: any) {
+      Logger.error('Google login error:', err);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = async () => {
     setIsLoading(true);
     try {
@@ -242,6 +286,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isLoading,
     isSessionReady,
     login,
+    loginWithGoogle,
     register,
     logout,
     isAdmin,

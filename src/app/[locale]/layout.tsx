@@ -20,6 +20,7 @@ import CookieBanner from '@/components/system/CookieBanner';
 import { CookieProvider } from '@/hooks/CookieHook';
 import { SideCartProvider } from '@/hooks/SideCartHook';
 import ThemeRegistry from '@/providers/ThemeRegistry';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -30,22 +31,26 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
             <CookieProvider>
               <FeedbackProvider>
                 <AuthProvider>
-                  <SocketProvider>
-                    <SideCartProvider>
-                      <html lang="de" suppressHydrationWarning>
-                        <head>
-                          <title>Barista Accessoire</title>
-                        </head>
-                        <body>
-                          <Header />
-                          <SWRProvider>{children}</SWRProvider>
-                          <Feedback />
-                          <CookieBanner />
-                          <Footer />
-                        </body>
-                      </html>
-                    </SideCartProvider>
-                  </SocketProvider>
+                  <GoogleOAuthProvider
+                    clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
+                  >
+                    <SocketProvider>
+                      <SideCartProvider>
+                        <html lang="de" suppressHydrationWarning>
+                          <head>
+                            <title>Barista Accessoire</title>
+                          </head>
+                          <body>
+                            <Header />
+                            <SWRProvider>{children}</SWRProvider>
+                            <Feedback />
+                            <CookieBanner />
+                            <Footer />
+                          </body>
+                        </html>
+                      </SideCartProvider>
+                    </SocketProvider>
+                  </GoogleOAuthProvider>
                 </AuthProvider>
               </FeedbackProvider>
             </CookieProvider>

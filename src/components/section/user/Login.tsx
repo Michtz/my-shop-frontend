@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import style from '@/styles/LoginPage.module.scss';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,8 @@ import { Logger } from '@/utils/Logger.class';
 import { useAuth } from '@/hooks/AuthHook';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useSocketContext } from '@/providers/SocketProvider';
+import { GoogleLogin } from '@react-oauth/google';
+import GoogleGIcon from '@/components/icons/GoogleGIcon';
 
 export interface LoginFormData {
   email: string;
@@ -29,8 +31,20 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
   const { showFeedback } = useFeedback();
   const { transformFieldError } = useError();
   const router = useRouter();
-  const { isLoading, login } = useAuth();
+  const { isLoading, login, loginWithGoogle } = useAuth();
   const { joinUserRoom } = useSocketContext();
+
+  const googleButtonRef = useRef<HTMLDivElement>(null);
+
+  const handleCustomGoogleClick = () => {
+    // it is a bit hacky i know but was a last time decision to implement google login
+    const googleBtn =
+      googleButtonRef.current?.querySelector('button') ||
+      googleButtonRef.current?.querySelector('[role="button"]');
+    if (googleBtn) {
+      (googleBtn as HTMLElement).click();
+    }
+  };
 
   const {
     register,
@@ -71,6 +85,26 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
   return (
     <>
       <div className={style.loginContainer}>
+        <>
+          <Button onClick={handleCustomGoogleClick}>
+            <GoogleGIcon width={20} height={20} />
+            Mit Google anmelden
+          </Button>
+
+          <div ref={googleButtonRef} style={{ opacity: '0' }}>
+            <GoogleLogin
+              onSuccess={async (response) => {
+                if (response.credential) {
+                  const result = await loginWithGoogle(response.credential);
+                  if (result?.success) router.replace(goTo || '/profile');
+                }
+              }}
+              onError={() => {
+                showFeedback(t('feedback.login-error'), 'error');
+              }}
+            />
+          </div>
+        </>
         <FormContainer
           className={style.loginForm}
           onSubmitAction={handleSubmit(onSubmit)}

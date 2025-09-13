@@ -175,3 +175,18 @@ export const refreshToken = async (): Promise<any> => {
     throw e;
   }
 };
+
+export const googleLogin = async (credential: string): Promise<LoginSuccessResponse> => {
+  try {
+    const response = await axiosInstance.post(
+      `${authApiUrl}/google-login`,
+      { credential },
+      { withCredentials: true }
+    );
+    return response.data as LoginSuccessResponse;
+  } catch (e) {
+    Logger.error('Unable to login with Google', e);
+    // @ts-expect-error Will get fixed soon
+    return e?.message as string;
+  }
+};
