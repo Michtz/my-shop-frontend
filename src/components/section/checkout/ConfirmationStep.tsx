@@ -31,30 +31,15 @@ const ConfirmationStep: React.FC = () => {
   const total: number = subtotal + shipping;
 
   useEffect(() => {
-    console.log(orderNumber);
-    if (orderNumber) {
-      fetchOrderDetails(orderNumber as string);
-    }
+    if (orderNumber) fetchOrderDetails(orderNumber as string);
   }, [orderNumber]);
 
   const fetchOrderDetails = async (orderNum: string) => {
-    // Todo: ref
     try {
-      console.log('🔍 Fetching order details for:', orderNum);
       const response = await getOrder(orderNum);
-      console.log('📋 Order API response:', response);
-
-      // Handle nested response structure
       const orderData = response.data?.data || response.data;
-      console.log('📋 Processed order data:', orderData);
-
-      if (orderData) {
-        setOrderData(orderData);
-      } else {
-        console.error('❌ No order data found in response');
-      }
+      if (orderData) setOrderData(orderData);
     } catch (error) {
-      console.error('❌ Failed to fetch order details:', error);
       Logger.error('Failed to fetch order details:', error);
     } finally {
       setLoading(false);

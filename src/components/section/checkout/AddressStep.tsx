@@ -20,7 +20,7 @@ const AddressStep: React.FC = () => {
   const router = useRouter();
 
   const [userData, setUserData] = useState<UserInformation>();
-  const [activeTab, setActiveTab] = useState<'login' | 'gast'>('gast');
+  const [activeTab, setActiveTab] = useState<'login' | 'gast'>('login');
 
   useEffect(() => {
     if (userInformation) setUserData(userInformation);
@@ -28,7 +28,6 @@ const AddressStep: React.FC = () => {
 
   const handleWriteAdresseInCart = async (data?: UserProfileFormData) => {
     try {
-      console.log(userInformation, sessionData);
       const userInfo: IAddress = {
         street: data?.street || userData?.addresses?.[0]?.street || '',
         houseNumber:
@@ -78,12 +77,16 @@ const AddressStep: React.FC = () => {
       <ButtonGroup options={options} />
       {activeTab === 'login' ? (
         !!userData ? (
-          <UserInformationForm onCheckout={handleWriteAdresseInCart} />
+          <UserInformationForm
+            key="logedIn"
+            onCheckout={handleWriteAdresseInCart}
+          />
         ) : (
           <Login goTo={null} />
         )
       ) : (
         <UserInformationForm
+          key="guest"
           noDefaultValue
           onCheckout={handleWriteAdresseInCart}
         />

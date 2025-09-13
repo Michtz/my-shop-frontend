@@ -84,8 +84,9 @@ const UserInformationForm: FC<UserInformationFormProps> = ({
   });
 
   useEffect(() => {
-    if (userInformation)
+    if (userInformation) {
       reset(getFormDefaultValues(noDefaultValue ? {} : userInformation));
+    }
     if (!userInformation && !isLoading && hasProfile) router.replace('/login');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInformation, reset, isLoading]);

@@ -270,11 +270,11 @@
       Josefin Sans,
       sans-serif;
     font-size: 17px;
-    cursor: not-allowed;
+    cursor: pointer;
     margin-bottom: 1rem;
 
     &[data-done='true'] {
-      cursor: pointer;
+      cursor: not-allowed; // remove when fixed
     }
 
     .icon {

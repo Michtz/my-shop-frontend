@@ -13,6 +13,16 @@ export const createPaymentIntent = async (sessionId: string) => {
     throw error;
   }
 };
+export const getPaymentMethode = async (paymentIntentId: string) => {
+  try {
+    const response = await axiosInstance.post(
+      `${paymentApiUrl}/payment-info/${paymentIntentId}`,
+    );
+    return response.data;
+  } catch {
+    // Logger.error('💳 Payment intent API error:', error);
+  }
+};
 
 export const confirmPayment = async (
   sessionId: string,

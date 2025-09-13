@@ -11,12 +11,19 @@ import { stripePromise } from '@/lib/stripe';
 import { Container, Title } from '@/components/system/Container';
 import Button from '@/components/system/Button';
 import { useAuth } from '@/hooks/AuthHook';
-import { createPaymentIntent } from '@/requests/payment.request';
+import {
+  confirmPayment,
+  createPaymentIntent,
+} from '@/requests/payment.request';
 import { useRouter } from 'next/navigation';
 import { useFeedback } from '@/hooks/FeedbackHook';
 import { useTranslation } from 'react-i18next';
 import Cookies from 'js-cookie';
 import { StripeElementLocale } from '@stripe/stripe-js';
+import { validateCartStock } from '@/functions/common';
+import useCart, { CartItem } from '@/hooks/CartHook';
+import { Logger } from '@/utils/Logger.class';
+import useProducts from '@/hooks/ProductsHook';
 
 const PaymentForm = ({
   onPaymentMethodReady,
@@ -88,8 +95,8 @@ const PaymentForm = ({
         style={{ width: '84%', margin: '0', marginTop: '1rem' }}
       >
         {isProcessing
-          ? t('checkout.settingUpPayment')
-          : t('checkout.continueToReview')}
+          ? t('checkout.processingPayment')
+          : t('checkout.placeOrderAndPay')}
       </Button>
     </form>
   );
@@ -102,6 +109,8 @@ const PaymentStep: React.FC = () => {
   const router = useRouter();
   const [clientSecret, setClientSecret] = useState('');
 
+  const { cartItems } = useCart();
+  const { products } = useProducts();
   const [language, setLanguage] = useState<StripeElementLocale>('de');
 
   useEffect(() => {
@@ -116,7 +125,7 @@ const PaymentStep: React.FC = () => {
           // Handle nested response structure
           const data = result?.data || result;
           const clientSecret = data?.clientSecret || data?.client_secret;
-
+          localStorage.setItem('paymentIntentId', data.paymentIntentId);
           if (
             clientSecret &&
             clientSecret.startsWith('pi_') &&
@@ -134,10 +143,67 @@ const PaymentStep: React.FC = () => {
     }
   }, [sessionData?.sessionId, t, showFeedback]);
 
-  const handlePaymentMethodReady = () => {
-    showFeedback(t('checkout.paymentMethodValidated'), 'success');
-    localStorage.setItem('checkoutPayment', 'done');
-    router.push('/checkout/review');
+  // const handlePaymentMethodReady = () => {
+  //   showFeedback(t('checkout.paymentMethodValidated'), 'success');
+  //   localStorage.setItem('checkoutPayment', 'done');
+  //   router.push('/checkout/');
+  // };
+
+  const handleFinalPayment = async () => {
+    if (!sessionData?.sessionId) {
+      showFeedback(t('feedback.session-not-available'), 'error');
+      return;
+    }
+    const isOrderStockValid = validateCartStock(
+      products,
+      cartItems as CartItem[],
+    );
+
+    if (isOrderStockValid.errors.length > 0) {
+      showFeedback(t('feedback.cart-stock-not-valid'), 'error');
+
+      throw isOrderStockValid.errors;
+    }
+
+    const paymentMethodId = localStorage.getItem('paymentMethodId');
+    if (!paymentMethodId) {
+      showFeedback(t('feedback.payment-method-not-found'), 'error');
+      return;
+    }
+
+    // Get the payment intent ID from local storage (set during payment step)
+    const paymentIntentId =
+      localStorage.getItem('paymentIntentId') || 'will_be_retrieved';
+    const confirmResult = await confirmPayment(
+      sessionData.sessionId,
+      paymentIntentId,
+      paymentMethodId,
+    );
+    localStorage.removeItem('checkoutPayment');
+    localStorage.removeItem('checkoutAddress');
+    localStorage.removeItem('paymentMethodId');
+    localStorage.removeItem('paymentIntentId');
+
+    if (confirmResult && confirmResult.success) {
+      const orderNumber =
+        confirmResult.order?.orderNumber ||
+        confirmResult.data?.orderNumber ||
+        confirmResult.data?.order?.orderNumber ||
+        confirmResult.orderNumber;
+      if (orderNumber) {
+        showFeedback(t('checkout.orderPlacedSuccess'), 'success');
+        router.push(`/checkout/${orderNumber}`);
+      } else {
+        showFeedback(t('feedback.order-number-missing'), 'error');
+      }
+    } else {
+      showFeedback(t('checkout.orderCreationFailed'), 'error');
+    }
+    try {
+    } catch (e) {
+      showFeedback(t('checkout.paymentProcessingFailed'), 'error');
+      Logger.error(e);
+    }
   };
 
   if (!clientSecret) {
@@ -154,14 +220,30 @@ const PaymentStep: React.FC = () => {
     );
   }
 
+  // Todo: remove inline styles
   return (
-    <div style={{ width: 'fit-content' }}>
+    <div
+      style={{
+        width: '100%',
+        margin: '0 auto',
+        padding: '0 20px',
+        maxWidth: '800px',
+      }}
+    >
       <Title>{t('checkout.paymentInformation')}</Title>
-      <div style={{ fontSize: '12px', color: 'red', marginTop: '8px' }}>
+      <div
+        style={{
+          fontSize: '12px',
+          fontWeight: 'bold',
+          color: 'red',
+          marginTop: '8px',
+          marginBottom: '8px',
+        }}
+      >
         Use 4242 4242 4242 4242 as card number to test
       </div>
       <Elements
-        key={clientSecret} // Force re-render when clientSecret changes
+        key={clientSecret}
         stripe={stripePromise}
         options={{
           clientSecret,
@@ -200,7 +282,7 @@ const PaymentStep: React.FC = () => {
           },
         }}
       >
-        <PaymentForm onPaymentMethodReady={handlePaymentMethodReady} />
+        <PaymentForm onPaymentMethodReady={handleFinalPayment} />
       </Elements>
     </div>
   );

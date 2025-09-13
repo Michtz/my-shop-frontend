@@ -63,42 +63,42 @@ const CheckoutContainer: React.FC<View> = ({ view }) => {
     router.push('/checkout/address');
     setActiveTab('address');
   };
-  const handleGoToPayment = () => {
-    router.push('/checkout/paymentInfo');
-    setActiveTab('paymentInformation');
-  };
-  const handleGoToReview = () => {
-    router.push('/checkout/review');
-    setActiveTab('review');
-  };
+  // const handleGoToPayment = () => {
+  //   router.push('/checkout/paymentInfo');
+  //   setActiveTab('paymentInformation');
+  // };
+  // const handleGoToReview = () => {
+  //   router.push('/checkout/review');
+  //   setActiveTab('review');
+  // };
 
   const options = [
     {
       label: t(t('userProfile.orderInformation')),
       onClick: handleGoToAddress,
-      active: !!progressAddress || activeTab === 'address',
+      active: progressAddress !== 'pending' || progressAddress !== 'pending',
     },
     {
       label: t('checkout.paymentInformation'),
-      onClick: handleGoToPayment,
-      active: !!progressPayment || activeTab === 'paymentInfo',
+      onClick: () => null, // because of errors will get fixed
+      active: progressPayment !== 'pending',
     },
-    {
-      label: t('checkout.reviewOrder'),
-      onClick: handleGoToReview,
-      active: !!progressPayment || activeTab === 'review',
-    },
+    // {
+    //   label: t('checkout.reviewOrder'),
+    //   onClick: handleGoToReview,
+    //   active: progressPayment !== 'pending',
+    // },
   ];
 
   const ProgressButtons = () => (
     <ul className={styles.progressContainer}>
-      {options.map((obj) => {
+      {options.map((obj, index: number) => {
         return (
           <li
             key={obj.label}
             onClick={() => obj.onClick()}
             className={styles.listItem}
-            data-done={obj.active}
+            data-done={index === 1} // remove when fixed
           >
             {obj.label}
             <span className={styles.icon} data-done={obj.active}>
