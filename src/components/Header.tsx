@@ -65,7 +65,6 @@ const ResponsiveAppBar = () => {
     };
   }, []);
 
-  // @ts-ignore
   return (
     <>
       {/* Loading Overlay */}
@@ -118,6 +117,7 @@ const ResponsiveAppBar = () => {
         >
           <div className={style.cartIcon}>
             <CartIcon onClick={() => router.replace('/cart')} />
+
             {cartItems && cartItems?.length}
           </div>
           <div className={style.cartIcon}>
