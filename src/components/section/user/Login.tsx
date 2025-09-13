@@ -88,43 +88,28 @@ const LoginPage: React.FC<LoginPageProps> = ({ goTo }) => {
 
   const handleCustomGoogleClick = () => {
     console.log('🖱️ Custom button clicked');
-    console.log('Is Google loaded?', isGoogleLoaded);
-    console.log('Ref current:', googleButtonRef.current);
 
-    if (!isGoogleLoaded) {
-      console.warn('⚠️ Google button not loaded yet!');
-      showFeedback('Google Login lädt noch...', 'info');
-      return;
-    }
-
-    // Versuche alle möglichen Selektoren
-    const selectors = [
-      'button',
-      '[role="button"]',
-      'div[role="button"]',
-      '.nsm7Bb-HzV7m-LgbsSe',
-      '[data-type="icon"]',
-      'iframe',
+    const attempts = [
+      // 1. Container mit Klasse
+      () => googleButtonRef.current?.querySelector('.S9gUrf-YoZ4jf'),
+      // 2. Erstes Kind-Element
+      () => googleButtonRef.current?.firstElementChild,
+      // 3. Das div mit height="40px"
+      () => googleButtonRef.current?.querySelector('div[style*="height:40px"]'),
+      // 4. Parent des iframes
+      () => googleButtonRef.current?.querySelector('iframe')?.parentElement,
     ];
 
-    let googleBtn = null;
-    for (const selector of selectors) {
-      googleBtn = googleButtonRef.current?.querySelector(selector);
-      if (googleBtn) {
-        console.log(`✅ Found button with selector: ${selector}`, googleBtn);
-        break;
+    for (const attempt of attempts) {
+      const element = attempt() as HTMLElement;
+      if (element) {
+        console.log('✅ Found clickable element:', element);
+        element.click();
+        return;
       }
     }
 
-    if (googleBtn) {
-      console.log('🎯 Clicking Google button...');
-      (googleBtn as HTMLElement).click();
-      console.log('✅ Google button clicked!');
-    } else {
-      console.error('❌ Google button not found!');
-      console.log('Current ref HTML:', googleButtonRef.current?.innerHTML);
-      showFeedback('Google Login konnte nicht gestartet werden', 'error');
-    }
+    console.error('❌ Could not find Google button to click');
   };
 
   const {
