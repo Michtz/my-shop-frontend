@@ -735,5 +735,6 @@
     "required": "Required",
     "streetAddressTooShort": "Street address too short",
     "validEmailRequired": "Please enter a valid email address"
-  }
+  },
+  "goToKaffeeZentrale": "Go and checkout KaffeeZentrale"
 }

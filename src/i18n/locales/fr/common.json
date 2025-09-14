@@ -396,6 +396,7 @@
     "session-not-available": "Session non disponible",
     "session-not-ready": "Session non disponible"
   },
+
   "footer": {
     "company": {
       "aboutUs": "À Propos de MyShop",
@@ -748,5 +749,6 @@
     "required": "Champ obligatoire",
     "streetAddressTooShort": "Adresse trop courte",
     "validEmailRequired": "Veuillez saisir une adresse e-mail valide"
-  }
+  },
+  "goToKaffeeZentrale": "Sieh dir doch mal KaffeeZentrale an"
 }

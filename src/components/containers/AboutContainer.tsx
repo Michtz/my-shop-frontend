@@ -131,8 +131,8 @@ const AboutContainer: React.FC = () => {
             <p className={style.paragraph}>
               <em>{t('about.disclaimer')}</em>
             </p>
-            <Button className={style.link} href={'https://kaffeezentrale.ch/'}>
-              Sieh dir doch mal KaffeeZentrale an
+            <Button href={'https://kaffeezentrale.ch/'}>
+              {t('goToKaffeeZentrale')}
             </Button>
           </div>
         </div>

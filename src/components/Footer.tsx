@@ -1,9 +1,10 @@
 'use client';
 
-import { FC } from 'react';
+import React, { FC } from 'react';
 import Link from '@/components/system/Link';
 import style from '@/styles/Footer.module.scss';
 import { useTranslation } from 'react-i18next';
+import Button from '@/components/system/Button';
 
 const Footer: FC = () => {
   const { t } = useTranslation();
@@ -55,6 +56,13 @@ const Footer: FC = () => {
               </li>
             </ul>
           </div>
+          <Button
+            style={{ backgroundColor: 'var(--foreground)' }}
+            className={style.link}
+            href={'https://kaffeezentrale.ch/'}
+          >
+            {t('goToKaffeeZentrale')}
+          </Button>
         </div>
 
         <div className={style.footerBottom}>
