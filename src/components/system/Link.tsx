@@ -94,7 +94,13 @@ const Link: React.FC<LinkProps> = ({
   // External link
   if (external) {
     return (
-      <a {...sharedProps} href={href} target="_blank" rel="noopener noreferrer">
+      <a
+        {...sharedProps}
+        className={className}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {content}
       </a>
     );
