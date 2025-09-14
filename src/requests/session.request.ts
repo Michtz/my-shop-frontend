@@ -98,7 +98,6 @@ export const register = async (
     return response.data;
   } catch (e) {
     Logger.error('Unable to register');
-    console.log(e);
     return e;
   }
 };
@@ -176,12 +175,14 @@ export const refreshToken = async (): Promise<any> => {
   }
 };
 
-export const googleLogin = async (credential: string): Promise<LoginSuccessResponse> => {
+export const googleLogin = async (
+  credential: string,
+): Promise<LoginSuccessResponse> => {
   try {
     const response = await axiosInstance.post(
       `${authApiUrl}/google-login`,
       { credential },
-      { withCredentials: true }
+      { withCredentials: true },
     );
     return response.data as LoginSuccessResponse;
   } catch (e) {

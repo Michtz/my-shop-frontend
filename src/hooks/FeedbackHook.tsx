@@ -60,7 +60,7 @@ export const FeedbackProvider: React.FC<FeedbackProviderProps> = ({
     showFeedback,
     hideFeedback,
   };
-  console.log(value);
+
   return (
     <FeedbackContext.Provider value={value}>
       {children}

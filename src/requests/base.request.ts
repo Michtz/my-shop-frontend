@@ -31,7 +31,6 @@ axiosInstance.interceptors.request.use(async (request) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    console.log(error.response.data.error);
     Logger.error('API-Error:', {
       message: error.message || 'Error',
       code: error.response?.status || 'UNKNOWN_ERROR',

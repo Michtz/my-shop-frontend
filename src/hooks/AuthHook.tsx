@@ -98,7 +98,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (userStr) {
         try {
           const user = JSON.parse(userStr);
-          console.log(user);
           if (!user.token || !user.refreshToken) {
             resetToDefault();
           } else {
@@ -230,7 +229,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             isAuthenticated: true,
           },
         };
-        console.log(response?.data, credential);
 
         setUserSessionData({
           refreshToken: response?.data?.refreshToken as string,

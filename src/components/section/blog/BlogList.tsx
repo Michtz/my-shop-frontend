@@ -29,7 +29,6 @@ const BlogList: React.FC<BlogListProps> = ({ selectedTag }) => {
       </div>
     );
   }
-  console.log(totalPosts);
   return (
     <div className={styles.blogList}>
       <div className={styles.header}>

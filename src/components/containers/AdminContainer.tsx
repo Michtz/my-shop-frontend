@@ -41,7 +41,8 @@ const AdminContainer: FC<AdminContainerProps> = ({ view }) => {
     fetchUsers();
   }, []);
   if (userInformation?.role === 'admin' && !isValidToken) {
-    console.log('tüdelü madafaga 😉 not with me'); // log if someone try to manipulate the user data
+    router.push('/');
+    Logger.error('no valid token');
   }
   if (!loading && !isValidToken) router.push('/');
   if (!userInformation) view = 'login';

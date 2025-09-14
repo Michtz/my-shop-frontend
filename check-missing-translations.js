@@ -72,8 +72,6 @@ function getAllSourceFiles() {
 
 // Extract translation keys from code files
 function extractTranslationKeysFromCode() {
-  console.log('🔍 Extracting translation keys from code...');
-
   const keys = new Set();
   const files = getAllSourceFiles();
 

@@ -40,7 +40,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     if (socket && userId) {
       socket.emit('user_login', userId);
       setCurrentUserId(userId);
-      console.log(`🔐 Joining user room for: ${userId}`);
     }
   };
 
@@ -48,7 +47,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     if (socket && userId) {
       socket.emit('user_logout', userId);
       setCurrentUserId(null);
-      console.log(`🚪 Leaving user room for: ${userId}`);
     }
   };
 
@@ -71,36 +69,30 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
       // Connection Events
       socketInstance.on('connect', () => {
-        console.log('🔌 Socket connected:', socketInstance.id);
         setIsConnected(true);
 
         // Join session room
         socketInstance.emit('join_session', sessionId);
-        console.log(`🏠 Joined session room: session_${sessionId}`);
 
         // Auto-join user room if user is logged in
         if (userId) {
           socketInstance.emit('user_login', userId);
           setCurrentUserId(userId);
-          console.log(`👤 Auto-joined user room: user_${userId}`);
         }
       });
 
       socketInstance.on('disconnect', () => {
-        console.log('🔌 Socket disconnected');
         setIsConnected(false);
         setCurrentUserId(null);
       });
 
       // User Room Events
       socketInstance.on('user_room_joined', (data: { userId: string }) => {
-        console.log('✅ Successfully joined user room:', data.userId);
         setCurrentUserId(data.userId);
       });
 
       // User Events
       socketInstance.on('order_status_updated', (data: any) => {
-        console.log('📦 Order status updated:', data);
         mutate('orders');
         mutate('/api/orders');
         if (data.orderId) {
@@ -108,15 +100,14 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         }
       });
 
-      socketInstance.on('notification', (data: any) => {
-        console.log('🔔 New notification:', data);
-        // todo: if time add a banner for something like a new product so all user can see a notification or something like this
-      });
+      // socketInstance.on('notification', (data: any) => {
+      //   console.log('🔔 New notification:', data);
+      //   // todo: if time add a banner for something like a new product so all user can see a notification or something like this
+      // });
 
       socketInstance.on(
         'products_updated',
         (data: { productIds: string[]; timestamp: string }) => {
-          console.log('🔄 PRODUCTS UPDATED EVENT:', data);
           mutate('products'); // for card list view update
           data.productIds.forEach((productId: string) => {
             mutate(productId); // for single product update
@@ -132,9 +123,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
           sessionId: string;
           userId?: string;
         }) => {
-          console.log('user cart updated:', data);
-
-          console.log('user cart updated:', data, userId, sessionId);
           if (data.userId) {
             mutate(`cart-${data.userId}`);
           } else {

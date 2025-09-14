@@ -69,11 +69,6 @@ const PaymentForm = ({
           localStorage.setItem('paymentIntentId', paymentIntentId);
         }
 
-        console.log('💳 Payment setup complete:', {
-          paymentMethodId: paymentMethodId ? 'STORED' : 'MISSING',
-          paymentIntentId: paymentIntentId ? 'STORED' : 'MISSING',
-        });
-
         // Payment Method is now attached, proceed to review
         onPaymentMethodReady();
       } else {
