@@ -61,24 +61,24 @@
   },
   "about": {
     "title": "About this Project",
-    "subtitle": "A Web Engineering Project at IBAW",
+    "subtitle": "A Web Engineering Project by IBAW",
     "project": {
       "title": "The Project",
-      "description": "This online shop was created as part of my Web Engineer training at IBAW. The project was developed completely from scratch and demonstrates the practical application of modern web technologies."
+      "description": "This online shop was created as part of my training as a Web Engineer at IBAW. The project was entirely developed from scratch and demonstrates the practical application of modern web technologies."
     },
     "technical": {
       "title": "Technical Implementation",
       "frontend": {
-        "title": "Frontend (React/Next.js)",
-        "react": "Complete React application with Next.js 14",
-        "i18n": "Multilingual support (i18n) with German, English and French",
-        "scss": "Responsive design with SCSS Modules",
-        "socket": "Real-time updates with Socket.io",
-        "oauth": "Google OAuth integration for social login"
+        "title": "Frontend (React/Next.js) Overview",
+        "react": "Complete React application with Next.js and TypeScript",
+        "i18n": "Multilingual support with i18n for UI elements and transKey for products in German, English, and French",
+        "scss": "Responsive design with SCSS modules",
+        "socket": "Real-time updates with Socket.io for products and cart (guests in the same browser and for logged-in users across browsers and devices)",
+        "oauth": "Google OAuth integration for social login and custom solution for learning purposes"
       },
       "backend": {
-        "title": "Backend (Node.js/Express)",
-        "api": "RESTful API with Express.js",
+        "title": "Backend (Node.js/Express) Overview",
+        "api": "REST API with Express.js",
         "mongodb": "MongoDB database with Mongoose",
         "jwt": "JWT authentication system",
         "session": "Session management with cart persistence",
@@ -92,12 +92,12 @@
         "desc": "Registration, login, profile management"
       },
       "admin": {
-        "title": "Admin Panel",
+        "title": "Admin Area",
         "desc": "Product and blog management"
       },
       "shop": {
         "title": "Shop Functions",
-        "desc": "Product catalog, shopping cart, checkout process"
+        "desc": "Product catalog, product overview, homepage, cart, checkout process, general pages like terms and conditions, privacy policy, etc."
       },
       "payment": {
         "title": "Payment",
@@ -120,19 +120,19 @@
       "title": "Deployment",
       "frontend": "Vercel",
       "backend": "Render",
-      "database": "MongoDB Atlas"
+      "database": "MongoDB Atlas and Cloudenaire"
     },
     "scope": {
       "title": "Project Scope",
-      "description": "This project includes over 100 custom-written components and several thousand lines of code. Everything from the database structure to the API to the frontend was developed independently.",
+      "description": "This project comprises nearly 100 self-written components and over 20,000 lines of code. Everything from the database structure to the API and the frontend was independently developed.",
       "period": "Development Period",
-      "periodValue": "2024-2025",
+      "periodValue": "December 2024 - September 2025",
       "developer": "Developer",
-      "developerName": "Simon Hagmann",
+      "developerName": "Michael Venetz",
       "education": "Education",
-      "educationValue": "Web Engineer IBAW"
+      "educationValue": "Web Engineer IBAW HF"
     },
-    "disclaimer": "This is a learning project for demonstration purposes."
+    "disclaimer": "This is a learning project and serves demonstration purposes. The majority of images and product descriptions were sourced from kaffeezentrale.ch (in agreement with the helpful team at Kaffee Zentrale, where all my products can be purchased at significantly better prices)."
   },
   "auth": {
     "createAccount": "Create one here",

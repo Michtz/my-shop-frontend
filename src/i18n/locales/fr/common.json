@@ -61,54 +61,54 @@
   },
   "about": {
     "title": "À propos de ce projet",
-    "subtitle": "Un projet d'ingénierie Web à l'IBAW",
+    "subtitle": "Un projet d'ingénierie web de l'IBAW",
     "project": {
-      "title": "Le Projet",
-      "description": "Cette boutique en ligne a été créée dans le cadre de ma formation d'ingénieur Web à l'IBAW. Le projet a été entièrement développé à partir de zéro et démontre l'application pratique des technologies Web modernes."
+      "title": "Le projet",
+      "description": "Cette boutique en ligne a été créée dans le cadre de ma formation d'ingénieur web à l'IBAW. Le projet a été entièrement développé de A à Z et illustre l'application pratique des technologies web modernes."
     },
     "technical": {
-      "title": "Implémentation Technique",
+      "title": "Mise en œuvre technique",
       "frontend": {
-        "title": "Frontend (React/Next.js)",
-        "react": "Application React complète avec Next.js 14",
-        "i18n": "Support multilingue (i18n) avec allemand, anglais et français",
-        "scss": "Design responsive avec modules SCSS",
-        "socket": "Mises à jour en temps réel avec Socket.io",
-        "oauth": "Intégration Google OAuth pour connexion sociale"
+        "title": "Aperçu du frontend (React/Next.js)",
+        "react": "Application React complète avec Next.js et TypeScript",
+        "i18n": "Support multilingue avec i18n pour les éléments d'interface utilisateur et transKey pour les produits en allemand, anglais et français",
+        "scss": "Design adaptatif avec modules SCSS",
+        "socket": "Mises à jour en temps réel avec Socket.io pour les produits et le panier (invités dans le même navigateur et pour les utilisateurs connectés, également sur plusieurs navigateurs et appareils)",
+        "oauth": "Intégration de Google OAuth pour la connexion sociale et solution personnalisée à des fins d'apprentissage"
       },
       "backend": {
-        "title": "Backend (Node.js/Express)",
-        "api": "API RESTful avec Express.js",
+        "title": "Aperçu du backend (Node.js/Express)",
+        "api": "API REST avec Express.js",
         "mongodb": "Base de données MongoDB avec Mongoose",
         "jwt": "Système d'authentification JWT",
-        "session": "Gestion de session avec persistance du panier",
-        "stripe": "Intégration de paiement Stripe"
+        "session": "Gestion de sessions avec persistance du panier",
+        "stripe": "Intégration des paiements Stripe"
       }
     },
     "features": {
-      "title": "Fonctionnalités Implémentées",
+      "title": "Fonctionnalités implémentées",
       "user": {
-        "title": "Système Utilisateur",
-        "desc": "Inscription, connexion, gestion du profil"
+        "title": "Système utilisateur",
+        "desc": "Inscription, connexion, gestion de profil"
       },
       "admin": {
-        "title": "Panneau Admin",
+        "title": "Espace administrateur",
         "desc": "Gestion des produits et du blog"
       },
       "shop": {
-        "title": "Fonctions Boutique",
-        "desc": "Catalogue de produits, panier, processus de commande"
+        "title": "Fonctions de la boutique",
+        "desc": "Catalogue de produits, aperçu des produits, page d'accueil, panier, processus de paiement, pages générales comme les conditions générales, la politique de confidentialité, etc."
       },
       "payment": {
         "title": "Paiement",
         "desc": "Paiement sécurisé via Stripe"
       },
       "blog": {
-        "title": "Système de Blog",
-        "desc": "Créer et gérer des articles"
+        "title": "Système de blog",
+        "desc": "Création et gestion d'articles"
       },
       "realtime": {
-        "title": "Fonctionnalités Temps Réel",
+        "title": "Fonctionnalités en temps réel",
         "desc": "Mises à jour en direct via WebSockets"
       },
       "google": {
@@ -120,21 +120,20 @@
       "title": "Déploiement",
       "frontend": "Vercel",
       "backend": "Render",
-      "database": "MongoDB Atlas"
+      "database": "MongoDB Atlas et Cloudenaire"
     },
     "scope": {
-      "title": "Portée du Projet",
-      "description": "Ce projet comprend plus de 100 composants écrits sur mesure et plusieurs milliers de lignes de code. Tout, de la structure de la base de données à l'API en passant par le frontend, a été développé de manière indépendante.",
-      "period": "Période de Développement",
-      "periodValue": "2024-2025",
+      "title": "Portée du projet",
+      "description": "Ce projet comprend près de 100 composants écrits de manière autonome et plus de 20 000 lignes de code. De la structure de la base de données à l'API en passant par le frontend, tout a été développé de manière indépendante.",
+      "period": "Période de développement",
+      "periodValue": "Décembre 2024 - Septembre 2025",
       "developer": "Développeur",
-      "developerName": "Simon Hagmann",
+      "developerName": "Michael Venetz",
       "education": "Formation",
-      "educationValue": "Ingénieur Web IBAW"
+      "educationValue": "Ingénieur web IBAW HF"
     },
-    "disclaimer": "Ceci est un projet d'apprentissage à des fins de démonstration."
-  }
-,
+    "disclaimer": "Ceci est un projet d'apprentissage et sert à des fins de démonstration. La majorité des images et des descriptions de produits proviennent de kaffeezentrale.ch (en accord avec l'équipe serviable de Kaffee Zentrale, où tous mes produits peuvent être achetés à des prix nettement plus avantageux)."
+  },
   "auth": {
     "createAccount": "Créer un ici",
     "emailAddress": "Adresse e-mail",

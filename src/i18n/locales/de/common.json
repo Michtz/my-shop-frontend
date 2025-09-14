@@ -69,16 +69,16 @@
     "technical": {
       "title": "Technische Umsetzung",
       "frontend": {
-        "title": "Frontend (React/Next.js)",
-        "react": "Vollständige React-Applikation mit Next.js 14",
-        "i18n": "Mehrsprachigkeit (i18n) mit Deutsch, Englisch und Französisch",
+        "title": "Frontend (React/Next.js) Überblick",
+        "react": "Vollständige React-Applikation mit Next.js und Typescript",
+        "i18n": "Mehrsprachigkeit mit i18n für UI Elemente und transKey für Produkte in Deutsch, Englisch und Französisch",
         "scss": "Responsive Design mit SCSS Modules",
-        "socket": "Real-time Updates mit Socket.io",
-        "oauth": "Google OAuth Integration für Social Login"
+        "socket": "Echtzeit Updates mit Socket.io für die Produkte und den Warenkorb (Gast in selben Browser und für eingeloggte User auch Browser und Geräte übergreifend)",
+        "oauth": "Google OAuth Integration für Social Login und eigene Lösung zu Lernzwecken"
       },
       "backend": {
-        "title": "Backend (Node.js/Express)",
-        "api": "RESTful API mit Express.js",
+        "title": "Backend (Node.js/Express) Überblick",
+        "api": "REST API mit Express.js",
         "mongodb": "MongoDB Datenbank mit Mongoose",
         "jwt": "JWT Authentication System",
         "session": "Session Management mit Warenkorb-Persistenz",
@@ -97,7 +97,7 @@
       },
       "shop": {
         "title": "Shop-Funktionen",
-        "desc": "Produktkatalog, Warenkorb, Checkout-Prozess"
+        "desc": "Produktkatalog, Produktübersicht, Startseite, Warenkorb, Checkout-Prozess, allgemeine Seiten wie AGB, Datenschutz usw."
       },
       "payment": {
         "title": "Payment",
@@ -120,19 +120,19 @@
       "title": "Deployment",
       "frontend": "Vercel",
       "backend": "Render",
-      "database": "MongoDB Atlas"
+      "database": "MongoDB Atlas und Cloudenaire"
     },
     "scope": {
       "title": "Projektumfang",
-      "description": "Dieses Projekt umfasst über 100 selbst geschriebene Components und mehrere tausend Zeilen Code. Von der Datenbankstruktur über die API bis zum Frontend wurde alles eigenständig entwickelt.",
+      "description": "Dieses Projekt umfasst knapp 100 selbst geschriebene Components und über 20'000 Zeilen Code. Von der Datenbankstruktur über die API bis zum Frontend wurde alles eigenständig entwickelt.",
       "period": "Entwicklungszeitraum",
-      "periodValue": "2024-2025",
+      "periodValue": "Dezember 2024 - September 2025",
       "developer": "Entwickler",
-      "developerName": "Simon Hagmann",
+      "developerName": "Michael Venetz",
       "education": "Ausbildung",
-      "educationValue": "Web Engineer IBAW"
+      "educationValue": "Web Engineer IBAW HF"
     },
-    "disclaimer": "Dies ist ein Lernprojekt und dient zu Demonstrationszwecken."
+    "disclaimer": "Dies ist ein Lernprojekt und dient zu Demonstrationszwecken. Ein Grossteil der Bilder und Produkt beschriebe wurden von kaffeezentrale.ch übernommen (in Absprache mit dem Hilfreichen Team von Kaffee Zentrale wo alle meine Artikel zu deutlich besseren Preisen erworben werden können.)"
   },
   "auth": {
     "createAccount": "Hier erstellen",
