@@ -4,6 +4,7 @@ import React from 'react';
 import { Container } from '@/components/system/Container';
 import style from '@/styles/AboutContainer.module.scss';
 import { useTranslation } from 'react-i18next';
+import Link from '../system/Link';
 
 const AboutContainer: React.FC = () => {
   const { t } = useTranslation();
@@ -129,6 +130,9 @@ const AboutContainer: React.FC = () => {
           <div className={style.disclaimer}>
             <p className={style.paragraph}>
               <em>{t('about.disclaimer')}</em>
+              <Link href={'https://kaffeezentrale.ch/'}>
+                Go To KaffeeZentrale
+              </Link>
             </p>
           </div>
         </div>
