@@ -20,7 +20,6 @@ const AdminContainer: FC<AdminContainerProps> = ({ view }) => {
   const { userInformation } = useAuth();
   const router: AppRouterInstance = useRouter();
   const [isValidToken, setIsValidToken] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -33,8 +32,6 @@ const AdminContainer: FC<AdminContainerProps> = ({ view }) => {
         if (err.message === 'Authentication required') {
           window.location.href = '/login';
         }
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -44,7 +41,6 @@ const AdminContainer: FC<AdminContainerProps> = ({ view }) => {
     router.push('/');
     Logger.error('no valid token');
   }
-  if (!loading && !isValidToken) router.push('/');
   if (!userInformation) view = 'login';
   return (
     <Container padding={false} alignItems={'center'} flow={'column'}>
