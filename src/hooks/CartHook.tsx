@@ -13,9 +13,17 @@ import useProducts from '@/hooks/ProductsHook';
 
 interface CartAPIResponse {
   success: boolean;
-  data: any;
+  data: Cart;
 }
 
+export interface Cart {
+  createdAt: string;
+  items: CartItem[];
+  sessionId: string;
+  total: number;
+  userId: string;
+  _id: string;
+}
 export interface CartItem {
   productId: string;
   quantity: number;
@@ -25,7 +33,7 @@ export interface CartItem {
 }
 
 interface CartResponse {
-  cart: any | null;
+  cart: Cart | null;
   cartItems: CartItem[] | null;
   reviewedCartItems: CartItem[] | null;
   isLoading: boolean;
@@ -67,24 +75,19 @@ const useCart = (): CartResponse => {
   );
 
   const processCartItems = (): CartItem[] | null => {
-    const items = data?.data?.data?.items || data?.data?.items;
+    const items: CartItem[] = data?.data?.items || [];
     if (!items || !Array.isArray(items) || items.length === 0) return null;
     return items;
   };
 
   const cartItems = processCartItems();
 
-  // Separater useEffect um Stock Issues zu tracken - mit Vergleich
   useEffect(() => {
     if (!cartItems || !products || products.length === 0) return;
-
     const validation = validateCartStock(products, cartItems);
     const errorMap = new Map(validation.errors.map((e) => [e.productId, e]));
-
-    // Erstelle einen String zum Vergleichen
     const currentErrors = Array.from(errorMap.keys()).sort().join(',');
 
-    // Nur updaten wenn sich die Fehler geändert haben
     if (currentErrors !== lastErrorsRef.current) {
       lastErrorsRef.current = currentErrors;
 
@@ -102,7 +105,6 @@ const useCart = (): CartResponse => {
     }
   }, [cartItems, products]);
 
-  // UseMemo für reviewedCartItems
   const reviewedCartItems = useMemo(() => {
     if (!cartItems || !products || products.length === 0) return null;
 
@@ -122,7 +124,6 @@ const useCart = (): CartResponse => {
       .filter((item) => item.quantity > 0);
   }, [cartItems, products, stockIssues]);
 
-  // Auto-update cart items with stock issues individually
   useEffect(() => {
     if (!reviewedCartItems || !sessionData?.sessionId) return;
 
@@ -133,7 +134,6 @@ const useCart = (): CartResponse => {
     );
 
     if (itemsWithStockIssues.length === 0) return;
-
     itemsWithStockIssues.forEach(async (item) => {
       const key = `${item.productId}-${item.quantity}`;
 
@@ -160,12 +160,10 @@ const useCart = (): CartResponse => {
     mutate,
   ]);
 
-  // Reset processed items when cart items change significantly
   useEffect(() => {
     setProcessedItems(new Set());
   }, [cartItems?.length]);
 
-  // Clear stock issues after 30 seconds
   useEffect(() => {
     if (stockIssues.size === 0) return;
 
