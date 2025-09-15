@@ -11,9 +11,9 @@ import { IProduct } from '@/types/product.types';
 import { validateCartStock } from '@/functions/common';
 import useProducts from '@/hooks/ProductsHook';
 
-interface CartAPIResponse {
+export interface CartAPIResponse {
   success: boolean;
-  data: Cart;
+  data: any;
 }
 
 export interface Cart {
@@ -75,7 +75,7 @@ const useCart = (): CartResponse => {
   );
 
   const processCartItems = (): CartItem[] | null => {
-    const items: CartItem[] = data?.data?.items || [];
+    const items: CartItem[] = data?.data?.data.items || [];
     if (!items || !Array.isArray(items) || items.length === 0) return null;
     return items;
   };
