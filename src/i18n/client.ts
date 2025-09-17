@@ -50,12 +50,14 @@ export const handleLanguageChange = async ({
   setIsLanguageDropdownOpen,
 }: LanguageChangeProps): Promise<void> => {
   try {
-    action(language).then(() => {
-      const newPath = path.replace(/^\/[a-z]{2}/, `/${language}`);
-      router.push(newPath);
+    Cookies.set('language', language, {
+      expires: 1,
+      path: '/',
+      sameSite: 'strict',
     });
 
-    await updateCurrentSession(
+    await action(language);
+    const sessionPromise = await updateCurrentSession(
       {
         ...preferences,
         language: language,
@@ -63,11 +65,10 @@ export const handleLanguageChange = async ({
       sessionId,
     );
 
-    Cookies.set('language', language, {
-      expires: 1,
-      path: '/',
-      sameSite: 'strict',
-    });
+    const newPath = path.replace(/^\/[a-z]{2}/, `/${language}`);
+    router.refresh();
+    router.push(newPath);
+    await sessionPromise;
   } catch (e) {
     Logger.error(e);
   }
