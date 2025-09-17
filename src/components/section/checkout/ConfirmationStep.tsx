@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import CartListItem from '@/components/section/cart/CartListItem';
 import { Hr } from '@/components/system/Hr';
 import useCart from '@/hooks/CartHook';
-import CartSummary from '@/components/section/cart/CartSummaryContainer';
 import { OrderData } from '@/types/order.types';
 import { getOrder } from '@/requests/cart.request';
 
@@ -17,18 +16,10 @@ import { getOrder } from '@/requests/cart.request';
 const ConfirmationStep: React.FC = () => {
   const { t } = useTranslation();
   const { orderNumber } = useParams();
-  const { cartItems, mutate } = useCart();
+  const { mutate } = useCart();
   const router = useRouter();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const subtotal: number =
-    cartItems?.reduce(
-      (sum: number, item: any) => sum + item.quantity * item.price,
-      0,
-    ) || 0;
-  const shipping: number = 11;
-  const total: number = subtotal + shipping;
 
   useEffect(() => {
     if (orderNumber) fetchOrderDetails(orderNumber as string);
@@ -145,7 +136,6 @@ const ConfirmationStep: React.FC = () => {
             <Hr />
           </React.Fragment>
         ))}
-        <CartSummary subtotal={subtotal} shipping={shipping} total={total} />
       </span>
       <ButtonContainer>
         <Button onClick={() => router.push('/')} style={{ flex: 1 }}>
